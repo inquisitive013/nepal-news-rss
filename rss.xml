@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+    <title>Nepal News Combined Feed</title>
+    <link>https://github.com</link>
+    <description>Merged RSS feed of major Nepali news portals for automation.</description>
+    <language>ne-NP</language>
+
+    <!-- Kantipur -->
+    <item>
+        <title>Kantipur Latest News</title>
+        <link>https://www.kantipurdaily.com/</link>
+        <description><![CDATA[Source: Kantipur Daily]]></description>
+    </item>
+
+    <!-- Ekantipur -->
+    <item>
+        <title>Ekantipur News</title>
+        <link>https://ekantipur.com/</link>
+        <description><![CDATA[Source: Ekantipur]]></description>
+    </item>
+
+    <!-- OnlineKhabar -->
+    <item>
+        <title>OnlineKhabar Latest News</title>
+        <link>https://www.onlinekhabar.com/</link>
+        <description><![CDATA[Source: OnlineKhabar]]></description>
+    </item>
+
+    <!-- Setopati -->
+    <item>
+        <title>Setopati Headlines</title>
+        <link>https://www.setopati.com/</link>
+        <description><![CDATA[Source: Setopati]]></description>
+    </item>
+
+    <!-- Ratopati -->
+    <item>
+        <title>Ratopati News</title>
+        <link>https://ratopati.com/</link>
+        <description><![CDATA[Source: Ratopati]]></description>
+    </item>
+
+    <!-- HimalKhabar -->
+    <item>
+        <title>HimalKhabar News</title>
+        <link>https://www.himalkhabar.com/</link>
+        <description><![CDATA[Source: HimalKhabar]]></description>
+    </item>
+
+    <!-- BBC Nepali -->
+    <item>
+        <title>BBC Nepali Headlines</title>
+        <link>https://www.bbc.com/nepali</link>
+        <description><![CDATA[Source: BBC Nepali]]></description>
+    </item>
+
+    <!-- DC Nepal -->
+    <item>
+        <title>DC Nepal</title>
+        <link>https://www.dcnepal.com/</link>
+        <description><![CDATA[Source: DC Nepal]]></description>
+    </item>
+
+    <!-- NepalPress -->
+    <item>
+        <title>NepalPress News</title>
+        <link>https://www.nepalpress.com/</link>
+        <description><![CDATA[Source: NepalPress]]></description>
+    </item>
+
+    <!-- Annapurna Post -->
+    <item>
+        <title>Annapurna Post</title>
+        <link>https://annapurnapost.com/</link>
+        <description><![CDATA[Source: Annapurna Post]]></description>
+    </item>
+
+    <!-- Nagarik News -->
+    <item>
+        <title>Nagarik News</title>
+        <link>https://nagariknews.nagariknetwork.com/</link>
+        <description><![CDATA[Source: Nagarik News]]></description>
+    </item>
+
+</channel>
+</rss>
