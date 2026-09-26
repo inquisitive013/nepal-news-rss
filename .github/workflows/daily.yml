@@ -115,7 +115,10 @@ jobs:
             if [ "$code" = "204" ]; then
               echo "Switched the Pages source to GitHub Actions."
             else
-              echo "::warning::Could not switch the Pages source (HTTP $code). In the repository settings open Pages and set Source to GitHub Actions."
+              # The workflow token may not be allowed to change repository settings.
+              msg="The Pages source is still \"Deploy from a branch\", so GitHub rebuilds the site from the repository after every push and overwrites this deployment. One click fixes it: Settings → Pages → Build and deployment → Source → GitHub Actions."
+              echo "::warning::Could not switch the Pages source (HTTP $code). $msg"
+              printf '## Pages source needs one click\n\n%s\n\n' "$msg" >> "$GITHUB_STEP_SUMMARY"
               cat pages-response.json || true
             fi
             rm -f pages-response.json
