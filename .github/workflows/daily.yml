@@ -61,7 +61,8 @@ jobs:
         run: |
           git config user.name "nepal-wire-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data rss.xml
+          # Only data/ and rss.xml change during a run. site/ is ignored by git.
+          git add -A
           if git diff --cached --quiet; then
             echo "Nothing new to commit."
           else
