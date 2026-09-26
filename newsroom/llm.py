@@ -56,6 +56,18 @@ class BudgetExceeded(LLMError):
     """The run has used its allowance of model calls."""
 
 
+class CreditExhausted(BudgetExceeded):
+    """The Anthropic account has no credit left. Nothing else in this run can succeed."""
+
+
+MAX_OUTPUT_TOKENS = 128000
+
+
+def is_credit_error(text: str) -> bool:
+    lowered = text.lower()
+    return "credit balance" in lowered or "purchase credits" in lowered
+
+
 # --------------------------------------------------------------------------- schema helpers
 
 def strict_schema(schema: dict[str, Any]) -> dict[str, Any]:
@@ -348,7 +360,7 @@ class ClaudeLLM(BaseLLM):
         model = self.settings.role_model(role)
         kwargs: dict[str, Any] = {
             "model": model,
-            "max_tokens": max_tokens or int(self.settings.get("llm.max_tokens", 16000)),
+            "max_tokens": max_tokens or int(self.settings.get("llm.max_tokens", 64000)),
             "system": [{"type": "text", "text": system_for(role, self.settings), "cache_control": {"type": "ephemeral"}}],
             "messages": messages,
         }
@@ -374,17 +386,23 @@ class ClaudeLLM(BaseLLM):
     def structured(self, role, user_text, payload, schema, *, images=None, web_search_uses=0, max_tokens=None):
         attempts = 0
         nudge = ""
+        cap = max_tokens or int(self.settings.get("llm.max_tokens", 64000))
         while True:
             attempts += 1
             try:
-                return self._structured_once(role, user_text + nudge, payload, schema, images, web_search_uses, max_tokens)
-            except LLMRefusal:
+                return self._structured_once(role, user_text + nudge, payload, schema, images, web_search_uses, cap)
+            except (LLMRefusal, BudgetExceeded):
                 raise
             except LLMError as exc:
                 if attempts >= 2:
                     raise
-                log.warning("%s: retrying after %s", role, exc)
-                nudge = "\n\nYour previous answer was not valid JSON for the schema. Return only the JSON object."
+                if "max_tokens" in str(exc):
+                    # Thinking counts against the cap. Give the retry real headroom.
+                    cap = min(cap * 2, MAX_OUTPUT_TOKENS)
+                    log.warning("%s: output hit the cap, retrying with max_tokens=%d", role, cap)
+                else:
+                    log.warning("%s: retrying after %s", role, exc)
+                    nudge = "\n\nYour previous answer was not valid JSON for the schema. Return only the JSON object."
 
     def _structured_once(self, role, user_text, payload, schema, images, web_search_uses, max_tokens) -> dict[str, Any]:
         self.meter.reserve()
@@ -399,6 +417,8 @@ class ClaudeLLM(BaseLLM):
                 msg = self._create(kwargs)
             except anthropic.BadRequestError as exc:
                 text = str(exc)
+                if is_credit_error(text):
+                    raise CreditExhausted("the Anthropic account has run out of credit. Add credit in the Console under Billing.") from exc
                 if self.use_fallback and ("fallback" in text.lower()):
                     log.warning("server side fallback rejected by the API, continuing without it: %s", text[:200])
                     with self._lock:

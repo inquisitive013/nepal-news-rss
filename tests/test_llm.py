@@ -84,3 +84,8 @@ def test_mock_outputs_match_every_schema():
     assert "attributed" in rev["body_markdown"]
     pick = m.structured("image_picker", "", {"headline": "h", "dek": "d", "alt_hint": "", "candidates": []}, PICK_SCHEMA)
     assert pick["chosen_index"] == -1
+
+
+def test_credit_error_detection():
+    assert llmmod.is_credit_error("Error code: 400 - Your credit balance is too low to access the Anthropic API.")
+    assert not llmmod.is_credit_error("Error code: 400 - messages: field required")
