@@ -99,9 +99,9 @@ python -m http.server -d site 8000               # look at the result
 
 ## Cost and safety valves
 
-A live edition with the defaults makes roughly 40 to 60 model calls: one clustering call, two per debated story, two ranking judges, and per article one writer, one picture check, and two to three validation rounds of red team, defence and judges. `pipeline.max_llm_calls` in `settings.yaml` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
+A live edition makes roughly 30 to 45 model calls: one clustering call, two per debated story, two ranking judges, and per article one writer, one picture check, and one to two validation rounds of red team, defence and judges. `pipeline.max_llm_calls` in `settings.yaml` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
 
-The default model for every role is `claude-opus-5`. Set a cheaper model for individual roles under `llm.roles`. Requests opt into the server side refusal fallback (beta) so a safety decline on one role is retried on the recommended fallback model instead of killing the story; set `llm.refusal_fallback: false` to turn that off.
+Measured so far: the first live edition, on `claude-opus-5` at high effort with eight debated stories and two revision rounds, used 51 calls, about 675,000 input and 448,000 output tokens and 145 web searches, roughly 19 dollars at list price. The defaults now use `claude-sonnet-5` at medium effort for research and writing roles and `claude-opus-5-5` at high effort for the four judges, with six debated stories and one revision round. Set models and effort per role under `llm.roles`. Requests opt into the server side refusal fallback (beta) so a safety decline on one role is retried on the recommended fallback model instead of killing the story; set `llm.refusal_fallback: false` to turn that off.
 
 ## Images and credits
 
