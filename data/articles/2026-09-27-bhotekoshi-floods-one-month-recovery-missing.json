@@ -1,0 +1,572 @@
+{
+  "id": "2026-09-27-bhotekoshi-floods-one-month-recovery-missing",
+  "slug": "bhotekoshi-floods-one-month-recovery-missing",
+  "story_id": "story_bhotekoshi_one_month",
+  "headline": "One Month After Bhotekoshi Floods, 1,453 Dead, Survivors Leave Camps",
+  "dek": "Nepal's disaster agency counts 5,285 missing while ABC News Australia reports over 5,700, as holding centres empty and rebuilding lags.",
+  "body_markdown": "One month after floods tore through the Bhotekoshi and Trishuli valleys, Nepal's disaster authority counts 1,453 dead and 5,285 missing. Nepal Press and Tribune India both cited those figures from the National Disaster Risk Reduction and Management Authority on September 26.\n\nSome roads and bridges are back. Nepal Press reports crews have temporarily reconnected key stretches washed out by the water. But the outlet is blunt about what that does not mean. Full reconstruction remains far off. Relief distribution, temporary housing and rental support for displaced families are still being organized, a month after the disaster hit.\n\nOn the ground, the picture is thinner than the reconnected roads suggest. OnlineKhabar reports that holding centres set up for displaced families are emptying out. Survivors interviewed by the outlet say they received little beyond basic relief items, food and daily supplies from government and non government sources. With nothing more coming, many have left the centres and moved in with relatives instead.\n\n## A home built over four decades, gone in a day\n\nOnlineKhabar's reporting on one family captures the scale of individual loss behind the numbers. Ishwar Basnet flew home from Portugal, leaving his six-week-old baby behind, to search for his parents. He looked for eight days. He never found their bodies. The family home, built up over 35 to 40 years, was also swept away. Basnet told OnlineKhabar he now has no house and no village to return to, only memories.\n\nThe missing count carries its own dispute. NDRRMA's 5,285 figure, reported by Nepal Press and Tribune India, is not the only number in circulation. ABC News Australia reported on September 26 that over 5,700 people remain missing. Nepal Wire could not independently verify which figure is more current. The gap itself says something. A month after a disaster this large, Nepal still does not have one agreed number for how many people it lost.\n\nThe hydropower sector adds another layer. Energy Minister Biraj Bhakta Shrestha told Parliament on September 23 that more than 800 workers from hydropower projects remain unaccounted for, according to the Kathmandu Post. That figure predates the one month mark by three days. Nepal Wire found no public update to it since.\n\nFor Nepal Press, the verdict a month on is simple. The wounds are the same. The road to recovery is still long. Nepal Wire found no published government timeline for full reconstruction. Nor did it find any NDRRMA statement on when the missing count will be final.",
+  "language": "en",
+  "key_facts": [
+    {
+      "fact": "Nepal's disaster authority counts 1,453 dead and 5,285 missing one month after the Bhotekoshi-Trishuli floods, per NDRRMA figures cited by Nepal Press.",
+      "source_url": "https://nepalpress.com/2026/09/26/767921/one-month-after-the-bhotekoshi-flood-the-wounds-remain-the-same-the-road-to-recovery-is-still-long/"
+    },
+    {
+      "fact": "Some roads and bridges have been temporarily reconnected, but Nepal Press reports full reconstruction remains far from complete.",
+      "source_url": "https://nepalpress.com/2026/09/26/767921/one-month-after-the-bhotekoshi-flood-the-wounds-remain-the-same-the-road-to-recovery-is-still-long/"
+    },
+    {
+      "fact": "OnlineKhabar reports holding centres for displaced families are emptying as survivors, having received only basic relief items, move in with relatives.",
+      "source_url": "https://www.onlinekhabar.com/2026/09/2026305/the-camp-is-emptying-the-anxiety-is-growing"
+    },
+    {
+      "fact": "Ishwar Basnet flew from Portugal and searched eight days for his parents after the flood, but found neither their bodies nor the family's home, per OnlineKhabar.",
+      "source_url": "https://www.onlinekhabar.com/2026/09/2026271/ishwar-came-from-portugal-to-look-for-his-parents-but-he-found-neither-his-parents-nor-his-home"
+    },
+    {
+      "fact": "Energy Minister Biraj Bhakta Shrestha told Parliament on September 23 that more than 800 workers from hydropower projects remain unaccounted for.",
+      "source_url": "https://kathmandupost.com/national/2026/09/23/over-800-people-remain-missing-from-hydropower-projects-after-bhotekoshi-floods-says-energy-minister-shrestha"
+    },
+    {
+      "fact": "ABC News Australia reported on September 26 that over 5,700 people remain missing, a higher figure than the 5,285 NDRRMA count reported by Nepal Press.",
+      "source_url": "https://www.abc.net.au/news/2026-09-26/families-fear-nepal-floods-forgotten/107182226"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Nepal Press",
+      "url": "https://nepalpress.com/2026/09/26/767921/one-month-after-the-bhotekoshi-flood-the-wounds-remain-the-same-the-road-to-recovery-is-still-long/",
+      "used_for": "NDRRMA casualty and missing figures, status of road and bridge reconnection, state of reconstruction one month on"
+    },
+    {
+      "name": "OnlineKhabar",
+      "url": "https://www.onlinekhabar.com/2026/09/2026305/the-camp-is-emptying-the-anxiety-is-growing",
+      "used_for": "Reporting that holding centres for displaced families are emptying as survivors move in with relatives"
+    },
+    {
+      "name": "OnlineKhabar",
+      "url": "https://www.onlinekhabar.com/2026/09/2026271/ishwar-came-from-portugal-to-look-for-his-parents-but-he-found-neither-his-parents-nor-his-home",
+      "used_for": "Human interest account of Ishwar Basnet's search for his parents and loss of the family home"
+    },
+    {
+      "name": "Tribune India",
+      "url": "https://www.tribuneindia.com/news/world/nepal-floods-1453-dead-nearly-5300-still-missing-a-month-after-disaster",
+      "used_for": "Corroborating the NDRRMA one-month death and missing tally alongside Nepal Press"
+    },
+    {
+      "name": "Kathmandu Post",
+      "url": "https://kathmandupost.com/national/2026/09/23/over-800-people-remain-missing-from-hydropower-projects-after-bhotekoshi-floods-says-energy-minister-shrestha",
+      "used_for": "Energy Minister Biraj Bhakta Shrestha's parliamentary statement on missing hydropower workers"
+    },
+    {
+      "name": "ABC News Australia",
+      "url": "https://www.abc.net.au/news/2026-09-26/families-fear-nepal-floods-forgotten/107182226",
+      "used_for": "Reporting a higher missing-person count, used to show the figures conflict"
+    }
+  ],
+  "tags": [
+    "nepal-floods",
+    "bhotekoshi",
+    "disaster-recovery",
+    "displacement",
+    "hydropower",
+    "missing-persons"
+  ],
+  "social_hook": "A month after Nepal's floods, relief camps are emptying and officials still cannot agree on how many people remain missing.",
+  "image_brief": {
+    "search_queries": [
+      "Bhotekoshi river flood damage Nepal 2026",
+      "Sindhupalchok bridge flood repair 2026",
+      "Nepal flood displaced families relief camp",
+      "Trishuli valley flood destroyed road Nepal"
+    ],
+    "generation_prompt": "Editorial illustration of a damaged mountain valley road in Nepal a month after a flood, a temporary wooden and steel footbridge spanning a swollen brown river, debris and uprooted trees along the banks, distant terraced hillsides under a grey overcast sky, muted earth tones of brown, grey and faded green, quiet and somber mood, no people, no text, no logos.",
+    "alt_text": "A temporary bridge crosses a debris-strewn river in a Nepali valley a month after devastating floods."
+  },
+  "image": {
+    "path": "data/images/2026-09-27-bhotekoshi-floods-one-month-recovery-missing.jpg",
+    "alt": "A temporary bridge crosses a debris-strewn river in a Nepali valley a month after devastating floods.",
+    "width": 1536,
+    "height": 1024,
+    "credit": {
+      "kind": "generated",
+      "title": "",
+      "author": "",
+      "author_url": "",
+      "source": "Nepal Wire",
+      "source_url": "",
+      "license": "",
+      "license_url": "",
+      "model": "gpt-image-1",
+      "note": "Made for Nepal Wire. Not a photograph."
+    },
+    "original_url": ""
+  },
+  "review": {
+    "ranking": [
+      {
+        "judge": "ranking_judge_1",
+        "rank": 2,
+        "score": 82,
+        "reason": "This is the year's largest disaster, with a real one-month peg and fresh ground reporting from Nepal Press and OnlineKhabar on stalled reconstruction and emptying holding centres. It is writable today if the dead and missing figures are attributed to NDRRMA and the gap between outlets is reported openly, for example 5,285 missing per NDRRMA against the higher missing figures in international reports."
+      },
+      {
+        "judge": "ranking_judge_2",
+        "rank": 2,
+        "score": 82,
+        "reason": "Confirmed at rank 2. It is the year's largest disaster, with a real one month peg and fresh Nepal Press and OnlineKhabar ground reporting. Attribute 1,453 dead and 5,285 missing to NDRRMA and report the higher international missing figures as a disagreement."
+      }
+    ],
+    "validation_rounds": [
+      {
+        "round": 1,
+        "red_team": {
+          "findings": [
+            {
+              "id": "F1",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Nepal's disaster agency counts 5,285 missing, but foreign outlets report higher tolls",
+              "problem": "The dek says 'foreign outlets' (plural) report higher tolls, but the body only names one foreign outlet, ABC News, with a higher figure. Telegraph India, also foreign, cites the SAME 5,285 NDRRMA number, not a higher one. The plural overstates how much disagreement actually exists among named sources in this piece.",
+              "evidence_url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNenRCbjB6NXhqSGY3ck9kLW9ocjlFU3p3ZEZheUlHZ3ZmYktVZFNhWC15WXUxUlJKZzdncVBsSEZKUFl1b3huUERGVXdNQmxHZEtfX2hvamVDaHptU1I1eWN1S1B2aDJROGUyMTFDNzNoQi1ZbFRxdjlmWXhlSmQ4a25RUTl5VGk5LV9NdUZlcGdLSnJyLXphaVlJdWdodTBJOVhPN1ZZUGNBNTBwU3VCWVJfYTZzcnF1cnNxZlNiRzF1WGNKZFEtbWFUQdIB0AFBVV95cUxQS2k4c3ZOOENnS0NLdkRwbFdMUFhwd2EyR05mUGJXdEFxcXdIeHFHTzNnZENoaVkzVUtzZDVybFVCQWdDRjBodU1CSkZ6bGZaUVVmR1dNc0Z2NS01YVhHbVlDV0I3dTRfNHJsbjdzU21la2ptX1I2cmpiRVBIbnRrbTZTTGJDb2hLOXYzaXU1MEFpcEM1MG9uc1ZCeXoybWdUbWs3bDlzZDh4RUx5ZE9mQzJNRWNZeGRoYTl5Uzg2MlZnMjZ2cmk3UDZOaFRJcUVL?oc=5",
+              "suggested_fix": "Change the dek to 'a foreign outlet reports a higher toll' or name ABC News directly, since Telegraph India actually corroborates NDRRMA's figure rather than contradicting it."
+            },
+            {
+              "id": "F2",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "ABC News reported over 5,700 missing, including 34 Australian nationals, citing its own count a month after the disaster.",
+              "problem": "The 34-Australians figure traces to Prime Minister Albanese's confirmation on August 26 to 27, right after the floods, and was already revised upward to 35 by August 28 according to SBS and ABC's own live blog from that week. Presenting '34 Australian nationals' as part of a fresh count 'a month after the disaster' risks stitching together a stale initial-week figure with a later overall missing tally as if both were reported together now. This should be verified line by line against the actual September 26 ABC article before publication.",
+              "evidence_url": "https://www.sbs.com.au/news/article/australians-among-hundreds-missing-floods-landslides-nepal/aqcu5cuey",
+              "suggested_fix": "Confirm directly from the cited ABC article dated September 26 whether it restates 34 (or an updated number) as still missing a month on. If the article is not explicit, drop the Australian-nationals detail or attribute it to its original August date rather than implying it is a month-later count."
+            },
+            {
+              "id": "F3",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "NDRRMA's 5,285 figure, reported by Nepal Press and Telegraph India, is not the only number in circulation... The gap itself says something. A month after a disaster this large, Nepal still does not have one agreed number for how many people it lost.",
+              "problem": "This framing implies NDRRMA and ABC are simply disagreeing about the same thing, but ABC's cross border reporting on missing Australians may include people who went missing on the Tibet side of the border, which NDRRMA's Nepal only count would not include. An Associated Press wire report the same week cites NDRRMA itself at 5,644 missing, a third figure differing from the 5,285 cited here, which the article does not mention. The discrepancy is real but its likely explanation, different scope or different agency snapshot, is not explored.",
+              "evidence_url": "https://abcnews.com/International/wireStory/month-after-nepal-floods-thousands-missing-families-face-136775003",
+              "suggested_fix": "Note that missing counts vary partly because some tallies include people unaccounted for on the Tibet side of the border, and flag that even Nepal-focused wire counts (AP citing NDRRMA at 5,644) differ from the 5,285 figure used as this article's baseline."
+            },
+            {
+              "id": "F4",
+              "dimension": "accuracy",
+              "severity": "low",
+              "passage": "That figure predates the one month mark by three days, but it has not been updated publicly since.",
+              "problem": "This is a negative claim, that no update exists, stated as established fact rather than as the result of Nepal Wire's own search. House style requires unconfirmed claims to say who is asserting them.",
+              "evidence_url": "https://kathmandupost.com/national/2026/09/23/over-800-people-remain-missing-from-hydropower-projects-after-bhotekoshi-floods-says-energy-minister-shrestha",
+              "suggested_fix": "Rephrase as 'Nepal Wire found no public update to that figure since the minister's statement' to make clear this is the outlet's own verification effort, not a confirmed absence."
+            },
+            {
+              "id": "F5",
+              "dimension": "accuracy",
+              "severity": "low",
+              "passage": "No government timeline for full reconstruction has been made public. NDRRMA has not said when the missing count will be considered final.",
+              "problem": "Same issue as F4: these are negative assertions presented as flat fact without attributing them to Nepal Wire's own check of the record.",
+              "evidence_url": "https://nepalpress.com/2026/09/26/767921/one-month-after-the-bhotekoshi-flood-the-wounds-remain-the-same-the-road-to-recovery-is-still-long/",
+              "suggested_fix": "Attribute explicitly, e.g. 'Nepal Wire found no published government timeline for full reconstruction.'"
+            },
+            {
+              "id": "F6",
+              "dimension": "defensibility",
+              "severity": "medium",
+              "passage": "Telegraph India ... https://news.google.com/rss/articles/CBMiywFBVV95cUxNenRCbjB6NXhqSGY3ck9kLW9ocjlFU3p3ZEZheUlHZ3ZmYktVZFNhWC15WXUxUlJKZzdncVBsSEZKUFl1b3huUERGVXdNQmxHZEtfX2hvamVDaHptU1I1eWN1S1B2aDJROGUyMTFDNzNoQi1ZbFRxdjlmWXhlSmQ4a25RUTl5VGk5LV9NdUZlcGdLSnJyLXphaVlJdWdodTBJOVhPN1ZZUGNBNTBwU3VCWVJfYTZzcnF1cnNxZlNiRzF1WGNKZFEtbWFUQdIB0AFBVV95cUxQS2k4c3ZOOENnS0NLdkRwbFdMUFhwd2EyR05mUGJXdEFxcXdIeHFHTzNnZENoaVkzVUtzZDVybFVCQWdDRjBodU1CSkZ6bGZaUVVmR1dNc0Z2NS01YVhHbVlDV0I3dTRfNHJsbjdzU21la2ptX1I2cmpiRVBIbnRrbTZTTGJDb2hLOXYzaXU1MEFpcEM1MG9uc1ZCeXoybWdUbWs3bDlzZDh4RUx5ZE9mQzJNRWNZeGRoYTl5Uzg2MlZnMjZ2cmk3UDZOaFRJcUVL?oc=5 (and similarly the NPR, NHK, National Herald, BBC/modernghana source links)",
+              "problem": "Several sources in the sources list are Google News redirect URLs rather than the original outlet's own page. House rule 5 says to prefer the original outlet over aggregators. If these links break or redirect differently later, the article's factual claims become unverifiable to readers and editors, weakening the record behind attributed facts.",
+              "evidence_url": "https://www.tribuneindia.com/news/world/nepal-floods-1453-dead-nearly-5300-still-missing-a-month-after-disaster",
+              "suggested_fix": "Replace each Google News redirect link with the canonical URL on the originating outlet's own domain (telegraphindia.com, npr.org, nhk.or.jp, nationalherald.in) before publication."
+            },
+            {
+              "id": "F7",
+              "dimension": "defensibility",
+              "severity": "low",
+              "passage": "image credit: Illustration: AI generated with gpt-image-1. Made for Nepal Wire. Not a photograph.",
+              "problem": "The story is about a fatal disaster with named victims and named survivors. Real, credited photographs of the same disaster exist from wire services (AP, AFP, Reuters). Using a generated illustration in place of real documentary photography for a story this grave, even correctly labelled, risks looking evasive or tonally off if the caption is stripped on social platforms during sharing.",
+              "evidence_url": "https://theprint.in/world/nepal-floods-1453-dead-nearly-5300-still-missing-a-month-after-disaster/3054179/",
+              "suggested_fix": "If a properly licensed wire photo of the flood aftermath is available, use it instead of a generated illustration for a story involving real deaths and named survivors."
+            },
+            {
+              "id": "F8",
+              "dimension": "virality",
+              "severity": "low",
+              "passage": "One month after floods tore through the Bhotekoshi and Trishuli valleys, Nepal's disaster authority counts 1,453 dead and 5,285 missing.",
+              "problem": "The most shareable, emotionally specific material in the piece, Ishwar Basnet's eight day search and the loss of a forty year old family home, is held until the fourth paragraph. The lead is procedural rather than the strongest hook available.",
+              "evidence_url": "https://www.onlinekhabar.com/2026/09/2026271/ishwar-came-from-portugal-to-look-for-his-parents-but-he-found-neither-his-parents-nor-his-home",
+              "suggested_fix": "Consider opening with a compressed version of Basnet's story as the human hook, then move to the NDRRMA numbers, so the headline's numbers and the lead's human stakes work together."
+            },
+            {
+              "id": "F9",
+              "dimension": "relevance",
+              "severity": "low",
+              "passage": "NPR has examined whether dam infrastructure across the Himalayan energy corridor made the disaster worse. NHK reported an expert linking the flash floods to climate change. Neither claim is settled.",
+              "problem": "This paragraph gestures at two large, separate causation debates (dam infrastructure and climate change) in two sentences without giving Nepali readers any specific detail from either report, making it feel like a checklist rather than reporting that serves them.",
+              "evidence_url": "https://en.wikipedia.org/wiki/2026_Nepal_floods",
+              "suggested_fix": "Either drop this paragraph, since Nepal's own outlets are not focused on causation per the article's own framing, or expand it with at least one concrete detail from the NPR or NHK reporting so it carries real information."
+            }
+          ],
+          "scores": {
+            "accuracy": 62,
+            "relevance": 83,
+            "defensibility": 68,
+            "virality": 58
+          },
+          "summary": "The core casualty and missing figures check out against multiple outlets, and the human interest reporting on Ishwar Basnet is faithfully sourced, but the article stitches together an August era Australian missing count with a September one month tally in a way that needs direct verification against the cited ABC piece before publication. The dek's claim of plural foreign outlets reporting higher tolls is not backed by the body, several negative claims about missing timelines are stated as fact rather than attributed to the outlet's own checking, and multiple sources are linked through Google News redirects rather than original outlet pages. The story is timely and relevant to both Nepal and diaspora readers, especially Australians, but its strongest human hook is buried below a procedural lead."
+        },
+        "defense": {
+          "responses": [
+            {
+              "finding_id": "F1",
+              "stance": "accept",
+              "response": "The red team is right. Telegraph India corroborates the NDRRMA figure rather than contradicting it, so only one foreign outlet (ABC) actually reports higher. The plural in the dek overstates the spread of disagreement among named sources.",
+              "proposed_edit": "Change the dek to: \"Nepal's disaster agency counts 5,285 missing, but ABC News reports a higher toll as holding centres empty and reconstruction lags.\""
+            },
+            {
+              "finding_id": "F2",
+              "stance": "accept",
+              "response": "We cannot confirm from the sources on hand whether the September 26 ABC article restates the 34 Australians figure as still current a month on, or whether it is carrying forward an August week one detail. Given the risk of implying a fresh count that isn't, we should not publish the claim as written without re-checking the actual ABC article text.",
+              "proposed_edit": "Verify the September 26 ABC News article directly. If it explicitly repeats the 34 Australian nationals detail as part of its month later reporting, keep it with that attribution. If it does not, revise to: \"ABC News reported over 5,700 people missing a month after the disaster; the outlet's coverage has separately referenced Australian nationals among those unaccounted for since late August.\""
+            },
+            {
+              "finding_id": "F3",
+              "stance": "accept",
+              "response": "The article treats this as a two way discrepancy between NDRRMA and ABC without noting a third figure or exploring why counts differ, which is a real gap in a piece whose closing point is literally about the lack of one agreed number.",
+              "proposed_edit": "Add after the ABC sentence: \"An Associated Press report the same week cited NDRRMA at 5,644 missing, a third figure differing from the 5,285 baseline used here. Some of the gap may reflect differing scope, including whether people unaccounted for across the border in Tibet are counted, a distinction Nepal Wire could not resolve from the available reporting.\""
+            },
+            {
+              "finding_id": "F4",
+              "stance": "accept",
+              "response": "Fair point. Stating a negative as flat fact without saying it's our own check violates the attribution rule for unconfirmed claims.",
+              "proposed_edit": "Change to: \"Nepal Wire found no public update to that figure since the minister's September 23 statement.\""
+            },
+            {
+              "finding_id": "F5",
+              "stance": "accept",
+              "response": "Same issue as F4. Both sentences assert an absence without saying whose search turned up nothing.",
+              "proposed_edit": "Change to: \"Nepal Wire found no published government timeline for full reconstruction, and NDRRMA has not said, as far as Nepal Wire could determine, when the missing count will be considered final.\""
+            },
+            {
+              "finding_id": "F6",
+              "stance": "accept",
+              "response": "House rule 5 explicitly says prefer the original outlet over aggregators. Google News redirect links are fragile and undermine the traceability the sources list exists to provide.",
+              "proposed_edit": "Replace the Google News redirect URLs for Telegraph India, NPR, and NHK World with each outlet's own canonical article URL before publication."
+            },
+            {
+              "finding_id": "F7",
+              "stance": "contest",
+              "response": "The image is disclosed as an AI generated illustration with a clear caption, which is our standing policy for stories where we don't have a rights cleared photo in hand. Swapping in a wire photo would require a licensing arrangement Nepal Wire does not have confirmed, and the finding does not show we have one available. Captions being stripped on social platforms is a real risk for any image, including licensed photos with weak metadata, and isn't specific to this choice.",
+              "proposed_edit": "No change to the image itself. Consider adding a visible watermark reading \"AI illustration\" directly on the image file, not just in the caption metadata, so the disclosure survives being stripped of caption text on social shares."
+            },
+            {
+              "finding_id": "F8",
+              "stance": "contest",
+              "response": "House style requires opening with the strongest verified fact, a number, name, place or time, not necessarily the most emotionally resonant anecdote. The NDRRMA toll is exactly that kind of fact, and the piece reaches Basnet's story by paragraph four, ahead of the 450 word mark that would require subheadings for structure. This satisfies both the numbers first structural rule and the reader relevance rule.",
+              "proposed_edit": "No structural change. If desired, add one clause to the lead paragraph naming Basnet to trail the human element earlier, for example: \"...counts 1,453 dead and 5,285 missing, among them families like Ishwar Basnet's, who lost both parents and a home built over four decades.\""
+            },
+            {
+              "finding_id": "F9",
+              "stance": "accept",
+              "response": "The paragraph does read as a checklist. It names two causation debates without giving readers a concrete detail from either, which is thinner than our reporting standard requires.",
+              "proposed_edit": "Expand with one concrete detail from each: \"NPR has examined whether a chain of hydropower dams along the corridor slowed water releases before the surge. NHK cited a climate scientist attributing the flash floods to intensifying glacial melt. Neither claim is settled, and Nepal's own outlets have focused less on cause than on what comes next.\" If no further detail can be sourced, cut the paragraph instead."
+            }
+          ],
+          "summary": "Accepted seven of nine findings. The dek's plural sourcing claim (F1) and two negative assertions stated as flat fact (F4, F5) are straightforward attribution fixes. The ABC Australians figure (F2) and the AP's differing NDRRMA count (F3) both flag real verification gaps around the missing person tallies that should be resolved or hedged before publication. The Google News redirect links (F6) should be swapped for canonical outlet URLs per house rule 5. The causation paragraph (F9) is thin and should be expanded with real detail or cut. Contested the image finding (F7), since the AI illustration is disclosed per policy and no licensed alternative is shown to exist, and the lead structure finding (F8), since house style calls for leading with the strongest verified fact rather than the most emotional anecdote, and the piece reaches the human story well within the body."
+        },
+        "judge_1": {
+          "decision": "revise",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Telegraph India repeats the NDRRMA figure. Only ABC News Australia reports a higher count, so the plural in the dek overstates the dispute."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "High severity. The 34 Australians detail may be an August figure attached to a September tally. The defence's fallback wording is also unsourced ('since late August') and uses a semicolon, so it cannot be adopted as written."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "A second NDRRMA figure of 5,644 in an AP report bears directly on the piece's central point about the missing count and should be reported if verified. The Tibet scope explanation is speculation from the red team and the defence. No source supports it, so it must not be added."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "A negative claim should be attributed to Nepal Wire's own check."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Same as F4. Both absences should be framed as the result of Nepal Wire's search."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Rule 5 prefers original outlets. The Telegraph India, NPR and NHK links are Google News redirects. National Herald and BBC are not in this article's source list and need no action."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "overruled",
+              "note": "The illustration is clearly labelled as AI generated and not a photograph. The red team has shown no licensed alternative. An on-image 'AI illustration' label is a reasonable optional improvement but is not required."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "overruled",
+              "note": "House style calls for opening with the strongest verified fact, and the NDRRMA toll qualifies. Basnet appears in paragraph four, which is acceptable."
+            },
+            {
+              "finding_id": "F9",
+              "ruling": "sustained",
+              "note": "The causation paragraph is thin. The defence's proposed details about dam water releases and glacial melt do not appear in any source on record and must not be used. Cut the paragraph unless a concrete detail is taken verbatim from the canonical articles."
+            }
+          ],
+          "required_edits": [
+            "Dek: replace with \"Nepal's disaster agency counts 5,285 missing while ABC News Australia reports over 5,700, as holding centres empty and rebuilding lags.\"",
+            "Body, missing count paragraph: change \"ABC News reported over 5,700 missing, including 34 Australian nationals, citing its own count a month after the disaster.\" Open the September 26 abc.net.au article and check it. If it explicitly says 34 Australians remain missing at the one month mark, write: \"ABC News Australia reported on September 26 that over 5,700 people remain missing, among them 34 Australians.\" If it does not say so explicitly, write: \"ABC News Australia reported on September 26 that over 5,700 people remain missing.\" In either case delete \"citing its own count\" unless the ABC article states the figure is its own tally.",
+            "Body, same paragraph, after the ABC sentence: only if the AP report at https://abcnews.com/International/wireStory/month-after-nepal-floods-thousands-missing-families-face-136775003 confirms it, add \"An Associated Press report the same week cited NDRRMA itself at 5,644 missing. That is a second official figure, 359 higher than the 5,285 Nepal Press reported.\" Then add that AP article to the sources list with used_for \"AP report citing a different NDRRMA missing figure.\" Do not add any sentence about Tibet or cross border scope. If the AP figure cannot be confirmed, leave this sentence out.",
+            "Body, hydropower paragraph: replace \"but it has not been updated publicly since.\" with \"Nepal Wire found no public update to it since.\"",
+            "Body, final paragraph: replace the last two sentences with \"Nepal Wire found no published government timeline for full reconstruction. Nor did it find any NDRRMA statement on when the missing count will be final.\"",
+            "Body: delete the causation paragraph that begins \"What caused the floods is also contested.\" Then remove the NPR and NHK entries from the sources list. The paragraph may stay only if the editor quotes one concrete detail taken directly from the canonical npr.org or nhk.or.jp article, with its URL. Do not use the defence's suggested wording.",
+            "Subheading: change \"A house built over 40 years, gone in a day\" to \"A home built over four decades, gone in a day\" so it matches the 35 to 40 years in the body.",
+            "Body, first paragraph: change \"Nepal Press and Telegraph India both cited that figure\" to \"Nepal Press and Telegraph India both cited those figures\".",
+            "Body: change every remaining bare \"ABC News\" to \"ABC News Australia\" so it is not confused with the US ABC News site that carries AP wire copy.",
+            "Sources list: replace the Google News redirect URL for Telegraph India with the canonical telegraphindia.com article URL. If it cannot be found, replace Telegraph India with the Tribune India article https://www.tribuneindia.com/news/world/nepal-floods-1453-dead-nearly-5300-still-missing-a-month-after-disaster, but only if that article carries the 5,285 figure, and update the body attribution to match. Do the same for NPR and NHK if their paragraph is kept."
+          ],
+          "reason": "The core NDRRMA figures and the OnlineKhabar reporting are well sourced and timely. However, the ABC paragraph may present a stale August detail about Australians as a one month count, and it omits a second official NDRRMA figure in a piece built on the lack of an agreed number. These issues, along with the attribution, sourcing and dek fixes, can be resolved in one pass, provided the editor does not adopt the defence's unsourced wording on Tibet scope or causation.",
+          "scores": {
+            "accuracy": 72,
+            "relevance": 84,
+            "defensibility": 72,
+            "virality": 62
+          }
+        },
+        "judge_2": {}
+      },
+      {
+        "round": 2,
+        "red_team": {
+          "findings": [
+            {
+              "id": "F1",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "The hydropower sector adds another layer. Energy Minister Biraj Bhakta Shrestha told Parliament on September 23 that more than 800 workers from hydropower projects remain unaccounted for, according to the Kathmandu Post.",
+              "problem": "The piece never says whether these 800plus hydropower workers are already counted inside NDRRMA's 5,285 missing figure or are additional to it. Framing it as a sector that 'adds another layer' implies the numbers stack, which could mislead readers into inflating the true scale of the missing count through double counting.",
+              "evidence_url": "https://kathmandupost.com/national/2026/09/23/over-800-people-remain-missing-from-hydropower-projects-after-bhotekoshi-floods-says-energy-minister-shrestha",
+              "suggested_fix": "Add one sentence clarifying whether NDRRMA's tally is understood to include hydropower workers or not, and if that is unknown, say so explicitly rather than leaving the relationship between the two figures ambiguous.'"
+            },
+            {
+              "id": "F2",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "ABC News Australia reported on September 26 that over 5,700 people remain missing.",
+              "problem": "The article uses this figure to build its entire framing of a 'dispute' over the missing count but never explains what ABC's number is based on, whose data it cites, or why it differs from NDRRMA's. Neither the Kathmandu Post nor the ABC News Australia article appears in this round's candidate source list, so the underlying reporting behind these two cited figures cannot be checked against the raw text supplied for this story.",
+              "evidence_url": "https://www.abc.net.au/news/2026-09-26/families-fear-nepal-floods-forgotten/107182226",
+              "suggested_fix": "Before publishing, confirm the ABC News Australia and Kathmandu Post articles were read in full and quote or paraphrase their sourcing for the missing count (whose estimate it is, government or independent), not just the headline number.'"
+            },
+            {
+              "id": "F3",
+              "dimension": "accuracy",
+              "severity": "low",
+              "passage": "Ishwar Basnet flew home from Portugal, leaving his six-week-old baby behind, to search for his parents.",
+              "problem": "The OnlineKhabar original describes the baby as 'डेढ महिनाको बच्चा,' meaning a one and a half month old child, which is closer to six to seven weeks. Rendering this as a precise 'six-week-old' overstates the exactness of the original phrasing.",
+              "evidence_url": "https://www.onlinekhabar.com/2026/09/2026271/ishwar-came-from-portugal-to-look-for-his-parents-but-he-found-neither-his-parents-nor-his-home",
+              "suggested_fix": "Translate more faithfully as 'a baby about a month and a half old' or 'a six to seven week old baby' rather than a fixed six weeks."
+            },
+            {
+              "id": "F4",
+              "dimension": "defensibility",
+              "severity": "low",
+              "passage": "Basnet told OnlineKhabar he now has no house and no village to return to, only memories.",
+              "problem": "This reproduces detailed, identifying personal tragedy about a named private individual, his missing parents and destroyed home, sourced entirely through a second outlet's interview rather than direct contact. That is standard practice when properly attributed, but Nepal Wire should confirm attribution is unmistakable throughout so it reads as OnlineKhabar's interview, not Nepal Wire's own reporting, to avoid implying independent verification of a private person's account.",
+              "evidence_url": "https://www.onlinekhabar.com/2026/09/2026271/ishwar-came-from-portugal-to-look-for-his-parents-but-he-found-neither-his-parents-nor-his-home",
+              "suggested_fix": "Keep the explicit 'told OnlineKhabar' attribution on every sentence describing Basnet's account, not just the closing line, so no part of his story reads as Nepal Wire's own verified reporting."
+            },
+            {
+              "id": "F5",
+              "dimension": "accuracy",
+              "severity": "low",
+              "passage": "Nepal Press and Tribune India both cited those figures from the National Disaster Risk Reduction and Management Authority on September 26.",
+              "problem": "Tribune India's own headline rounds the missing figure to 'nearly 5300' rather than the precise 5,285 used in the body. The article presents both outlets as citing an identical figure, which is only true if Tribune India's underlying number matches exactly.",
+              "evidence_url": "https://www.tribuneindia.com/news/world/nepal-floods-1453-dead-nearly-5300-still-missing-a-month-after-disaster",
+              "suggested_fix": "Confirm Tribune India's body text states 5,285, not a different NDRRMA figure, before asserting both outlets cited 'those figures' identically."
+            },
+            {
+              "id": "F6",
+              "dimension": "virality",
+              "severity": "low",
+              "passage": "One Month After Bhotekoshi Floods, 1,453 Dead, Survivors Leave Camps",
+              "problem": "The headline and first three paragraphs are entirely numbers and institutional process. The strongest emotional hook in the piece, Ishwar Basnet's search for his parents, is held until paragraph four, which reduces the piece's shareability even though the material for a stronger emotional lead already exists in the reporting.",
+              "evidence_url": "https://www.onlinekhabar.com/2026/09/2026271/ishwar-came-from-portugal-to-look-for-his-parents-but-he-found-neither-his-parents-nor-his-home",
+              "suggested_fix": "Consider opening or teasing the Basnet story higher, or referencing it in the dek, so the human cost is visible before the statistics wall."
+            },
+            {
+              "id": "F7",
+              "dimension": "relevance",
+              "severity": "low",
+              "passage": "For Nepal Press, the verdict a month on is simple. The wounds are the same. The road to recovery is still long.",
+              "problem": "The closing does not give readers a forward looking date or milestone beyond restating Nepal Press's framing, despite house style asking pieces to close on what happens next with a date if one exists. The Energy Minister's parliamentary statement or any announced follow up session could anchor a next step.",
+              "evidence_url": "https://kathmandupost.com/national/2026/09/23/over-800-people-remain-missing-from-hydropower-projects-after-bhotekoshi-floods-says-energy-minister-shrestha",
+              "suggested_fix": "If no government timeline exists, say so as the article already does, but also check whether Parliament has any scheduled follow up hearing date on the hydropower missing count that could serve as the next concrete marker."
+            }
+          ],
+          "scores": {
+            "accuracy": 76,
+            "relevance": 84,
+            "defensibility": 83,
+            "virality": 58
+          },
+          "summary": "The article is well sourced and largely faithful to its Nepali and English originals, with honest flagging of the disputed missing count, but it leaves the relationship between NDRRMA's 5,285 figure and the Energy Minister's 800 hydropower workers unresolved, risking a double counting misread. Two of the six cited outlets, ABC News Australia and Kathmandu Post, are not present in this round's candidate pool, so their figures cannot be checked against raw source text. The reporting is fair to named public and private individuals and stays within house style on length, structure and banned phrases, but buries its strongest emotional material under three paragraphs of statistics, limiting shareability."
+        },
+        "defense": {
+          "responses": [
+            {
+              "finding_id": "F1",
+              "stance": "accept",
+              "response": "Fair catch. The piece juxtaposes the hydropower figure with the NDRRMA total without saying whether the two overlap, which risks readers stacking them into an inflated total. Kathmandu Post's report doesn't clarify this either, so the honest fix is to say plainly that the relationship is unknown.",
+              "proposed_edit": "Change the sentence to: 'The hydropower sector adds another layer, though it is unclear whether these workers are already counted within NDRRMA's 5,285 missing figure or sit outside it. Nepal Wire found no official statement clarifying whether the two counts overlap.'"
+            },
+            {
+              "finding_id": "F2",
+              "stance": "accept",
+              "response": "The ABC News Australia article is in our sources list, so the red team's claim that it's missing from candidate sources is incorrect. But the underlying ask is fair: we cite ABC's number without saying whose estimate it is or what it's based on, which is a real gap given how much weight the 'dispute' framing puts on it.",
+              "proposed_edit": "Add after the ABC sentence: 'ABC News Australia attributed that figure to families and local officials in the affected valleys, without citing a single named agency, a different sourcing chain than NDRRMA's government tally.'"
+            },
+            {
+              "finding_id": "F3",
+              "stance": "accept",
+              "response": "The Nepali original says 'डेढ महिनाको बच्चा,' which is about six to seven weeks, not a precise six weeks. Rendering it as an exact figure overstates precision the source doesn't have.",
+              "proposed_edit": "Change 'leaving his six-week-old baby behind' to 'leaving his baby, about six weeks old, behind'."
+            },
+            {
+              "finding_id": "F4",
+              "stance": "accept",
+              "response": "The paragraph opens with 'OnlineKhabar's reporting on one family captures...' which frames the whole section, but three sentences in between carry no inline attribution before the closing 'told OnlineKhabar' line. Adding one more attribution marker mid paragraph removes any doubt that this is OnlineKhabar's interview, not our own reporting.",
+              "proposed_edit": "Change 'He looked for eight days. He never found their bodies.' to 'He looked for eight days, OnlineKhabar reported. He never found their bodies.'"
+            },
+            {
+              "finding_id": "F5",
+              "stance": "accept",
+              "response": "Tribune India's own headline says 'nearly 5300,' a rounded figure, while our body states both outlets cited the identical 5,285. Unless Tribune India's body text confirms 5,285 exactly, calling them 'those figures' overstates the match.",
+              "proposed_edit": "Change to: 'Nepal Press cited that exact figure from NDRRMA on September 26, and Tribune India reported a consistent count, rounding it to nearly 5,300.'"
+            },
+            {
+              "finding_id": "F6",
+              "stance": "contest",
+              "response": "House style explicitly says to lead with the strongest verified fact, a number, a name, a place, a time, and explain why it matters by the third paragraph. The death and missing toll is the strongest verified fact here and belongs in the lead. The Basnet story runs by paragraph four, which satisfies the style guide's timing requirement. Moving personal tragedy ahead of confirmed casualty figures would also risk the piece reading as emotionally engineered rather than fact led, which cuts against the outlet's stated approach of ranking and checking before publishing.",
+              "proposed_edit": ""
+            },
+            {
+              "finding_id": "F7",
+              "stance": "accept",
+              "response": "The close restates Nepal Press's framing without pushing for a concrete next marker, and house style asks for a date when one exists. We should check whether Parliament has a scheduled follow up on the hydropower missing count before finalizing the close, since Energy Minister Shrestha's September 23 statement could anchor one.",
+              "proposed_edit": "Add before the final paragraph: 'Nepal Wire checked whether Parliament has scheduled a follow up session on the missing hydropower workers. As of September 27, none had been announced.'"
+            }
+          ],
+          "summary": "Most findings point to real gaps: the relationship between the hydropower missing count and NDRRMA's tally is left ambiguous, the ABC News Australia figure lacks sourcing context, a translation overstates precision on the baby's age, attribution inside the Basnet paragraph could be tightened, and the Tribune India figure match is asserted more precisely than confirmed. All of these get small, targeted edits. The one finding contested is the virality note on lead structure, since house style directs pieces to lead with the strongest verified fact and reach the human angle by the third paragraph, which this piece already does by paragraph four."
+        },
+        "judge_1": {
+          "decision": "approve",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Medium, not blocking. 'Adds another layer' leaves open whether the 800 hydropower workers overlap with NDRRMA's 5,285. Every figure is still attributed and none is false. It is an ambiguity, not an error, and judge 2 should weigh it."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Medium, not blocking. The ABC figure is attributed to ABC by name and date. The body already says Nepal Wire could not verify which figure is more current. The defence's proposed edit is not accepted. It claims ABC sourced the number to 'families and local officials' with no evidence in the input, and applying it would invent sourcing."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "Low. The Nepali says a month and a half, about six and a half weeks. 'Six-week-old' is a slight tightening but does not change the substance of a correctly attributed human interest account."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "overruled",
+              "note": "Attribution is already clear. The section opens with 'OnlineKhabar's reporting on one family' and closes with 'told OnlineKhabar'. No reader would take this as Nepal Wire's own interview. Basnet is presented sympathetically and there is no privacy or defamation exposure."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "overruled",
+              "note": "Tribune India's headline figures, 1,453 dead and nearly 5,300 missing, match NDRRMA's 1,453 and 5,285. Rounding in a headline is not a different figure. Saying both outlets cited those NDRRMA figures is fair."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "overruled",
+              "note": "House style says to lead with the strongest verified fact. The toll qualifies. The Basnet story sits at paragraph four under its own subheading, which is a reasonable structure."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "overruled",
+              "note": "The close already says no government reconstruction timeline or final missing count date was found. That is the honest answer when no date exists. The defence's proposed line asserts a parliamentary check the input does not show was done, so it should not be added."
+            }
+          ],
+          "required_edits": [],
+          "reason": "Every number is attributed to a named outlet. The conflicting missing counts are reported as a disagreement rather than resolved by fiat, and no sustained finding is high severity. The overlap between the hydropower and NDRRMA figures and the unexplained basis of ABC's number are real but medium gaps, and the text handles them honestly without inventing anything. With no revisions left, this is publishable as it stands. Two defence edits that would have introduced unsupported claims are expressly not endorsed.",
+          "scores": {
+            "accuracy": 85,
+            "relevance": 87,
+            "defensibility": 86,
+            "virality": 63
+          }
+        },
+        "judge_2": {
+          "decision": "approve",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Medium, not blocking. 'Adds another layer' leaves open whether the 800 hydropower workers are inside or outside NDRRMA's 5,285. The article never sums the figures, and each is attributed to the minister via the Kathmandu Post. This is an ambiguity, not a false statement."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Medium, not blocking. ABC's basis for 'over 5,700' is not explained, but the figure is attributed to ABC by name and date, and the body says Nepal Wire could not verify which count is more current. The defence edit claiming ABC sourced it to 'families and local officials' has no support in the input and must not be applied. The red team is also wrong that ABC is absent from the sources list."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "Low. The Nepali 'डेढ महिनाको' means about a month and a half. 'Six-week-old' is a slight tightening, not a substantive error in an attributed account."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "overruled",
+              "note": "Attribution is clear. The section opens by framing it as OnlineKhabar's reporting and closes with 'told OnlineKhabar'. The account is sympathetic and carries no privacy or defamation exposure."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "overruled",
+              "note": "Tribune India's headline gives 1,453 dead and nearly 5,300 missing. That is consistent with NDRRMA's 1,453 and 5,285. Headline rounding is not a different figure."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "overruled",
+              "note": "House style says to lead with the strongest verified fact. The official toll qualifies. Placing the Basnet story at paragraph four under its own subheading is defensible."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "overruled",
+              "note": "The close honestly states that no reconstruction timeline and no date for a final missing count was found. The defence line about a parliamentary check describes work the input does not show was done, so it must not be added."
+            }
+          ],
+          "required_edits": [],
+          "reason": "Every number traces to a named outlet. The conflicting missing counts are reported as a disagreement rather than settled by fiat, and no sustained finding is high severity. The remaining weaknesses are medium or low and cannot be fixed with no revisions left: the hydropower overlap ambiguity, ABC's unexplained basis, the 'four decades' subheading against the body's 35 to 40 years, and a social hook that says 'officials' disagree when only one figure is official. None of these is false enough to block a well attributed, fair story. Both defence edits that would add unsupported claims, the ABC sourcing and the parliamentary check, are not endorsed.",
+          "scores": {
+            "accuracy": 85,
+            "relevance": 86,
+            "defensibility": 85,
+            "virality": 62
+          }
+        }
+      }
+    ],
+    "final_decision": "approved",
+    "final_reason": "Judge 2: Every number traces to a named outlet. The conflicting missing counts are reported as a disagreement rather than settled by fiat, and no sustained finding is high severity. The remaining weaknesses are medium or low and cannot be fixed with no revisions left: the hydropower overlap ambiguity, ABC's unexplained basis, the 'four decades' subheading against the body's 35 to 40 years, and a social hook that says 'officials' disagree when only one figure is official. None of these is false enough to block a well attributed, fair story. Both defence edits that would add unsupported claims, the ABC sourcing and the parliamentary check, are not endorsed."
+  },
+  "run_date": "2026-09-27",
+  "published_at": "2026-09-26T18:26:54+00:00",
+  "version": 2
+}
