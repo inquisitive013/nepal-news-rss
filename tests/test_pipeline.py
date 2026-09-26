@@ -1,3 +1,5 @@
+import collections
+import copy
 import dataclasses
 import json
 from datetime import datetime, timezone
@@ -10,9 +12,15 @@ from tests.conftest import FIXTURES
 NOW = datetime(2026, 9, 26, 6, 0, tzinfo=timezone.utc)
 
 
-def _settings(tmp_path):
+def _settings(tmp_path, **pipeline_overrides):
     s = load_settings(mock=True)
-    return dataclasses.replace(s, root=tmp_path, data_dir=tmp_path / "data", fixtures_dir=FIXTURES / "feeds")
+    raw = copy.deepcopy(s.raw)
+    raw.setdefault("pipeline", {}).update(pipeline_overrides)
+    return dataclasses.replace(s, raw=raw, root=tmp_path, data_dir=tmp_path / "data", fixtures_dir=FIXTURES / "feeds")
+
+
+def _calls(llm):
+    return collections.Counter(llm.calls)
 
 
 def test_mock_run_publishes_and_records(tmp_path):
@@ -28,10 +36,16 @@ def test_mock_run_publishes_and_records(tmp_path):
     assert {a.id for a in articles} == set(run.published)
     art = articles[0]
     assert art.published_at and art.image is not None and (tmp_path / art.image.path).exists()
-    # the mock red team forces one revision round, so every article went through 2 rounds
-    assert len(art.review.validation_rounds) == 2
+    # the mock red team finds one high severity problem: judge 1 orders a revision and
+    # judge 2 reads the revised piece as the final check. One red team round, two versions.
+    assert len(art.review.validation_rounds) == 1
+    rnd = art.review.validation_rounds[0]
+    assert [r["after"] for r in rnd.revisions] == ["judge_1"]
+    assert rnd.judge_1["decision"] == "revise" and rnd.judge_2["decision"] == "approve"
+    assert not rnd.judge_2_recheck
     assert art.version == 2
     assert art.review.final_decision == "approved"
+    assert art.review.final_reason.startswith("Judge 2:")
     assert art.review.ranking  # judge reasons carried onto the article
     run_file = tmp_path / "data" / "runs" / "2026-09-26.json"
     assert run_file.exists()
@@ -80,3 +94,70 @@ def test_credit_exhaustion_stops_the_run(tmp_path):
     assert any("credit" in e for e in run.errors)
     # no red team or judge calls were attempted after the money ran out
     assert "red_team" not in llm.calls
+
+
+def test_call_budget_matches_the_settings(tmp_path):
+    settings = _settings(tmp_path)
+    llm = MockLLM(settings, UsageMeter(200))
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "ok", run.errors
+    n_articles = len(run.selected_story_ids)
+    assert 0 < n_articles <= int(settings.get("pipeline.articles_per_day"))
+    calls = _calls(llm)
+    assert calls["story_clusterer"] == 1
+    assert calls["advocate"] == calls["skeptic"] == len(run.stories) <= int(settings.get("pipeline.max_debate_stories"))
+    assert calls["ranking_judge"] == 2
+    assert calls["writer"] == n_articles
+    # one red team pass and one defence per article, never a second round
+    assert calls["red_team"] == calls["defense"] == n_articles
+    # judge 1 once and judge 2 once per article; the mock never sends anything back
+    assert calls["validation_judge"] == 2 * n_articles
+    assert calls["reviser"] == n_articles <= int(settings.get("pipeline.max_revisions_per_run"))
+
+
+def test_judge_2_send_back_gets_one_more_revision_and_a_recheck(tmp_path):
+    settings = _settings(tmp_path)
+    first = pipeline.run(settings, now=NOW)
+    target = first.selected_story_ids[0]
+    settings2 = dataclasses.replace(settings, root=tmp_path / "second", data_dir=tmp_path / "second" / "data")
+    llm = MockLLM(settings2, UsageMeter(200), send_back_story_ids={target})
+    run = pipeline.run(settings2, llm=llm, now=NOW)
+    assert run.status == "ok", run.errors
+    art = next(a for a in publish.load_articles(settings2) if a.story_id == target)
+    rnd = art.review.validation_rounds[0]
+    assert [r["after"] for r in rnd.revisions] == ["judge_1", "judge_2"]
+    assert rnd.judge_2["decision"] == "revise"
+    assert rnd.judge_2_recheck["decision"] == "approve"
+    assert art.version == 3
+    assert art.review.final_decision == "approved"
+    # one extra reviser call and one extra judge call for the story that was sent back
+    n = len(run.selected_story_ids)
+    assert _calls(llm)["reviser"] == n + 1
+    assert _calls(llm)["validation_judge"] == 2 * n + 1
+    assert _calls(llm)["red_team"] == n
+
+
+def test_revision_pool_caps_the_reviser_for_the_whole_run(tmp_path):
+    settings = _settings(tmp_path, max_revisions_per_run=0)
+    llm = MockLLM(settings, UsageMeter(200))
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "ok", run.errors
+    # with no revision budget judge 1 sees revisions_left 0 and rejects the flawed drafts
+    assert not run.published
+    assert run.rejected and all(r["stage"] == "validation" for r in run.rejected if "article_id" in r)
+    assert "reviser" not in llm.calls
+
+
+def test_two_red_team_rounds_when_configured(tmp_path):
+    settings = _settings(tmp_path, red_team_rounds=2)
+    llm = MockLLM(settings, UsageMeter(200))
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "ok", run.errors
+    art = publish.load_articles(settings)[0]
+    # the revision gets a fresh red team round; judge 1 approves it and judge 2 confirms
+    assert len(art.review.validation_rounds) == 2
+    assert [r["after"] for r in art.review.validation_rounds[0].revisions] == ["judge_1"]
+    assert art.review.validation_rounds[1].judge_1["decision"] == "approve"
+    assert art.review.validation_rounds[1].judge_2["decision"] == "approve"
+    n = len(run.selected_story_ids)
+    assert _calls(llm)["red_team"] == _calls(llm)["defense"] == 2 * n

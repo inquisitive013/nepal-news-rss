@@ -10,6 +10,10 @@ on:
         description: "Preview run: mock model, fixture feeds, nothing committed or deployed"
         type: boolean
         default: false
+      rebuild_only:
+        description: "Rebuild and deploy the site from existing data. No model calls, nothing committed."
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -52,9 +56,15 @@ jobs:
           # A repository variable SITE_URL overrides the default project Pages address.
           SITE_URL_OVERRIDE: ${{ vars.SITE_URL }}
           NEWSROOM_MOCK: ${{ inputs.mock == true && '1' || '' }}
+          NEWSROOM_REBUILD_ONLY: ${{ inputs.rebuild_only == true && '1' || '' }}
         run: |
           export SITE_URL="${SITE_URL_OVERRIDE:-https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}}"
           echo "Site URL: $SITE_URL"
+          if [ -n "${NEWSROOM_REBUILD_ONLY}" ]; then
+            echo "Rebuild only: no new edition, no model calls."
+            python -m newsroom build --out site
+            exit 0
+          fi
           if [ -n "${ANTHROPIC_API_KEY}" ]; then
             echo "Model access: API key secret"
           elif [ -n "${ANTHROPIC_FEDERATION_RULE_ID}" ] && [ -n "${ANTHROPIC_ORGANIZATION_ID}" ]; then
@@ -68,7 +78,7 @@ jobs:
           python -m newsroom run --build --out site --root-rss
 
       - name: Commit the edition data
-        if: ${{ inputs.mock != true }}
+        if: ${{ inputs.mock != true && inputs.rebuild_only != true }}
         run: |
           git config user.name "nepal-wire-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -88,6 +98,28 @@ jobs:
         with:
           name: site-preview
           path: site
+
+      - name: Make GitHub Actions the Pages source
+        if: ${{ inputs.mock != true }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # A Pages site set to build from a branch rebuilds itself after every edition
+          # commit and overwrites what this workflow deployed. Switch it to Actions once.
+          api="https://api.github.com/repos/${GITHUB_REPOSITORY}/pages"
+          hdr=(-H "Authorization: Bearer ${GITHUB_TOKEN}" -H "Accept: application/vnd.github+json" -H "X-GitHub-Api-Version: 2022-11-28")
+          current=$(curl -sS "${hdr[@]}" "$api" | python -c 'import json,sys; print(json.load(sys.stdin).get("build_type", ""))' 2>/dev/null || echo "")
+          echo "Pages build type: ${current:-unknown}"
+          if [ "$current" = "legacy" ]; then
+            code=$(curl -sS -o pages-response.json -w '%{http_code}' -X PUT "${hdr[@]}" "$api" -d '{"build_type":"workflow"}')
+            if [ "$code" = "204" ]; then
+              echo "Switched the Pages source to GitHub Actions."
+            else
+              echo "::warning::Could not switch the Pages source (HTTP $code). In the repository settings open Pages and set Source to GitHub Actions."
+              cat pages-response.json || true
+            fi
+            rm -f pages-response.json
+          fi
 
       - name: Configure Pages
         if: ${{ inputs.mock != true }}

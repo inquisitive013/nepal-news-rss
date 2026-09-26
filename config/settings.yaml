@@ -20,21 +20,31 @@ pipeline:
   # Hard caps that keep a bad feed from flooding the day.
   max_candidates: 150
   max_per_source: 15
-  # How many stories go through the advocate vs skeptic debate.
-  max_debate_stories: 6
+  # How many stories go through the advocate vs skeptic debate. Two calls per story.
+  # With three debated and three written, the ranking judges order the stories and can
+  # still drop a weak one. They no longer choose among extras.
+  max_debate_stories: 3
   # How many of the judged stories become articles.
   articles_per_day: 3
-  # Revision rounds allowed when validation judge 1 asks for changes.
-  max_revisions: 1
+  # Red team and defence passes per article. With one, the red team reads the first draft
+  # only and validation judge 2 reads the revision as the final check.
+  red_team_rounds: 1
+  # Revisions allowed per article: one after judge 1, one more if judge 2 sends it back.
+  max_revisions: 2
+  # Revisions allowed across the whole day. Caps the reviser at this many calls.
+  max_revisions_per_run: 5
   # Parallel debates / articles in flight.
   concurrency: 3
   # Safety valve. The run stops taking new work after this many model calls.
-  max_llm_calls: 90
+  # A normal day is about 30: clusterer 1, advocate 3, skeptic 3, ranking judges 2,
+  # writer 3, picture check 3, red team 3, defence 3, validation judges 6, reviser 3.
+  max_llm_calls: 45
 
 llm:
   # Default model and thinking effort for every role. Override a role under `roles`.
   # The first live edition on claude-opus-5 at high effort with two revision rounds
-  # cost about 19 dollars. This configuration trades some depth for a fraction of that.
+  # cost about 19 dollars. The second, on Sonnet 5 with Opus 5.5 judges and two red team
+  # rounds, about 6.40. This configuration is built for about 4.50 a day.
   model: "claude-sonnet-5"
   effort: "medium"
   # Replies stream, so this can be large. Thinking counts against it, and the
@@ -47,8 +57,10 @@ llm:
     advocate: 3
     skeptic: 3
     writer: 6
-    red_team: 6
+    red_team: 5
     defense: 2
+    # Used only when judge 2 checks a revision the red team will not see again.
+    validation_judge: 2
   roles:
     # The judges read everything and decide. Short replies, so the stronger model is cheap here.
     ranking_judge: { model: "claude-opus-5-5", effort: "high" }

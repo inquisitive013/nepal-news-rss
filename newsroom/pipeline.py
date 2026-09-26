@@ -53,6 +53,7 @@ def _process_story(
     run_date: str,
     date_label: str,
     now_iso: str,
+    pool: validation.RevisionPool | None = None,
 ) -> tuple[str, Article | None, str]:
     """Write, illustrate, validate and persist one story. Returns (outcome, article, reason)."""
     article = writing.write_article(llm, settings, story, candidates, debate, verdicts, run_date)
@@ -69,7 +70,7 @@ def _process_story(
     def reviser(art: Article, edits: list[str], findings: list[dict[str, Any]], defense: dict[str, Any]) -> Article:
         return writing.revise_article(llm, settings, art, story, edits, findings, defense)
 
-    article, record = validation.validate_article(llm, settings, article, story, candidates, reviser)
+    article, record = validation.validate_article(llm, settings, article, story, candidates, reviser, pool)
     if record.final_decision == "approved":
         article.published_at = now_iso
         publish.save_article(settings, article)
@@ -130,10 +131,11 @@ def run(settings: Settings, llm: BaseLLM | None = None, now: datetime | None = N
         debate_by_id = {d.story_id: d for d in debates}
         now_iso = utcnow_iso()
         workers = max(1, int(settings.get("pipeline.concurrency", 3)))
+        revisions = validation.RevisionPool(int(settings.get("pipeline.max_revisions_per_run", 5)))
         with ThreadPoolExecutor(max_workers=workers) as pool:
             futures = {
                 pool.submit(
-                    _process_story, llm, settings, story_by_id[sid], candidates, debate_by_id.get(sid), verdicts, run_date, date_label, now_iso
+                    _process_story, llm, settings, story_by_id[sid], candidates, debate_by_id.get(sid), verdicts, run_date, date_label, now_iso, revisions
                 ): sid
                 for sid in selected
                 if sid in story_by_id

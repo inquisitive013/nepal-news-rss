@@ -32,7 +32,7 @@ An automated newsroom for Nepal. Once a day it reads every major Nepali and Engl
    │ Red team  ⇄  Defence      │   accuracy · relevance · defensibility · virality
    └──────┬────────────────────┘
           ▼
-   Validation judge 1 ──(revise ≤ N times)──▶ Validation judge 2
+   Validation judge 1 ──▶ Reviser ──▶ Validation judge 2 (final check, may send back once)
           │
           ▼  approved by both
    data/articles/*.json ──▶ static site + rss.xml ──▶ GitHub Pages
@@ -78,7 +78,7 @@ Optional: a repository variable `SITE_URL` if the site lives on a custom domain.
 
 Everything an editor would touch is in `config/`.
 
-- `config/settings.yaml`: site name, **language** (`en` or `ne`), timezone, how many stories to debate and publish, revision limit, model per role, web search allowances, editorial exclusions, image licence allow list, image generation provider.
+- `config/settings.yaml`: site name, **language** (`en` or `ne`), timezone, how many stories to debate and publish, red team rounds and revision limits, model per role, web search allowances, editorial exclusions, image licence allow list, image generation provider.
 - `config/sources.yaml`: the outlets. Each has a native RSS URL and a domain. When a native feed fails or is empty, the pipeline falls back to a Google News RSS search restricted to that domain, so a broken feed URL never blanks a source.
 - `config/style.md`: the house style. The writer, reviser and judges read it verbatim.
 - `newsroom/prompts/*.md`: one prompt per role. Edit freely. `_common.md` is prepended to all of them.
@@ -99,9 +99,15 @@ python -m http.server -d site 8000               # look at the result
 
 ## Cost and safety valves
 
-A live edition makes roughly 30 to 45 model calls: one clustering call, two per debated story, two ranking judges, and per article one writer, one picture check, and one to two validation rounds of red team, defence and judges. `pipeline.max_llm_calls` in `settings.yaml` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
+A live edition on the defaults makes about 30 model calls: one clustering call, two per debated story (three stories), two ranking judges, and per article one writer, one picture check, one red team pass, one defence, judge 1, one revision and judge 2. Judge 2 may send an article back once more, which adds a reviser call and a second judge 2 call; the reviser is capped at `pipeline.max_revisions_per_run` calls a day. `pipeline.max_llm_calls` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
 
-Measured so far: the first live edition, on `claude-opus-5` at high effort with eight debated stories and two revision rounds, used 51 calls, about 675,000 input and 448,000 output tokens and 145 web searches, roughly 19 dollars at list price. The defaults now use `claude-sonnet-5` at medium effort for research and writing roles and `claude-opus-5-5` at high effort for the four judges, with six debated stories and one revision round. Set models and effort per role under `llm.roles`. Requests opt into the server side refusal fallback (beta) so a safety decline on one role is retried on the recommended fallback model instead of killing the story; set `llm.refusal_fallback: false` to turn that off.
+Measured so far, at list prices. The first live edition, on `claude-opus-5` at high effort with eight debated stories and two revision rounds, used 51 calls, about 675,000 input and 448,000 output tokens and 145 web searches, roughly 19 dollars, and published nothing because two drafts hit the output cap and the credit ran out on the third. The second edition, on `claude-sonnet-5` with `claude-opus-5-5` judges, six debated stories and two red team rounds, used 42 calls, about 402,000 input and 234,000 output tokens, 2.9 million cached input tokens and 84 web searches, roughly 6.40 dollars in 29 minutes. It published one of three drafts; the other two were rejected for a single misplaced fact each after the one revision round was spent, with no way to fix it.
+
+The current defaults come from that run's per call costs: three debated stories, one red team pass per article, then judge 1, the reviser and judge 2 as the final check. That removes the second red team and defence passes, the most expensive calls of the day, and gives every draft a revision before it is judged for the last time. Expected cost about 4.50 dollars a day, plus a few cents per AI generated image on OpenAI. Keep the Claude account credit topped up or turn on auto reload, because a run that hits an empty balance stops and publishes nothing. Set models and effort per role under `llm.roles`. Requests opt into the server side refusal fallback (beta) so a safety decline on one role is retried on the recommended fallback model instead of killing the story; set `llm.refusal_fallback: false` to turn that off.
+
+## Rebuilding the site without a new edition
+
+*Actions → Daily edition → Run workflow* with **rebuild_only** ticked rebuilds the site from the data already in the repository and deploys it. No model calls, nothing committed. Use it after a template change or when the site needs redeploying. The workflow also makes sure the Pages source is GitHub Actions: a site left on "deploy from a branch" rebuilds itself after every edition commit and overwrites the deployed site with a Jekyll rendering of the repository, which makes every article link a 404.
 
 ## Images and credits
 

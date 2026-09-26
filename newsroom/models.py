@@ -130,7 +130,9 @@ class ImageCredit:
             bits.append(f"via {self.source}")
         if self.license:
             bits.append(f"({self.license})")
-        return "Photo: " + " ".join(bits) if bits else "Photo: source unknown"
+        # Found pictures come from archives such as Wikimedia Commons, so they never
+        # show the day's events. Say so in the credit itself.
+        return "File photo: " + " ".join(bits) if bits else "File photo: source unknown"
 
 
 @dataclass
@@ -161,6 +163,10 @@ class ValidationRound:
     defense: dict[str, Any] = field(default_factory=dict)
     judge_1: dict[str, Any] = field(default_factory=dict)
     judge_2: dict[str, Any] = field(default_factory=dict)
+    # Edits applied inside this round, in order: {after: judge_1 | judge_2, required_edits, version}
+    revisions: list[dict[str, Any]] = field(default_factory=list)
+    # Judge 2's ruling on the version it sent back for, when it did.
+    judge_2_recheck: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
