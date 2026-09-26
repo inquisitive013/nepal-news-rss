@@ -25,6 +25,13 @@ from .models import Candidate, FeedHealth
 log = logging.getLogger(__name__)
 
 USER_AGENT = "Mozilla/5.0 (compatible; NepalWireBot/0.1; +https://github.com/inquisitive013/nepal-news-rss)"
+BROWSER_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36"
+COMMON_FEED_PATHS = [
+    "/feed", "/feed/", "/rss", "/rss/", "/rss.xml", "/feed.xml", "/index.xml", "/atom.xml", "/feeds",
+    "/rss/latest", "/rss/news", "/?feed=rss2", "/feed/rss", "/en/rss", "/api/rss", "/rss/home", "/news/rss", "/rss/all",
+]
+FEED_LINK_RE = re.compile(r"<link\b[^>]*>", re.IGNORECASE)
+ATTR_RE = re.compile(r"""([a-zA-Z:-]+)\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))""")
 TRACKING_PARAMS = {"utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "fbclid", "gclid", "ref"}
 DEVANAGARI = re.compile(r"[ऀ-ॿ]")
 TAG_RE = re.compile(r"<[^>]+>")
@@ -35,11 +42,17 @@ Fetcher = Callable[[str], bytes]
 
 # --------------------------------------------------------------------------- helpers
 
-def http_fetch(url: str, timeout: float = 20.0) -> bytes:
-    with httpx.Client(follow_redirects=True, timeout=timeout, headers={"User-Agent": USER_AGENT}) as client:
+def http_fetch(url: str, timeout: float = 20.0, user_agent: str = USER_AGENT) -> bytes:
+    headers = {"User-Agent": user_agent, "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, text/html;q=0.8, */*;q=0.5"}
+    with httpx.Client(follow_redirects=True, timeout=timeout, headers=headers) as client:
         resp = client.get(url)
         resp.raise_for_status()
         return resp.content
+
+
+def browser_fetch(url: str, timeout: float = 20.0) -> bytes:
+    """Same as http_fetch with a browser user agent, for sources that refuse bots."""
+    return http_fetch(url, timeout, BROWSER_UA)
 
 
 def strip_html(text: str, limit: int = 600) -> str:
@@ -262,12 +275,14 @@ def discover(
     health: list[FeedHealth] = []
     pool: list[Candidate] = []
 
-    def fetch_named(url: str, fixture_name: str) -> bytes:
+    def fetch_named(url: str, fixture_name: str, user_agent: str = "") -> bytes:
         if fixtures_dir is not None:
             path = fixtures_dir / fixture_name
             if not path.exists():
                 raise FileNotFoundError(f"no fixture {path.name}")
             return path.read_bytes()
+        if user_agent == "browser" and fetcher is http_fetch:
+            return browser_fetch(url)
         return fetcher(url)
 
     for src in sources:
@@ -279,7 +294,7 @@ def discover(
         rss_url = src.get("rss")
         if rss_url:
             try:
-                raw = fetch_named(rss_url, f"{slug}.xml")
+                raw = fetch_named(rss_url, f"{slug}.xml", src.get("user_agent", ""))
                 cands, total = parse_feed(raw, name, domain, "rss", lang, now, window_hours)
                 got_native = len(cands)
                 pool.extend(cands)
@@ -313,3 +328,53 @@ def discover(
     capped = cap_per_source(deduped, max_per_source, max_total)
     log.info("discovery: %d raw, %d deduped, %d kept", len(pool), len(deduped), len(capped))
     return capped, health
+
+
+# --------------------------------------------------------------------------- feed probing
+
+def find_feed_links(html_text: str, base_url: str) -> list[str]:
+    """Return feed URLs advertised by a page's <link rel="alternate" type="application/rss+xml"> tags."""
+    from urllib.parse import urljoin
+
+    found: list[str] = []
+    for tag in FEED_LINK_RE.findall(html_text):
+        attrs = {m.group(1).lower(): (m.group(3) or m.group(4) or m.group(5) or "") for m in ATTR_RE.finditer(tag)}
+        typ = attrs.get("type", "").lower()
+        if "rss" in typ or "atom" in typ:
+            href = attrs.get("href", "").strip()
+            if href:
+                found.append(urljoin(base_url, html.unescape(href)))
+    seen: set[str] = set()
+    return [u for u in found if not (u in seen or seen.add(u))]
+
+
+def probe_feeds(domain: str, now: datetime | None = None, window_hours: int = 24) -> list[dict]:
+    """Try advertised and common feed URLs for a domain. Returns what parsed, with entry counts."""
+    now = now or datetime.now(timezone.utc)
+    host = domain.split("/")[0]
+    homepage = f"https://{host}/"
+    results: list[dict] = []
+    tried: set[str] = set()
+    for label, fetch in (("bot", http_fetch), ("browser", browser_fetch)):
+        candidates: list[str] = []
+        try:
+            page = fetch(homepage).decode("utf-8", errors="ignore")
+            candidates.extend(find_feed_links(page, homepage))
+        except Exception as exc:  # noqa: BLE001
+            results.append({"url": homepage, "user_agent": label, "ok": False, "entries": 0, "in_window": 0, "note": f"homepage {type(exc).__name__}: {str(exc)[:80]}"})
+        candidates.extend(f"https://{host}{path}" for path in COMMON_FEED_PATHS)
+        for url in candidates:
+            key = (label, url)
+            if key in tried:
+                continue
+            tried.add(key)
+            try:
+                raw = fetch(url)
+                cands, total = parse_feed(raw, host, host, "rss", "unknown", now, window_hours)
+                if total > 0:
+                    results.append({"url": url, "user_agent": label, "ok": True, "entries": total, "in_window": len(cands), "note": ""})
+            except Exception:  # noqa: BLE001 - probing, failures are expected
+                continue
+        if any(r["ok"] and r["user_agent"] == label for r in results):
+            break  # the bot user agent works, no need to try the browser one
+    return results

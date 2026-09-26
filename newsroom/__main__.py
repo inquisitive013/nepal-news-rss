@@ -82,6 +82,19 @@ def cmd_check_sources(args) -> int:
     native_bad = [h.source for h in health if h.kind == "rss" and (not h.ok or h.in_window == 0)]
     report.append(f"Native feeds delivering items: {', '.join(native_ok) or 'none'}.")
     report.append(f"Native feeds failing or empty (Google News fallback used): {', '.join(native_bad) or 'none'}.")
+    if native_bad and not args.no_probe:
+        report += ["", "## Feed suggestions for failing sources", ""]
+        by_name = {s["name"]: s for s in settings.sources}
+        for name in native_bad:
+            domain = by_name.get(name, {}).get("domain", "")
+            if not domain:
+                continue
+            found = [r for r in discovery.probe_feeds(domain) if r["ok"]]
+            if found:
+                best = sorted(found, key=lambda r: (-r["in_window"], -r["entries"]))[:4]
+                report.append(f"- **{name}** ({domain}): " + "; ".join(f"`{r['url']}` [{r['user_agent']} UA, {r['entries']} entries, {r['in_window']} in window]" for r in best))
+            else:
+                report.append(f"- **{name}** ({domain}): no feed found by autodiscovery or common paths")
     report += ["", "## Image providers", ""]
     allowed = list(settings.get("images.allowed_licenses", []))
     for name, url_fn, parser in (("Wikimedia Commons", images.commons_search_url, images.parse_commons), ("Openverse", images.openverse_search_url, images.parse_openverse)):
@@ -129,6 +142,7 @@ def main(argv=None) -> int:
     p_dis.set_defaults(func=cmd_discover)
 
     p_chk = sub.add_parser("check-sources", help="probe every live feed and image provider, print a health report")
+    p_chk.add_argument("--no-probe", action="store_true", help="skip feed autodiscovery for failing sources")
     p_chk.set_defaults(func=cmd_check_sources)
 
     p_build = sub.add_parser("build", help="build the static site from data/")

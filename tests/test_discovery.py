@@ -105,3 +105,12 @@ def test_cap_per_source():
     ]
     assert len(discovery.cap_per_source(cands, 2, 10)) == 2
     assert len(discovery.cap_per_source(cands, 10, 3)) == 3
+
+
+def test_find_feed_links():
+    page = """<html><head>
+    <link rel="alternate" type="application/rss+xml" title="Feed" href="/feed/">
+    <link rel='alternate' type='application/atom+xml' href='https://example.com/atom.xml'>
+    <link rel="stylesheet" href="/style.css">
+    </head></html>"""
+    assert discovery.find_feed_links(page, "https://example.com/") == ["https://example.com/feed/", "https://example.com/atom.xml"]

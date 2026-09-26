@@ -18,8 +18,8 @@ pipeline:
   # Hours back from run time that count as "today".
   window_hours: 24
   # Hard caps that keep a bad feed from flooding the day.
-  max_candidates: 120
-  max_per_source: 20
+  max_candidates: 150
+  max_per_source: 15
   # How many stories go through the advocate vs skeptic debate.
   max_debate_stories: 8
   # How many of the judged stories become articles.
