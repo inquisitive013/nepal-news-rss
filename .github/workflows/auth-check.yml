@@ -25,4 +25,5 @@ jobs:
           ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
           ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
         run: |
+          set -o pipefail
           python -m newsroom auth-check | tee -a "$GITHUB_STEP_SUMMARY"
