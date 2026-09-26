@@ -1,0 +1,129 @@
+name: Daily edition
+
+on:
+  schedule:
+    # 00:30 UTC is 06:15 in Nepal. Editions publish before the morning commute.
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+    inputs:
+      mock:
+        description: "Preview run: mock model, fixture feeds, nothing committed or deployed"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily-edition
+  cancel-in-progress: false
+
+jobs:
+  edition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Run the newsroom and build the site
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # A repository variable SITE_URL overrides the default project Pages address.
+          SITE_URL_OVERRIDE: ${{ vars.SITE_URL }}
+          NEWSROOM_MOCK: ${{ inputs.mock == true && '1' || '' }}
+        run: |
+          export SITE_URL="${SITE_URL_OVERRIDE:-https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}}"
+          echo "Site URL: $SITE_URL"
+          if [ -z "${ANTHROPIC_API_KEY}" ] && [ -z "${NEWSROOM_MOCK}" ]; then
+            echo "::warning::ANTHROPIC_API_KEY secret is not set. Rebuilding the site from existing data without a new edition."
+            echo "NO_KEY=true" >> "$GITHUB_ENV"
+            python -m newsroom build --out site
+          else
+            python -m newsroom run --build --out site --root-rss
+          fi
+
+      - name: Commit the edition data
+        if: ${{ inputs.mock != true }}
+        run: |
+          git config user.name "nepal-wire-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data rss.xml
+          if git diff --cached --quiet; then
+            echo "Nothing new to commit."
+          else
+            git commit -m "Edition $(TZ=Asia/Kathmandu date +%F)"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Upload preview site
+        if: ${{ inputs.mock == true }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-preview
+          path: site
+
+      - name: Configure Pages
+        if: ${{ inputs.mock != true }}
+        uses: actions/configure-pages@v5
+        with:
+          # Try to switch the repository to Actions based Pages if it is not already.
+          enablement: true
+
+      - name: Upload Pages artifact
+        if: ${{ inputs.mock != true }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        if: ${{ inputs.mock != true }}
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Fail loudly when no edition could run
+        if: ${{ env.NO_KEY == 'true' }}
+        run: |
+          {
+            echo "## No edition today"
+            echo
+            echo "The site was rebuilt and deployed from existing data, but no new edition ran because the **ANTHROPIC_API_KEY** secret is missing."
+            echo "Add it under Settings, Secrets and variables, Actions, then run this workflow again."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error::ANTHROPIC_API_KEY secret is missing. Site deployed, no edition produced."
+          exit 1
+
+      - name: Run summary
+        if: always()
+        run: |
+          latest=$(ls -t data/runs/*.json 2>/dev/null | head -1)
+          if [ -n "$latest" ]; then
+            python - "$latest" >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json, sys
+          run = json.load(open(sys.argv[1]))
+          print(f"## Edition {run['run_date']} ({run['mode']}) status: {run['status']}")
+          print()
+          print(f"- Candidates: {len(run['candidates'])} from {sum(1 for h in run['feed_health'] if h['ok'])}/{len(run['feed_health'])} working feeds")
+          print(f"- Stories debated: {len(run['stories'])}")
+          print(f"- Published: {', '.join(run['published']) or 'none'}")
+          print(f"- Not published: {len(run['rejected'])}")
+          t = run.get('usage_totals', {})
+          print(f"- Model calls: {t.get('calls')} | input tokens {t.get('input_tokens')} | output tokens {t.get('output_tokens')} | web searches {t.get('web_search_requests')}")
+          for e in run['errors'][:5]:
+              print(f"- Error: {e.splitlines()[0][:200]}")
+          PY
+          fi
