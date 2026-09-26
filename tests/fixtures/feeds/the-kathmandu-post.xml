@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+<title>The Kathmandu Post</title>
+<item>
+  <title>Heavy rain puts Bagmati riverside settlements at risk in Kathmandu</title>
+  <link>https://kathmandupost.com/valley/2026/09/26/heavy-rain-bagmati</link>
+  <pubDate>Sat, 26 Sep 2026 04:05:00 +0545</pubDate>
+  <description>Overnight rain swelled the Bagmati and Bishnumati rivers, and police moved 140 households to schools.</description>
+</item>
+<item>
+  <title>Nepal Oil Corporation cuts petrol price by Rs 5 a litre</title>
+  <link>https://kathmandupost.com/money/2026/09/25/petrol-price-cut/</link>
+  <pubDate>Fri, 25 Sep 2026 23:10:00 +0000</pubDate>
+  <description>The state monopoly said the cut follows a fall in the Indian Oil Corporation's rate.</description>
+</item>
+<item>
+  <title>Nepal Oil Corporation cuts petrol price by Rs 5 a litre</title>
+  <link>https://kathmandupost.com/money/2026/09/25/petrol-price-cut?fbclid=abc</link>
+  <pubDate>Fri, 25 Sep 2026 23:10:00 +0000</pubDate>
+  <description>Duplicate entry with a tracking parameter.</description>
+</item>
+<item>
+  <title>Undated item about a Pokhara airport audit</title>
+  <link>https://kathmandupost.com/national/pokhara-airport-audit</link>
+  <description>This entry has no date at all.</description>
+</item>
+<item>
+  <title>Future dated item that should be dropped</title>
+  <link>https://kathmandupost.com/national/future</link>
+  <pubDate>Sun, 27 Sep 2026 23:00:00 +0000</pubDate>
+  <description>Clock skew beyond two hours.</description>
+</item>
+</channel>
+</rss>

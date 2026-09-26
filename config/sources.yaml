@@ -1,0 +1,111 @@
+# News sources scanned every run.
+#
+# Each source needs a `name` and a `domain`. `rss` is the native feed. When the
+# native feed fails, or returns nothing inside the window, the pipeline falls
+# back to a Google News RSS search restricted to that domain. Run
+# `python -m newsroom check-sources` (or the "Check sources" workflow) to see
+# which native feeds answer. Feeds marked `verified: false` have not yet been
+# confirmed live from this project.
+
+sources:
+  # Nepali language
+  - name: "Kantipur (eKantipur)"
+    domain: "ekantipur.com"
+    rss: "https://ekantipur.com/rss"
+    language: "ne"
+    verified: false
+  - name: "OnlineKhabar"
+    domain: "onlinekhabar.com"
+    rss: "https://www.onlinekhabar.com/feed"
+    language: "ne"
+    verified: false
+  - name: "Setopati"
+    domain: "setopati.com"
+    rss: "https://www.setopati.com/feed"
+    language: "ne"
+    verified: false
+  - name: "Ratopati"
+    domain: "ratopati.com"
+    rss: "https://ratopati.com/feed"
+    language: "ne"
+    verified: false
+  - name: "Himal Khabar"
+    domain: "himalkhabar.com"
+    rss: "https://www.himalkhabar.com/feed"
+    language: "ne"
+    verified: false
+  - name: "BBC Nepali"
+    domain: "bbc.com/nepali"
+    rss: "https://feeds.bbci.co.uk/nepali/rss.xml"
+    language: "ne"
+    verified: false
+  - name: "DC Nepal"
+    domain: "dcnepal.com"
+    rss: "https://www.dcnepal.com/feed"
+    language: "ne"
+    verified: false
+  - name: "Nepal Press"
+    domain: "nepalpress.com"
+    rss: "https://www.nepalpress.com/feed"
+    language: "ne"
+    verified: false
+  - name: "Annapurna Post"
+    domain: "annapurnapost.com"
+    rss: "https://annapurnapost.com/rss"
+    language: "ne"
+    verified: false
+  - name: "Nagarik News"
+    domain: "nagariknews.nagariknetwork.com"
+    rss: "https://nagariknews.nagariknetwork.com/feed"
+    language: "ne"
+    verified: false
+
+  # English language
+  - name: "The Kathmandu Post"
+    domain: "kathmandupost.com"
+    rss: "https://kathmandupost.com/rss"
+    language: "en"
+    verified: false
+  - name: "OnlineKhabar English"
+    domain: "english.onlinekhabar.com"
+    rss: "https://english.onlinekhabar.com/feed"
+    language: "en"
+    verified: false
+  - name: "The Himalayan Times"
+    domain: "thehimalayantimes.com"
+    rss: "https://thehimalayantimes.com/feed"
+    language: "en"
+    verified: false
+  - name: "Republica"
+    domain: "myrepublica.nagariknetwork.com"
+    rss: "https://myrepublica.nagariknetwork.com/rss"
+    language: "en"
+    verified: false
+  - name: "Setopati English"
+    domain: "en.setopati.com"
+    rss: "https://en.setopati.com/feed"
+    language: "en"
+    verified: false
+  - name: "The Rising Nepal"
+    domain: "risingnepaldaily.com"
+    rss: "https://risingnepaldaily.com/rss"
+    language: "en"
+    verified: false
+  - name: "Nepali Times"
+    domain: "nepalitimes.com"
+    rss: "https://nepalitimes.com/feed"
+    language: "en"
+    verified: false
+
+# Broad Google News searches. `when:1d` limits results to the last day.
+google_news:
+  - query: "Nepal when:1d"
+    hl: "en-NP"
+    gl: "NP"
+    ceid: "NP:en"
+    language: "en"
+  - query: "नेपाल when:1d"
+    hl: "ne"
+    gl: "NP"
+    ceid: "NP:ne"
+    language: "ne"

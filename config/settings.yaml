@@ -1,0 +1,78 @@
+# Newsroom settings. Environment variables override a few of these:
+#   ANTHROPIC_API_KEY   required for a live run
+#   OPENAI_API_KEY      optional, enables AI image generation
+#   SITE_URL            overrides site.url (the daily workflow sets it from GitHub Pages)
+#   NEWSROOM_MOCK=1     forces mock mode (no network, no keys)
+
+site:
+  name: "Nepal Wire"
+  tagline: "Nepal's day, ranked and checked before it reaches you"
+  # GitHub Pages serves a project site at https://<owner>.github.io/<repo>/
+  url: "https://inquisitive013.github.io/nepal-news-rss"
+  # Language of the published articles: "en" or "ne". Sources are read in both.
+  language: "en"
+  timezone: "Asia/Kathmandu"
+  publisher: "Nepal Wire newsroom"
+
+pipeline:
+  # Hours back from run time that count as "today".
+  window_hours: 24
+  # Hard caps that keep a bad feed from flooding the day.
+  max_candidates: 120
+  max_per_source: 20
+  # How many stories go through the advocate vs skeptic debate.
+  max_debate_stories: 8
+  # How many of the judged stories become articles.
+  articles_per_day: 3
+  # Revision rounds allowed when validation judge 1 asks for changes.
+  max_revisions: 2
+  # Parallel debates / articles in flight.
+  concurrency: 3
+  # Safety valve. The run stops taking new work after this many model calls.
+  max_llm_calls: 90
+
+llm:
+  # Default model for every role. Override a role under `roles`.
+  model: "claude-opus-5"
+  effort: "high"
+  max_tokens: 16000
+  # Server side refusal fallback (beta). Set false if your org rejects the beta header.
+  refusal_fallback: true
+  # Web search uses allowed per role call.
+  web_search_uses:
+    advocate: 5
+    skeptic: 5
+    writer: 8
+    red_team: 8
+    defense: 3
+  roles: {}
+  #  example:
+  #  roles:
+  #    story_clusterer: { model: "claude-sonnet-5", effort: "medium" }
+
+editorial:
+  exclude_topics:
+    - "horoscopes and astrology"
+    - "graphic descriptions of violence or accident victims"
+    - "unverified rumours about private individuals"
+    - "paid promotions and press releases dressed as news"
+  # Guidance handed to the judges. Judges decide, these are not hard gates.
+  guidance:
+    min_virality_score: 60
+    min_accuracy_score: 85
+    min_defensibility_score: 85
+
+images:
+  # Licences accepted for found images. Matched case insensitively as substrings
+  # of the licence short name reported by the provider.
+  allowed_licenses: ["cc0", "public domain", "pdm", "cc by", "cc-by", "by-sa", "cc by-sa"]
+  max_candidates_for_vision: 6
+  max_width: 1600
+  jpeg_quality: 84
+  # Burn a small credit bar into the stored image so shared copies carry attribution.
+  burn_credit: true
+  generation:
+    # "openai" needs OPENAI_API_KEY. "none" skips generation and uses the cover card.
+    provider: "openai"
+    openai_model: "gpt-image-1"
+    size: "1536x1024"

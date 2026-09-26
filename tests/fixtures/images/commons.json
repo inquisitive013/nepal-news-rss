@@ -1,0 +1,43 @@
+{
+  "batchcomplete": "",
+  "query": {
+    "pages": {
+      "1001": {
+        "pageid": 1001, "ns": 6, "title": "File:Kathmandu Durbar Square 2019.jpg", "index": 1,
+        "imagerepository": "local",
+        "imageinfo": [{
+          "thumburl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Kathmandu_Durbar_Square_2019.jpg/1600px-Kathmandu_Durbar_Square_2019.jpg",
+          "thumbwidth": 1600, "thumbheight": 1067,
+          "url": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Kathmandu_Durbar_Square_2019.jpg",
+          "descriptionurl": "https://commons.wikimedia.org/wiki/File:Kathmandu_Durbar_Square_2019.jpg",
+          "size": 3456789, "width": 4000, "height": 2667, "mime": "image/jpeg",
+          "extmetadata": {
+            "ObjectName": {"value": "Kathmandu Durbar Square", "source": "mediawiki-metadata"},
+            "Artist": {"value": "<a href=\"//commons.wikimedia.org/wiki/User:Example\" title=\"User:Example\">Example Photographer</a>", "source": "commons-desc-page"},
+            "LicenseShortName": {"value": "CC BY-SA 4.0", "source": "commons-desc-page", "hidden": ""},
+            "LicenseUrl": {"value": "https://creativecommons.org/licenses/by-sa/4.0", "source": "commons-desc-page", "hidden": ""},
+            "Credit": {"value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>", "source": "commons-desc-page", "hidden": ""}
+          }
+        }]
+      },
+      "1002": {
+        "pageid": 1002, "ns": 6, "title": "File:Nepal map.svg", "index": 2,
+        "imageinfo": [{
+          "thumburl": "https://upload.wikimedia.org/x/1600px-Nepal_map.svg.png", "thumbwidth": 1600, "thumbheight": 900,
+          "url": "https://upload.wikimedia.org/x/Nepal_map.svg", "descriptionurl": "https://commons.wikimedia.org/wiki/File:Nepal_map.svg",
+          "mime": "image/svg+xml",
+          "extmetadata": {"LicenseShortName": {"value": "CC0", "source": "commons-desc-page"}}
+        }]
+      },
+      "1003": {
+        "pageid": 1003, "ns": 6, "title": "File:Restricted photo.jpg", "index": 3,
+        "imageinfo": [{
+          "thumburl": "https://upload.wikimedia.org/x/1600px-Restricted.jpg", "thumbwidth": 1600, "thumbheight": 1000,
+          "url": "https://upload.wikimedia.org/x/Restricted.jpg", "descriptionurl": "https://commons.wikimedia.org/wiki/File:Restricted_photo.jpg",
+          "mime": "image/jpeg",
+          "extmetadata": {"LicenseShortName": {"value": "CC BY-NC-ND 2.0", "source": "commons-desc-page"}, "Artist": {"value": "Someone"}}
+        }]
+      }
+    }
+  }
+}

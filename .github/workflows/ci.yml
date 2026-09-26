@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - name: Unit tests
+        run: python -m pytest -q
+      - name: Mock edition end to end
+        env:
+          NEWSROOM_MOCK: "1"
+        run: python -m newsroom run --mock --build --out site
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mock-site
+          path: site
+
+  sources:
+    # Informational. Probes the live feeds and image providers from a runner with open network access.
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Check sources
+        run: python -m newsroom check-sources

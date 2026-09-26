@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
+<channel>
+  <title>{{ site.name }}</title>
+  <link>{{ site.url }}/</link>
+  <atom:link href="{{ site.url }}/rss.xml" rel="self" type="application/rss+xml"/>
+  <description>{{ site.tagline }}</description>
+  <language>{{ site.language }}</language>
+  <lastBuildDate>{{ site.built_at | rfc822 }}</lastBuildDate>
+  <generator>{{ site.name }} newsroom</generator>
+{% for a in articles %}
+  <item>
+    <title>{{ a.headline }}</title>
+    <link>{{ site.url }}/articles/{{ a.slug }}/</link>
+    <guid isPermaLink="true">{{ site.url }}/articles/{{ a.slug }}/</guid>
+    <pubDate>{{ a.published_at | rfc822 }}</pubDate>
+    <description>{{ a.dek }}</description>
+    {% for t in a.tags %}<category>{{ t }}</category>
+    {% endfor %}
+    {% if a.image %}
+    <enclosure url="{{ site.url }}/images/{{ a.image.path.split('/')[-1] }}" length="{{ image_size.get(a.id, 0) }}" type="{{ 'image/png' if a.image.path.endswith('.png') else 'image/jpeg' }}"/>
+    <media:content url="{{ site.url }}/images/{{ a.image.path.split('/')[-1] }}" medium="image" width="{{ a.image.width }}" height="{{ a.image.height }}">
+      <media:credit>{{ a.image.credit.line() }}</media:credit>
+      <media:description>{{ a.image.alt }}</media:description>
+    </media:content>
+    {% endif %}
+    <content:encoded><![CDATA[{% if a.image %}<p><img src="{{ site.url }}/images/{{ a.image.path.split('/')[-1] }}" alt="{{ a.image.alt }}"><br><small>{{ a.image.credit.line() }}</small></p>{% endif %}{{ a.body_markdown | markdown }}<p>Sources: {% for s in a.sources %}<a href="{{ s.url }}">{{ s.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>]]></content:encoded>
+  </item>
+{% endfor %}
+</channel>
+</rss>

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Archive · {{ site.name }}{% endblock %}
+{% block content %}
+<h1 class="page-title">Archive</h1>
+{% if not cards %}<p>No stories yet.</p>{% endif %}
+{% set ns = namespace(day='') %}
+<ul class="archive">
+{% for card in cards %}
+  {% set day = card.article.published_at | fmt_date('%d %B %Y') %}
+  {% if day != ns.day %}
+    {% set ns.day = day %}
+    <li class="archive-day">{{ day }}</li>
+  {% endif %}
+  <li><a href="{{ root }}{{ card.url }}">{{ card.article.headline }}</a> <span class="muted">{{ card.article.dek }}</span></li>
+{% endfor %}
+</ul>
+{% endblock %}

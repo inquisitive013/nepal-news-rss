@@ -1,0 +1,25 @@
+{
+  "result_count": 2, "page_count": 1, "page_size": 6, "page": 1,
+  "results": [
+    {
+      "id": "aaaa-bbbb", "title": "Boudhanath Stupa at dusk",
+      "foreign_landing_url": "https://www.flickr.com/photos/someone/123456",
+      "url": "https://live.staticflickr.com/1234/123456_abcdef_b.jpg",
+      "creator": "Some Photographer", "creator_url": "https://www.flickr.com/photos/someone/",
+      "license": "by", "license_version": "2.0", "license_url": "https://creativecommons.org/licenses/by/2.0/",
+      "provider": "flickr", "source": "flickr", "category": "photograph", "filetype": "jpg",
+      "attribution": "\"Boudhanath Stupa at dusk\" by Some Photographer is licensed under CC BY 2.0.",
+      "mature": false, "height": 683, "width": 1024,
+      "thumbnail": "https://api.openverse.org/v1/images/aaaa-bbbb/thumb/"
+    },
+    {
+      "id": "cccc-dddd", "title": "Non commercial photo",
+      "foreign_landing_url": "https://www.flickr.com/photos/other/999",
+      "url": "https://live.staticflickr.com/999/999_b.jpg",
+      "creator": "Other", "creator_url": "",
+      "license": "by-nc", "license_version": "2.0", "license_url": "https://creativecommons.org/licenses/by-nc/2.0/",
+      "provider": "flickr", "source": "flickr", "filetype": "jpg", "mature": false, "height": 600, "width": 800,
+      "thumbnail": "https://api.openverse.org/v1/images/cccc-dddd/thumb/"
+    }
+  ]
+}
