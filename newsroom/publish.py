@@ -159,7 +159,7 @@ def _final_scores(article: Article) -> dict[str, int] | None:
     if not rounds:
         return None
     last = rounds[-1]
-    ruling = last.judge_2 or last.judge_1
+    ruling = last.judge_2_recheck or last.judge_2 or last.judge_1
     return ruling.get("scores") if isinstance(ruling, dict) else None
 
 
@@ -170,7 +170,9 @@ def _review_summary(article: Article) -> dict[str, Any]:
         "ranking": article.review.ranking if article.review else [],
         "rounds": len(rounds),
         "judge_1": (last.judge_1.get("reason", "") if last else ""),
-        "judge_2": (last.judge_2.get("reason", "") if last and last.judge_2 else ""),
+        "judge_2": ((last.judge_2_recheck or last.judge_2).get("reason", "") if last and (last.judge_2 or last.judge_2_recheck) else ""),
+        # Older records kept revisions between rounds only as a version bump.
+        "revisions": sum(len(r.revisions) for r in rounds) or max(0, article.version - 1),
         "scores": _final_scores(article),
         "decision": article.review.final_decision if article.review else "",
     }

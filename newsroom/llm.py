@@ -492,9 +492,19 @@ class MockLLM(BaseLLM):
 
     name = "mock"
 
-    def __init__(self, settings: Settings, meter: UsageMeter | None = None, *, reject_story_ids: set[str] | None = None, revise_rounds: int = 1) -> None:
+    def __init__(
+        self,
+        settings: Settings,
+        meter: UsageMeter | None = None,
+        *,
+        reject_story_ids: set[str] | None = None,
+        send_back_story_ids: set[str] | None = None,
+        revise_rounds: int = 1,
+    ) -> None:
         super().__init__(settings, meter)
         self.reject_story_ids = set(reject_story_ids or ())
+        # Stories judge 2 sends back for one more edit before approving.
+        self.send_back_story_ids = set(send_back_story_ids or ())
         self.revise_rounds = revise_rounds
         self.calls: list[str] = []
 
@@ -696,8 +706,11 @@ class MockLLM(BaseLLM):
             if highs:
                 return {"decision": "reject", "rulings": rulings, "required_edits": [], "reason": "unresolved accuracy problem", "scores": scores}
             return {"decision": "approve", "rulings": rulings, "required_edits": [], "reason": "claims trace to sources", "scores": scores}
-        if p["article"].get("story_id") in self.reject_story_ids:
+        sid = p["article"].get("story_id")
+        if sid in self.reject_story_ids:
             return {"decision": "reject", "rulings": rulings, "required_edits": [], "reason": "judge 2: not defensible enough to publish", "scores": scores}
+        if sid in self.send_back_story_ids and int(p["revisions_left"]) > 0:
+            return {"decision": "revise", "rulings": rulings, "required_edits": ["Put the confirmed number in the headline."], "reason": "judge 2: the headline buries the number", "scores": scores}
         return {"decision": "approve", "rulings": rulings, "required_edits": [], "reason": "judge 2 concurs", "scores": scores}
 
 

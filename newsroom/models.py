@@ -163,6 +163,10 @@ class ValidationRound:
     defense: dict[str, Any] = field(default_factory=dict)
     judge_1: dict[str, Any] = field(default_factory=dict)
     judge_2: dict[str, Any] = field(default_factory=dict)
+    # Edits applied inside this round, in order: {after: judge_1 | judge_2, required_edits, version}
+    revisions: list[dict[str, Any]] = field(default_factory=list)
+    # Judge 2's ruling on the version it sent back for, when it did.
+    judge_2_recheck: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

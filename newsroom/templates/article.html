@@ -96,7 +96,7 @@
     </ul>
     {% endif %}
     <h3>Validation</h3>
-    <p>{{ review.rounds }} review round{{ 's' if review.rounds != 1 else '' }}. Decision: {{ review.decision }}.</p>
+    <p>{{ review.rounds }} red team round{{ 's' if review.rounds != 1 else '' }}, {{ review.revisions }} revision{{ 's' if review.revisions != 1 else '' }}. Decision: {{ review.decision }}.</p>
     {% if review.scores %}
     <ul class="scores">
       {% for k, v in review.scores.items() %}<li><span>{{ k }}</span><b>{{ v }}</b></li>{% endfor %}
