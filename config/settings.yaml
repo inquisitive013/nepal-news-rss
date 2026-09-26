@@ -35,7 +35,9 @@ llm:
   # Default model for every role. Override a role under `roles`.
   model: "claude-opus-5"
   effort: "high"
-  max_tokens: 16000
+  # Replies stream, so this can be large. Thinking counts against it, and the
+  # reviser must think and then return a whole article.
+  max_tokens: 64000
   # Server side refusal fallback (beta). Set false if your org rejects the beta header.
   refusal_fallback: true
   # Web search uses allowed per role call.

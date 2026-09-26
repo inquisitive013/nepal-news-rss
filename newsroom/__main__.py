@@ -45,7 +45,7 @@ def cmd_run(args) -> int:
         out = publish.build_site(settings, Path(args.out))
         if args.root_rss:
             publish.copy_root_rss(settings, out)
-    return 0 if run_log.status in ("ok", "partial") else 1
+    return 0 if run_log.status == "ok" else 1
 
 
 def cmd_discover(args) -> int:

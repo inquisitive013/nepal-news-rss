@@ -23,7 +23,7 @@ import httpx
 from PIL import Image, ImageDraw, ImageFont
 
 from .config import Settings
-from .llm import BaseLLM, LLMError
+from .llm import BaseLLM, BudgetExceeded, LLMError
 from .models import Article, ImageAsset, ImageCredit
 
 log = logging.getLogger(__name__)
@@ -245,6 +245,8 @@ def pick_image(
     }
     try:
         data = llm.structured("image_picker", "Pick the image that best fits this article, or reject all.", payload, PICK_SCHEMA, images=images)
+    except BudgetExceeded:
+        raise
     except LLMError as exc:
         log.warning("image picker failed: %s", exc)
         return None

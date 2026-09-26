@@ -61,3 +61,22 @@ def test_budget_exhaustion_is_partial_not_crash(tmp_path):
     run = pipeline.run(settings, llm=llm, now=NOW)
     assert run.status == "partial"
     assert run.errors and not run.published
+
+
+def test_credit_exhaustion_stops_the_run(tmp_path):
+    from newsroom.llm import CreditExhausted
+
+    class BrokeLLM(MockLLM):
+        def structured(self, role, *args, **kwargs):
+            if role == "writer":
+                raise CreditExhausted("the Anthropic account has run out of credit")
+            return super().structured(role, *args, **kwargs)
+
+    settings = _settings(tmp_path)
+    llm = BrokeLLM(settings, UsageMeter(200))
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "partial"
+    assert not run.published
+    assert any("credit" in e for e in run.errors)
+    # no red team or judge calls were attempted after the money ran out
+    assert "red_team" not in llm.calls

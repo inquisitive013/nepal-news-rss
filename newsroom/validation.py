@@ -6,7 +6,7 @@ import logging
 from typing import Any, Callable
 
 from .config import Settings
-from .llm import BaseLLM, LLMError, LLMRefusal
+from .llm import BaseLLM, BudgetExceeded, LLMError, LLMRefusal
 from .models import Article, Candidate, ReviewRecord, Story, ValidationRound
 
 log = logging.getLogger(__name__)
@@ -190,6 +190,8 @@ def validate_article(
             record.final_decision = "rejected"
             record.final_reason = f"Judge 2: {j2.get('reason', '')}".strip()
             break
+    except BudgetExceeded:
+        raise
     except LLMRefusal as exc:
         record.final_decision = "rejected"
         record.final_reason = f"Model declined during validation: {exc}"

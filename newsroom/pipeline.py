@@ -60,6 +60,8 @@ def _process_story(
 
     try:
         article.image = images.make_image_for_article(llm, settings, article, date_label)
+    except BudgetExceeded:
+        raise
     except Exception as exc:  # noqa: BLE001 - never lose an article over a picture
         log.warning("image stage failed for %s: %s", article.id, exc)
         article.image = None
@@ -155,9 +157,12 @@ def run(settings: Settings, llm: BaseLLM | None = None, now: datetime | None = N
                     log.info("published %s", article.id)
                 else:
                     run_log.rejected.append({"story_id": sid, "article_id": article.id if article else "", "stage": "validation", "reason": reason})
+                    if outcome == "error":
+                        run_log.errors.append(f"{sid}: {reason}")
                     log.info("not published %s: %s", sid, reason)
         if run_log.status == "running":
-            run_log.status = "ok"
+            # A day where every selected story hit an error is a failure, not a quiet success.
+            run_log.status = "partial" if (selected and not run_log.published and run_log.errors) else "ok"
     except BudgetExceeded as exc:
         run_log.errors.append(str(exc))
         run_log.status = "partial"
