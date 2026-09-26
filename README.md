@@ -99,7 +99,7 @@ Found photos come only from Wikimedia Commons and Openverse, filtered to CC0, pu
 
 - **Language.** Articles are written in English by default (`site.language: en`). Switch to `ne` for Nepali. Sources are read in both either way.
 - **Image generation provider.** OpenAI's image API is wired in because it is the most common choice. Any other provider can be added in `newsroom/images.py::generate_image`.
-- **Feed URLs.** The native RSS addresses in `config/sources.yaml` have not all been confirmed live from this project. Run the *Check sources* workflow: its summary lists which native feeds answer and which sources are running on the Google News fallback.
+- **Feed coverage.** On 2026-09-26 a GitHub Actions runner confirmed 14 of the 17 native feeds. Kantipur, The Himalayan Times and Setopati English expose no reachable feed and run on the Google News fallback, which delivered 27, 1 and 17 items respectively that day. The *Check sources* workflow repeats this check weekly and suggests feed URLs for anything that breaks.
 - **Openverse** allows unauthenticated requests with a low hourly limit. Commons is queried first, so this rarely matters, but registering for an Openverse key is an option if it does.
 
 ## Corrections

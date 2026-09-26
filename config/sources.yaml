@@ -4,8 +4,10 @@
 # native feed fails, or returns nothing inside the window, the pipeline falls
 # back to a Google News RSS search restricted to that domain. Run
 # `python -m newsroom check-sources` (or the "Check sources" workflow) to see
-# which native feeds answer. Feeds marked `verified: false` have not yet been
-# confirmed live from this project.
+# which native feeds answer. `verified: true` means the feed returned items
+# from a GitHub Actions runner on 2026-09-26. `note` explains the exceptions.
+# `user_agent: browser` makes the fetch identify as a browser for outlets that
+# refuse feed readers.
 
 sources:
   # Nepali language
@@ -14,88 +16,94 @@ sources:
     rss: "https://ekantipur.com/rss"
     language: "ne"
     verified: false
+    note: "403 for feed readers and no feed advertised, runs on the Google News fallback"
   - name: "OnlineKhabar"
     domain: "onlinekhabar.com"
     rss: "https://www.onlinekhabar.com/feed"
     language: "ne"
-    verified: false
+    verified: true
   - name: "Setopati"
     domain: "setopati.com"
     rss: "https://www.setopati.com/feed"
     language: "ne"
-    verified: false
+    verified: true
   - name: "Ratopati"
     domain: "ratopati.com"
     rss: "https://ratopati.com/feed"
     language: "ne"
-    verified: false
+    verified: true
   - name: "Himal Khabar"
     domain: "himalkhabar.com"
     rss: "https://www.himalkhabar.com/feed"
     language: "ne"
-    verified: false
+    verified: true
+    note: "weekly magazine, the feed is often empty inside a 24 hour window"
   - name: "BBC Nepali"
     domain: "bbc.com/nepali"
     rss: "https://feeds.bbci.co.uk/nepali/rss.xml"
     language: "ne"
-    verified: false
+    verified: true
   - name: "DC Nepal"
     domain: "dcnepal.com"
-    rss: "https://www.dcnepal.com/feed"
+    rss: "https://www.dcnepal.com/feed/"
     language: "ne"
-    verified: false
+    verified: true
+    note: "the trailing slash matters, /feed returns 404"
   - name: "Nepal Press"
     domain: "nepalpress.com"
-    rss: "https://www.nepalpress.com/feed"
+    rss: "https://nepalpress.com/feed/"
     language: "ne"
-    verified: false
+    verified: true
+    note: "www.nepalpress.com/feed returns 403, the bare domain with a trailing slash works"
   - name: "Annapurna Post"
     domain: "annapurnapost.com"
     rss: "https://annapurnapost.com/rss"
     language: "ne"
-    verified: false
+    verified: true
   - name: "Nagarik News"
     domain: "nagariknews.nagariknetwork.com"
     rss: "https://nagariknews.nagariknetwork.com/feed"
     language: "ne"
-    verified: false
+    verified: true
 
   # English language
   - name: "The Kathmandu Post"
     domain: "kathmandupost.com"
     rss: "https://kathmandupost.com/rss"
     language: "en"
-    verified: false
+    verified: true
   - name: "OnlineKhabar English"
     domain: "english.onlinekhabar.com"
     rss: "https://english.onlinekhabar.com/feed"
     language: "en"
-    verified: false
+    verified: true
   - name: "The Himalayan Times"
     domain: "thehimalayantimes.com"
     rss: "https://thehimalayantimes.com/feed"
     language: "en"
     verified: false
+    note: "no feed found by autodiscovery or common paths, runs on the Google News fallback"
   - name: "Republica"
     domain: "myrepublica.nagariknetwork.com"
-    rss: "https://myrepublica.nagariknetwork.com/rss"
+    rss: "https://myrepublica.nagariknetwork.com/feeds"
     language: "en"
-    verified: false
+    verified: true
   - name: "Setopati English"
     domain: "en.setopati.com"
     rss: "https://en.setopati.com/feed"
     language: "en"
     verified: false
+    note: "/feed returns 500 and nothing else was found, runs on the Google News fallback"
   - name: "The Rising Nepal"
     domain: "risingnepaldaily.com"
     rss: "https://risingnepaldaily.com/rss"
     language: "en"
-    verified: false
+    verified: true
   - name: "Nepali Times"
     domain: "nepalitimes.com"
     rss: "https://nepalitimes.com/feed"
     language: "en"
-    verified: false
+    verified: true
 
 # Broad Google News searches. `when:1d` limits results to the last day.
 google_news:
