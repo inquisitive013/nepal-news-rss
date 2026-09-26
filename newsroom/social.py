@@ -42,7 +42,7 @@ ENV_KEYS: dict[str, list[str]] = {
     "mastodon": ["MASTODON_BASE_URL", "MASTODON_ACCESS_TOKEN"],
 }
 
-LIMITS = {"x": 280, "facebook": 5000, "instagram": 2200, "threads": 500, "telegram": 1024, "bluesky": 300, "mastodon": 500}
+LIMITS = {"x": 280, "facebook": 60000, "instagram": 2200, "threads": 500, "telegram": 1024, "bluesky": 300, "mastodon": 500}
 X_URL_LENGTH = 23  # every link counts as 23 characters on X
 DEFAULT_HASHTAGS = {"x": 2, "facebook": 3, "instagram": 8, "threads": 3, "telegram": 0, "bluesky": 2, "mastodon": 3}
 META_GRAPH = "https://graph.facebook.com"
@@ -137,6 +137,24 @@ def fit(text: str, limit: int) -> str:
     return cut + "…"
 
 
+def plain_text(markdown: str) -> str:
+    """The article body without markdown marks: headings become their own line, links keep their text."""
+    text = markdown or ""
+    text = re.sub(r"^[ \t]*#{1,6}[ \t]*", "", text, flags=re.M)
+    text = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", text)
+    text = re.sub(r"(\*\*|__)(.+?)\1", r"\2", text)
+    text = re.sub(r"(?<!\w)([*_])(?!\s)(.+?)(?<!\s)\1(?!\w)", r"\2", text)
+    text = re.sub(r"^[ \t]*[-*][ \t]+", "• ", text, flags=re.M)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+
+def facebook_mode(settings: Settings) -> str:
+    """'photo': the picture with the whole article as caption. 'link': a short post with a link card."""
+    mode = str(settings.get("social.facebook.mode", "photo") or "photo").lower()
+    return mode if mode in ("photo", "link") else "photo"
+
+
 def article_url(settings: Settings, article: Article) -> str:
     return f"{settings.site_url.rstrip('/')}/articles/{article.slug}/"
 
@@ -159,6 +177,22 @@ def compose(network: str, article: Article, settings: Settings) -> str:
         budget = limit - X_URL_LENGTH - 2 - (len(tags) + 2 if tags else 0)
         return "\n\n".join(p for p in (fit(hook, budget), url, tags) if p)
     if network == "facebook":
+        if facebook_mode(settings) == "photo" and article.image:
+            # The whole story on Facebook itself, the way pages with a following post it.
+            names = []
+            for src in article.sources:
+                name = (src.get("name") or "").strip()
+                if name and name not in names:
+                    names.append(name)
+            parts = [
+                article.headline.strip(),
+                article.dek.strip(),
+                plain_text(article.body_markdown),
+                ("Sources: " + ", ".join(names)) if names else "",
+                f"Full story with links: {url}",
+                tags,
+            ]
+            return fit("\n\n".join(p for p in parts if p), limit)
         parts = [article.headline.strip(), hook if hook != article.headline.strip() else "", url, tags]
         return fit("\n\n".join(p for p in parts if p), limit)
     if network == "instagram":
@@ -239,11 +273,16 @@ def check_x(client: httpx.Client, environ: Mapping[str, str]) -> str:
     return "@" + str((data.get("data") or {}).get("username", "?"))
 
 
-def post_facebook(client: httpx.Client, environ: Mapping[str, str], text: str, art_url: str, img_url: str) -> tuple[str, str]:
+def post_facebook(client: httpx.Client, environ: Mapping[str, str], text: str, art_url: str, img_url: str, *, mode: str = "photo") -> tuple[str, str]:
     page = environ["FACEBOOK_PAGE_ID"]
-    url = f"{META_GRAPH}/{_graph_version(environ)}/{page}/feed"
-    data = _raise_for(client.post(url, data={"message": text, "link": art_url, "access_token": environ["FACEBOOK_PAGE_TOKEN"]}), "Facebook")
-    post_id = str(data.get("id", ""))
+    token = environ["FACEBOOK_PAGE_TOKEN"]
+    base = f"{META_GRAPH}/{_graph_version(environ)}/{page}"
+    if mode == "photo" and img_url:
+        data = _raise_for(client.post(f"{base}/photos", data={"url": img_url, "caption": text, "access_token": token}), "Facebook")
+        post_id = str(data.get("post_id") or data.get("id") or "")
+    else:
+        data = _raise_for(client.post(f"{base}/feed", data={"message": text, "link": art_url, "access_token": token}), "Facebook")
+        post_id = str(data.get("id", ""))
     return post_id, f"https://www.facebook.com/{post_id}" if post_id else ""
 
 
@@ -502,6 +541,8 @@ def post_article(
                 kwargs["sleep"] = sleep
             if network == "bluesky":
                 kwargs["article"] = article
+            if network == "facebook":
+                kwargs["mode"] = facebook_mode(settings) if article.image else "link"
             post_id, url = POSTERS[network](client, environ, text, rec.article_url, img, **kwargs)
             rec.posts.append(Post(network=network, status="posted", text=text, id=post_id, url=url, posted_at=utcnow_iso()))
             log.info("posted %s to %s: %s", article.id, network, url or post_id)

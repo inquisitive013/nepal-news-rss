@@ -27,6 +27,7 @@ def _article(settings, slug="bagmati-floods-140-households", with_image=True):
         body_markdown="Body.",
         language="en",
         tags=["nepal-floods", "bagmati", "kathmandu", "नेपाल"],
+        sources=[{"name": "Kathmandu Post", "url": "https://kathmandupost.com/x", "used_for": "toll"}, {"name": "OnlineKhabar", "url": "https://onlinekhabar.com/y", "used_for": "quotes"}],
         social_hook="140 households moved in one night. Police say the warning came too late.",
         run_date="2026-09-26",
         published_at="2026-09-26T06:30:00+00:00",
@@ -89,7 +90,19 @@ def test_compose_respects_each_network(tmp_path):
     th = social.compose("threads", art, settings)
     assert len(th) <= 500
     fb = social.compose("facebook", art, settings)
-    assert fb.startswith(art.headline)
+    assert fb.startswith(art.headline) and "Full story with links:" in fb and "Sources: " in fb
+    art_no_image = _article(settings, with_image=False)
+    fb_link = social.compose("facebook", art_no_image, settings)
+    assert fb_link.startswith(art_no_image.headline) and f"{SITE}/articles/" in fb_link and "Sources:" not in fb_link
+
+
+def test_plain_text_strips_markdown():
+    md = "## A heading\n\nSome **bold** and *italic* text with a [link](https://x.y).\n\n- one\n- two"
+    out = social.plain_text(md)
+    assert out.startswith("A heading\n\nSome bold and italic text with a link.")
+    # a heading after a paragraph keeps its blank line
+    assert social.plain_text("Para one.\n\n## Heading\n\nPara two.") == "Para one.\n\nHeading\n\nPara two."
+    assert "• one\n• two" in out and "**" not in out and "](" not in out
 
 
 def test_configured_networks_need_every_secret(tmp_path):
@@ -114,6 +127,11 @@ def _fake_network(calls):
             assert request.headers["Authorization"].startswith("OAuth ")
             assert json.loads(request.content)["text"]
             return httpx.Response(201, json={"data": {"id": "1001", "text": "t"}})
+        if "graph.facebook.com" in url and url.endswith("/111/photos"):
+            body = dict(httpx.QueryParams(request.content.decode()))
+            assert body["url"].endswith(".jpg") and body["access_token"] == "fbtok"
+            assert "Full story with links: " + SITE in body["caption"] and "Sources:" in body["caption"]
+            return httpx.Response(200, json={"id": "90", "post_id": "111_2002"})
         if "graph.facebook.com" in url and url.endswith("/111/feed"):
             body = dict(httpx.QueryParams(request.content.decode()))
             assert body["link"].startswith(SITE) and body["access_token"] == "fbtok"
