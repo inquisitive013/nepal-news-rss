@@ -24,9 +24,8 @@ jobs:
   edition:
     runs-on: ubuntu-latest
     timeout-minutes: 120
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    outputs:
+      no_key: ${{ steps.newsroom.outputs.no_key }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,8 +38,16 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run the newsroom and build the site
+        id: newsroom
         env:
+          # Option A: a repository secret holding an Anthropic API key.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Option B: identity federation. Non secret IDs stored as repository variables.
+          # The workflow's GitHub identity token is minted on demand by the pipeline.
+          ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+          ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+          ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           # A repository variable SITE_URL overrides the default project Pages address.
           SITE_URL_OVERRIDE: ${{ vars.SITE_URL }}
@@ -48,13 +55,17 @@ jobs:
         run: |
           export SITE_URL="${SITE_URL_OVERRIDE:-https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}}"
           echo "Site URL: $SITE_URL"
-          if [ -z "${ANTHROPIC_API_KEY}" ] && [ -z "${NEWSROOM_MOCK}" ]; then
-            echo "::warning::ANTHROPIC_API_KEY secret is not set. Rebuilding the site from existing data without a new edition."
-            echo "NO_KEY=true" >> "$GITHUB_ENV"
+          if [ -n "${ANTHROPIC_API_KEY}" ]; then
+            echo "Model access: API key secret"
+          elif [ -n "${ANTHROPIC_FEDERATION_RULE_ID}" ] && [ -n "${ANTHROPIC_ORGANIZATION_ID}" ]; then
+            echo "Model access: identity federation (rule ${ANTHROPIC_FEDERATION_RULE_ID})"
+          elif [ -z "${NEWSROOM_MOCK}" ]; then
+            echo "::warning::No Anthropic credentials configured. Rebuilding the site from existing data without a new edition."
+            echo "no_key=true" >> "$GITHUB_OUTPUT"
             python -m newsroom build --out site
-          else
-            python -m newsroom run --build --out site --root-rss
+            exit 0
           fi
+          python -m newsroom run --build --out site --root-rss
 
       - name: Commit the edition data
         if: ${{ inputs.mock != true }}
@@ -82,7 +93,7 @@ jobs:
         if: ${{ inputs.mock != true }}
         uses: actions/configure-pages@v5
         with:
-          # Try to switch the repository to Actions based Pages if it is not already.
+          # Creates the Pages site if the repository has none yet.
           enablement: true
 
       - name: Upload Pages artifact
@@ -90,23 +101,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: site
-
-      - name: Deploy to GitHub Pages
-        if: ${{ inputs.mock != true }}
-        id: deploy
-        uses: actions/deploy-pages@v4
-
-      - name: Fail loudly when no edition could run
-        if: ${{ env.NO_KEY == 'true' }}
-        run: |
-          {
-            echo "## No edition today"
-            echo
-            echo "The site was rebuilt and deployed from existing data, but no new edition ran because the **ANTHROPIC_API_KEY** secret is missing."
-            echo "Add it under Settings, Secrets and variables, Actions, then run this workflow again."
-          } >> "$GITHUB_STEP_SUMMARY"
-          echo "::error::ANTHROPIC_API_KEY secret is missing. Site deployed, no edition produced."
-          exit 1
 
       - name: Run summary
         if: always()
@@ -128,3 +122,31 @@ jobs:
               print(f"- Error: {e.splitlines()[0][:200]}")
           PY
           fi
+
+  deploy:
+    # A separate job so the newsroom job keeps a plain branch identity for federation.
+    needs: edition
+    if: ${{ inputs.mock != true }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Fail loudly when no edition could run
+        if: ${{ needs.edition.outputs.no_key == 'true' }}
+        run: |
+          {
+            echo "## No edition today"
+            echo
+            echo "The site was rebuilt and deployed from existing data, but no new edition ran because no Anthropic credentials are configured."
+            echo
+            echo "Either add the **ANTHROPIC_API_KEY** repository secret, or set up identity federation and add the"
+            echo "**ANTHROPIC_FEDERATION_RULE_ID**, **ANTHROPIC_ORGANIZATION_ID** and **ANTHROPIC_SERVICE_ACCOUNT_ID** repository variables."
+            echo "See the README section \"Model credentials\". Then run this workflow again."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error::No Anthropic credentials configured. Site deployed, no edition produced."
+          exit 1

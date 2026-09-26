@@ -29,8 +29,15 @@ def cmd_run(args) -> int:
     from .pipeline import run
 
     settings = _settings(args)
-    if not settings.mock and not os.environ.get("ANTHROPIC_API_KEY") and not os.environ.get("ANTHROPIC_AUTH_TOKEN"):
-        logging.warning("ANTHROPIC_API_KEY is not set. The SDK will look for an `ant auth login` profile.")
+    if not settings.mock:
+        from .llm import auth_mode, scrub_empty_credentials
+
+        scrub_empty_credentials()
+        mode = auth_mode()
+        if mode == "sdk_default":
+            logging.warning("No ANTHROPIC_API_KEY and no federation variables set. The SDK will look for an `ant auth login` profile.")
+        else:
+            logging.info("model access via %s", mode)
     run_log = run(settings)
     totals = run_log.usage_totals()
     print(json.dumps({"run_date": run_log.run_date, "status": run_log.status, "published": run_log.published, "rejected": run_log.rejected, "errors": run_log.errors[:5], "usage": totals}, ensure_ascii=False, indent=2))
@@ -113,6 +120,25 @@ def cmd_check_sources(args) -> int:
     return 0
 
 
+def cmd_auth_check(args) -> int:
+    """Prove the model credentials work without spending tokens."""
+    from .llm import auth_mode, build_client, scrub_empty_credentials
+
+    settings = _settings(args)
+    scrub_empty_credentials()
+    mode = auth_mode()
+    model = settings.role_model("writer")
+    print(f"credential source: {mode}")
+    try:
+        client = build_client(timeout=60.0, max_retries=1)
+        info = client.models.retrieve(model)
+    except Exception as exc:  # noqa: BLE001 - report every failure the same way
+        print(f"FAILED: {type(exc).__name__}: {str(exc)[:400]}")
+        return 1
+    print(f"ok: authenticated and found model {getattr(info, 'id', model)}")
+    return 0
+
+
 def cmd_build(args) -> int:
     settings = _settings(args)
     out = publish.build_site(settings, Path(args.out))
@@ -140,6 +166,9 @@ def main(argv=None) -> int:
     p_dis.add_argument("--fixtures")
     p_dis.add_argument("--json", action="store_true")
     p_dis.set_defaults(func=cmd_discover)
+
+    p_auth = sub.add_parser("auth-check", help="verify the Anthropic credentials (API key or identity federation) without spending tokens")
+    p_auth.set_defaults(func=cmd_auth_check)
 
     p_chk = sub.add_parser("check-sources", help="probe every live feed and image provider, print a health report")
     p_chk.add_argument("--no-probe", action="store_true", help="skip feed autodiscovery for failing sources")

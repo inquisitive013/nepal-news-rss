@@ -42,12 +42,24 @@ Every model call is one request to the Claude API asking for a JSON object that 
 
 ## Setup
 
-1. **Add secrets** under *Settings → Secrets and variables → Actions*:
-   - `ANTHROPIC_API_KEY` (required)
-   - `OPENAI_API_KEY` (optional; turns on AI illustrations when no licensed photo fits. Without it the cover card is used.)
-2. **Turn on GitHub Pages** under *Settings → Pages* and set *Source* to **GitHub Actions**. One time only.
-3. **Run it once by hand**: *Actions → Daily edition → Run workflow*. Tick *mock* first if you want a dry run that touches nothing.
+1. **Give the workflow model credentials** (one of the two options under *Model credentials* below).
+2. **Optional**: add an `OPENAI_API_KEY` secret to turn on AI illustrations when no licensed photo fits. Without it the cover card is used.
+3. **Run it once by hand**: *Actions → Daily edition → Run workflow*. Tick *mock* first if you want a dry run that touches nothing. The workflow creates the GitHub Pages site on first deploy.
 4. From then on the edition publishes every day at 06:15 Nepal time. Change the cron in `.github/workflows/daily.yml` if you want another hour.
+
+## Model credentials
+
+The workflow accepts either an API key or Anthropic's identity federation. If both are configured the key wins. *Actions → Check model credentials* verifies whichever you set up without spending tokens.
+
+**Option A, API key.** Create a key in the Claude Console under *Settings → API keys* and store it as the repository secret `ANTHROPIC_API_KEY`.
+
+**Option B, identity federation (no key to store).** GitHub Actions proves its identity to Anthropic with a short lived token on every run.
+1. In the Claude Console open *Settings → Workload identity*, click *Connect workload* and choose the *GitHub Actions* tile.
+2. Fill in the rule: repository `inquisitive013/nepal-news-rss`, branch `main` (subject `repo:inquisitive013/nepal-news-rss:ref:refs/heads/main`), audience `https://api.anthropic.com`, scope `workspace:inference` (or the default `workspace:developer`), token lifetime `3600`.
+3. Copy the IDs the wizard shows and store them as repository **variables** (not secrets, they are not sensitive) under *Settings → Secrets and variables → Actions → Variables*: `ANTHROPIC_FEDERATION_RULE_ID` (`fdrl_...`), `ANTHROPIC_ORGANIZATION_ID` (the UUID from *Settings → Organization*), `ANTHROPIC_SERVICE_ACCOUNT_ID` (`svac_...`). Add `ANTHROPIC_WORKSPACE_ID` only if the rule covers more than one workspace.
+4. Run *Check model credentials*. The wizard waits fifteen minutes for a first successful exchange, so run it soon after finishing the wizard.
+
+The pipeline mints a fresh GitHub identity token for each exchange, which is what Anthropic requires: those tokens expire after about five minutes and each one is accepted once.
 
 Optional: a repository variable `SITE_URL` if the site lives on a custom domain. Otherwise `https://<owner>.github.io/<repo>` is assumed for absolute links in the feed and social cards.
 
