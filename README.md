@@ -51,7 +51,7 @@ Every model call is one request to the Claude API asking for a JSON object that 
 
 The workflow accepts either an API key or Anthropic's identity federation. If both are configured the key wins. *Actions → Check model credentials* verifies whichever you set up without spending tokens.
 
-**Option A, API key.** Create a key in the Claude Console under *Settings → API keys* and store it as the repository secret `ANTHROPIC_API_KEY`.
+**Option A, API key.** Create a key in the Claude Console under *Settings → API keys*, scoped to one workspace and with no expiration, and store it as the repository secret `ANTHROPIC_API_KEY`. A key that is not scoped to a workspace needs the repository variable `ANTHROPIC_WORKSPACE_ID` as well.
 
 **Option B, identity federation (no key to store).** GitHub Actions proves its identity to Anthropic with a short lived token on every run.
 1. In the Claude Console open *Settings → Workload identity*, click *Connect workload* and choose the *GitHub Actions* tile.

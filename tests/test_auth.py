@@ -45,3 +45,9 @@ def test_make_credentials_selects_federation_only_when_configured():
     assert isinstance(creds, WorkloadIdentityCredentials)
     with pytest.raises(llm.LLMError):
         llm.make_credentials({"ANTHROPIC_FEDERATION_RULE_ID": "fdrl_1", "ANTHROPIC_ORGANIZATION_ID": "org"})
+
+
+def test_client_kwargs_adds_workspace_header_only_for_static_keys():
+    assert llm.client_kwargs({"ANTHROPIC_API_KEY": "sk", "ANTHROPIC_WORKSPACE_ID": "wrkspc_1"}) == {"default_headers": {"anthropic-workspace-id": "wrkspc_1"}}
+    assert llm.client_kwargs({"ANTHROPIC_API_KEY": "sk"}) == {}
+    assert llm.client_kwargs({"ANTHROPIC_FEDERATION_RULE_ID": "fdrl_1", "ANTHROPIC_ORGANIZATION_ID": "org", "ANTHROPIC_WORKSPACE_ID": "wrkspc_1"}) == {}
