@@ -100,6 +100,8 @@ def test_plain_text_strips_markdown():
     md = "## A heading\n\nSome **bold** and *italic* text with a [link](https://x.y).\n\n- one\n- two"
     out = social.plain_text(md)
     assert out.startswith("A heading\n\nSome bold and italic text with a link.")
+    # a heading after a paragraph keeps its blank line
+    assert social.plain_text("Para one.\n\n## Heading\n\nPara two.") == "Para one.\n\nHeading\n\nPara two."
     assert "• one\n• two" in out and "**" not in out and "](" not in out
 
 

@@ -140,11 +140,11 @@ def fit(text: str, limit: int) -> str:
 def plain_text(markdown: str) -> str:
     """The article body without markdown marks: headings become their own line, links keep their text."""
     text = markdown or ""
-    text = re.sub(r"^\s*#{1,6}\s*", "", text, flags=re.M)
+    text = re.sub(r"^[ \t]*#{1,6}[ \t]*", "", text, flags=re.M)
     text = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", text)
     text = re.sub(r"(\*\*|__)(.+?)\1", r"\2", text)
     text = re.sub(r"(?<!\w)([*_])(?!\s)(.+?)(?<!\s)\1(?!\w)", r"\2", text)
-    text = re.sub(r"^\s*[-*]\s+", "• ", text, flags=re.M)
+    text = re.sub(r"^[ \t]*[-*][ \t]+", "• ", text, flags=re.M)
     text = re.sub(r"\n{3,}", "\n\n", text)
     return text.strip()
 
