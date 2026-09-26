@@ -15,10 +15,12 @@ import copy
 import hashlib
 import json
 import logging
+import os
 import re
 import threading
 import time
-from typing import Any
+from typing import Any, Callable
+from urllib.parse import quote
 
 from .config import Settings
 from .models import UsageRecord
@@ -29,6 +31,17 @@ log = logging.getLogger(__name__)
 WEB_SEARCH_TOOL_TYPE = "web_search_20260209"
 FALLBACK_BETA = "server-side-fallback-2026-07-01"
 MAX_PAUSE_CONTINUATIONS = 5
+DEFAULT_OIDC_AUDIENCE = "https://api.anthropic.com"
+CREDENTIAL_ENV_VARS = (
+    "ANTHROPIC_API_KEY",
+    "ANTHROPIC_AUTH_TOKEN",
+    "ANTHROPIC_FEDERATION_RULE_ID",
+    "ANTHROPIC_ORGANIZATION_ID",
+    "ANTHROPIC_SERVICE_ACCOUNT_ID",
+    "ANTHROPIC_WORKSPACE_ID",
+    "ANTHROPIC_IDENTITY_TOKEN_FILE",
+    "ANTHROPIC_IDENTITY_TOKEN",
+)
 
 
 class LLMError(Exception):
@@ -174,6 +187,114 @@ class BaseLLM:
         raise NotImplementedError
 
 
+# --------------------------------------------------------------------------- credentials
+
+def scrub_empty_credentials(environ: dict[str, str] | None = None) -> list[str]:
+    """Remove credential variables that are set to an empty string.
+
+    CI systems export every configured secret, present or not. An empty
+    ANTHROPIC_API_KEY would otherwise win the SDK's precedence chain and shadow
+    identity federation. Returns the names that were removed.
+    """
+    env = os.environ if environ is None else environ
+    removed = []
+    for name in CREDENTIAL_ENV_VARS:
+        if name in env and env[name].strip() == "":
+            del env[name]
+            removed.append(name)
+    return removed
+
+
+def oidc_request_url(base_url: str, audience: str) -> str:
+    sep = "&" if "?" in base_url else "?"
+    return f"{base_url}{sep}audience={quote(audience, safe='')}"
+
+
+def github_oidc_token_provider(environ: dict[str, str] | None = None) -> Callable[[], str] | None:
+    """A provider that mints a fresh GitHub Actions identity token on every call.
+
+    GitHub tokens expire after about five minutes and Anthropic accepts each one
+    once, so the token must be minted at exchange time, not once per job.
+    """
+    env = os.environ if environ is None else environ
+    url = env.get("ACTIONS_ID_TOKEN_REQUEST_URL", "")
+    bearer = env.get("ACTIONS_ID_TOKEN_REQUEST_TOKEN", "")
+    if not url or not bearer:
+        return None
+    audience = env.get("ANTHROPIC_OIDC_AUDIENCE") or DEFAULT_OIDC_AUDIENCE
+    full_url = oidc_request_url(url, audience)
+
+    def mint() -> str:
+        import httpx
+
+        with httpx.Client(timeout=30.0) as client:
+            resp = client.get(full_url, headers={"Authorization": f"Bearer {bearer}", "Accept": "application/json"})
+            resp.raise_for_status()
+            token = resp.json().get("value", "")
+        if not token:
+            raise LLMError("GitHub returned no identity token")
+        return token
+
+    return mint
+
+
+def auth_mode(environ: dict[str, str] | None = None) -> str:
+    """Which credential the client will use: api_key, auth_token, federation or sdk_default."""
+    env = os.environ if environ is None else environ
+    if env.get("ANTHROPIC_API_KEY"):
+        return "api_key"
+    if env.get("ANTHROPIC_AUTH_TOKEN"):
+        return "auth_token"
+    if env.get("ANTHROPIC_FEDERATION_RULE_ID") and env.get("ANTHROPIC_ORGANIZATION_ID"):
+        return "federation"
+    return "sdk_default"
+
+
+def make_credentials(environ: dict[str, str] | None = None):
+    """Build explicit federation credentials when the environment asks for them.
+
+    Returns None when an API key or auth token is present (they take precedence,
+    matching the SDK), or when federation is not configured, so the SDK's own
+    resolution runs. When running inside GitHub Actions the identity token is
+    minted on demand; otherwise the SDK's file or literal token providers are used.
+    """
+    env = os.environ if environ is None else environ
+    if auth_mode(env) != "federation":
+        return None
+    from anthropic.lib.credentials import IdentityTokenFile, WorkloadIdentityCredentials
+
+    provider = github_oidc_token_provider(env)
+    if provider is None:
+        if env.get("ANTHROPIC_IDENTITY_TOKEN_FILE"):
+            provider = IdentityTokenFile(env["ANTHROPIC_IDENTITY_TOKEN_FILE"])
+        elif env.get("ANTHROPIC_IDENTITY_TOKEN"):
+            literal = env["ANTHROPIC_IDENTITY_TOKEN"]
+            provider = lambda: literal  # noqa: E731
+        else:
+            raise LLMError(
+                "Identity federation is configured but no identity token source is available. "
+                "Run inside GitHub Actions with id-token: write, or set ANTHROPIC_IDENTITY_TOKEN_FILE."
+            )
+    return WorkloadIdentityCredentials(
+        identity_token_provider=provider,
+        federation_rule_id=env["ANTHROPIC_FEDERATION_RULE_ID"],
+        organization_id=env["ANTHROPIC_ORGANIZATION_ID"],
+        service_account_id=env.get("ANTHROPIC_SERVICE_ACCOUNT_ID") or None,
+        workspace_id=env.get("ANTHROPIC_WORKSPACE_ID") or None,
+    )
+
+
+def build_client(timeout: float = 600.0, max_retries: int = 3):
+    """Construct the Anthropic client with whichever credential the environment provides."""
+    import anthropic
+
+    scrub_empty_credentials()
+    creds = make_credentials()
+    if creds is not None:
+        return anthropic.Anthropic(credentials=creds, timeout=timeout, max_retries=max_retries)
+    return anthropic.Anthropic(timeout=timeout, max_retries=max_retries)
+
+
 # --------------------------------------------------------------------------- live client
 
 class ClaudeLLM(BaseLLM):
@@ -184,7 +305,9 @@ class ClaudeLLM(BaseLLM):
         import anthropic  # imported lazily so mock mode never needs the package
 
         self._anthropic = anthropic
-        self.client = anthropic.Anthropic(timeout=600.0, max_retries=3)
+        self.client = build_client()
+        self.auth_mode = auth_mode()
+        log.info("model access via %s", self.auth_mode)
         self.use_fallback = bool(settings.get("llm.refusal_fallback", True))
         self.use_format = True
         self._lock = threading.Lock()
