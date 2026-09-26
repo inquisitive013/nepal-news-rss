@@ -284,15 +284,31 @@ def make_credentials(environ: dict[str, str] | None = None):
     )
 
 
+def client_kwargs(environ: dict[str, str] | None = None) -> dict[str, Any]:
+    """Extra client arguments derived from the environment.
+
+    An API key that is not scoped to one workspace must name the workspace on
+    every request. ANTHROPIC_WORKSPACE_ID supplies it through a default header.
+    Federation tokens are workspace scoped at exchange time, so they never need it.
+    """
+    env = os.environ if environ is None else environ
+    kwargs: dict[str, Any] = {}
+    workspace = env.get("ANTHROPIC_WORKSPACE_ID", "").strip()
+    if workspace and auth_mode(env) in ("api_key", "auth_token"):
+        kwargs["default_headers"] = {"anthropic-workspace-id": workspace}
+    return kwargs
+
+
 def build_client(timeout: float = 600.0, max_retries: int = 3):
     """Construct the Anthropic client with whichever credential the environment provides."""
     import anthropic
 
     scrub_empty_credentials()
     creds = make_credentials()
+    extra = client_kwargs()
     if creds is not None:
-        return anthropic.Anthropic(credentials=creds, timeout=timeout, max_retries=max_retries)
-    return anthropic.Anthropic(timeout=timeout, max_retries=max_retries)
+        return anthropic.Anthropic(credentials=creds, timeout=timeout, max_retries=max_retries, **extra)
+    return anthropic.Anthropic(timeout=timeout, max_retries=max_retries, **extra)
 
 
 # --------------------------------------------------------------------------- live client
