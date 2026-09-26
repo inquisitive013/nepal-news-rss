@@ -80,11 +80,11 @@ def run(settings: Settings, llm: BaseLLM | None = None, now: datetime | None = N
     now_utc, run_date, date_label = newsroom_now(settings, now)
     run_log = RunLog(run_date=run_date, mode="mock" if settings.mock else "live")
     meter = UsageMeter(int(settings.get("pipeline.max_llm_calls", 90)))
-    llm = llm or make_llm(settings, meter)
-    meter = llm.meter
     fixtures = settings.fixtures_dir
 
     try:
+        llm = llm or make_llm(settings, meter)
+        meter = llm.meter
         # 1. Discovery
         candidates, health = discovery.discover(
             settings.sources,
