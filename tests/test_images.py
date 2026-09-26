@@ -72,6 +72,8 @@ def test_store_image_downscales_and_burns_credit(tmp_path):
     assert img.width == 1600 and img.height == 800
     assert asset.width == 1600
     assert "Example Photographer" in credit.line() and "CC BY-SA 4.0" in credit.line()
+    assert credit.line().startswith("File photo:")
+    assert ImageCredit(kind="found").line() == "File photo: source unknown"
 
 
 def test_pick_image_with_mock_chooses_first():

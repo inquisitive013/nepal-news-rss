@@ -47,7 +47,7 @@
     <figcaption>
       {% set c = article.image.credit %}
       {% if c.kind == 'found' %}
-        Photo: {% if c.title %}&ldquo;{{ c.title }}&rdquo; {% endif %}by {% if c.author_url %}<a href="{{ c.author_url }}" rel="nofollow">{{ c.author }}</a>{% else %}{{ c.author }}{% endif %}
+        File photo: {% if c.title %}&ldquo;{{ c.title }}&rdquo; {% endif %}by {% if c.author_url %}<a href="{{ c.author_url }}" rel="nofollow">{{ c.author }}</a>{% else %}{{ c.author }}{% endif %}
         via {% if c.source_url %}<a href="{{ c.source_url }}" rel="nofollow">{{ c.source }}</a>{% else %}{{ c.source }}{% endif %}
         {% if c.license %}· {% if c.license_url %}<a href="{{ c.license_url }}" rel="license nofollow">{{ c.license }}</a>{% else %}{{ c.license }}{% endif %}{% endif %}
       {% elif c.kind == 'generated' %}

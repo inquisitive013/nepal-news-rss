@@ -130,7 +130,9 @@ class ImageCredit:
             bits.append(f"via {self.source}")
         if self.license:
             bits.append(f"({self.license})")
-        return "Photo: " + " ".join(bits) if bits else "Photo: source unknown"
+        # Found pictures come from archives such as Wikimedia Commons, so they never
+        # show the day's events. Say so in the credit itself.
+        return "File photo: " + " ".join(bits) if bits else "File photo: source unknown"
 
 
 @dataclass
