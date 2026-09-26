@@ -139,6 +139,66 @@ def cmd_auth_check(args) -> int:
     return 0
 
 
+def cmd_social(args) -> int:
+    from . import social
+
+    settings = _settings(args)
+    networks = [n.strip() for n in args.networks.split(",") if n.strip()] if args.networks else None
+    configured = social.configured_networks(settings, os.environ)
+    if networks is None and not configured:
+        print("No social accounts connected. Add the secrets listed in the README under \"Social media\" to switch a network on.")
+        return 0
+    records = social.post_articles(
+        settings,
+        os.environ,
+        run_date=args.run_date,
+        max_age_hours=args.max_age_hours,
+        networks=networks,
+        dry_run=args.dry_run,
+        wait_seconds=args.wait,
+    )
+    if not records:
+        print(f"Nothing to post. Networks connected: {', '.join(configured) or 'none'}.")
+        return 0
+    print("## Social posts" + (" (dry run)" if args.dry_run else ""))
+    print()
+    print("| Article | Network | Result | Link |")
+    print("|---|---|---|---|")
+    failed = 0
+    for rec in records:
+        for post in rec.posts:
+            if post.status == "failed":
+                failed += 1
+            detail = post.url or post.id or post.error.replace("|", "/")[:120]
+            print(f"| {rec.article_id} | {post.network} | {post.status} | {detail} |")
+    if args.dry_run:
+        for rec in records:
+            for post in rec.posts:
+                print(f"\n--- {post.network} · {rec.article_id} ---\n{post.text}")
+    return 1 if failed else 0
+
+
+def cmd_social_check(args) -> int:
+    from . import social
+
+    settings = _settings(args)
+    rows = social.check_networks(settings, os.environ)
+    print("## Social media accounts")
+    print()
+    print("| Network | Configured | Works | Account | Note |")
+    print("|---|---|---|---|---|")
+    for r in rows:
+        print(f"| {r['network']} | {r['configured']} | {r['ok']} | {r['account']} | {r['note'].replace('|', '/')} |")
+    broken = [r for r in rows if r["configured"] == "yes" and r["ok"] != "yes"]
+    print()
+    if broken:
+        print(f"{len(broken)} connected network(s) failed the check: {', '.join(r['network'] for r in broken)}.")
+        return 1
+    connected = [r for r in rows if r["ok"] == "yes"]
+    print(f"{len(connected)} network(s) ready: {', '.join(r['network'] for r in connected) or 'none'}.")
+    return 0
+
+
 def cmd_build(args) -> int:
     settings = _settings(args)
     out = publish.build_site(settings, Path(args.out))
@@ -173,6 +233,17 @@ def main(argv=None) -> int:
     p_chk = sub.add_parser("check-sources", help="probe every live feed and image provider, print a health report")
     p_chk.add_argument("--no-probe", action="store_true", help="skip feed autodiscovery for failing sources")
     p_chk.set_defaults(func=cmd_check_sources)
+
+    p_soc = sub.add_parser("social", help="post the latest edition's articles to every connected social network")
+    p_soc.add_argument("--run-date", help="post the articles of this run (YYYY-MM-DD in newsroom time); default latest")
+    p_soc.add_argument("--max-age-hours", type=float, help="only articles published within this many hours")
+    p_soc.add_argument("--networks", help="comma separated subset, e.g. x,telegram")
+    p_soc.add_argument("--wait", type=float, help="seconds to wait for the article page to go live first")
+    p_soc.add_argument("--dry-run", action="store_true", help="compose the posts and print them, post nothing")
+    p_soc.set_defaults(func=cmd_social)
+
+    p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")
+    p_socchk.set_defaults(func=cmd_social_check)
 
     p_build = sub.add_parser("build", help="build the static site from data/")
     p_build.add_argument("--out", default="site")

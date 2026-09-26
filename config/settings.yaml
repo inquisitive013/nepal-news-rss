@@ -93,3 +93,15 @@ images:
     provider: "openai"
     openai_model: "gpt-image-1"
     size: "1536x1024"
+
+social:
+  # A network is switched on by its secrets alone (see README, "Social media").
+  # This list only sets the posting order.
+  networks: [x, facebook, instagram, threads, telegram, bluesky, mastodon]
+  # Announce only articles published within this many hours, so connecting a new account
+  # never floods it with the archive.
+  max_age_hours: 36
+  # Hashtags per network, built from each article's tags.
+  hashtags: {x: 2, facebook: 3, instagram: 8, threads: 3, telegram: 0, bluesky: 2, mastodon: 3}
+  # Instagram and Threads fetch the picture from the site, so wait for the page to be live.
+  wait_for_site_seconds: 180

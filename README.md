@@ -36,6 +36,9 @@ An automated newsroom for Nepal. Once a day it reads every major Nepali and Engl
           │
           ▼  approved by both
    data/articles/*.json ──▶ static site + rss.xml ──▶ GitHub Pages
+          │
+          ▼  once the page is live
+   X · Facebook · Instagram · Threads · Telegram · Bluesky · Mastodon
 ```
 
 Every model call is one request to the Claude API asking for a JSON object that matches a schema. Research roles get the server side web search tool. Every call's token usage is stored in the run log.
@@ -71,6 +74,7 @@ Optional: a repository variable `SITE_URL` if the site lives on a custom domain.
 | `data/rejected/` | Articles that failed validation, kept for audit |
 | `data/runs/<date>.json` | The whole day: feed health, candidates, stories, debates, verdicts, token usage |
 | `data/images/` | Stored images, downscaled, with a credit bar burned in |
+| `data/social/<article id>.json` | Every social post made for the article: network, id, link, text, or the error |
 | `rss.xml` | Copy of the live feed at the repo root, for automations that read the raw file |
 | `site/` | Built site, not committed, deployed to Pages by the workflow |
 
@@ -104,6 +108,26 @@ A live edition on the defaults makes about 30 model calls: one clustering call, 
 Measured so far, at list prices. The first live edition, on `claude-opus-5` at high effort with eight debated stories and two revision rounds, used 51 calls, about 675,000 input and 448,000 output tokens and 145 web searches, roughly 19 dollars, and published nothing because two drafts hit the output cap and the credit ran out on the third. The second edition, on `claude-sonnet-5` with `claude-opus-5-5` judges, six debated stories and two red team rounds, used 42 calls, about 402,000 input and 234,000 output tokens, 2.9 million cached input tokens and 84 web searches, roughly 6.40 dollars in 29 minutes. It published one of three drafts; the other two were rejected for a single misplaced fact each after the one revision round was spent, with no way to fix it.
 
 The current defaults come from that run's per call costs: three debated stories, one red team pass per article, then judge 1, the reviser and judge 2 as the final check. That removes the second red team and defence passes, the most expensive calls of the day, and gives every draft a revision before it is judged for the last time. Expected cost about 4.50 dollars a day, plus a few cents per AI generated image on OpenAI. Keep the Claude account credit topped up or turn on auto reload, because a run that hits an empty balance stops and publishes nothing. Set models and effort per role under `llm.roles`. Requests opt into the server side refusal fallback (beta) so a safety decline on one role is retried on the recommended fallback model instead of killing the story; set `llm.refusal_fallback: false` to turn that off.
+
+## Social media
+
+Every approved article is announced on the networks you connect, right after the site deploys. A network is switched on by its secrets alone, added under *Settings → Secrets and variables → Actions → New repository secret*. No secrets, no posts, no error. *Actions → Check social accounts* verifies every connected account without posting anything. Each post is recorded in `data/social/`, one file per article, so a rerun never posts the same article twice. `python -m newsroom social --dry-run` prints what would go out.
+
+The text comes from the article's headline, dek, social hook and tags, cut to each network's limit, hashtags last. Instagram, Threads and Telegram receive the article picture. X, Facebook, Bluesky and Mastodon show the link card that the article page's Open Graph tags describe. Only articles published in the last `social.max_age_hours` (36) are announced, so connecting a new account never floods it with the archive.
+
+| Network | Secrets | Where they come from |
+|---|---|---|
+| X | `X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_TOKEN_SECRET` | developer.x.com: create a project and an app. Under *User authentication settings* choose *Read and write* first, then in *Keys and tokens* generate the API key and secret and the access token and secret. A token generated before the permission change stays read only. The free tier allows posting, with a monthly cap that three posts a day stays well under. |
+| Facebook Page | `FACEBOOK_PAGE_ID`, `FACEBOOK_PAGE_TOKEN` | developers.facebook.com: create an app (type *Business*). In *Tools → Graph API Explorer* pick the app, choose *Get Page Access Token*, select your Page and grant `pages_manage_posts` and `pages_read_engagement`. That token lasts an hour. Open it in *Tools → Access Token Debugger*, click *Extend Access Token*, then in the Explorer call `me/accounts` with the extended token: the `access_token` it returns for your Page does not expire, and `id` is the Page ID. An app still in development mode can post to Pages you administer. |
+| Instagram | `INSTAGRAM_USER_ID`, `INSTAGRAM_ACCESS_TOKEN` | The Instagram account must be Professional (Business or Creator) and linked to that Facebook Page (Instagram app: *Settings → Business tools and controls*, or the Page's settings). When generating the Page token above also grant `instagram_basic` and `instagram_content_publish`; the same token then works here. The ID comes from the Explorer: `{page-id}?fields=instagram_business_account`. Captions cannot carry a clickable link, so every caption ends with "Full story at the link in our bio" and the site address. Put the site address in the profile bio. Pictures must be JPEG between 4:5 and 1.91:1; the newsroom's generated pictures and cover cards fit, a very tall archive photo is refused and recorded as failed. |
+| Threads | `THREADS_USER_ID`, `THREADS_ACCESS_TOKEN` | In the same Meta app add the *Threads API* use case, add your Threads account as a *Threads Tester* and accept the invite in the Threads app (*Settings → Account → Website permissions → Invites*). Generate a long lived token with `threads_basic` and `threads_content_publish`. The user ID comes from `https://graph.threads.net/v1.0/me?access_token=...`. Long lived Threads tokens expire after 60 days; the check workflow tells you when one has, and a new one takes two minutes. |
+| Telegram | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | Message @BotFather in Telegram, send `/newbot`, copy the token. Create a public channel, add the bot as an administrator with permission to post, and use `@yourchannelname` as the chat ID. Ready in five minutes, no approval. |
+| Bluesky | `BLUESKY_HANDLE`, `BLUESKY_APP_PASSWORD` | Bluesky app: *Settings → Privacy and security → App passwords → Add app password*. The handle is the account name, for example `nepalwire.bsky.social`. No developer account needed. |
+| Mastodon | `MASTODON_BASE_URL`, `MASTODON_ACCESS_TOKEN` | On your instance: *Preferences → Development → New application*, scope `write:statuses`, copy the access token. The base URL is the instance, for example `https://mastodon.social`. |
+
+Meta's Graph API version defaults to `v23.0`; set the repository variable `META_GRAPH_VERSION` to move it.
+
+Not covered, and why: LinkedIn company pages need a partner programme approval and personal posting needs a browser login every 60 days; WhatsApp channels have no public posting API; TikTok and YouTube want video. For anything else, the feed at `/rss.xml` works with Zapier, IFTTT, Buffer, dlvr.it and similar tools.
 
 ## Rebuilding the site without a new edition
 
