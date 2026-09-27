@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Investigations · {{ site.name }}{% endblock %}
+{% block description %}What the coverage missed: the record behind Nepal's biggest stories, checked and sourced.{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1 class="page-title">Investigations</h1>
+  <p class="dek">Every story here starts where the wire stops. The desk pulls the record, follows the money, dates the promises and asks the question every report skipped. Each finding carries its evidence, and a red team opens every source before it runs.</p>
+</section>
+{% if investigations %}
+<section class="inv-list">
+  {% for inv in investigations %}
+  <article class="inv">
+    <a class="inv-card" href="{{ root }}{{ inv.url }}">{% if inv.card %}<img src="{{ root }}{{ inv.card }}" alt="{{ inv.article.image.alt }}" loading="lazy" width="1080" height="1400">{% endif %}</a>
+    <div class="inv-text">
+      <p class="kicker">{{ (inv.article.theme or 'investigation') }} · {{ inv.article.published_at | fmt_date('%d %B %Y') }}</p>
+      <h2><a href="{{ root }}{{ inv.url }}">{{ inv.article.headline }}</a></h2>
+      {% if inv.article.take %}<p class="hook"><strong>{{ site.name }}'s take.</strong> {{ inv.article.take }}</p>{% endif %}
+      <h3>What the coverage missed</h3>
+      <ul>
+      {% for a in inv.angles %}
+        <li><strong>{{ (a.kind or 'finding') | replace('_', ' ') }}.</strong> {{ a.claim }}{% for e in (a.evidence or [])[:2] %} <a href="{{ e.url }}" rel="nofollow">[{{ e.source or 'source' }}]</a>{% endfor %}</li>
+      {% endfor %}
+      </ul>
+      {% if inv.article.investigation.unanswered %}
+      <h3>What we still do not know</h3>
+      <ul>
+      {% for q in inv.article.investigation.unanswered[:3] %}
+        <li>{{ q.question }}{% if q.who_could_answer %} <span class="muted">{{ q.who_could_answer }} could answer.</span>{% endif %}</li>
+      {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% else %}
+<section class="empty">
+  <h2>The first investigation is in the works</h2>
+  <p>Every story the desk runs is dug into before it is written. The ones where the record gave up something the coverage missed will appear here.</p>
+</section>
+{% endif %}
+{% if site.members_url %}
+<section class="signup">
+  <h2>The documents behind the investigations</h2>
+  <p>Members get the filings, the gazette notices and the numbers behind each investigation, with the desk's notes on what they show and what they do not.</p>
+  <a class="button" href="{{ site.members_url }}">Become a member</a>
+</section>
+{% endif %}
+{% endblock %}

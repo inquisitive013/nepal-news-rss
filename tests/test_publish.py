@@ -129,3 +129,49 @@ def test_custom_domain_sets_every_address_and_writes_the_cname(tmp_path, monkeyp
     assert 'href="https://nepalwire.com/articles/rain-story/"' in (out / "articles" / "rain-story" / "index.html").read_text()
     monkeypatch.setenv("SITE_URL", "https://staging.example.org")
     assert settings.site_url == "https://staging.example.org"  # a repository variable overrides everything
+
+
+def test_the_money_and_trust_layer_builds(tmp_path):
+    settings = _settings(tmp_path)
+    raw = copy.deepcopy(settings.raw)
+    raw["site"].update({"contact_email": "desk@example.org", "google_site_verification": "tok-123", "facebook_followers": "10,300 followers as of September 2026"})
+    raw["newsletter"] = {"signup_url": "https://example.beehiiv.com/subscribe", "embed_html": "", "members_url": "https://example.beehiiv.com/upgrade"}
+    raw["ads"] = {"adsense_client": "ca-pub-1234567890123456"}
+    settings = dataclasses.replace(settings, raw=raw)
+    art = _article(settings)
+    art.take = "Nobody has said who signed off on the late warning."
+    art.investigation = {
+        "summary": "s",
+        "angles": [
+            {"kind": "record", "claim": "The district office promised embankment repairs in 2024.", "evidence": [{"url": "https://example.org/minutes", "source": "District minutes", "fact": "f"}]},
+            {"kind": "numbers", "claim": "No evidence here.", "evidence": []},
+        ],
+        "unanswered": [{"question": "Who approved the delay?", "who_could_answer": "The CDO"}],
+    }
+    publish.save_article(settings, art)
+    publish.save_article(settings, _article(settings, slug="petrol", headline="Petrol drops Rs 5 a litre"))
+    out = publish.build_site(settings, tmp_path / "site")
+    index = (out / "index.html").read_text()
+    assert 'name="google-site-verification" content="tok-123"' in index
+    assert "adsbygoogle.js?client=ca-pub-1234567890123456" in index
+    assert "cards/2026-09-26-rain-story.jpg" in index and "Nobody has said who signed off" in index
+    assert "https://example.beehiiv.com/subscribe" in index and "https://example.beehiiv.com/upgrade" in index
+    assert "The district office promised embankment repairs" in index  # the lead's missed angle
+    inv = (out / "investigations.html").read_text()
+    assert "The district office promised embankment repairs" in inv and "No evidence here." not in inv
+    assert "Who approved the delay?" in inv and "Petrol drops" not in inv
+    assert "desk@example.org" in (out / "sponsor.html").read_text() and "10,300 followers" in (out / "sponsor.html").read_text()
+    assert "Sponsors never see a story before publication" in (out / "standards.html").read_text()
+    assert "Subscribe free" in (out / "newsletter.html").read_text()
+    page = (out / "articles" / "rain-story" / "index.html").read_text()
+    assert page.count('class="adsbygoogle"') == 2 and "Get the daily wire" in page
+    assert (out / "ads.txt").read_text() == "google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0\n"
+    news = (out / "news-sitemap.xml").read_text()
+    assert "news:publication_date" in news and "/articles/rain-story/" in news
+    assert "news-sitemap.xml" in (out / "robots.txt").read_text()
+    assert "/investigations.html" in (out / "sitemap.xml").read_text()
+    # nothing configured: no ads, no verification tag, no ads.txt, the sign up box still renders a fallback
+    bare = publish.build_site(_settings(tmp_path), tmp_path / "site2")
+    bare_index = (bare / "index.html").read_text()
+    assert "adsbygoogle" not in bare_index and "google-site-verification" not in bare_index and not (bare / "ads.txt").exists()
+    assert "Sign up opens soon" in bare_index

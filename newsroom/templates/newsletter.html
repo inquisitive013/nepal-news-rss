@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}The daily wire · {{ site.name }}{% endblock %}
+{% block description %}Three verified Nepal stories every morning, with what the coverage missed, free by email.{% endblock %}
+{% block content %}
+<article class="story prose">
+<h1>The daily wire</h1>
+<p>Three stories every morning, before the commute. Each one argued, ranked, investigated and checked by four judges before it reaches you, with the desk's take on top and every source linked. Free.</p>
+<section class="signup signup-page">
+  {% if site.newsletter_embed %}{{ site.newsletter_embed | safe }}{% elif site.newsletter_url %}<a class="button" href="{{ site.newsletter_url }}">Subscribe free</a>{% else %}<p>Sign up opens soon. Until then the <a href="{{ root }}rss.xml">RSS feed</a> carries every story the moment it is published.</p>{% endif %}
+</section>
+<h2>Members</h2>
+<p>Members fund the investigations and get what the public story cannot hold: the filings, the gazette notices, the procurement entries and the numbers, with the desk's notes on what they prove and what they only suggest. One investigation a week, and the archive.</p>
+{% if site.members_url %}<p><a class="button" href="{{ site.members_url }}">Become a member</a></p>{% else %}<p class="small">Memberships open with the first weekly investigation.</p>{% endif %}
+<h2>What you will never get</h2>
+<p>Invented claims, unattributed allegations, a sponsor's story dressed as news, or your address passed to anyone. The <a href="{{ root }}standards.html">standards</a> apply to the email exactly as they apply to the site.</p>
+</article>
+{% endblock %}

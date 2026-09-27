@@ -149,6 +149,15 @@ Not covered, and why: LinkedIn company pages need a partner programme approval a
 
 The edition job fast forwards its checkout to the branch tip before it starts, so a run that queued behind another sees what that one published. Items already cited by an article from the last three days are dropped before clustering, and the clusterer and both ranking judges get the recent headlines under `recently_published`, so a story runs again only for a real development. If the commit at the end still collides with another push, the run fails and keeps `data/` and `rss.xml` as the workflow artifact `edition-data-<run id>` for 14 days, so nothing the models wrote is lost.
 
+## Money and trust: newsletter, members, sponsors, ads, search
+
+The site carries the layer that turns an audience into income, all switched on from `config/settings.yaml` and empty until the publisher fills them in:
+
+- `newsletter.signup_url` or `newsletter.embed_html`: the sign up box on the homepage, every article page, the newsletter page and the footer. `newsletter.members_url`: the paid tier for the investigations, linked wherever the box appears and on the investigations page.
+- `ads.adsense_client`: the Google AdSense publisher id. When set, the AdSense script loads on every page, two responsive ad units render on each article page (after the take and before the sources), and `ads.txt` is written.
+- `site.google_site_verification`: the Search Console HTML tag token. `site.contact_email`: shown on the sponsor and standards pages. `site.facebook_followers`: a verified line for the sponsor page.
+- Pages: `investigations.html` lists every story whose investigation produced evidenced angles, `standards.html` is the public standard, `sponsor.html` the media kit, `newsletter.html` the sign up page. `news-sitemap.xml` carries the last two days for Google News and `robots.txt` points at both sitemaps.
+
 ## Your own domain
 
 A github.io address ties the brand to a GitHub username. Buy a domain (nepalwire.com or similar), then at the registrar add four A records for `@` pointing at `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and `185.199.111.153`, and a CNAME record for `www` pointing at `<owner>.github.io`. Set `site.custom_domain` in `config/settings.yaml` to the bare domain and merge: every link the newsroom writes, the feed, the sitemap and the CNAME file switch to it on the next build. Then in the repository open *Settings → Pages → Custom domain*, enter the domain, save, and tick *Enforce HTTPS* once the certificate shows (up to an hour after the DNS records go live). Old github.io links redirect to the new address. A repository variable `SITE_URL` still overrides everything, for a staging copy.
