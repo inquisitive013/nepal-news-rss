@@ -160,6 +160,7 @@ def cmd_social(args) -> int:
         networks=networks,
         dry_run=args.dry_run,
         wait_seconds=args.wait,
+        article_ids=[a.strip() for a in (args.article or []) if a.strip()] or None,
     )
     if not records:
         print(f"Nothing to post. Networks connected: {', '.join(configured) or 'none'}.")
@@ -174,6 +175,8 @@ def cmd_social(args) -> int:
             if post.status == "failed":
                 failed += 1
             detail = post.url or post.id or post.error.replace("|", "/")[:120]
+            if post.scheduled_for:
+                detail = f"scheduled for {post.scheduled_for} · {detail}"
             print(f"| {rec.article_id} | {post.network} | {post.status} | {detail} |")
     if args.dry_run:
         for rec in records:
@@ -243,6 +246,7 @@ def main(argv=None) -> int:
     p_soc.add_argument("--max-age-hours", type=float, help="only articles published within this many hours")
     p_soc.add_argument("--networks", help="comma separated subset, e.g. x,telegram")
     p_soc.add_argument("--wait", type=float, help="seconds to wait for the article page to go live first")
+    p_soc.add_argument("--article", action="append", help="post this article id regardless of age; repeatable")
     p_soc.add_argument("--dry-run", action="store_true", help="compose the posts and print them, post nothing")
     p_soc.set_defaults(func=cmd_social)
 
