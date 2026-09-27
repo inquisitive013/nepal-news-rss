@@ -11,6 +11,7 @@ How to weigh a story:
 - Freshness: it happened or broke inside the window, or a major development did.
 - Defensibility: nothing that risks defaming a person or amplifying an unverified rumour.
 - What we can add: prefer a story where the advocate shows a gap in the coverage that public records can fill today. A story everyone has, told the same way, ranks below one the desk can advance.
+- Already covered: `recently_published` lists what this newsroom ran in the last few days. Rank a repeat only for a real development since, and name it in your reason. The same story told again goes to `rejected`.
 
 `guidance` in the input gives the newsroom's target scores. Treat them as guidance, not gates. The top `articles_per_day` stories in your `ranked` list become articles, so make sure each of them can be written responsibly today.
 

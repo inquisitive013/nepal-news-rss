@@ -41,6 +41,14 @@ jobs:
       - name: Install
         run: pip install -r requirements.txt
 
+      - name: Catch up with the branch
+        if: ${{ inputs.mock != true }}
+        run: |
+          # A queued run checks out the commit that queued it. An edition that landed since
+          # must be in the working tree, or this run writes the same stories again and its
+          # commit collides with theirs.
+          git pull --ff-only origin "${GITHUB_REF_NAME}"
+
       - name: Run the newsroom and build the site
         id: newsroom
         env:
@@ -78,6 +86,7 @@ jobs:
           python -m newsroom run --build --out site --root-rss
 
       - name: Commit the edition data
+        id: commit
         if: ${{ inputs.mock != true && inputs.rebuild_only != true }}
         run: |
           git config user.name "nepal-wire-bot"
@@ -88,9 +97,23 @@ jobs:
             echo "Nothing new to commit."
           else
             git commit -m "Edition $(TZ=Asia/Kathmandu date +%F)"
-            git pull --rebase origin "${GITHUB_REF_NAME}"
+            if ! git pull --rebase origin "${GITHUB_REF_NAME}"; then
+              git rebase --abort || true
+              echo "::error::Another commit changed the same edition files while this run was working. The edition is kept as the workflow artifact edition-data-${GITHUB_RUN_ID}: download it and commit the files by hand."
+              exit 1
+            fi
             git push origin "HEAD:${GITHUB_REF_NAME}"
           fi
+
+      - name: Keep the edition when the commit fails
+        if: ${{ failure() && steps.commit.outcome == 'failure' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: edition-data-${{ github.run_id }}
+          path: |
+            data
+            rss.xml
+          retention-days: 14
 
       - name: Upload preview site
         if: ${{ inputs.mock == true }}
@@ -144,7 +167,11 @@ jobs:
           if [ -n "$latest" ]; then
             python - "$latest" >> "$GITHUB_STEP_SUMMARY" <<'PY'
           import json, sys
-          run = json.load(open(sys.argv[1]))
+          try:
+              run = json.load(open(sys.argv[1]))
+          except Exception as exc:  # a conflicted or half written record
+              print(f"## Edition record could not be read ({type(exc).__name__})")
+              sys.exit(0)
           print(f"## Edition {run['run_date']} ({run['mode']}) status: {run['status']}")
           print()
           print(f"- Candidates: {len(run['candidates'])} from {sum(1 for h in run['feed_health'] if h['ok'])}/{len(run['feed_health'])} working feeds")

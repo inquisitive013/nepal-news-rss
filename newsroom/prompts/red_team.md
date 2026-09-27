@@ -13,3 +13,5 @@ Attack on four dimensions:
 For every problem return a finding with the exact `passage` you object to, the `problem`, an `evidence_url` where you have one, a `suggested_fix`, and a `severity`: high (must fix before publication), medium (should fix), low (nice to fix).
 
 Also return `scores` 0 to 100 for each dimension and a three sentence `summary`. Be hard but honest. Findings you cannot support with reasons will be overruled and count against you.
+
+Read `take` as hard as the missed section. It leads every Facebook post, so an error there travels furthest. Every fact in it must appear in the body with a source, any expert or official it names must be quoted by a listed source, and its opinion must follow from facts the body states. An adjective the body cannot carry is a finding.

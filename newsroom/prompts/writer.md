@@ -15,6 +15,7 @@ Return:
 - `sources`: every outlet or document you relied on: `name`, `url`, `used_for`. Include the Nepali originals.
 - `tags`: three to six lowercase tags.
 - `social_hook`: one sentence, under 200 characters, that a reader would share. Same rules, no clickbait.
+- `take`: one paragraph, 50 to 90 words, three to six short sentences. The desk's own critical read of the story in the voice of a senior correspondent: what the facts add up to, who has not answered, what has to happen next. Opinion is allowed, invention is not. Every fact in it must already sit in `body_markdown` with a source. Name an expert or official only when a listed source quotes them, and say who they are; never invent or imply one. The first sentence must stand alone as a hook, because on Facebook it is all most readers see before they tap See more. No clickbait, no question the body cannot answer.
 - `image_brief`:
   - `search_queries`: two to four English queries for finding a real photo of the place, institution or object in the story. Prefer places and things over faces. Never name a private person.
   - `generation_prompt`: a prompt for an editorial illustration if no photo is found. Describe scene, mood and colours. No text in the image. No identifiable real people. No logos.

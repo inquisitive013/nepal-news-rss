@@ -34,6 +34,7 @@ def _article(settings, slug="rain-story", headline="Heavy rain moves 140 househo
         sources=[{"name": "The Kathmandu Post", "url": "https://kathmandupost.com/x", "used_for": "primary report"}],
         tags=["disaster", "kathmandu"],
         social_hook="140 households moved overnight.",
+        take="Officials confirm 140 households moved. Nobody has said who signed off on the late warning.",
         image=ImageAsset(path=f"data/images/2026-09-26-{slug}.jpg", alt="Bagmati river", width=1600, height=900, credit=ImageCredit(kind="found", title="Bagmati", author="Photographer", source="Wikimedia Commons", source_url="https://commons.wikimedia.org/wiki/File:X.jpg", license="CC BY-SA 4.0", license_url="https://creativecommons.org/licenses/by-sa/4.0")),
         review=ReviewRecord(ranking=[{"judge": "ranking_judge_2", "rank": 1, "score": 88, "reason": "broad impact"}], validation_rounds=[ValidationRound(round=1, judge_1={"decision": "approve", "reason": "ok", "scores": {"accuracy": 90, "relevance": 88, "defensibility": 91, "virality": 72}}, judge_2={"decision": "approve", "reason": "concur", "scores": {"accuracy": 91, "relevance": 88, "defensibility": 91, "virality": 74}})], final_decision="approved", final_reason="Judge 2: concur"),
         run_date="2026-09-26",
@@ -73,6 +74,7 @@ def test_build_site(tmp_path):
     assert 'property="og:image"' in page and "/images/2026-09-26-rain-story.jpg" in page
     assert "Editorial review record" in page and "ranking judge 2" in page
     assert "wa.me" in page
+    assert "Nepal Wire's take." in page and "Nobody has said who signed off on the late warning." in page
     assert (out / "images" / "2026-09-26-rain-story.jpg").exists()
     assert (out / "about.html").exists() and (out / "archive.html").exists() and (out / ".nojekyll").exists()
     rss = ET.parse(out / "rss.xml").getroot()

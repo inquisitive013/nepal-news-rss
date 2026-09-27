@@ -190,6 +190,8 @@ class Article:
     sources: list[dict[str, str]] = field(default_factory=list)  # {name, url, used_for}
     tags: list[str] = field(default_factory=list)
     social_hook: str = ""
+    # One paragraph, the desk's own critical read of the story. Leads every Facebook post.
+    take: str = ""
     image_brief: dict[str, Any] = field(default_factory=dict)
     image: ImageAsset | None = None
     # What the investigator found that the coverage missed: angles with evidence, open questions.
