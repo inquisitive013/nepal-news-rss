@@ -31,6 +31,7 @@ class Settings:
     google_news: list[dict[str, Any]]
     style: str
     root: Path = ROOT
+    style_ne: str = ""  # config/style_ne.md, how the Nepali edition is written
     data_dir: Path = DATA_DIR
     mock: bool = False
     fixtures_dir: Path | None = None
@@ -87,6 +88,8 @@ def load_settings(root: Path | None = None, mock: bool | None = None) -> Setting
         src = yaml.safe_load(fh) or {}
     style_path = cfg_dir / "style.md"
     style = style_path.read_text(encoding="utf-8") if style_path.exists() else ""
+    style_ne_path = cfg_dir / "style_ne.md"
+    style_ne = style_ne_path.read_text(encoding="utf-8") if style_ne_path.exists() else ""
     if mock is None:
         mock = os.environ.get("NEWSROOM_MOCK", "") not in ("", "0", "false", "False")
     return Settings(
@@ -94,6 +97,7 @@ def load_settings(root: Path | None = None, mock: bool | None = None) -> Setting
         sources=list(src.get("sources") or []),
         google_news=list(src.get("google_news") or []),
         style=style,
+        style_ne=style_ne,
         root=base,
         data_dir=base / "data",
         mock=bool(mock),

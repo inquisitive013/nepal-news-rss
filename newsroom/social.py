@@ -25,7 +25,7 @@ from typing import Any, Callable, Mapping
 
 import httpx
 
-from . import publish, translation
+from . import nepali as nepali_edition, publish
 from .config import Settings
 from .models import Article, utcnow_iso
 
@@ -238,7 +238,7 @@ def engine_caption(article: Article, settings: Settings, tags: str) -> str:
         return "\n\n".join(p for p in parts if p), close
 
     def nepali_block() -> tuple[str, list[str]] | None:
-        if not (translation.usable(nepali) and (ne_cap.get("body") or "").strip()):
+        if not (nepali_edition.usable(nepali) and (ne_cap.get("body") or "").strip()):
             return None
         parts = [str(nepali.get("headline", "")).strip(), (ne_cap.get("hook") or "").strip(), (ne_cap.get("body") or "").strip(), (ne_cap.get("trigger") or "").strip()]
         close = ([f"पूरा समाचार: {nepali_article_url(settings, article)}"] if link else []) + ["स्रोतहरू ग्राफिकमा छन्।", f"{site_ne} फलो गर्नुहोस्।"]

@@ -206,27 +206,28 @@ def cmd_social_check(args) -> int:
     return 0
 
 
-def cmd_translate(args) -> int:
-    """Give stored stories a checked Nepali version. By default only the ones without one."""
-    from . import translation
+def cmd_nepali(args) -> int:
+    """Write the Nepali edition of stored stories. By default only the ones without one."""
+    from . import nepali
     from .llm import UsageMeter, auth_mode, make_llm, scrub_empty_credentials
 
     settings = _settings(args)
     if not settings.mock:
         scrub_empty_credentials()
         logging.info("model access via %s", auth_mode())
-    wanted = translation.wanting(settings, only=[a.strip() for a in (args.article or []) if a.strip()] or None, everything=args.all, limit=args.limit or 0)
+    wanted = nepali.wanting(settings, only=[a.strip() for a in (args.article or []) if a.strip()] or None, everything=args.all, limit=args.limit or 0)
     if not wanted:
-        print("Nothing to translate: every stored story already has a checked Nepali version.")
+        print("Nothing to write: every stored story already has a Nepali edition.")
         return 0
-    print(f"Translating {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'}: two model calls each, three if the check sends one back.")
-    # Translator, judge, and one fix per story at most.
-    results = translation.backfill(settings, make_llm(settings, UsageMeter(3 * len(wanted))), wanted)
+    rounds = int(settings.get("pipeline.nepali_rounds", 2) or 1)
+    print(f"Writing {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'} in Nepali: a writer call, then up to {rounds} editor reading{'s' if rounds != 1 else ''} with a fix after each.")
+    # Writer, then editor and fix per round, at most.
+    results = nepali.backfill(settings, make_llm(settings, UsageMeter((1 + 2 * rounds) * len(wanted))), wanted)
     for article_id, status, detail in results:
         print(f"{status:10} {article_id}  {detail}")
     failed = sum(1 for _, status, _ in results if status == "failed")
     skipped = len(wanted) - len(results)
-    print(f"\n{len(results) - failed} translated, {failed} failed, {skipped} not attempted.")
+    print(f"\n{len(results) - failed} written, {failed} failed, {skipped} not attempted.")
     return 1 if failed or skipped else 0
 
 
@@ -277,13 +278,13 @@ def main(argv=None) -> int:
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")
     p_socchk.set_defaults(func=cmd_social_check)
 
-    p_tr = sub.add_parser("translate", help="give stored stories a checked Nepali version (the ones without one, by default)")
-    p_tr.add_argument("--mock", action="store_true", help="no network, no keys, deterministic outputs")
-    p_tr.add_argument("--missing", action="store_true", help="only stories without a Nepali version (the default)")
-    p_tr.add_argument("--all", action="store_true", help="translate every stored story again")
-    p_tr.add_argument("--article", action="append", help="translate this article id; repeatable")
-    p_tr.add_argument("--limit", type=int, help="stop after this many stories")
-    p_tr.set_defaults(func=cmd_translate)
+    p_ne = sub.add_parser("nepali", help="write the Nepali edition of stored stories (the ones without one, by default)")
+    p_ne.add_argument("--mock", action="store_true", help="no network, no keys, deterministic outputs")
+    p_ne.add_argument("--missing", action="store_true", help="only stories without a Nepali edition (the default)")
+    p_ne.add_argument("--all", action="store_true", help="write every stored story again, replacing what it has")
+    p_ne.add_argument("--article", action="append", help="write this article id; repeatable")
+    p_ne.add_argument("--limit", type=int, help="stop after this many stories")
+    p_ne.set_defaults(func=cmd_nepali)
 
     p_build = sub.add_parser("build", help="build the static site from data/")
     p_build.add_argument("--out", default="site")

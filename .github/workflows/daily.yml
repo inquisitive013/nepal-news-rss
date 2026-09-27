@@ -14,10 +14,15 @@ on:
         description: "Rebuild and deploy the site from existing data. No model calls, nothing committed."
         type: boolean
         default: false
-      backfill_translations:
-        description: "Give every published story without a Nepali version a checked translation, commit and deploy. Two or three model calls per story, no new edition."
+      backfill_nepali:
+        description: "Write the Nepali edition for published stories, commit and deploy. No new edition, no posts. Up to five model calls per story."
         type: boolean
         default: false
+      nepali_scope:
+        description: "Which stories the Nepali backfill writes"
+        type: choice
+        options: [missing, all]
+        default: missing
 
 permissions:
   contents: write
@@ -72,7 +77,8 @@ jobs:
           SITE_URL_OVERRIDE: ${{ vars.SITE_URL }}
           NEWSROOM_MOCK: ${{ inputs.mock == true && '1' || '' }}
           NEWSROOM_REBUILD_ONLY: ${{ inputs.rebuild_only == true && '1' || '' }}
-          NEWSROOM_BACKFILL: ${{ inputs.backfill_translations == true && '1' || '' }}
+          NEWSROOM_BACKFILL: ${{ inputs.backfill_nepali == true && '1' || '' }}
+          NEWSROOM_BACKFILL_SCOPE: ${{ inputs.nepali_scope || 'missing' }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
@@ -93,8 +99,8 @@ jobs:
             exit 0
           fi
           if [ -n "${NEWSROOM_BACKFILL}" ]; then
-            echo "Backfill: translating every stored story without a Nepali version, then rebuilding."
-            python -m newsroom translate --missing || echo "::warning::Some stories could not be translated. The log above names them; the rest are saved."
+            echo "Backfill: writing the Nepali edition (${NEWSROOM_BACKFILL_SCOPE} stories), then rebuilding."
+            python -m newsroom nepali "--${NEWSROOM_BACKFILL_SCOPE}" || echo "::warning::Some stories could not be written in Nepali. The log above names them; the rest are saved."
             python -m newsroom build --out site --root-rss
             exit 0
           fi
@@ -111,8 +117,8 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nothing new to commit."
           else
-            if [ -n "${{ inputs.backfill_translations == true && '1' || '' }}" ]; then
-              git commit -m "Nepali translations $(TZ=Asia/Kathmandu date +%F)"
+            if [ -n "${{ inputs.backfill_nepali == true && '1' || '' }}" ]; then
+              git commit -m "Nepali edition $(TZ=Asia/Kathmandu date +%F)"
             else
               git commit -m "Edition $(TZ=Asia/Kathmandu date +%F)"
             fi
@@ -236,6 +242,6 @@ jobs:
     # Runs after the site is live because Instagram and Threads fetch the picture from it.
     # The same job runs on its own from Actions → "Post to social networks".
     needs: [edition, deploy]
-    if: ${{ inputs.mock != true && inputs.rebuild_only != true && inputs.backfill_translations != true && needs.edition.outputs.no_key != 'true' }}
+    if: ${{ inputs.mock != true && inputs.rebuild_only != true && inputs.backfill_nepali != true && needs.edition.outputs.no_key != 'true' }}
     uses: ./.github/workflows/social.yml
     secrets: inherit

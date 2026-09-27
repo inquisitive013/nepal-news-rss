@@ -500,15 +500,15 @@ class MockLLM(BaseLLM):
         reject_story_ids: set[str] | None = None,
         send_back_story_ids: set[str] | None = None,
         revise_rounds: int = 1,
-        send_back_translation: bool = False,
+        send_back_nepali: bool = False,
     ) -> None:
         super().__init__(settings, meter)
         self.reject_story_ids = set(reject_story_ids or ())
         # Stories judge 2 sends back for one more edit before approving.
         self.send_back_story_ids = set(send_back_story_ids or ())
         self.revise_rounds = revise_rounds
-        # When true the translation judge sends the Nepali version back once.
-        self.send_back_translation = send_back_translation
+        # When true the Nepali editor sends the piece back once.
+        self.send_back_nepali = send_back_nepali
         self.calls: list[str] = []
 
     def structured(self, role, user_text, payload, schema, *, images=None, web_search_uses=0, max_tokens=None):
@@ -700,25 +700,23 @@ class MockLLM(BaseLLM):
         }
 
     # -- nepali edition ----------------------------------------------------
-    def _translator(self, p, _images):
-        art = p["article"]
-        cap = art.get("caption") or {}
+    def _nepali_writer(self, p, _images):
         fixes = p.get("fixes") or []
         return {
-            "headline": "बागमती बाढीले एकै रातमा १४० घरधुरी विस्थापित",
-            "dek": "प्रहरीका अनुसार चेतावनी प्रणालीभन्दा छिटो नदी बढ्यो।",
-            "take": "एउटा संख्या पक्का छ: १४० घरधुरी रातारात विद्यालयमा सारिए। अधिकारीहरूले सोमबार क्षति मूल्यांकन गर्ने भनेका छन्। त्यो नआउँदासम्म यो रातको मूल्य कसैलाई थाहा छैन।",
-            "body_markdown": "प्रहरीका अनुसार १४० घरधुरी सारिए।\n\n## किन महत्त्वपूर्ण छ\n\nनदी छिटो बढ्यो।" + ("\n\nसच्याइएको।" if fixes else ""),
+            "headline": "बागमती उर्लिएपछि एकै रातमा १४० घरधुरी विस्थापित, चेतावनी ढिलो",
+            "dek": "प्रहरीका अनुसार चेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।",
+            "take": "एउटा कुरा पक्का छ: १४० घरधुरी रातारात विद्यालयमा सारिए। अधिकारीहरूले सोमबार क्षतिको मूल्यांकन गर्ने भनेका छन्। त्यो नआउँदासम्म यो रातको मूल्य कसैलाई थाहा छैन।",
+            "body_markdown": "काठमाडौं । बागमती नदी उर्लिएपछि प्रहरीले १४० घरधुरीलाई नजिकैका विद्यालयमा सारेको छ।\n\n## किन महत्त्वपूर्ण छ\n\nचेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।" + ("\n\nसच्याइएको।" if fixes else ""),
             "image_headline": "एकै रातमा १४० घरधुरी विस्थापित, चेतावनी ढिलो",
-            "social_hook": art.get("social_hook", "") and "१४० घरधुरी एकै रातमा सारिए।",
-            "caption": {"hook": "१४० घरधुरी एकै रातमा घर छोड्न बाध्य भए।", "body": "प्रहरी भन्छन्, साइरनभन्दा छिटो नदी बढ्यो।\n\nसोमबार क्षति मूल्यांकन हुन्छ।", "trigger": cap.get("trigger", "") and "चौध वर्षको चेतावनी प्रणालीले नदीसँगको दौड हार्‍यो। यो कसको असफलता हो?"},
+            "social_hook": "१४० घरधुरी एकै रातमा घरबाट निस्किए, चेतावनी पछि आयो।",
+            "caption": {"hook": "१४० घरधुरी एकै रातमा घर छोड्न बाध्य भए।", "body": "प्रहरी भन्छन्, साइरनभन्दा छिटो नदी बढ्यो।\n\nसोमबार क्षतिको मूल्यांकन हुन्छ।", "trigger": "चौध वर्षको चेतावनी प्रणालीले नदीसँगको दौड हार्‍यो। यो कसको असफलता हो?"},
             "notes": "",
         }
 
-    def _translation_judge(self, p, _images):
-        if "सच्याइएको" in p["nepali"].get("body_markdown", "") or not self.send_back_translation:
-            return {"decision": "approve", "problems": [], "reason": "Faithful and natural."}
-        return {"decision": "revise", "problems": [{"passage": "नदी छिटो बढ्यो।", "problem": "the English hedges this with attribution", "fix": "प्रहरीका अनुसार नदी छिटो बढ्यो।"}], "reason": "One attribution lost."}
+    def _nepali_editor(self, p, _images):
+        if "सच्याइएको" in p["nepali"].get("body_markdown", "") or not self.send_back_nepali:
+            return {"decision": "approve", "problems": [], "reason": "Faithful to the record and reads as Nepali writing."}
+        return {"decision": "revise", "problems": [{"passage": "चेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।", "problem": "the record attributes this to the police", "fix": "प्रहरीका अनुसार चेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।"}], "reason": "One attribution lost."}
 
     # -- images ------------------------------------------------------------
     def _image_picker(self, p, images):

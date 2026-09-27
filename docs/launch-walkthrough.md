@@ -80,7 +80,7 @@ AdSense wants a domain you own with content on it, so this waits for step 2.
 
 ## 8. The Nepali edition: backfill the live stories
 
-The four stories already published have no Nepali version. *Actions → Daily edition → Run workflow*, tick **backfill_translations**, run. It translates each story, checks the translation, commits and deploys. Two or three model calls per story. No new edition, no posts. From the next edition on, every story arrives in both languages and the Facebook caption opens in Nepali.
+*Actions → Daily edition → Run workflow*, tick **backfill_nepali**, leave the scope on `missing`, run. A Nepali writer writes each story from its verified record, a Nepali editor reads it against the record and sends it back until it is right, then the run commits and deploys. Up to five model calls per story. No new edition, no posts. Scope `all` writes every story again, for after a change to the Nepali style guide. From the next edition on, every story arrives in both languages and the Facebook caption opens in Nepali.
 
 ## What I set for you, and where
 
