@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from . import graphic, translation
+from . import graphic, nepali
 from .config import Settings
 from .models import (
     Article,
@@ -34,8 +34,6 @@ TEMPLATES = Path(__file__).resolve().parent / "templates"
 STATIC = Path(__file__).resolve().parent / "static"
 INDEX_LIMIT = 40
 CARD_LIMIT = 60  # cards rendered per build: the recent articles social posting can still reach
-NE_DIGITS = str.maketrans("0123456789", "०१२३४५६७८९")
-NE_MONTHS = ["जनवरी", "फेब्रुअरी", "मार्च", "अप्रिल", "मे", "जुन", "जुलाई", "अगस्ट", "सेप्टेम्बर", "अक्टोबर", "नोभेम्बर", "डिसेम्बर"]
 
 _SCRIPT_RE = re.compile(r"<\s*(script|style|iframe|object|embed)[^>]*>.*?<\s*/\s*\1\s*>", re.IGNORECASE | re.DOTALL)
 _ON_ATTR_RE = re.compile(r"\s+on\w+\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+)", re.IGNORECASE)
@@ -173,7 +171,7 @@ def _env(settings: Settings) -> Environment:
     def fmt_date_ne(value: str) -> str:
         """The date as Nepali readers write the Gregorian one: २७ सेप्टेम्बर २०२६."""
         dt = _parse_iso(value).astimezone(tz)
-        return f"{dt.day} {NE_MONTHS[dt.month - 1]} {dt.year}".translate(NE_DIGITS)
+        return f"{dt.day} {nepali.NE_MONTHS[dt.month - 1]} {dt.year}".translate(nepali.NE_DIGITS)
 
     env.filters["fmt_date"] = fmt_date
     env.filters["fmt_date_ne"] = fmt_date_ne
@@ -264,7 +262,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         "members_url": str(settings.get("newsletter.members_url", "") or "").strip(),
         "adsense_client": str(settings.get("ads.adsense_client", "") or "").strip(),
     }
-    translated = {a.id for a in articles if translation.usable(a.nepali)}
+    in_nepali = {a.id for a in articles if nepali.usable(a.nepali)}
 
     def render(template: str, dest: Path, *, lang: str = "en", alternates=(), switch: str = "", **ctx: Any) -> None:
         dest.parent.mkdir(parents=True, exist_ok=True)
@@ -298,8 +296,8 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         {
             "article": a,
             "url": f"articles/{a.slug}/",
-            "ne_url": f"ne/articles/{a.slug}/" if a.id in translated else "",
-            "nepali": nepali_view(a) if a.id in translated else None,
+            "ne_url": f"ne/articles/{a.slug}/" if a.id in in_nepali else "",
+            "nepali": nepali_view(a) if a.id in in_nepali else None,
             "image": _image_rel(a),
             "card": f"cards/{graphic.card_name(a)}" if (a.image and (out_dir / "cards" / graphic.card_name(a)).exists()) else "",
             "angles": evidenced_angles(a),
@@ -320,7 +318,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
     render("privacy.html", out_dir / "privacy.html", root="./")
     for a in articles:
         en_path = f"articles/{a.slug}/"
-        ne_path = f"ne/articles/{a.slug}/" if a.id in translated else None
+        ne_path = f"ne/articles/{a.slug}/" if a.id in in_nepali else None
         alts = alternates_for(en_path, ne_path)
         og_image = f"{site['url']}/{_image_rel(a)}" if a.image else ""
         render(
@@ -354,7 +352,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
                 canonical=f"{site['url']}/{ne_path}",
                 og_image=og_image,
             )
-    ne_articles = [nepali_view(a) for a in articles if a.id in translated]
+    ne_articles = [nepali_view(a) for a in articles if a.id in in_nepali]
     feed_en = {"title": site["name"], "description": site["tagline"], "language": "en", "home": f"{site['url']}/", "self": f"{site['url']}/rss.xml", "prefix": ""}
     feed_ne = {"title": site["name_ne"], "description": site["tagline_ne"], "language": "ne", "home": f"{site['url']}/ne/", "self": f"{site['url']}/ne/rss.xml", "prefix": "ne/"}
     (out_dir / "rss.xml").write_text(env.get_template("rss.xml").render(site=site, feed=feed_en, articles=articles[:50], image_size=_image_sizes(settings, articles[:50])), encoding="utf-8")

@@ -198,7 +198,7 @@ class Article:
     country: str = ""  # the country the story is about, NEPAL unless it is not
     caption: dict[str, str] = field(default_factory=dict)  # {"hook", "body", "trigger"}
     # The Nepali edition of the story: headline, dek, take, body_markdown, image_headline, social_hook,
-    # caption, plus the judge's verdict. Empty when the translation stage is off or failed.
+    # caption, plus the editor's verdict. Empty when the Nepali edition stage is off or failed.
     nepali: dict[str, Any] = field(default_factory=dict)
     image_brief: dict[str, Any] = field(default_factory=dict)
     image: ImageAsset | None = None

@@ -55,8 +55,8 @@ def test_mock_run_publishes_and_records(tmp_path):
     # the card headline, the chip and the engine caption ride with the article through the reviser
     assert art.image_headline and art.theme == "DISASTER" and art.country == "NEPAL"
     assert art.caption["hook"] and art.caption["body"] and "trigger" in art.caption
-    # the Nepali edition rides with the approved article, checked by the translation judge
-    assert art.nepali["headline"].startswith("बागमती") and art.nepali["checked"] and art.nepali["caption"]["body"]
+    # the Nepali edition rides with the approved article, read by the Nepali editor
+    assert art.nepali["headline"].startswith("बागमती") and art.nepali["approved"] and art.nepali["caption"]["body"]
     run_file = tmp_path / "data" / "runs" / "2026-09-26.json"
     assert run_file.exists()
     data = json.loads(run_file.read_text())
@@ -125,29 +125,29 @@ def test_call_budget_matches_the_settings(tmp_path):
     # judge 1 once and judge 2 once per article; the mock never sends anything back
     assert calls["validation_judge"] == 2 * n_articles
     assert calls["reviser"] == n_articles <= int(settings.get("pipeline.max_revisions_per_run"))
-    # every approved article is translated once and the translation checked once
-    assert calls["translator"] == calls["translation_judge"] == n_articles
+    # every approved article is written in Nepali once and read by the editor once
+    assert calls["nepali_writer"] == calls["nepali_editor"] == n_articles
     assert sum(calls.values()) <= int(settings.get("pipeline.max_llm_calls"))
 
 
-def test_translation_can_be_switched_off(tmp_path):
-    settings = _settings(tmp_path, translate=False)
+def test_the_nepali_edition_can_be_switched_off(tmp_path):
+    settings = _settings(tmp_path, nepali_edition=False)
     llm = MockLLM(settings, UsageMeter(200))
     run = pipeline.run(settings, llm=llm, now=NOW)
     assert run.status == "ok" and run.published
-    assert "translator" not in llm.calls and "translation_judge" not in llm.calls
+    assert "nepali_writer" not in llm.calls and "nepali_editor" not in llm.calls
     assert all(a.nepali == {} for a in publish.load_articles(settings))
 
 
-def test_translation_sent_back_is_fixed_within_the_run(tmp_path):
+def test_a_nepali_send_back_is_fixed_and_read_again_within_the_run(tmp_path):
     settings = _settings(tmp_path)
-    llm = MockLLM(settings, UsageMeter(200), send_back_translation=True)
+    llm = MockLLM(settings, UsageMeter(200), send_back_nepali=True)
     run = pipeline.run(settings, llm=llm, now=NOW)
     assert run.status == "ok" and run.published
     calls = _calls(llm)
-    assert calls["translator"] == 2 * len(run.published) and calls["translation_judge"] == len(run.published)
+    assert calls["nepali_writer"] == 2 * len(run.published) and calls["nepali_editor"] == 2 * len(run.published)
     for a in publish.load_articles(settings):
-        assert a.nepali["problems_fixed"] == 1 and "सच्याइएको" in a.nepali["body_markdown"]
+        assert a.nepali["problems_fixed"] == 1 and a.nepali["passes"] == 2 and a.nepali["approved"] and "सच्याइएको" in a.nepali["body_markdown"]
 
 
 def test_judge_2_send_back_gets_one_more_revision_and_a_recheck(tmp_path):

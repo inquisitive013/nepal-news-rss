@@ -589,7 +589,7 @@ def test_facebook_photo_post_carries_the_card(tmp_path):
     assert seen["caption"].startswith(art.headline)
 
 
-def test_facebook_caption_puts_the_nepali_first_when_the_story_has_a_checked_translation(tmp_path):
+def test_facebook_caption_puts_the_nepali_first_when_the_story_has_a_nepali_edition(tmp_path):
     s = _settings(tmp_path)
     art = _article(s)
     art.caption = {"hook": "140 households left their homes in one night.", "body": "Police say the river rose faster than the siren.", "trigger": "Whose failure is that?"}
@@ -621,7 +621,7 @@ def test_facebook_caption_puts_the_nepali_first_when_the_story_has_a_checked_tra
         raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, languages=languages))
         en_only = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
         assert en_only.startswith(art.headline) and "बागमती" not in en_only and social.RULE not in en_only
-    # Nepali only is honoured, and falls back to English for a story without a translation
+    # Nepali only is honoured, and falls back to English for a story without a Nepali edition
     raw = dict(s.raw)
     raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, languages=["ne"]))
     ne_only = social.compose("facebook", art, dataclasses.replace(s, raw=raw))

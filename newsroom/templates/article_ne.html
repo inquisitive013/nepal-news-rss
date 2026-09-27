@@ -43,7 +43,7 @@
   <p class="dek">{{ article.dek }}</p>
   {% if article.take %}<aside class="take"><strong>{{ site.name_ne }}को टिप्पणी।</strong> {{ article.take }}</aside>{% endif %}
   {% if site.adsense_client %}<div class="ad"><ins class="adsbygoogle" style="display:block" data-ad-client="{{ site.adsense_client }}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>{% endif %}
-  <p class="byline">{{ site.name_ne }} न्युजरूम · चार तहको स्वतन्त्र जाँच पार गरेको · <a href="{{ english_url }}" hreflang="en">अंग्रेजी मूल</a>को जाँचिएको अनुवाद · संस्करण {{ article.version }}</p>
+  <p class="byline">{{ site.name_ne }} न्युजरूम · चार तहको स्वतन्त्र जाँच पार गरेको · संस्करण {{ article.version }} · <a href="{{ english_url }}" hreflang="en">अंग्रेजीमा पढ्नुहोस्</a></p>
   {% if image %}
   <figure>
     <img src="{{ root }}{{ image }}" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}">
@@ -85,7 +85,7 @@
     </ol>
   </section>
   <section class="review-note">
-    <p class="small">यो नेपाली संस्करण अंग्रेजी मूल समाचारको अनुवाद हो। अनुवाद तयार भएपछि अर्को मोडेलले हरेक तथ्य, संख्या, नाम र उद्धरण अंग्रेजीसँग जाँचेको छ। रेड टिम, बचाव र दुई जाँचकर्ताको पूरा समीक्षा अभिलेख <a href="{{ english_url }}" hreflang="en">अंग्रेजी पृष्ठमा</a> छ।</p>
+    <p class="small">यो समाचार {{ site.name_ne }}ले अंग्रेजीमा प्रकाशित गरेको समाचारकै तथ्य, स्रोत र निष्कर्षका आधारमा नेपालीमै लेखिएको हो। सम्पादकले हरेक तथ्य, संख्या, नाम र उद्धरण अंग्रेजी अभिलेखसँग जाँचेका छन्। रेड टिम, बचाव र दुई जाँचकर्ताको पूरा समीक्षा अभिलेख <a href="{{ english_url }}" hreflang="en">अंग्रेजी पृष्ठमा</a> छ।</p>
   </section>
   {% if article.tags %}<p class="tags">{% for t in article.tags %}<span>#{{ t }}</span> {% endfor %}</p>{% endif %}
 </article>

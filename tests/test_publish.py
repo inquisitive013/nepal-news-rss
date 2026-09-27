@@ -206,9 +206,9 @@ def test_the_nepali_edition_builds_beside_the_english(tmp_path):
     ne_index = (out / "ne" / "index.html").read_text()
     assert '<html lang="ne">' in ne_index and "काठमाडौंमा भारी वर्षाले" in ne_index and "ne/articles/rain-story/" in ne_index
     assert "नेपाल वायरको टिप्पणी" in ne_index and "ढिलो चेतावनीमा" in ne_index
-    # the untranslated story still shows on the Nepali front, in English, pointing at its English page
+    # a story without a Nepali edition still shows on the Nepali front, in English, pointing at its English page
     assert "Petrol drops Rs 5 a litre" in ne_index and "articles/petrol/" in ne_index and "ne/articles/petrol/" not in ne_index
-    assert "· English" in ne_index  # the marker on the untranslated story
+    assert "· English" in ne_index  # the marker on the story that has no Nepali edition
     assert "logo.png" in ne_index and "favicon.png" in ne_index and (out / "logo.png").exists() and (out / "favicon.png").exists() and (out / "apple-touch-icon.png").exists()
     assert not (out / "logo-mark.png").exists()
 
@@ -221,6 +221,10 @@ def test_the_nepali_edition_builds_beside_the_english(tmp_path):
     assert f'<link rel="canonical" href="{site_url}/ne/articles/rain-story/">' in ne_page
     assert '"inLanguage": "ne"' in ne_page and "स्रोतहरू" in ne_page and "The Kathmandu Post" in ne_page
     assert "Key facts" not in ne_page and "Editorial review record" not in ne_page and "अंग्रेजी पृष्ठमा" in ne_page
+    # the Nepali is written, not translated, and the site never says otherwise
+    assert "अनुवाद" not in ne_page and "अनुवाद" not in ne_index
+    assert "translator model" not in (out / "about.html").read_text() and "is a translation of" not in (out / "standards.html").read_text()
+    assert "The Nepali is not a translation." in (out / "standards.html").read_text()
     assert 'class="lang" href="../../../articles/rain-story/"' in ne_page  # the switch leads to the English twin
 
     en_page = (out / "articles" / "rain-story" / "index.html").read_text()
@@ -247,7 +251,7 @@ def test_the_nepali_edition_builds_beside_the_english(tmp_path):
     assert "काठमाडौंमा भारी वर्षाले" in news
 
 
-def test_the_nepali_front_page_without_any_translation(tmp_path):
+def test_the_nepali_front_page_without_any_nepali_edition(tmp_path):
     settings = _settings(tmp_path)
     publish.save_article(settings, _article(settings))
     out = publish.build_site(settings, tmp_path / "site")

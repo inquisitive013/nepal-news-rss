@@ -10,7 +10,7 @@ from typing import Any
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
-from . import discovery, images, investigation, publish, ranking, translation, validation, writing
+from . import discovery, images, investigation, nepali, publish, ranking, validation, writing
 from .config import Settings
 from .llm import BaseLLM, BudgetExceeded, LLMError, LLMRefusal, UsageMeter, make_llm
 from .models import (
@@ -115,13 +115,13 @@ def _process_story(
     article, record = validation.validate_article(llm, settings, article, story, candidates, reviser, pool)
     if record.final_decision == "approved":
         article.published_at = now_iso
-        if settings.get("pipeline.translate", True):
+        if settings.get("pipeline.nepali_edition", True):
             try:
-                article.nepali = translation.nepali_for(llm, settings, article)
+                article.nepali = nepali.nepali_for(llm, settings, article)
             except BudgetExceeded:
                 raise
             except (LLMRefusal, LLMError) as exc:  # the English story still publishes
-                log.warning("translation failed for %s: %s", article.id, exc)
+                log.warning("nepali edition failed for %s: %s", article.id, exc)
                 article.nepali = {}
         publish.save_article(settings, article)
         return "published", article, record.final_reason

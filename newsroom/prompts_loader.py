@@ -10,7 +10,9 @@ from .config import PROMPTS_DIR, Settings
 LANGUAGE_NAMES = {"en": "English", "ne": "Nepali (नेपाली, Devanagari script)"}
 
 # Roles whose output is prose and therefore must follow the house style closely.
-STYLE_ROLES = {"writer", "reviser", "red_team", "defense", "validation_judge", "ranking_judge", "translator", "translation_judge"}
+STYLE_ROLES = {"writer", "reviser", "red_team", "defense", "validation_judge", "ranking_judge", "nepali_writer", "nepali_editor"}
+# Roles that write or check the Nepali edition: they also get config/style_ne.md.
+NEPALI_ROLES = {"nepali_writer", "nepali_editor"}
 
 
 @lru_cache(maxsize=None)
@@ -33,6 +35,8 @@ def system_for(role: str, settings: Settings) -> str:
     parts = [_read("_common"), _read(role)]
     if role in STYLE_ROLES and settings.style:
         parts.append("# House style guide (binding)\n\n" + settings.style)
+    if role in NEPALI_ROLES and getattr(settings, "style_ne", ""):
+        parts.append("# Nepali edition style guide (binding)\n\n" + settings.style_ne)
     text = "\n\n---\n\n".join(parts)
     for key, val in replacements.items():
         text = text.replace(key, str(val))

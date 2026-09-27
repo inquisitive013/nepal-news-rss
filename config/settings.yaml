@@ -39,7 +39,7 @@ ads:
   # Google AdSense publisher id, e.g. "ca-pub-1234567890123456". Empty renders no ads and no ads.txt.
   adsense_client: ""
   # Language the newsroom writes and judges in: "en". Sources are read in Nepali and English.
-  # The Nepali edition is a checked translation of the approved English piece (pipeline.translate).
+  # The Nepali edition is written again from the approved story's record (pipeline.nepali_edition).
   language: "en"
   timezone: "Asia/Kathmandu"
   publisher: "Nepal Wire newsroom"
@@ -69,14 +69,18 @@ pipeline:
   max_revisions_per_run: 5
   # Parallel debates / articles in flight.
   concurrency: 3
-  # After approval, a translator renders each article into everyday Nepali and a second
-  # model checks the translation against the English. Two calls per article, three if the
-  # checker sends it back once. Set false to publish the English edition only.
-  translate: true
+  # After approval, a Nepali writer writes each story again from its verified record, the way
+  # Nepali news is written (config/style_ne.md), and a Nepali editor reads it against the record.
+  # One writer call, then per editor pass one check and, if it asks, one fix. Set false to
+  # publish the English edition only.
+  nepali_edition: true
+  # Editor passes per story. Two means: read, fix, read again, fix again if still asked.
+  nepali_rounds: 2
   # Safety valve. The run stops taking new work after this many model calls.
   # A normal day is about 39: clusterer 1, advocate 3, skeptic 3, ranking judges 2,
   # investigator 3, writer 3, picture check 3, red team 3, defence 3, validation judges 6,
-  # reviser 3, translator 3, translation check 3.
+  # reviser 3, Nepali writer 3, Nepali editor 3, plus up to 3 more per story when the
+  # editor sends a piece back.
   max_llm_calls: 60
 
 llm:
@@ -103,6 +107,9 @@ llm:
     investigator: 8
     # Used only when judge 2 checks a revision the red team will not see again.
     validation_judge: 2
+    # The Nepali writer opens the cited Nepali outlets for the original wording of quotes and
+    # the spelling of names. Wording and spelling only, never new facts.
+    nepali_writer: 3
   roles:
     # The judges read everything and decide. Short replies, so the stronger model is cheap here.
     ranking_judge: { model: "claude-opus-5-5", effort: "high" }
@@ -110,9 +117,9 @@ llm:
     writer: { effort: "high" }
     # The investigation is the newsroom's edge, so it gets the thinking budget too.
     investigator: { effort: "high" }
-    # The Nepali edition: Sonnet translates, Opus checks it against the English.
-    translator: { effort: "medium" }
-    translation_judge: { model: "claude-opus-5-5", effort: "medium" }
+    # The Nepali edition: Sonnet writes the story in Nepali, Opus edits it against the record.
+    nepali_writer: { effort: "high" }
+    nepali_editor: { model: "claude-opus-5-5", effort: "medium" }
 
 editorial:
   exclude_topics:
