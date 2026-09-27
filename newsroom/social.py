@@ -824,12 +824,14 @@ def post_article(
     dry_run: bool = False,
     sleep: Callable[[float], None] = time.sleep,
     facebook_publish_at: int | None = None,
+    again: bool = False,
 ) -> SocialRecord:
     rec = load_record(settings, article)
     rec.article_url = article_url(settings, article)
     img = image_url(settings, article)
     card = card_url(settings, article) if facebook_mode(settings) == "photo" else ""
-    done = {p.network for p in rec.posts if p.status == "posted"}
+    # `again` posts even where the record says posted; the new post is appended, the old one kept.
+    done = set() if again else {p.network for p in rec.posts if p.status == "posted"}
     for network in networks if networks is not None else configured_networks(settings, environ):
         if network in done:
             continue
@@ -878,7 +880,10 @@ def post_articles(
     sleep: Callable[[float], None] = time.sleep,
     article_ids: list[str] | None = None,
     now: datetime | None = None,
+    again: bool = False,
 ) -> list[SocialRecord]:
+    if again and not article_ids:
+        raise ValueError("posting again needs explicit article ids, or every recent story would go out twice")
     chosen = networks if networks is not None else configured_networks(settings, environ)
     articles = articles_to_post(settings, run_date, max_age_hours, article_ids)
     if not chosen or not articles:
@@ -896,7 +901,7 @@ def post_articles(
                     log.warning("%s is not answering yet; posting anyway", article_url(settings, art))
                     break
         return [
-            post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep, facebook_publish_at=plan.get(art.id))
+            post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep, facebook_publish_at=plan.get(art.id), again=again)
             for art in articles
         ]
     finally:
