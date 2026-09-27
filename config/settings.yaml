@@ -11,6 +11,24 @@ site:
   url: "https://inquisitive013.github.io/nepal-news-rss"
   # Your own domain once it points at GitHub Pages (README: Your own domain). Empty keeps the address above.
   custom_domain: ""
+  # Shown on the sponsor and standards pages. Empty hides the address.
+  contact_email: ""
+  # The token from Google Search Console's HTML tag method, e.g. "abc123...". Empty renders nothing.
+  google_site_verification: ""
+  # A verified line for the sponsor page, e.g. "10,300 followers as of September 2026". Empty keeps the generic wording.
+  facebook_followers: "10,336 followers on Facebook as of September 27, 2026"
+
+newsletter:
+  # The provider's subscribe page (Beehiiv, Substack, Buttondown). Rendered as a button wherever the sign up box appears.
+  signup_url: ""
+  # The provider's embed form HTML, if you prefer the form inline. Wins over signup_url.
+  embed_html: ""
+  # The paid tier for the investigations. Empty hides the member links.
+  members_url: ""
+
+ads:
+  # Google AdSense publisher id, e.g. "ca-pub-1234567890123456". Empty renders no ads and no ads.txt.
+  adsense_client: ""
   # Language of the published articles: "en" or "ne". Sources are read in both.
   language: "en"
   timezone: "Asia/Kathmandu"

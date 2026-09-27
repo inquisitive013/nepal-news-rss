@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Sponsor · {{ site.name }}{% endblock %}
+{% block description %}Reach Nepal and the Nepali diaspora through {{ site.name }}: sponsored lines on the daily posts, the newsletter and the site.{% endblock %}
+{% block content %}
+<article class="story prose">
+<h1>Sponsor {{ site.name }}</h1>
+<p>{{ site.name }} publishes Nepal's three most important stories every morning, dug into for what the coverage missed and checked by four judges before they run. The readers are politically engaged adults in Nepal, India and the Nepali diaspora in the United States, the Gulf, the United Kingdom and Australia: people who read to the end, share what makes them look informed, and act on it.</p>
+<h2>Where your message runs</h2>
+<ul>
+<li><strong>The daily posts.</strong> One sponsor line under the day's stories on the {{ site.name }} Facebook Page, {{ site.facebook_followers or 'with a following built over years' }}. Labelled as sponsored.</li>
+<li><strong>The newsletter.</strong> One sponsor slot at the top of the daily email.</li>
+<li><strong>The site.</strong> A banner on every article page, above the sources.</li>
+<li><strong>Investigations.</strong> Presenting sponsor of the weekly investigation, named on the page and the card.</li>
+</ul>
+<h2>Who it reaches</h2>
+<p>Remittance, banking, airlines, education, property, telecoms and consumer brands that need the diaspora's attention or Nepal's decision makers. Audience figures come from the platforms' own reports and are shared on request, with the dates they were pulled.</p>
+<h2>The rules</h2>
+<p>Sponsors never see a story before publication, never choose or veto a story, and are always labelled. Editorial and sponsorship never meet. That is what makes the audience worth reaching. Read the <a href="{{ root }}standards.html">standards</a>.</p>
+<h2>Get in touch</h2>
+{% if site.contact_email %}<p>Write to <a href="mailto:{{ site.contact_email }}?subject=Sponsoring%20{{ site.name | urlencode }}">{{ site.contact_email }}</a> with the audience you want and the dates. You get the current figures and rates back within a day.</p>{% else %}<p>Contact details are being set up. Until then, message the {{ site.name }} Facebook Page.</p>{% endif %}
+</article>
+{% endblock %}

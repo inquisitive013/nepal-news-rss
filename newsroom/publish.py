@@ -7,7 +7,7 @@ import json
 import logging
 import re
 import shutil
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from email.utils import format_datetime
 from pathlib import Path
 from typing import Any
@@ -175,6 +175,12 @@ def _env(settings: Settings) -> Environment:
     return env
 
 
+def evidenced_angles(article: Article) -> list[dict[str, Any]]:
+    """The investigation angles that carry at least one source with a URL."""
+    angles = (article.investigation or {}).get("angles") or []
+    return [a for a in angles if any((e or {}).get("url") for e in (a.get("evidence") or []))]
+
+
 def _image_rel(article: Article) -> str:
     return "images/" + Path(article.image.path).name if article.image else ""
 
@@ -221,6 +227,14 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         "publisher": settings.get("site.publisher", settings.site_name),
         "built_at": datetime.now(timezone.utc).isoformat(),
         "repo_url": "https://github.com/inquisitive013/nepal-news-rss",
+        # The money and trust layer. Every value is empty until the publisher fills it in settings.yaml.
+        "contact_email": str(settings.get("site.contact_email", "") or "").strip(),
+        "google_site_verification": str(settings.get("site.google_site_verification", "") or "").strip(),
+        "facebook_followers": str(settings.get("site.facebook_followers", "") or "").strip(),
+        "newsletter_url": str(settings.get("newsletter.signup_url", "") or "").strip(),
+        "newsletter_embed": str(settings.get("newsletter.embed_html", "") or "").strip(),
+        "members_url": str(settings.get("newsletter.members_url", "") or "").strip(),
+        "adsense_client": str(settings.get("ads.adsense_client", "") or "").strip(),
     }
 
     def render(template: str, dest: Path, **ctx: Any) -> None:
@@ -249,13 +263,20 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
             "article": a,
             "url": f"articles/{a.slug}/",
             "image": _image_rel(a),
+            "card": f"cards/{graphic.card_name(a)}" if (a.image and (out_dir / "cards" / graphic.card_name(a)).exists()) else "",
+            "angles": evidenced_angles(a),
         }
         for a in articles
     ]
+    investigations = [c for c in cards if c["angles"]]
 
-    render("index.html", out_dir / "index.html", root="./", cards=cards[:INDEX_LIMIT], total=len(articles))
+    render("index.html", out_dir / "index.html", root="./", cards=cards[:INDEX_LIMIT], total=len(articles), investigations=investigations)
     render("archive.html", out_dir / "archive.html", root="./", cards=cards)
+    render("investigations.html", out_dir / "investigations.html", root="./", investigations=investigations)
     render("about.html", out_dir / "about.html", root="./", settings_raw=settings.raw, source_names=[s["name"] for s in settings.sources])
+    render("standards.html", out_dir / "standards.html", root="./")
+    render("sponsor.html", out_dir / "sponsor.html", root="./")
+    render("newsletter.html", out_dir / "newsletter.html", root="./")
     render("privacy.html", out_dir / "privacy.html", root="./")
     for a in articles:
         render(
@@ -271,7 +292,13 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         )
     (out_dir / "rss.xml").write_text(env.get_template("rss.xml").render(site=site, articles=articles[:50], image_size=_image_sizes(settings, articles[:50])), encoding="utf-8")
     (out_dir / "sitemap.xml").write_text(env.get_template("sitemap.xml").render(site=site, articles=articles), encoding="utf-8")
-    (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site['url']}/sitemap.xml\n", encoding="utf-8")
+    # Google News reads only the last two days.
+    fresh = [a for a in articles if _parse_iso(a.published_at or "1970-01-01T00:00:00+00:00") >= datetime.now(timezone.utc) - timedelta(hours=48)]
+    (out_dir / "news-sitemap.xml").write_text(env.get_template("news-sitemap.xml").render(site=site, articles=fresh), encoding="utf-8")
+    (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site['url']}/sitemap.xml\nSitemap: {site['url']}/news-sitemap.xml\n", encoding="utf-8")
+    if site["adsense_client"]:
+        # AdSense refuses to serve until this file names the publisher. The last field is Google's own seller id.
+        (out_dir / "ads.txt").write_text(f"google.com, {site['adsense_client'].removeprefix('ca-')}, DIRECT, f08c47fec0942fa0\n", encoding="utf-8")
     shutil.copy2(STATIC / "style.css", out_dir / "style.css")
     (out_dir / ".nojekyll").write_text("", encoding="utf-8")
     if settings.custom_domain:

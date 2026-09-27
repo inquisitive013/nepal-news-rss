@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+{% for a in articles %}
+  <url>
+    <loc>{{ site.url }}/articles/{{ a.slug }}/</loc>
+    <news:news>
+      <news:publication>
+        <news:name>{{ site.name }}</news:name>
+        <news:language>{{ site.language }}</news:language>
+      </news:publication>
+      <news:publication_date>{{ a.published_at | iso }}</news:publication_date>
+      <news:title>{{ a.headline | e }}</news:title>
+    </news:news>
+  </url>
+{% endfor %}
+</urlset>

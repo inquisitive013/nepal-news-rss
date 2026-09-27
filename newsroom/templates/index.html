@@ -3,27 +3,33 @@
 {% if cards %}
 {% set lead = cards[0] %}
 <section class="lead">
-  <a class="lead-link" href="{{ root }}{{ lead.url }}">
-    {% if lead.image %}<img class="lead-image" src="{{ root }}{{ lead.image }}" alt="{{ lead.article.image.alt }}" width="{{ lead.article.image.width }}" height="{{ lead.article.image.height }}">{% endif %}
-    <div class="lead-text">
-      <p class="kicker">{{ lead.article.tags[0] if lead.article.tags else 'top story' }} · {{ lead.article.published_at | fmt_date('%d %B %Y') }}</p>
-      <h1>{{ lead.article.headline }}</h1>
-      <p class="dek">{{ lead.article.dek }}</p>
-    </div>
-  </a>
+  <div class="lead-card">
+    <a href="{{ root }}{{ lead.url }}">{% if lead.card %}<img class="lead-image" src="{{ root }}{{ lead.card }}" alt="{{ lead.article.image.alt }}" width="1080" height="1400">{% elif lead.image %}<img class="lead-image" src="{{ root }}{{ lead.image }}" alt="{{ lead.article.image.alt }}">{% endif %}</a>
+  </div>
+  <div class="lead-text">
+    <p class="kicker">{{ (lead.article.theme or (lead.article.tags[0] if lead.article.tags else 'top story')) }} · {{ lead.article.published_at | fmt_date('%d %B %Y') }}</p>
+    <h1><a href="{{ root }}{{ lead.url }}">{{ lead.article.headline }}</a></h1>
+    {% if lead.article.take %}<p class="hook"><strong>{{ site.name }}'s take.</strong> {{ lead.article.take }}</p>{% else %}<p class="dek">{{ lead.article.dek }}</p>{% endif %}
+    {% if lead.angles %}
+    <p class="missed"><span>What the coverage missed</span> {{ lead.angles[0].claim }}</p>
+    {% endif %}
+    <p class="lead-more"><a href="{{ root }}{{ lead.url }}">Read the story with every source</a></p>
+  </div>
 </section>
-<section class="grid">
+{% if cards|length > 1 %}
+<section class="wall">
   {% for card in cards[1:] %}
-  <article class="card">
+  <article class="post">
     <a href="{{ root }}{{ card.url }}">
-      {% if card.image %}<img src="{{ root }}{{ card.image }}" alt="{{ card.article.image.alt }}" loading="lazy" width="{{ card.article.image.width }}" height="{{ card.article.image.height }}">{% endif %}
-      <p class="kicker">{{ card.article.tags[0] if card.article.tags else 'news' }} · {{ card.article.published_at | fmt_date('%d %b %Y') }}</p>
+      {% if card.card %}<img src="{{ root }}{{ card.card }}" alt="{{ card.article.image.alt }}" loading="lazy" width="1080" height="1400">{% elif card.image %}<img src="{{ root }}{{ card.image }}" alt="{{ card.article.image.alt }}" loading="lazy">{% endif %}
+      <p class="kicker">{{ (card.article.theme or (card.article.tags[0] if card.article.tags else 'news')) }} · {{ card.article.published_at | fmt_date('%d %b %Y') }}</p>
       <h2>{{ card.article.headline }}</h2>
-      <p class="dek">{{ card.article.dek }}</p>
+      <p class="dek">{{ card.article.take or card.article.dek }}</p>
     </a>
   </article>
   {% endfor %}
 </section>
+{% endif %}
 {% if total > cards|length %}<p class="more"><a href="{{ root }}archive.html">All {{ total }} stories in the archive</a></p>{% endif %}
 {% else %}
 <section class="empty">
@@ -31,15 +37,34 @@
   <p>This newsroom runs once a day. When the first stories clear both judges they appear here.</p>
 </section>
 {% endif %}
+{% if investigations %}
+<section class="investigations">
+  <h2>What the coverage missed</h2>
+  <p class="muted">Every story here starts where the wire stops: the record, the numbers that do not add up, who benefits, the question every report skipped.</p>
+  <ul>
+  {% for inv in investigations[:5] %}
+    <li><a href="{{ root }}{{ inv.url }}">{{ inv.article.headline }}</a><br><span>{{ inv.angles[0].claim }}</span></li>
+  {% endfor %}
+  </ul>
+  <p class="more"><a href="{{ root }}investigations.html">All investigations</a></p>
+</section>
+{% endif %}
+<section class="signup">
+  <h2>Get the daily wire</h2>
+  <p>Three stories a morning, checked by four judges, with what everyone else missed. Free, in your inbox before the commute.</p>
+  {% if site.newsletter_embed %}{{ site.newsletter_embed | safe }}{% elif site.newsletter_url %}<a class="button" href="{{ site.newsletter_url }}">Subscribe free</a>{% else %}<p class="small">Sign up opens soon. Until then the <a href="{{ root }}rss.xml">RSS feed</a> carries every story.</p>{% endif %}
+  {% if site.members_url %}<p class="small">Want the documents behind the investigations? <a href="{{ site.members_url }}">Become a member</a>.</p>{% endif %}
+</section>
 <section class="process">
   <h2>How a story earns its place</h2>
   <ol>
     <li><strong>Scan.</strong> Every headline from Nepal's major outlets in the last 24 hours, in Nepali and English.</li>
     <li><strong>Debate.</strong> An advocate and a skeptic research each story and argue it out.</li>
     <li><strong>Rank.</strong> Two judges in sequence decide what runs today.</li>
-    <li><strong>Write.</strong> A writer files the story from the original reports, with every number sourced.</li>
+    <li><strong>Investigate.</strong> The desk digs for what the coverage missed, with the record to prove it.</li>
     <li><strong>Check.</strong> A red team attacks accuracy, relevance, defensibility and reach. A defence answers. Two more judges rule.</li>
     <li><strong>Publish.</strong> Only stories approved by both final judges appear here, with their full review record.</li>
   </ol>
+  <p class="small"><a href="{{ root }}standards.html">The standards every story is held to</a> · <a href="{{ root }}sponsor.html">Sponsor {{ site.name }}</a></p>
 </section>
 {% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Standards · {{ site.name }}{% endblock %}
+{% block description %}The standard every {{ site.name }} story is held to: verification, attribution, legal protection, corrections and independence.{% endblock %}
+{% block content %}
+<article class="story prose">
+<h1>Standards</h1>
+<p>{{ site.name }} is an investigative newsroom run by software under a published standard. Nobody edits a story by hand. That is why every step has an adversary and a judge, and why these rules are public. Hold us to them.</p>
+<h2>The two absolutes</h2>
+<p><strong>Nothing invented.</strong> Every factual claim traces to a named source before it goes in. A claim that cannot be verified is cut, not hedged.</p>
+<p><strong>Never the asserter of contested conduct.</strong> Allegations are attributed to the outlet or body that made them. Guilt is never asserted. The record is shown and the reader draws the conclusion.</p>
+<h2>How a story is verified</h2>
+<p>Each story is argued by an advocate and a skeptic with evidence, ranked by two judges, and investigated for what the coverage missed: the money trail, the earlier promise, the number that does not add up, the question every report skipped. Every finding carries its evidence. A red team then attacks the draft on accuracy, relevance, defensibility and reach, a defence answers, a first judge rules and may order one revision, and a second judge reads the revised piece as the final check. Only a story approved by both is published. The whole record, every argument included, is public in the repository.</p>
+<h2>Attribution and legal precision</h2>
+<ul>
+<li>Contested conduct is stated in the words of the outlet or body that alleged it, never in our own voice.</li>
+<li>Legal status is precise and re verified for every story that touches it. "Under investigation, released on bail, not charged" is never written as "faces prosecution".</li>
+<li>A subject's on record denial or response is included whenever one exists.</li>
+<li>The line between what the evidence proves and what it suggests is drawn in plain words, every time.</li>
+<li>The headline on every card must stand alone as a screenshot. An allegation carries its status signal on the card itself.</li>
+</ul>
+<h2>Dates, roles and completeness</h2>
+<p>Dates are calendar dates, verified against the source's own timestamp. First mention of a person carries their role. First mention of a body carries a plain phrase. A reader with no background must be able to retell the story accurately after one read.</p>
+<h2>Pictures</h2>
+<p>Photographs come from openly licensed libraries and official sources, with the author, source and licence on every card and page. Identity is confirmed by the file's own description, never by resemblance. No children. When no real photograph passes that test, an illustration is used and labelled as one, on the card and on the page.</p>
+<h2>Corrections</h2>
+<p>When a published claim turns out wrong or materially incomplete, the story is corrected within six hours of discovery, with a dated correction line at the top saying what was wrong and what is right. A wrong card is replaced, not just the caption, because a card keeps circulating as a screenshot. Nothing with reach is deleted silently. Report an error on <a href="{{ site.repo_url }}/issues">GitHub</a>{% if site.contact_email %} or by email to <a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a>{% endif %}.</p>
+<h2>Independence and money</h2>
+<p>{{ site.name }} is funded by readers and sponsors. Sponsors never see a story before publication, never choose or veto a story, and are always labelled. Members fund the investigations and get the documents behind them. No story is written for a sponsor.</p>
+<h2>Original reporting</h2>
+<p>Original reporting belongs to the outlets credited in each article. We name them in every story and link to them on every page.</p>
+</article>
+{% endblock %}
