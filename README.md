@@ -55,6 +55,10 @@ Every story goes to an investigator before it goes to the writer. The investigat
 
 Every article ends the writer's call with a take: one paragraph, 50 to 90 words, the desk's own critical read of the story in the voice of a senior correspondent. Opinion is allowed, invention is not. Every fact in it must already sit in the body with a source, and an expert appears only when a listed source quotes them. The red team and both judges check it like a headline. On the article page it sits under the dek. On Facebook and Instagram it opens the post, because it is all a reader sees before they tap See more. `python -m newsroom social --dry-run` shows the posts as they would go out.
 
+## The Nepali edition
+
+Every approved story is published twice: in English at `/articles/<slug>/` and in everyday Nepali at `/ne/articles/<slug>/`, with a Nepali front page at `/ne/`, a Nepali feed at `/ne/rss.xml`, and `hreflang` links between every pair so search engines serve each reader their language. The translation is not word for word. A translator model (`newsroom/prompts/translator.md`) writes the Nepali a reader of OnlineKhabar or Setopati expects, and a second model (`translation_judge`, Opus by default) checks it against the English for every fact, number, name, attribution and legal phrase, sending it back once if anything drifted. The Nepali headline, dek, take, body, card headline, social hook and Facebook caption all ride on the article under `nepali`. Two calls per story, three with a send back; `pipeline.translate: false` publishes English only. Stories from before this stage exist have no Nepali version until *Actions → Daily edition → Run workflow* with **backfill_translations** ticked, or `python -m newsroom translate --missing`, gives them one. The card headline stays English for now: the renderer draws with DejaVu, which has no Devanagari; Pillow here shapes Devanagari correctly (Raqm), so a Nepali card is a font away.
+
 ## Setup
 
 1. **Give the workflow model credentials** (one of the two options under *Model credentials* below).
@@ -129,7 +133,7 @@ Every article with a picture gets a 1080x1400 card at build time, `newsroom/grap
 
 Every approved article is announced on the networks you connect, right after the site deploys. On Facebook the day's stories are spread out: the best ranked story goes out at once and the others are handed to Facebook as scheduled posts for the slots in `social.facebook.slots` (12:30 and 18:30 Kathmandu time by default), because three posts in one minute reach fewer people than three across the day. *Actions → Post to social networks* runs the same stage on demand, with a dry run option, a network filter, and an article id to post one story outright. A network is switched on by its secrets alone, added under *Settings → Secrets and variables → Actions → New repository secret*. No secrets, no posts, no error. *Actions → Check social accounts* verifies every connected account without posting anything. Each post is recorded in `data/social/`, one file per article, so a rerun never posts the same article twice. `python -m newsroom social --dry-run` prints what would go out.
 
-The text comes from the article's caption, take, headline, dek, social hook and tags, cut to each network's limit, hashtags last. Facebook gets the card with the engine caption; an article without one falls back to the take, a rule and the label THE STORY, then the whole article, the sources and the link (`social.facebook.mode: photo`; set `link` for a short post with a link card instead). Instagram, Threads and Telegram receive the picture with a shorter caption. X, Bluesky and Mastodon show the link card that the article page's Open Graph tags describe. Only articles published in the last `social.max_age_hours` (36) are announced, so connecting a new account never floods it with the archive; `--article <id>` posts an older one on purpose.
+The text comes from the article's caption, take, headline, dek, social hook and tags, cut to each network's limit, hashtags last. Facebook gets the card with the engine caption, and when the story has a checked Nepali version the caption opens in Nepali and carries the English under a rule, one post for both audiences, with the close in both languages (`social.facebook.languages`, `["ne", "en"]` by default; `["en"]` for English only); an article without one falls back to the take, a rule and the label THE STORY, then the whole article, the sources and the link (`social.facebook.mode: photo`; set `link` for a short post with a link card instead). Instagram, Threads and Telegram receive the picture with a shorter caption. X, Bluesky and Mastodon show the link card that the article page's Open Graph tags describe. Only articles published in the last `social.max_age_hours` (36) are announced, so connecting a new account never floods it with the archive; `--article <id>` posts an older one on purpose.
 
 | Network | Secrets | Where they come from |
 |---|---|---|
@@ -158,6 +162,10 @@ The site carries the layer that turns an audience into income, all switched on f
 - `site.google_site_verification`: the Search Console HTML tag token. `site.contact_email`: shown on the sponsor and standards pages. `site.facebook_followers`: a verified line for the sponsor page.
 - Pages: `investigations.html` lists every story whose investigation produced evidenced angles, `standards.html` is the public standard, `sponsor.html` the media kit, `newsletter.html` the sign up page. `news-sitemap.xml` carries the last two days for Google News and `robots.txt` points at both sitemaps.
 
+## A private repository
+
+The site never needs the repository to be public: GitHub Pages deploys from the workflow whatever the repository's visibility. Keeping the code, the prompts and the data private closes the easiest route to copying the newsroom or gaming its judges. With `site.repo_url` empty (the default) no page links to the repository or its issue tracker; readers report errors through the contact email when `site.contact_email` is set, otherwise through the Facebook Page (`site.facebook_url`). Set `site.repo_url` to link the code again. Private repositories need a paid GitHub plan for Pages: *Settings → General → Danger zone → Change visibility*.
+
 ## Your own domain
 
 A github.io address ties the brand to a GitHub username. Buy a domain (nepalwire.com or similar), then at the registrar add four A records for `@` pointing at `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and `185.199.111.153`, and a CNAME record for `www` pointing at `<owner>.github.io`. Set `site.custom_domain` in `config/settings.yaml` to the bare domain and merge: every link the newsroom writes, the feed, the sitemap and the CNAME file switch to it on the next build. Then in the repository open *Settings → Pages → Custom domain*, enter the domain, save, and tick *Enforce HTTPS* once the certificate shows (up to an hour after the DNS records go live). Old github.io links redirect to the new address. A repository variable `SITE_URL` still overrides everything, for a staging copy.
@@ -172,11 +180,11 @@ Found photos come only from Wikimedia Commons and Openverse, filtered to CC0, pu
 
 ## Decisions to confirm
 
-- **Language.** Articles are written in English by default (`site.language: en`). Switch to `ne` for Nepali. Sources are read in both either way.
+- **Language.** Articles are written and judged in English (`site.language: en`) and published in English and Nepali (see "The Nepali edition"). Sources are read in both either way.
 - **Image generation provider.** OpenAI's image API is wired in because it is the most common choice. Any other provider can be added in `newsroom/images.py::generate_image`.
 - **Feed coverage.** On 2026-09-26 a GitHub Actions runner confirmed 14 of the 17 native feeds. Kantipur, The Himalayan Times and Setopati English expose no reachable feed and run on the Google News fallback, which delivered 27, 1 and 17 items respectively that day. The *Check sources* workflow repeats this check weekly and suggests feed URLs for anything that breaks.
 - **Openverse** allows unauthenticated requests with a low hourly limit. Commons is queried first, so this rarely matters, but registering for an Openverse key is an option if it does.
 
 ## Corrections
 
-Open an issue. The full record behind every story is in `data/`, so an error can be traced to the source, the writer's draft, or a judge's ruling.
+Readers reach the newsroom through the channel the site shows: the contact email when set, the issue tracker when `site.repo_url` points at a public repository, the Facebook Page otherwise. The full record behind every story is in `data/`, so an error can be traced to the source, the writer's draft, or a judge's ruling.

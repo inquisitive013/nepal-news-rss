@@ -58,12 +58,7 @@ img { max-width: 100%; height: auto; display: block; }
   align-items: center;
   gap: 10px;
 }
-.flag {
-  width: 18px; height: 26px;
-  background: var(--accent);
-  clip-path: polygon(0 0, 100% 40%, 45% 55%, 100% 100%, 0 100%);
-  display: inline-block;
-}
+.brand .logo { width: 44px; height: 44px; border-radius: 9px; box-shadow: 0 2px 8px rgba(0,0,0,0.18); }
 .tagline { margin: 0; color: var(--muted); font-size: 15px; }
 .masthead nav { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
 .masthead nav a { text-decoration: none; color: var(--muted); }
@@ -180,3 +175,19 @@ footer { max-width: var(--maxw); margin: 0 auto; padding: 24px 16px 40px; border
 .button:hover { filter: brightness(1.08); }
 .nav-cta { color: var(--accent) !important; font-weight: 700; }
 .ad { margin: 22px 0; min-height: 90px; }
+
+/* The language switch and the Nepali edition */
+.masthead nav .lang { margin-left: auto; border: 1px solid var(--rule); border-radius: 999px; padding: 2px 12px; text-transform: none; letter-spacing: 0; font-weight: 700; color: var(--ink); }
+.masthead nav .lang:hover { border-color: var(--accent); color: var(--accent); }
+.lang-note { margin: -8px 0 18px; font-size: 0.95rem; }
+.lang-note a { font-weight: 700; text-decoration: none; color: var(--accent-2); }
+.review-note { border-top: 1px solid var(--rule); margin-top: 26px; padding-top: 12px; color: var(--muted); }
+html[lang="ne"] {
+  --serif: "Noto Serif Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", "Mangal", Georgia, serif;
+  --sans: "Noto Sans Devanagari", "Kohinoor Devanagari", "Devanagari Sangam MN", "Nirmala UI", "Mangal", system-ui, sans-serif;
+}
+html[lang="ne"] body { line-height: 1.7; }
+html[lang="ne"] .body { line-height: 1.9; }
+html[lang="ne"] .lead h1, html[lang="ne"] .story h1, html[lang="ne"] .post h2 { line-height: 1.32; }
+/* Letter spacing splits Devanagari conjuncts in some browsers, and upper case means nothing here. */
+html[lang="ne"] .kicker, html[lang="ne"] .masthead nav, html[lang="ne"] .share span, html[lang="ne"] .sources h2, html[lang="ne"] .brand { letter-spacing: 0; text-transform: none; }

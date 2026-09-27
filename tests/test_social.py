@@ -587,3 +587,49 @@ def test_facebook_photo_post_carries_the_card(tmp_path):
     social.post_article(settings, art, env, httpx.Client(transport=httpx.MockTransport(handler)), networks=["facebook"], sleep=lambda s: None)
     assert seen["url"] == f"{SITE}/cards/{art.id}.jpg"
     assert seen["caption"].startswith(art.headline)
+
+
+def test_facebook_caption_puts_the_nepali_first_when_the_story_has_a_checked_translation(tmp_path):
+    s = _settings(tmp_path)
+    art = _article(s)
+    art.caption = {"hook": "140 households left their homes in one night.", "body": "Police say the river rose faster than the siren.", "trigger": "Whose failure is that?"}
+    art.nepali = {
+        "headline": "बागमती बाढीले एकै रातमा १४० घरधुरी विस्थापित",
+        "body_markdown": "प्रहरीका अनुसार १४० घरधुरी सारिए।",
+        "caption": {"hook": "१४० घरधुरी एकै रातमा घर छोड्न बाध्य भए।", "body": "प्रहरी भन्छन्, साइरनभन्दा छिटो नदी बढ्यो।", "trigger": "यो कसको असफलता हो?"},
+    }
+    assert social.caption_languages(s) == ["ne", "en"]
+    fb = social.compose("facebook", art, s)
+    assert fb.startswith("बागमती बाढीले एकै रातमा १४० घरधुरी विस्थापित\n\n१४० घरधुरी एकै रातमा घर छोड्न बाध्य भए।\n\nप्रहरी भन्छन्")
+    assert fb.index("यो कसको असफलता हो?") < fb.index(social.RULE) < fb.index(art.headline) < fb.index("Whose failure is that?")
+    assert fb.count(social.RULE) == 1
+    close = "Whose failure is that?\n\nस्रोतहरू ग्राफिकमा छन्।\nनेपाल वायर फलो गर्नुहोस्।\nSources available in graphic.\nFollow Nepal Wire.\n#"
+    assert close in fb and fb.split(close)[1].count("\n") == 0  # hashtags close the post on one line
+    assert SITE not in fb
+
+    # the link option adds one line per language, each to its own page
+    raw = dict(s.raw)
+    raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, include_link=True))
+    with_link = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+    assert f"पूरा समाचार: {SITE}/ne/articles/{art.slug}/\nस्रोतहरू ग्राफिकमा छन्।" in with_link
+    assert f"Full story: {SITE}/articles/{art.slug}/\nSources available in graphic." in with_link
+    assert social.nepali_article_url(s, art) == f"{SITE}/ne/articles/{art.slug}/"
+
+    # English only when the settings say so, or when the list is nonsense
+    for languages in (["en"], ["fr", " "], []):
+        raw = dict(s.raw)
+        raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, languages=languages))
+        en_only = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+        assert en_only.startswith(art.headline) and "बागमती" not in en_only and social.RULE not in en_only
+    # Nepali only is honoured, and falls back to English for a story without a translation
+    raw = dict(s.raw)
+    raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, languages=["ne"]))
+    ne_only = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+    assert ne_only.startswith("बागमती") and art.headline not in ne_only and "Follow Nepal Wire." not in ne_only
+    art.nepali = {"headline": "x", "body_markdown": "y"}  # no caption yet
+    fallback = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+    assert fallback.startswith(art.headline) and social.RULE not in fallback
+    # a story with no Nepali version at all posts the English caption exactly as before
+    art.nepali = {}
+    plain = social.compose("facebook", art, s)
+    assert plain.startswith(art.headline) and social.RULE not in plain and plain.count("Sources available in graphic.") == 1

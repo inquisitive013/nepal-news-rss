@@ -6,7 +6,10 @@
 
 site:
   name: "Nepal Wire"
+  # The name as it appears on the Nepali edition and in Nepali captions.
+  name_ne: "नेपाल वायर"
   tagline: "Nepal's day, ranked and checked before it reaches you"
+  tagline_ne: "नेपालको दिन, तपाईंसम्म आउनुअघि क्रमबद्ध र जाँचिएको"
   # GitHub Pages serves a project site at https://<owner>.github.io/<repo>/
   url: "https://inquisitive013.github.io/nepal-news-rss"
   # Your own domain once it points at GitHub Pages (README: Your own domain). Empty keeps the address above.
@@ -17,6 +20,12 @@ site:
   google_site_verification: ""
   # A verified line for the sponsor page, e.g. "10,300 followers as of September 2026". Empty keeps the generic wording.
   facebook_followers: "10,336 followers on Facebook as of September 27, 2026"
+  # Public address of the source repository, if you want the site to link to it. Empty
+  # renders no repository links, which is right for a private repository.
+  repo_url: ""
+  # The Facebook Page, e.g. "https://www.facebook.com/nepalwire". Linked in the footer and used
+  # as the corrections channel when no contact email is set. Empty renders no link.
+  facebook_url: ""
 
 newsletter:
   # The provider's subscribe page (Beehiiv, Substack, Buttondown). Rendered as a button wherever the sign up box appears.
@@ -29,7 +38,8 @@ newsletter:
 ads:
   # Google AdSense publisher id, e.g. "ca-pub-1234567890123456". Empty renders no ads and no ads.txt.
   adsense_client: ""
-  # Language of the published articles: "en" or "ne". Sources are read in both.
+  # Language the newsroom writes and judges in: "en". Sources are read in Nepali and English.
+  # The Nepali edition is a checked translation of the approved English piece (pipeline.translate).
   language: "en"
   timezone: "Asia/Kathmandu"
   publisher: "Nepal Wire newsroom"
@@ -59,11 +69,15 @@ pipeline:
   max_revisions_per_run: 5
   # Parallel debates / articles in flight.
   concurrency: 3
+  # After approval, a translator renders each article into everyday Nepali and a second
+  # model checks the translation against the English. Two calls per article, three if the
+  # checker sends it back once. Set false to publish the English edition only.
+  translate: true
   # Safety valve. The run stops taking new work after this many model calls.
-  # A normal day is about 33: clusterer 1, advocate 3, skeptic 3, ranking judges 2,
+  # A normal day is about 39: clusterer 1, advocate 3, skeptic 3, ranking judges 2,
   # investigator 3, writer 3, picture check 3, red team 3, defence 3, validation judges 6,
-  # reviser 3.
-  max_llm_calls: 45
+  # reviser 3, translator 3, translation check 3.
+  max_llm_calls: 60
 
 llm:
   # Default model and thinking effort for every role. Override a role under `roles`.
@@ -96,6 +110,9 @@ llm:
     writer: { effort: "high" }
     # The investigation is the newsroom's edge, so it gets the thinking budget too.
     investigator: { effort: "high" }
+    # The Nepali edition: Sonnet translates, Opus checks it against the English.
+    translator: { effort: "medium" }
+    translation_judge: { model: "claude-opus-5-5", effort: "medium" }
 
 editorial:
   exclude_topics:
@@ -129,7 +146,6 @@ social:
   # This list only sets the posting order.
   networks: [x, facebook, instagram, threads, telegram, bluesky, mastodon]
   # Networks listed here are still checked but never posted to. Remove a name to resume.
-  # Facebook waits here until the Page is renamed to Nepal Wire.
   paused: []
   # Announce only articles published within this many hours, so connecting a new account
   # never floods it with the archive.
@@ -144,6 +160,9 @@ social:
     mode: photo
     # A link in the caption costs reach and the card already carries the sources. Off by default.
     include_link: false
+    # Languages in the caption, in order. ["ne", "en"] puts the Nepali caption first with
+    # the English under it, one post per story. ["en"] posts English only.
+    languages: ["ne", "en"]
     # When each day's articles go out, in newsroom local time, best ranked first. "now"
     # posts as soon as the site is live; a clock time hands Facebook a scheduled post it
     # releases then. Three stories spread across the day reach more people than three in

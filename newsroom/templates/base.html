@@ -1,20 +1,38 @@
+{% from "_macros.html" import contact, contact_ne %}
 <!DOCTYPE html>
-<html lang="{{ site.language }}">
+<html lang="{{ lang or site.language }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}{{ site.name }}{% endblock %}</title>
-<meta name="description" content="{% block description %}{{ site.tagline }}{% endblock %}">
+<title>{% block title %}{{ site.name_ne if lang == 'ne' else site.name }}{% endblock %}</title>
+<meta name="description" content="{% block description %}{{ site.tagline_ne if lang == 'ne' else site.tagline }}{% endblock %}">
 {% if site.google_site_verification %}<meta name="google-site-verification" content="{{ site.google_site_verification }}">
 {% endif %}<link rel="stylesheet" href="{{ root }}style.css">
 <link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ root }}rss.xml">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 2h16l8 12-8 4 8 12H4z' fill='%23c8102e'/%3E%3C/svg%3E">
+<link rel="alternate" type="application/rss+xml" title="{{ site.name_ne }}" href="{{ root }}ne/rss.xml" hreflang="ne">
+{% for alt in alternates %}<link rel="alternate" hreflang="{{ alt.lang }}" href="{{ alt.url }}">
+{% endfor %}{% if alternates %}<link rel="alternate" hreflang="x-default" href="{{ alternates[0].url }}">
+{% endif %}<link rel="icon" type="image/png" sizes="64x64" href="{{ root }}favicon.png">
+<link rel="apple-touch-icon" href="{{ root }}apple-touch-icon.png">
 {% if site.adsense_client %}<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_client }}" crossorigin="anonymous"></script>
 {% endif %}{% block head %}{% endblock %}
 </head>
 <body>
 <header class="masthead">
-  <a class="brand" href="{{ root }}"><span class="flag"></span>{{ site.name }}</a>
+  {% if lang == 'ne' %}
+  <a class="brand" href="{{ root }}ne/"><img class="logo" src="{{ root }}logo.png" alt="" width="44" height="44">{{ site.name_ne }}</a>
+  <p class="tagline">{{ site.tagline_ne }}</p>
+  <nav>
+    <a href="{{ root }}ne/">ताजा</a>
+    <a href="{{ root }}investigations.html">अनुसन्धान</a>
+    <a href="{{ root }}archive.html">अभिलेख</a>
+    <a href="{{ root }}standards.html">मापदण्ड</a>
+    <a href="{{ root }}sponsor.html">प्रायोजक</a>
+    <a class="nav-cta" href="{{ root }}newsletter.html">इमेलमा दैनिक वायर</a>
+    <a class="lang" href="{{ switch or root }}" lang="en" hreflang="en">English</a>
+  </nav>
+  {% else %}
+  <a class="brand" href="{{ root }}"><img class="logo" src="{{ root }}logo.png" alt="" width="44" height="44">{{ site.name }}</a>
   <p class="tagline">{{ site.tagline }}</p>
   <nav>
     <a href="{{ root }}">Latest</a>
@@ -23,20 +41,33 @@
     <a href="{{ root }}standards.html">Standards</a>
     <a href="{{ root }}sponsor.html">Sponsor</a>
     <a class="nav-cta" href="{{ root }}newsletter.html">Daily wire by email</a>
+    <a class="lang" href="{{ switch or (root ~ 'ne/') }}" lang="ne" hreflang="ne">नेपाली</a>
   </nav>
+  {% endif %}
 </header>
 <main>
 {% block content %}{% endblock %}
 </main>
 <footer>
+  {% if lang == 'ne' %}
+  <section class="signup signup-footer">
+    <h2>दैनिक वायर, तपाईंको इनबक्समा</h2>
+    <p>हरेक बिहान तीन जाँचिएका समाचार, समाचारले छुटाएको कुरासहित। निःशुल्क।</p>
+    {% if site.newsletter_embed %}{{ site.newsletter_embed | safe }}{% elif site.newsletter_url %}<a class="button" href="{{ site.newsletter_url }}">निःशुल्क सदस्यता लिनुहोस्</a>{% else %}<p class="small">साइन अप चाँडै खुल्छ। <a href="{{ root }}ne/rss.xml">RSS फिड</a> आजै चल्छ।</p>{% endif %}
+  </section>
+  <p>{{ site.name_ne }} सफ्टवेयरले चलाउने अनुसन्धानमूलक न्युजरूम हो, सार्वजनिक मापदण्डअनुसार। हरेक समाचार खुला बहसमा छानिन्छ, दुई तहमा क्रमबद्ध हुन्छ, समाचारले छुटाएको कुरा खोजिन्छ, अनि तथ्य, सान्दर्भिकता, कानुनी सुरक्षा र पहुँचका लागि रेड टिम र दुई थप जाँचकर्ताबाट जाँचिन्छ। नेपाली संस्करण अंग्रेजी मूलको जाँचिएको अनुवाद हो। <a href="{{ root }}standards.html">मापदण्ड पढ्नुहोस्</a>।</p>
+  <p class="small">मूल रिपोर्टिङ हरेक समाचारमा उल्लेख गरिएका सञ्चारमाध्यमको हो। तस्बिरमा आफ्नै श्रेय छ। गल्ती देख्नुभयो? {{ contact_ne(site) }}। प्रायोजकले प्रकाशनअघि कुनै समाचार देख्दैनन्।</p>
+  <p class="small"><a href="{{ root }}about.html">यो कसरी चल्छ</a> · <a href="{{ root }}sponsor.html">प्रायोजक</a> · <a href="{{ root }}newsletter.html">न्युजलेटर</a> · <a href="{{ root }}privacy.html">गोपनीयता</a> · <a href="{{ root }}ne/rss.xml">RSS</a>{% if site.facebook_url %} · <a href="{{ site.facebook_url }}">फेसबुक</a>{% endif %} · <a href="{{ switch or root }}" lang="en">English</a></p>
+  {% else %}
   <section class="signup signup-footer">
     <h2>The daily wire, in your inbox</h2>
     <p>Three verified stories every morning, each with what the coverage missed. Free.</p>
     {% if site.newsletter_embed %}{{ site.newsletter_embed | safe }}{% elif site.newsletter_url %}<a class="button" href="{{ site.newsletter_url }}">Subscribe free</a>{% else %}<p class="small">Sign up opens soon. The <a href="{{ root }}rss.xml">RSS feed</a> works today.</p>{% endif %}
   </section>
-  <p>{{ site.name }} is an investigative newsroom run by software under a published standard. Every story is picked in an open debate, ranked by two judges, dug into for what the coverage missed, then checked for accuracy, relevance, defensibility and reach by a red team and two more judges before it appears here. <a href="{{ root }}standards.html">Read the standards</a>. Source code and the full review record live on <a href="{{ site.repo_url }}">GitHub</a>.</p>
-  <p class="small">Original reporting belongs to the outlets credited in each article. Images carry their own credits. Spotted an error? Open an issue on GitHub and the next run will see it. Sponsors never see a story before it is published.</p>
-  <p class="small"><a href="{{ root }}about.html">How it works</a> · <a href="{{ root }}sponsor.html">Sponsor</a> · <a href="{{ root }}newsletter.html">Newsletter</a> · <a href="{{ root }}privacy.html">Privacy</a> · <a href="{{ root }}rss.xml">RSS</a></p>
+  <p>{{ site.name }} is an investigative newsroom run by software under a published standard. Every story is picked in an open debate, ranked by two judges, dug into for what the coverage missed, then checked for accuracy, relevance, defensibility and reach by a red team and two more judges before it appears here, in English and in Nepali. <a href="{{ root }}standards.html">Read the standards</a>.{% if site.repo_url %} Source code and the full review record live on <a href="{{ site.repo_url }}">GitHub</a>.{% endif %}</p>
+  <p class="small">Original reporting belongs to the outlets credited in each article. Images carry their own credits. Spotted an error? {{ contact(site) }}. Sponsors never see a story before it is published.</p>
+  <p class="small"><a href="{{ root }}about.html">How it works</a> · <a href="{{ root }}sponsor.html">Sponsor</a> · <a href="{{ root }}newsletter.html">Newsletter</a> · <a href="{{ root }}privacy.html">Privacy</a> · <a href="{{ root }}rss.xml">RSS</a>{% if site.facebook_url %} · <a href="{{ site.facebook_url }}">Facebook</a>{% endif %} · <a href="{{ switch or (root ~ 'ne/') }}" lang="ne">नेपाली</a></p>
+  {% endif %}
 </footer>
 </body>
 </html>

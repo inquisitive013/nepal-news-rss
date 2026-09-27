@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from . import graphic
+from . import graphic, translation
 from .config import Settings
 from .models import (
     Article,
@@ -34,6 +34,8 @@ TEMPLATES = Path(__file__).resolve().parent / "templates"
 STATIC = Path(__file__).resolve().parent / "static"
 INDEX_LIMIT = 40
 CARD_LIMIT = 60  # cards rendered per build: the recent articles social posting can still reach
+NE_DIGITS = str.maketrans("0123456789", "०१२३४५६७८९")
+NE_MONTHS = ["जनवरी", "फेब्रुअरी", "मार्च", "अप्रिल", "मे", "जुन", "जुलाई", "अगस्ट", "सेप्टेम्बर", "अक्टोबर", "नोभेम्बर", "डिसेम्बर"]
 
 _SCRIPT_RE = re.compile(r"<\s*(script|style|iframe|object|embed)[^>]*>.*?<\s*/\s*\1\s*>", re.IGNORECASE | re.DOTALL)
 _ON_ATTR_RE = re.compile(r"\s+on\w+\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+)", re.IGNORECASE)
@@ -168,7 +170,13 @@ def _env(settings: Settings) -> Environment:
     def iso(value: str) -> str:
         return _parse_iso(value).isoformat()
 
+    def fmt_date_ne(value: str) -> str:
+        """The date as Nepali readers write the Gregorian one: २७ सेप्टेम्बर २०२६."""
+        dt = _parse_iso(value).astimezone(tz)
+        return f"{dt.day} {NE_MONTHS[dt.month - 1]} {dt.year}".translate(NE_DIGITS)
+
     env.filters["fmt_date"] = fmt_date
+    env.filters["fmt_date_ne"] = fmt_date_ne
     env.filters["rfc822"] = rfc822
     env.filters["iso"] = iso
     env.filters["markdown"] = render_markdown
@@ -209,6 +217,21 @@ def _review_summary(article: Article) -> dict[str, Any]:
     }
 
 
+def nepali_view(article: Article) -> Article:
+    """The article with its Nepali fields in place of the English, for the Nepali templates and feed."""
+    ne = article.nepali or {}
+    return dataclasses.replace(
+        article,
+        headline=ne.get("headline") or article.headline,
+        dek=ne.get("dek") or article.dek,
+        take=ne.get("take") or "",
+        body_markdown=ne.get("body_markdown") or article.body_markdown,
+        social_hook=ne.get("social_hook") or article.social_hook,
+        image_headline=ne.get("image_headline") or article.image_headline,
+        language="ne",
+    )
+
+
 def build_site(settings: Settings, out_dir: Path) -> Path:
     out_dir = Path(out_dir)
     if out_dir.exists():
@@ -216,17 +239,22 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
     (out_dir / "articles").mkdir(parents=True)
     (out_dir / "images").mkdir(parents=True)
     (out_dir / "cards").mkdir(parents=True)
+    (out_dir / "ne" / "articles").mkdir(parents=True)
 
     env = _env(settings)
     articles = load_articles(settings)
     site = {
         "name": settings.site_name,
+        "name_ne": str(settings.get("site.name_ne", "") or "").strip() or settings.site_name,
         "tagline": settings.get("site.tagline", ""),
+        "tagline_ne": str(settings.get("site.tagline_ne", "") or "").strip() or settings.get("site.tagline", ""),
         "url": settings.site_url,
         "language": settings.language,
         "publisher": settings.get("site.publisher", settings.site_name),
         "built_at": datetime.now(timezone.utc).isoformat(),
-        "repo_url": "https://github.com/inquisitive013/nepal-news-rss",
+        # Empty for a private repository: every link to the code and the issue tracker disappears.
+        "repo_url": str(settings.get("site.repo_url", "") or "").strip().rstrip("/"),
+        "facebook_url": str(settings.get("site.facebook_url", "") or "").strip(),
         # The money and trust layer. Every value is empty until the publisher fills it in settings.yaml.
         "contact_email": str(settings.get("site.contact_email", "") or "").strip(),
         "google_site_verification": str(settings.get("site.google_site_verification", "") or "").strip(),
@@ -236,10 +264,18 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         "members_url": str(settings.get("newsletter.members_url", "") or "").strip(),
         "adsense_client": str(settings.get("ads.adsense_client", "") or "").strip(),
     }
+    translated = {a.id for a in articles if translation.usable(a.nepali)}
 
-    def render(template: str, dest: Path, **ctx: Any) -> None:
+    def render(template: str, dest: Path, *, lang: str = "en", alternates=(), switch: str = "", **ctx: Any) -> None:
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_text(env.get_template(template).render(site=site, **ctx), encoding="utf-8")
+        dest.write_text(env.get_template(template).render(site=site, lang=lang, alternates=list(alternates), switch=switch, **ctx), encoding="utf-8")
+
+    def alternates_for(en_path: str, ne_path: str | None) -> list[dict[str, str]]:
+        # English first: it is also the x-default.
+        alts = [{"lang": "en", "url": f"{site['url']}/{en_path}"}]
+        if ne_path is not None:
+            alts.append({"lang": "ne", "url": f"{site['url']}/{ne_path}"})
+        return alts
 
     # Images live beside the data so the archive survives rebuilds.
     for article in articles:
@@ -262,6 +298,8 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         {
             "article": a,
             "url": f"articles/{a.slug}/",
+            "ne_url": f"ne/articles/{a.slug}/" if a.id in translated else "",
+            "nepali": nepali_view(a) if a.id in translated else None,
             "image": _image_rel(a),
             "card": f"cards/{graphic.card_name(a)}" if (a.image and (out_dir / "cards" / graphic.card_name(a)).exists()) else "",
             "angles": evidenced_angles(a),
@@ -269,8 +307,10 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         for a in articles
     ]
     investigations = [c for c in cards if c["angles"]]
+    home = alternates_for("", "ne/")
 
-    render("index.html", out_dir / "index.html", root="./", cards=cards[:INDEX_LIMIT], total=len(articles), investigations=investigations)
+    render("index.html", out_dir / "index.html", root="./", alternates=home, switch="./ne/", cards=cards[:INDEX_LIMIT], total=len(articles), investigations=investigations)
+    render("index_ne.html", out_dir / "ne" / "index.html", root="../", lang="ne", alternates=home, switch="../", cards=cards[:INDEX_LIMIT], total=len(articles))
     render("archive.html", out_dir / "archive.html", root="./", cards=cards)
     render("investigations.html", out_dir / "investigations.html", root="./", investigations=investigations)
     render("about.html", out_dir / "about.html", root="./", settings_raw=settings.raw, source_names=[s["name"] for s in settings.sources])
@@ -279,33 +319,66 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
     render("newsletter.html", out_dir / "newsletter.html", root="./")
     render("privacy.html", out_dir / "privacy.html", root="./")
     for a in articles:
+        en_path = f"articles/{a.slug}/"
+        ne_path = f"ne/articles/{a.slug}/" if a.id in translated else None
+        alts = alternates_for(en_path, ne_path)
+        og_image = f"{site['url']}/{_image_rel(a)}" if a.image else ""
         render(
             "article.html",
             out_dir / "articles" / a.slug / "index.html",
             root="../../",
+            alternates=alts,
+            switch=f"../../{ne_path}" if ne_path else "../../ne/",
             article=a,
+            ne_url=f"../../{ne_path}" if ne_path else "",
             image=_image_rel(a),
             body_html=render_markdown(a.body_markdown),
             review=_review_summary(a),
-            canonical=f"{site['url']}/articles/{a.slug}/",
-            og_image=(f"{site['url']}/{_image_rel(a)}" if a.image else ""),
+            canonical=f"{site['url']}/{en_path}",
+            og_image=og_image,
         )
-    (out_dir / "rss.xml").write_text(env.get_template("rss.xml").render(site=site, articles=articles[:50], image_size=_image_sizes(settings, articles[:50])), encoding="utf-8")
-    (out_dir / "sitemap.xml").write_text(env.get_template("sitemap.xml").render(site=site, articles=articles), encoding="utf-8")
+        if ne_path:
+            view = nepali_view(a)
+            render(
+                "article_ne.html",
+                out_dir / "ne" / "articles" / a.slug / "index.html",
+                root="../../../",
+                lang="ne",
+                alternates=alts,
+                switch=f"../../../{en_path}",
+                article=view,
+                english_url=f"{site['url']}/{en_path}",
+                image=_image_rel(a),
+                body_html=render_markdown(view.body_markdown),
+                review=_review_summary(a),
+                canonical=f"{site['url']}/{ne_path}",
+                og_image=og_image,
+            )
+    ne_articles = [nepali_view(a) for a in articles if a.id in translated]
+    feed_en = {"title": site["name"], "description": site["tagline"], "language": "en", "home": f"{site['url']}/", "self": f"{site['url']}/rss.xml", "prefix": ""}
+    feed_ne = {"title": site["name_ne"], "description": site["tagline_ne"], "language": "ne", "home": f"{site['url']}/ne/", "self": f"{site['url']}/ne/rss.xml", "prefix": "ne/"}
+    (out_dir / "rss.xml").write_text(env.get_template("rss.xml").render(site=site, feed=feed_en, articles=articles[:50], image_size=_image_sizes(settings, articles[:50])), encoding="utf-8")
+    (out_dir / "ne" / "rss.xml").write_text(env.get_template("rss.xml").render(site=site, feed=feed_ne, articles=ne_articles[:50], image_size=_image_sizes(settings, ne_articles[:50])), encoding="utf-8")
+    (out_dir / "sitemap.xml").write_text(env.get_template("sitemap.xml").render(site=site, articles=articles, ne_articles=ne_articles), encoding="utf-8")
     # Google News reads only the last two days.
-    fresh = [a for a in articles if _parse_iso(a.published_at or "1970-01-01T00:00:00+00:00") >= datetime.now(timezone.utc) - timedelta(hours=48)]
-    (out_dir / "news-sitemap.xml").write_text(env.get_template("news-sitemap.xml").render(site=site, articles=fresh), encoding="utf-8")
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=48)
+    fresh = [a for a in articles if _parse_iso(a.published_at or "1970-01-01T00:00:00+00:00") >= cutoff]
+    fresh_ne = [v for v in ne_articles if _parse_iso(v.published_at or "1970-01-01T00:00:00+00:00") >= cutoff]
+    (out_dir / "news-sitemap.xml").write_text(env.get_template("news-sitemap.xml").render(site=site, articles=fresh, ne_articles=fresh_ne), encoding="utf-8")
     (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site['url']}/sitemap.xml\nSitemap: {site['url']}/news-sitemap.xml\n", encoding="utf-8")
     if site["adsense_client"]:
         # AdSense refuses to serve until this file names the publisher. The last field is Google's own seller id.
         (out_dir / "ads.txt").write_text(f"google.com, {site['adsense_client'].removeprefix('ca-')}, DIRECT, f08c47fec0942fa0\n", encoding="utf-8")
-    shutil.copy2(STATIC / "style.css", out_dir / "style.css")
+    # The stylesheet, the logo and the icons. The transparent mark is only for the card renderer.
+    for asset in STATIC.iterdir():
+        if asset.is_file() and asset.name != "logo-mark.png":
+            shutil.copy2(asset, out_dir / asset.name)
     (out_dir / ".nojekyll").write_text("", encoding="utf-8")
     if settings.custom_domain:
         # GitHub Pages reads this when the site is published from a branch; with Actions the
         # domain is set in the repository's Pages settings, and the file does no harm.
         (out_dir / "CNAME").write_text(settings.custom_domain + "\n", encoding="utf-8")
-    log.info("site built at %s with %d articles", out_dir, len(articles))
+    log.info("site built at %s with %d articles, %d in Nepali", out_dir, len(articles), len(ne_articles))
     return out_dir
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>{{ site.url }}/</loc><changefreq>daily</changefreq></url>
+  <url><loc>{{ site.url }}/ne/</loc><changefreq>daily</changefreq></url>
   <url><loc>{{ site.url }}/investigations.html</loc><changefreq>daily</changefreq></url>
   <url><loc>{{ site.url }}/archive.html</loc><changefreq>daily</changefreq></url>
   <url><loc>{{ site.url }}/about.html</loc><changefreq>monthly</changefreq></url>
@@ -10,5 +11,8 @@
   <url><loc>{{ site.url }}/privacy.html</loc><changefreq>yearly</changefreq></url>
 {% for a in articles %}
   <url><loc>{{ site.url }}/articles/{{ a.slug }}/</loc><lastmod>{{ a.published_at | iso }}</lastmod></url>
+{% endfor %}
+{% for a in ne_articles %}
+  <url><loc>{{ site.url }}/ne/articles/{{ a.slug }}/</loc><lastmod>{{ a.published_at | iso }}</lastmod></url>
 {% endfor %}
 </urlset>

@@ -1,0 +1,36 @@
+{# Where a reader reports an error or asks a question. Email first, then the issue tracker of a public repository, then the Facebook Page. #}
+{% macro contact(site, cap=true) -%}
+{% if site.contact_email -%}
+{{ 'Email' if cap else 'email' }} <a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a>
+{%- elif site.repo_url -%}
+{{ 'Open' if cap else 'open' }} an issue on <a href="{{ site.repo_url }}/issues">GitHub</a>
+{%- elif site.facebook_url -%}
+{{ 'Message' if cap else 'message' }} the <a href="{{ site.facebook_url }}">{{ site.name }} Facebook Page</a>
+{%- else -%}
+{{ 'Message' if cap else 'message' }} the {{ site.name }} Facebook Page
+{%- endif %}
+{%- endmacro %}
+
+{% macro channel(site) -%}
+{% if site.contact_email -%}
+by email to <a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a>
+{%- elif site.repo_url -%}
+on <a href="{{ site.repo_url }}/issues">GitHub</a>
+{%- elif site.facebook_url -%}
+through the <a href="{{ site.facebook_url }}">{{ site.name }} Facebook Page</a>
+{%- else -%}
+through the {{ site.name }} Facebook Page
+{%- endif %}
+{%- endmacro %}
+
+{% macro contact_ne(site) -%}
+{% if site.contact_email -%}
+<a href="mailto:{{ site.contact_email }}">{{ site.contact_email }}</a> मा इमेल गर्नुहोस्
+{%- elif site.repo_url -%}
+<a href="{{ site.repo_url }}/issues">GitHub</a> मा इस्यु खोल्नुहोस्
+{%- elif site.facebook_url -%}
+<a href="{{ site.facebook_url }}">{{ site.name_ne }} फेसबुक पेज</a>मा सन्देश पठाउनुहोस्
+{%- else -%}
+{{ site.name_ne }} फेसबुक पेजमा सन्देश पठाउनुहोस्
+{%- endif %}
+{%- endmacro %}
