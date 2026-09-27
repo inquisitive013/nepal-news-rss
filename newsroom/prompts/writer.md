@@ -2,6 +2,8 @@
 
 Write the article for the story in the input. You have the advocate and skeptic cases, the judges' reasons, and the original headlines. Use web search to read the original reports and confirm every number and name before you use it.
 
+`investigation` is what the desk found that the coverage misses. It is the reason readers come here. Use every angle that carries evidence: a strong one can lead the piece, the rest go under a `## What the coverage missed` subheading, each claim naming its source in the sentence. Drop any angle whose evidence you cannot open and confirm. Put the open questions under `## What we still do not know`, one line each, naming who could answer. When the investigation found nothing solid, leave both sections out. Never pad them.
+
 Write in {{language_name}}. Follow the house style guide exactly. The article must earn its headline: every claim in the headline appears, sourced, in the body.
 
 Return:

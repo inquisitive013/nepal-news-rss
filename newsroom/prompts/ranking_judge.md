@@ -10,6 +10,7 @@ How to weigh a story:
 - Verification: at least two independent confirmations, or one primary official record. Single source stories rank low unless the source is the official record itself.
 - Freshness: it happened or broke inside the window, or a major development did.
 - Defensibility: nothing that risks defaming a person or amplifying an unverified rumour.
+- What we can add: prefer a story where the advocate shows a gap in the coverage that public records can fill today. A story everyone has, told the same way, ranks below one the desk can advance.
 
 `guidance` in the input gives the newsroom's target scores. Treat them as guidance, not gates. The top `articles_per_day` stories in your `ranked` list become articles, so make sure each of them can be written responsibly today.
 

@@ -46,6 +46,11 @@ def test_mock_run_publishes_and_records(tmp_path):
     assert art.version == 2
     assert art.review.final_decision == "approved"
     assert art.review.final_reason.startswith("Judge 2:")
+    # the investigation rides with the article: only angles with evidence survive
+    assert [a["kind"] for a in art.investigation["angles"]] == ["record"]
+    assert art.investigation["unanswered"] and art.investigation["summary"]
+    assert "## What the coverage missed" in art.body_markdown
+    assert "## What we still do not know" in art.body_markdown
     assert art.review.ranking  # judge reasons carried onto the article
     run_file = tmp_path / "data" / "runs" / "2026-09-26.json"
     assert run_file.exists()
@@ -108,6 +113,8 @@ def test_call_budget_matches_the_settings(tmp_path):
     assert calls["advocate"] == calls["skeptic"] == len(run.stories) <= int(settings.get("pipeline.max_debate_stories"))
     assert calls["ranking_judge"] == 2
     assert calls["writer"] == n_articles
+    # every article is investigated once before it is written
+    assert calls["investigator"] == n_articles
     # one red team pass and one defence per article, never a second round
     assert calls["red_team"] == calls["defense"] == n_articles
     # judge 1 once and judge 2 once per article; the mock never sends anything back
@@ -174,3 +181,36 @@ def test_second_run_on_the_same_day_keeps_both_records(tmp_path):
     second_file = tmp_path / "data" / "runs" / "2026-09-26-2.json"
     assert second_file.exists()
     assert [p.name for p in publish.run_records(settings)] == ["2026-09-26.json", "2026-09-26-2.json"]
+
+
+def test_investigation_can_be_switched_off(tmp_path):
+    settings = _settings(tmp_path, investigate=False)
+    llm = MockLLM(settings, UsageMeter(200))
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "ok", run.errors
+    assert "investigator" not in llm.calls
+    art = publish.load_articles(settings)[0]
+    assert art.investigation == {}
+    assert "What the coverage missed" not in art.body_markdown
+
+
+def test_failed_investigation_never_loses_the_article(tmp_path):
+    from newsroom.llm import LLMError
+
+    class NoDigging(MockLLM):
+        def structured(self, role, *args, **kwargs):
+            if role == "investigator":
+                self.meter.reserve()
+                self.calls.append(role)
+                raise LLMError("search tool unavailable")
+            return super().structured(role, *args, **kwargs)
+
+    settings = _settings(tmp_path)
+    llm = NoDigging(settings, UsageMeter(200))
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "ok", run.errors
+    assert run.published
+    art = publish.load_articles(settings)[0]
+    assert art.investigation["angles"] == []
+    assert "investigation failed" in art.investigation["summary"]
+    assert "What the coverage missed" not in art.body_markdown
