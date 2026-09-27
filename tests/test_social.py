@@ -99,7 +99,7 @@ def test_compose_respects_each_network(tmp_path):
     th = social.compose("threads", art, settings)
     assert len(th) <= 500
     fb = social.compose("facebook", art, settings)
-    assert fb.startswith(art.headline) and "Full story with links:" in fb and "Sources: " in fb
+    assert fb.startswith(art.headline) and "Every source, with links:" in fb and "Sources: " in fb and "THE STORY" not in fb
     art_no_image = _article(settings, with_image=False)
     fb_link = social.compose("facebook", art_no_image, settings)
     assert fb_link.startswith(art_no_image.headline) and f"{SITE}/articles/" in fb_link and "Sources:" not in fb_link
@@ -141,7 +141,7 @@ def _fake_network(calls):
         if "graph.facebook.com" in url and url.endswith("/111/photos"):
             body = dict(httpx.QueryParams(request.content.decode()))
             assert body["url"].endswith(".jpg") and body["access_token"] == "EAABfaketoken_1234567890abcdefghijklmnop"
-            assert "Full story with links: " + SITE in body["caption"] and "Sources:" in body["caption"]
+            assert "Every source, with links: " + SITE in body["caption"] and "Sources:" in body["caption"]
             return httpx.Response(200, json={"id": "90", "post_id": "111_2002"})
         if "graph.facebook.com" in url and url.endswith("/111/feed"):
             body = dict(httpx.QueryParams(request.content.decode()))
@@ -528,7 +528,8 @@ def test_the_take_leads_the_long_form_posts(tmp_path):
     art.take = "Police moved 140 households and nobody has said who delayed the siren. That answer decides whether this was weather or negligence."
     fb = social.compose("facebook", art, s)
     assert fb.startswith("Nepal Wire's take: Police moved 140 households")
-    assert fb.index("Nepal Wire's take") < fb.index(art.headline) < fb.index("Full story with links:")
+    assert fb.index("Nepal Wire's take") < fb.index("THE STORY") < fb.index(art.headline) < fb.index("Every source, with links:")
+    assert fb.count(social.RULE) == 3  # around the story label, and before the sources
     ig = social.compose("instagram", art, s)
     assert ig.startswith("Nepal Wire's take:") and art.social_hook not in ig
     tg = social.compose("telegram", art, s)
