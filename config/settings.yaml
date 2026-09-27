@@ -98,6 +98,9 @@ social:
   # A network is switched on by its secrets alone (see README, "Social media").
   # This list only sets the posting order.
   networks: [x, facebook, instagram, threads, telegram, bluesky, mastodon]
+  # Networks listed here are still checked but never posted to. Remove a name to resume.
+  # Facebook waits here until the Page is renamed to Nepal Wire.
+  paused: [facebook]
   # Announce only articles published within this many hours, so connecting a new account
   # never floods it with the archive.
   max_age_hours: 36
