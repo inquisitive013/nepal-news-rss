@@ -300,9 +300,10 @@ def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
     # With a Page token, /me is the Page itself. With a user token, it is the person.
     me = _raise_for(client.get(f"{base}/me", params={"fields": "id,name", "access_token": token}), "Facebook")
     if str(me.get("id", "")) != page_id:
+        # Never echo the token owner's name or ID: workflow logs of a public repo are public.
         raise SocialError(
-            f"Facebook: FACEBOOK_PAGE_TOKEN belongs to {me.get('name', '?')} (id {me.get('id', '?')}), not to FACEBOOK_PAGE_ID {page_id}. "
-            "Store the access_token and id of the Page entry from me/accounts, not the user token."
+            "Facebook: FACEBOOK_PAGE_TOKEN does not belong to FACEBOOK_PAGE_ID. It is most likely a personal user token. "
+            "Store the access_token from the Page's own entry in me/accounts, and that entry's id."
         )
     # Only Pages have a category. On a personal profile this field does not exist.
     try:

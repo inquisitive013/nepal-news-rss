@@ -310,8 +310,10 @@ def test_facebook_check_confirms_a_page_with_its_followers():
 def test_facebook_check_rejects_a_user_token():
     import pytest
 
-    with pytest.raises(social.SocialError, match="not to FACEBOOK_PAGE_ID 111"):
+    with pytest.raises(social.SocialError, match="does not belong to FACEBOOK_PAGE_ID") as err:
         _facebook_check("999")
+    # public logs: the message must not carry the token owner's name or ID
+    assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "111" not in str(err.value)
 
 
 def test_facebook_check_rejects_a_personal_profile():
