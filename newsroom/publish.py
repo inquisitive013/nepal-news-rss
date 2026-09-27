@@ -245,6 +245,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
     render("index.html", out_dir / "index.html", root="./", cards=cards[:INDEX_LIMIT], total=len(articles))
     render("archive.html", out_dir / "archive.html", root="./", cards=cards)
     render("about.html", out_dir / "about.html", root="./", settings_raw=settings.raw, source_names=[s["name"] for s in settings.sources])
+    render("privacy.html", out_dir / "privacy.html", root="./")
     for a in articles:
         render(
             "article.html",
