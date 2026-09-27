@@ -1,4 +1,5 @@
 import dataclasses
+import re
 import xml.etree.ElementTree as ET
 
 from newsroom import publish
@@ -81,6 +82,24 @@ def test_build_site(tmp_path):
     ET.parse(out / "sitemap.xml")  # well formed
     dest = publish.copy_root_rss(settings, out)
     assert dest == tmp_path / "rss.xml" and dest.exists()
+
+
+def test_privacy_page(tmp_path):
+    settings = _settings(tmp_path)
+    publish.save_article(settings, _article(settings))
+    out = publish.build_site(settings, tmp_path / "site")
+    page = (out / "privacy.html").read_text()
+    # Meta's data deletion instructions URL points at this anchor.
+    assert 'id="data-deletion"' in page
+    # No email address anywhere: not in the markup and not in the visible text.
+    email = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
+    text = re.sub(r"<[^>]+>", "", page.split("<body>", 1)[1])
+    assert not email.search(page) and not email.search(text)
+    footer = (out / "index.html").read_text().split("<footer>", 1)[1].split("</footer>", 1)[0]
+    assert 'href="./privacy.html"' in footer
+    article = (out / "articles" / "rain-story" / "index.html").read_text()
+    assert 'href="../../privacy.html"' in article
+    assert f"{settings.site_url}/privacy.html</loc>" in (out / "sitemap.xml").read_text()
 
 
 def test_build_empty_site(tmp_path):
