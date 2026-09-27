@@ -228,6 +228,9 @@ def test_the_nepali_edition_builds_beside_the_english(tmp_path):
     assert 'class="lang" href="../../../articles/rain-story/"' in ne_page  # the switch leads to the English twin
 
     en_page = (out / "articles" / "rain-story" / "index.html").read_text()
+    # both pages show the card, which carries the source line, with the credit under it
+    assert 'class="card-figure"' in en_page and 'src="../../cards/2026-09-26-rain-story.jpg"' in en_page and "File photo:" in en_page
+    assert 'class="card-figure"' in ne_page and 'src="../../../cards/2026-09-26-rain-story.jpg"' in ne_page and "फाइल तस्बिर" in ne_page
     assert f'hreflang="ne" href="{site_url}/ne/articles/rain-story/"' in en_page and 'hreflang="x-default"' in en_page
     assert 'href="../../ne/articles/rain-story/" lang="ne"' in en_page and "यो समाचार नेपालीमा पढ्नुहोस्" in en_page
     assert 'class="lang" href="../../ne/articles/rain-story/"' in en_page

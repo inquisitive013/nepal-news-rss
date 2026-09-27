@@ -45,8 +45,8 @@
   <p class="byline">By the {{ site.publisher }} · Ranked and checked by four judges · Version {{ article.version }}</p>
   {% if ne_url %}<p class="lang-note"><a href="{{ ne_url }}" lang="ne" hreflang="ne">यो समाचार नेपालीमा पढ्नुहोस्</a></p>{% endif %}
   {% if image %}
-  <figure>
-    <img src="{{ root }}{{ image }}" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}">
+  <figure{% if card %} class="card-figure"{% endif %}>
+    {% if card %}<img src="{{ root }}{{ card }}" alt="{{ article.image.alt }}" width="1080" height="1400">{% else %}<img src="{{ root }}{{ image }}" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}">{% endif %}
     <figcaption>
       {% set c = article.image.credit %}
       {% if c.kind == 'found' %}
