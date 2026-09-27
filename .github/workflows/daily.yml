@@ -66,8 +66,9 @@ jobs:
           NEWSROOM_MOCK: ${{ inputs.mock == true && '1' || '' }}
           NEWSROOM_REBUILD_ONLY: ${{ inputs.rebuild_only == true && '1' || '' }}
         run: |
-          export SITE_URL="${SITE_URL_OVERRIDE:-https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}}"
-          echo "Site URL: $SITE_URL"
+          export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
+          if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
+          python -c 'from newsroom.config import load_settings; print("Site URL:", load_settings().site_url)'
           if [ -n "${NEWSROOM_REBUILD_ONLY}" ]; then
             echo "Rebuild only: no new edition, no model calls."
             python -m newsroom build --out site

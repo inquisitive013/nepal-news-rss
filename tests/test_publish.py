@@ -1,3 +1,4 @@
+import copy
 import dataclasses
 import re
 import xml.etree.ElementTree as ET
@@ -109,3 +110,21 @@ def test_build_empty_site(tmp_path):
     out = publish.build_site(settings, tmp_path / "site")
     assert "first edition" in (out / "index.html").read_text()
     ET.parse(out / "rss.xml")
+
+
+def test_custom_domain_sets_every_address_and_writes_the_cname(tmp_path, monkeypatch):
+    monkeypatch.delenv("SITE_URL", raising=False)
+    monkeypatch.setenv("PAGES_URL", "https://someone.github.io/some-repo")
+    settings = _settings(tmp_path)
+    assert settings.site_url == "https://someone.github.io/some-repo"  # the workflow's default wins over settings.yaml
+    raw = copy.deepcopy(settings.raw)
+    raw["site"]["custom_domain"] = "https://NepalWire.com/"
+    settings = dataclasses.replace(settings, raw=raw)
+    assert settings.custom_domain == "nepalwire.com" and settings.site_url == "https://nepalwire.com"
+    publish.save_article(settings, _article(settings))
+    out = publish.build_site(settings, tmp_path / "site")
+    assert (out / "CNAME").read_text() == "nepalwire.com\n"
+    assert "https://nepalwire.com/articles/rain-story/" in (out / "sitemap.xml").read_text()
+    assert 'href="https://nepalwire.com/articles/rain-story/"' in (out / "articles" / "rain-story" / "index.html").read_text()
+    monkeypatch.setenv("SITE_URL", "https://staging.example.org")
+    assert settings.site_url == "https://staging.example.org"  # a repository variable overrides everything
