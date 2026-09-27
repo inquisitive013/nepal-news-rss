@@ -95,6 +95,14 @@
     {% endfor %}
     </ul>
     {% endif %}
+    {% if article.investigation and article.investigation.angles %}
+    <h3>What the desk dug up</h3>
+    <ul>
+    {% for a in article.investigation.angles %}
+      <li><strong>{{ (a.kind or 'finding') | replace('_', ' ') }}</strong>: {{ a.claim }}{% for e in (a.evidence or [])[:2] %} <a href="{{ e.url }}" rel="nofollow">[{{ e.source or 'source' }}]</a>{% endfor %}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
     <h3>Validation</h3>
     <p>{{ review.rounds }} red team round{{ 's' if review.rounds != 1 else '' }}, {{ review.revisions }} revision{{ 's' if review.revisions != 1 else '' }}. Decision: {{ review.decision }}.</p>
     {% if review.scores %}

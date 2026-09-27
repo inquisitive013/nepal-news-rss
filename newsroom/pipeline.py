@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from . import discovery, images, publish, ranking, validation, writing
+from . import discovery, images, investigation, publish, ranking, validation, writing
 from .config import Settings
 from .llm import BaseLLM, BudgetExceeded, LLMError, LLMRefusal, UsageMeter, make_llm
 from .models import (
@@ -55,8 +55,20 @@ def _process_story(
     now_iso: str,
     pool: validation.RevisionPool | None = None,
 ) -> tuple[str, Article | None, str]:
-    """Write, illustrate, validate and persist one story. Returns (outcome, article, reason)."""
-    article = writing.write_article(llm, settings, story, candidates, debate, verdicts, run_date)
+    """Investigate, write, illustrate, validate and persist one story. Returns (outcome, article, reason)."""
+    dug: dict[str, Any] | None = None
+    if settings.get("pipeline.investigate", True):
+        try:
+            dug = investigation.investigate(llm, settings, story, candidates, debate, verdicts, run_date)
+        except BudgetExceeded:
+            raise
+        except LLMRefusal as exc:
+            log.warning("investigator declined %s: %s", story.id, exc)
+            dug = investigation.empty(f"The investigator declined this story: {exc}")
+        except LLMError as exc:  # the story still runs on the coverage alone
+            log.warning("investigator failed for %s: %s", story.id, exc)
+            dug = investigation.empty(f"The investigation failed: {exc}")
+    article = writing.write_article(llm, settings, story, candidates, debate, verdicts, run_date, investigation=dug)
     article.review.ranking = writing._judge_reasons(story.id, verdicts)
 
     try:

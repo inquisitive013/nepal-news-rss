@@ -192,6 +192,8 @@ class Article:
     social_hook: str = ""
     image_brief: dict[str, Any] = field(default_factory=dict)
     image: ImageAsset | None = None
+    # What the investigator found that the coverage missed: angles with evidence, open questions.
+    investigation: dict[str, Any] = field(default_factory=dict)
     review: ReviewRecord = field(default_factory=ReviewRecord)
     run_date: str = ""  # YYYY-MM-DD in newsroom timezone
     published_at: str = ""  # ISO timestamp

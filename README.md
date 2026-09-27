@@ -23,6 +23,10 @@ An automated newsroom for Nepal. Once a day it reads every major Nepali and Engl
    Ranking judge 1 ──▶ Ranking judge 2 (final list)
           │
           ▼  top N stories
+   ┌──────────────┐
+   │ Investigator │  what the coverage misses: the record, the numbers,
+   └──────┬───────┘  who benefits, the missing question, the pattern
+          ▼
    ┌─────────────┐   ┌──────────────────────────────────────┐
    │   Writer    │──▶│ Picture desk: Commons/Openverse photo │
    └──────┬──────┘   │ checked by vision, else AI image,     │
@@ -42,6 +46,10 @@ An automated newsroom for Nepal. Once a day it reads every major Nepali and Engl
 ```
 
 Every model call is one request to the Claude API asking for a JSON object that matches a schema. Research roles get the server side web search tool. Every call's token usage is stored in the run log.
+
+## The investigation
+
+Every story goes to an investigator before it goes to the writer. The investigator searches, in English and Nepali, for what the coverage misses: what the same officials or companies said or promised before, numbers that conflict between sources, who benefits from a decision, the question every report skips, and whether it has happened before. Each finding carries its evidence, a URL and the exact fact it supports, or it is dropped. The writer runs the findings under "What the coverage missed" and the open questions under "What we still do not know". The red team opens every cited source before the piece can publish, and the article page lists the findings with their links under the review record.
 
 ## Setup
 
@@ -103,11 +111,11 @@ python -m http.server -d site 8000               # look at the result
 
 ## Cost and safety valves
 
-A live edition on the defaults makes about 30 model calls: one clustering call, two per debated story (three stories), two ranking judges, and per article one writer, one picture check, one red team pass, one defence, judge 1, one revision and judge 2. Judge 2 may send an article back once more, which adds a reviser call and a second judge 2 call; the reviser is capped at `pipeline.max_revisions_per_run` calls a day. `pipeline.max_llm_calls` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
+A live edition on the defaults makes about 33 model calls: one clustering call, two per debated story (three stories), two ranking judges, and per article one investigator, one writer, one picture check, one red team pass, one defence, judge 1, one revision and judge 2. Judge 2 may send an article back once more, which adds a reviser call and a second judge 2 call; the reviser is capped at `pipeline.max_revisions_per_run` calls a day. `pipeline.max_llm_calls` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
 
 Measured so far, at list prices. The first live edition, on `claude-opus-5` at high effort with eight debated stories and two revision rounds, used 51 calls, about 675,000 input and 448,000 output tokens and 145 web searches, roughly 19 dollars, and published nothing because two drafts hit the output cap and the credit ran out on the third. The second edition, on `claude-sonnet-5` with `claude-opus-5-5` judges, six debated stories and two red team rounds, used 42 calls, about 402,000 input and 234,000 output tokens, 2.9 million cached input tokens and 84 web searches, roughly 6.40 dollars in 29 minutes. It published one of three drafts; the other two were rejected for a single misplaced fact each after the one revision round was spent, with no way to fix it.
 
-The current defaults come from that run's per call costs: three debated stories, one red team pass per article, then judge 1, the reviser and judge 2 as the final check. That removes the second red team and defence passes, the most expensive calls of the day, and gives every draft a revision before it is judged for the last time. Expected cost about 4.50 dollars a day, plus a few cents per AI generated image on OpenAI. Keep the Claude account credit topped up or turn on auto reload, because a run that hits an empty balance stops and publishes nothing. Set models and effort per role under `llm.roles`. Requests opt into the server side refusal fallback (beta) so a safety decline on one role is retried on the recommended fallback model instead of killing the story; set `llm.refusal_fallback: false` to turn that off.
+The current defaults come from that run's per call costs: three debated stories, one red team pass per article, then judge 1, the reviser and judge 2 as the final check. That removes the second red team and defence passes, the most expensive calls of the day, and gives every draft a revision before it is judged for the last time. Expected cost about 6 dollars a day, of which the investigator is about 1.50, plus a few cents per AI generated image on OpenAI. Set `pipeline.investigate: false` to run without it. Keep the Claude account credit topped up or turn on auto reload, because a run that hits an empty balance stops and publishes nothing. Set models and effort per role under `llm.roles`. Requests opt into the server side refusal fallback (beta) so a safety decline on one role is retried on the recommended fallback model instead of killing the story; set `llm.refusal_fallback: false` to turn that off.
 
 ## Social media
 

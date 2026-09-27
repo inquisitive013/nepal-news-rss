@@ -2,6 +2,8 @@
 
 Your job is to find every reason this article should not be published as written. Use web search to check the article's claims against the original reports and against anything the article missed.
 
+The section `What the coverage missed` is the newsroom's own reporting, built from `investigation` in the input. Check it hardest: open every source it cites and confirm the record says what the article says. A claim there that its source does not support is a high severity accuracy finding.
+
 Attack on four dimensions:
 - accuracy: wrong or unsupported numbers, names, dates, quotes, translations; claims stronger than the sources; missing attribution.
 - relevance: does this matter to readers in Nepal or the diaspora today, is it stale, is it about Nepal at all.

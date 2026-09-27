@@ -232,7 +232,7 @@ def validate_article(
                 red = llm.structured(
                     "red_team",
                     "Find every reason this article should not run as written.",
-                    {"run_date": article.run_date, "round": round_no, "article": article_view(article), "story": story_view, "candidates": cand_views},
+                    {"run_date": article.run_date, "round": round_no, "article": article_view(article), "story": story_view, "candidates": cand_views, "investigation": article.investigation},
                     RED_TEAM_SCHEMA,
                     web_search_uses=settings.web_search_uses("red_team"),
                 )

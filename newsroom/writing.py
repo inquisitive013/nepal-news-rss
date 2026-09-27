@@ -89,6 +89,7 @@ def article_from_output(data: dict[str, Any], story: Story, run_date: str, langu
     if previous is not None:
         art.image = previous.image
         art.review = previous.review
+        art.investigation = previous.investigation
         if not art.image_brief:
             art.image_brief = previous.image_brief
     return art
@@ -102,6 +103,7 @@ def write_article(
     debate: StoryDebate | None,
     verdicts: list[RankingVerdict],
     run_date: str,
+    investigation: dict[str, Any] | None = None,
 ) -> Article:
     cands = [c for c in candidates if c.id in story.candidate_ids]
     payload = {
@@ -114,6 +116,7 @@ def write_article(
         ],
         "debate": _debate_view(debate),
         "judge_reasons": _judge_reasons(story.id, verdicts),
+        "investigation": investigation or {"angles": [], "unanswered": [], "summary": ""},
     }
     data = llm.structured(
         "writer",
@@ -122,7 +125,9 @@ def write_article(
         ARTICLE_SCHEMA,
         web_search_uses=settings.web_search_uses("writer"),
     )
-    return article_from_output(data, story, run_date, settings.language)
+    article = article_from_output(data, story, run_date, settings.language)
+    article.investigation = investigation or {}
+    return article
 
 
 def revise_article(

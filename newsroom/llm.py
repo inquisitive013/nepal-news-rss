@@ -599,6 +599,31 @@ class MockLLM(BaseLLM):
             item["rank"] = i + 1
         return {"ranked": ranked, "rejected": rejected, "notes": "mock judge 2 confirms judge 1 with noted exceptions"}
 
+    # -- investigation -----------------------------------------------------
+    def _investigator(self, p, _images):
+        cands = p["candidates"]
+        lead = cands[0] if cands else {"source": "Newsroom", "url": ""}
+        return {
+            "angles": [
+                {
+                    "claim": "The district office promised embankment repairs on this stretch in its 2024 budget speech and none were built.",
+                    "kind": "record",
+                    "why_it_matters": "The households moved overnight live behind the wall that was never repaired.",
+                    "evidence": [{"url": lead.get("url", "") or "https://example.org/budget-2024", "source": lead["source"], "fact": "Budget speech line item for embankment repair, unspent."}],
+                    "confidence": 72,
+                },
+                {
+                    "claim": "Nobody checked the number.",
+                    "kind": "numbers",
+                    "why_it_matters": "",
+                    "evidence": [],
+                    "confidence": 30,
+                },
+            ],
+            "unanswered": [{"question": "Where did the embankment money go?", "who_could_answer": "The district development office"}],
+            "summary": "The coverage repeats the police toll. The record shows a repair promise that was not kept.",
+        }
+
     # -- writing -----------------------------------------------------------
     def _writer(self, p, _images):
         story = p["story"]
@@ -614,6 +639,14 @@ class MockLLM(BaseLLM):
             "## What happens next\n\n"
             "Officials said a damage assessment starts on Monday."
         )
+        angles = [a for a in (p.get("investigation") or {}).get("angles", []) if a.get("evidence")]
+        if angles:
+            body += "\n\n## What the coverage missed\n\n" + "\n\n".join(
+                f"{a['claim']} That is in the record kept by {a['evidence'][0].get('source', 'the source')}." for a in angles
+            )
+            questions = (p.get("investigation") or {}).get("unanswered", [])
+            if questions:
+                body += "\n\n## What we still do not know\n\n" + "\n".join(f"{q['question']} {q['who_could_answer']} could answer." for q in questions)
         sources = [{"name": c["source"], "url": c.get("url", ""), "used_for": "primary report"} for c in cands[:3]]
         return {
             "slug": _slugify(headline, "story-" + story["id"][2:]),
