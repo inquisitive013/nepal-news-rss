@@ -264,3 +264,20 @@ def test_check_networks_reports_missing_and_broken(tmp_path):
     assert rows["telegram"]["ok"] == "yes" and "Nepal Wire" in rows["telegram"]["account"]
     assert rows["x"]["ok"] == "no" and "401" in rows["x"]["note"]
     assert rows["facebook"]["configured"] == "no" and "FACEBOOK_PAGE_ID" in rows["facebook"]["note"]
+
+
+def test_articles_to_post_reads_the_latest_run_of_the_day(tmp_path):
+    settings = _settings(tmp_path)
+    first = _article(settings, slug="first-story")
+    second = _article(settings, slug="second-story")
+    publish.save_article(settings, first)
+    publish.save_article(settings, second)
+    runs = settings.data_dir / "runs"
+    runs.mkdir(parents=True, exist_ok=True)
+    (runs / "2026-09-26.json").write_text(json.dumps({"run_date": "2026-09-26", "published": [first.id]}))
+    (runs / "2026-09-26-2.json").write_text(json.dumps({"run_date": "2026-09-26", "published": [second.id]}))
+    latest = social.articles_to_post(settings, max_age_hours=10**6)
+    assert [a.id for a in latest] == [second.id]
+    dated = social.articles_to_post(settings, run_date="2026-09-26", max_age_hours=10**6)
+    assert [a.id for a in dated] == [second.id]
+    assert social.articles_to_post(settings, run_date="2026-01-01", max_age_hours=10**6) == []
