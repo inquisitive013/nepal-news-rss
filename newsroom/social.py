@@ -79,6 +79,32 @@ class SocialRecord:
 
 # --------------------------------------------------------------------------- helpers
 
+def secret(environ: Mapping[str, str], key: str) -> str:
+    """A secret as stored, minus the accidents of pasting: whitespace, quotes, a `key=` label."""
+    value = (environ.get(key) or "").strip()
+    for label in (f"{key}=", f"{key.lower()}=", "access_token=", "access_token:", "token=", "token:", "id=", "id:"):
+        if value.lower().startswith(label):
+            value = value[len(label):].strip()
+    value = value.strip("\"'`,;{} \t\r\n")
+    return value.strip()
+
+
+def secret_shape_problem(value: str, *, kind: str) -> str:
+    """Why a secret cannot be right, without echoing it. Empty when it looks fine."""
+    if not value:
+        return "is empty"
+    if any(ch.isspace() for ch in value):
+        return "contains a space or line break"
+    if kind == "digits":
+        return "" if value.isdigit() else "should be digits only"
+    if kind == "token":
+        if len(value) < 20:
+            return "is far too short to be a token"
+        if not re.fullmatch(r"[A-Za-z0-9_\-.:]+", value):
+            return "contains characters no token has (quotes, braces, a label)"
+    return ""
+
+
 def _pct(value: Any) -> str:
     return urllib.parse.quote(str(value), safe="-._~")
 
@@ -293,8 +319,8 @@ def post_facebook(
     publish_at: int | None = None,
 ) -> tuple[str, str]:
     """Post now, or hand Facebook a scheduled post it releases at `publish_at` (unix time)."""
-    page = environ["FACEBOOK_PAGE_ID"]
-    token = environ["FACEBOOK_PAGE_TOKEN"]
+    page = secret(environ, "FACEBOOK_PAGE_ID")
+    token = secret(environ, "FACEBOOK_PAGE_TOKEN")
     base = f"{META_GRAPH}/{_graph_version(environ)}/{page}"
     timing: dict[str, str] = {}
     if publish_at:
@@ -360,10 +386,22 @@ def plan_facebook_slots(articles: list[Article], settings: Settings, now: dateti
 def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
     """Prove the token is a Page token for FACEBOOK_PAGE_ID and that the ID is a Page."""
     base = f"{META_GRAPH}/{_graph_version(environ)}"
-    page_id = environ["FACEBOOK_PAGE_ID"].strip()
-    token = environ["FACEBOOK_PAGE_TOKEN"]
+    page_id = secret(environ, "FACEBOOK_PAGE_ID")
+    token = secret(environ, "FACEBOOK_PAGE_TOKEN")
+    problems = []
+    if p := secret_shape_problem(page_id, kind="digits"):
+        problems.append(f"FACEBOOK_PAGE_ID {p}")
+    if p := secret_shape_problem(token, kind="token"):
+        problems.append(f"FACEBOOK_PAGE_TOKEN {p}")
+    if problems:
+        raise SocialError("Facebook: " + "; ".join(problems) + ". Paste the bare value from me/accounts, nothing around it.")
     # With a Page token, /me is the Page itself. With a user token, it is the person.
-    me = _raise_for(client.get(f"{base}/me", params={"fields": "id,name", "access_token": token}), "Facebook")
+    try:
+        me = _raise_for(client.get(f"{base}/me", params={"fields": "id,name", "access_token": token}), "Facebook")
+    except SocialError as exc:
+        if "could not be decrypted" in str(exc) or "Invalid OAuth access token" in str(exc) or "Error validating access token" in str(exc):
+            raise SocialError("Facebook: the stored token is not one Facebook accepts. It was probably cut short, pasted with something extra, or has expired. Copy the Page's access_token from me/accounts again, whole.") from exc
+        raise
     if str(me.get("id", "")) != page_id:
         # Never echo the token owner's name or ID: workflow logs of a public repo are public.
         raise SocialError(
@@ -374,6 +412,8 @@ def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
     try:
         page = _raise_for(client.get(f"{base}/{page_id}", params={"fields": "name,category", "access_token": token}), "Facebook")
     except SocialError as exc:
+        if "could not be decrypted" in str(exc) or "Invalid OAuth access token" in str(exc):
+            raise SocialError("Facebook: the stored token is not one Facebook issued. It was probably cut short or pasted with something extra. Copy the Page's access_token from me/accounts again, whole.") from exc
         if "node type (User)" in str(exc) or "nonexisting field" in str(exc):
             raise SocialError(f"Facebook: {page_id} is a personal profile, not a Page. The API can only post to Pages.") from exc
         raise

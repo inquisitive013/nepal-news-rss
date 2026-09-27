@@ -41,7 +41,7 @@ def _article(settings, slug="bagmati-floods-140-households", with_image=True):
 
 ALL_ENV = {
     "X_API_KEY": "k", "X_API_SECRET": "s", "X_ACCESS_TOKEN": "t", "X_ACCESS_TOKEN_SECRET": "ts",
-    "FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "fbtok",
+    "FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop",
     "INSTAGRAM_USER_ID": "222", "INSTAGRAM_ACCESS_TOKEN": "igtok",
     "THREADS_USER_ID": "333", "THREADS_ACCESS_TOKEN": "thtok",
     "TELEGRAM_BOT_TOKEN": "123:abc", "TELEGRAM_CHAT_ID": "@nepalwire",
@@ -131,12 +131,12 @@ def _fake_network(calls):
             return httpx.Response(201, json={"data": {"id": "1001", "text": "t"}})
         if "graph.facebook.com" in url and url.endswith("/111/photos"):
             body = dict(httpx.QueryParams(request.content.decode()))
-            assert body["url"].endswith(".jpg") and body["access_token"] == "fbtok"
+            assert body["url"].endswith(".jpg") and body["access_token"] == "EAABfaketoken_1234567890abcdefghijklmnop"
             assert "Full story with links: " + SITE in body["caption"] and "Sources:" in body["caption"]
             return httpx.Response(200, json={"id": "90", "post_id": "111_2002"})
         if "graph.facebook.com" in url and url.endswith("/111/feed"):
             body = dict(httpx.QueryParams(request.content.decode()))
-            assert body["link"].startswith(SITE) and body["access_token"] == "fbtok"
+            assert body["link"].startswith(SITE) and body["access_token"] == "EAABfaketoken_1234567890abcdefghijklmnop"
             return httpx.Response(200, json={"id": "111_2002"})
         if "graph.facebook.com" in url and url.endswith("/222/media"):
             body = dict(httpx.QueryParams(request.content.decode()))
@@ -339,7 +339,7 @@ def test_post_articles_schedules_the_second_facebook_post(tmp_path):
             return httpx.Response(200, json={"id": "9", "post_id": "111_" + str(len(seen))})
         return httpx.Response(404, json={"error": "unexpected " + url})
 
-    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "fbtok"}
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
     now = datetime(2026, 9, 27, 1, 0, tzinfo=timezone.utc)
     records = {r.article_id: r for r in social.post_articles(settings, env, client=httpx.Client(transport=httpx.MockTransport(handler)), max_age_hours=10**6, now=now, sleep=lambda s: None)}
     first, second = records[a1.id].posts[0], records[a2.id].posts[0]
@@ -367,7 +367,7 @@ def _facebook_check(me_id, *, page_node=True):
             return httpx.Response(200, json={"id": "111", "followers_count": 10423, "fan_count": 9870})
         return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
 
-    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "fbtok"}
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
     return social.check_facebook(httpx.Client(transport=httpx.MockTransport(handler)), env)
 
 
@@ -415,3 +415,29 @@ def test_paused_networks_are_checked_but_never_posted(tmp_path):
 
     rows = {r["network"]: r for r in social.check_networks(settings, {k: v for k, v in env.items() if k.startswith("FACEBOOK")}, client=httpx.Client(transport=httpx.MockTransport(handler)))}
     assert rows["facebook"]["ok"] == "yes" and rows["facebook"]["note"] == "paused in settings, not posting"
+
+
+def test_secrets_survive_sloppy_pasting_and_bad_shapes_are_named():
+    assert social.secret({"FACEBOOK_PAGE_TOKEN": '  "EAABsbCS1iHgBO7ZCZCZBqZBw_abcdefghijklmnop"\n'}, "FACEBOOK_PAGE_TOKEN") == "EAABsbCS1iHgBO7ZCZCZBqZBw_abcdefghijklmnop"
+    assert social.secret({"FACEBOOK_PAGE_ID": "id: 123456789 "}, "FACEBOOK_PAGE_ID") == "123456789"
+    assert social.secret({"FACEBOOK_PAGE_TOKEN": "access_token=EAABtokenvalue_1234567890"}, "FACEBOOK_PAGE_TOKEN") == "EAABtokenvalue_1234567890"
+    assert social.secret_shape_problem("123", kind="digits") == ""
+    assert "digits" in social.secret_shape_problem("12a3", kind="digits")
+    assert "short" in social.secret_shape_problem("EAAB", kind="token")
+    assert "space" in social.secret_shape_problem("EAAB tokenvalue_1234567890abcdef", kind="token")
+    assert "characters" in social.secret_shape_problem("EAAB{tokenvalue_1234567890abcdef}", kind="token")
+    assert social.secret_shape_problem("EAABsbCS1iHgBO7ZCZCZBqZBw_abcdefghijklmnop", kind="token") == ""
+
+
+def test_facebook_check_names_a_broken_token_without_echoing_it():
+    import pytest
+
+    def handler(request):
+        return httpx.Response(400, json={"error": {"message": "The access token could not be decrypted", "type": "OAuthException", "code": 190}})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABsbCS1iHgBO7ZCZCZBqZBw_abcdefghijklmnop"}
+    with pytest.raises(social.SocialError, match="not one Facebook accepts") as err:
+        social.check_facebook(httpx.Client(transport=httpx.MockTransport(handler)), env)
+    assert "EAAB" not in str(err.value)
+    with pytest.raises(social.SocialError, match="FACEBOOK_PAGE_ID should be digits only"):
+        social.check_facebook(httpx.Client(transport=httpx.MockTransport(handler)), {"FACEBOOK_PAGE_ID": "NepalWire", "FACEBOOK_PAGE_TOKEN": env["FACEBOOK_PAGE_TOKEN"]})
