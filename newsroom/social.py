@@ -318,20 +318,33 @@ def check_x(client: httpx.Client, environ: Mapping[str, str]) -> str:
     return "@" + str((data.get("data") or {}).get("username", "?"))
 
 
-_PAGE_TOKENS: dict[tuple[str, str], tuple[str, str]] = {}
+_PAGE_TOKENS: dict[tuple[str, str], "FacebookPage"] = {}
 
 USER_TOKEN_NOTE = (
     "posting with a Page token derived from your user token. That user token expires in about 60 days; "
     "store the Page's own access_token from me/accounts to make it permanent"
 )
+STALE_ID_NOTE = (
+    "FACEBOOK_PAGE_ID does not match the one Page this token manages, so the newsroom posts to that Page. "
+    "Store its id from me/accounts as FACEBOOK_PAGE_ID to make this explicit"
+)
 
 
-def facebook_page_token(client: httpx.Client, environ: Mapping[str, str]) -> tuple[str, str]:
-    """The token that acts as the Page, and a note when it had to be derived.
+@dataclass
+class FacebookPage:
+    id: str
+    token: str
+    note: str = ""
+
+
+def facebook_page(client: httpx.Client, environ: Mapping[str, str]) -> FacebookPage:
+    """The Page to act as, the token that acts as it, and a note when something had to be derived.
 
     FACEBOOK_PAGE_TOKEN may hold the Page's own token, which never expires, or the admin's
     user token. A user token that manages the Page is turned into the Page's token through
-    me/accounts on every run, which works until the user token itself expires.
+    me/accounts on every run, which works until the user token itself expires. When the
+    stored id matches none of its Pages but the token manages exactly one, that Page is the
+    one the admin ticked for this app, and it is used.
     """
     base = f"{META_GRAPH}/{_graph_version(environ)}"
     page_id = secret(environ, "FACEBOOK_PAGE_ID")
@@ -340,12 +353,12 @@ def facebook_page_token(client: httpx.Client, environ: Mapping[str, str]) -> tup
         return _PAGE_TOKENS[(page_id, token)]
     me = _raise_for(client.get(f"{base}/me", params={"fields": "id", "access_token": token}), "Facebook")
     if str(me.get("id", "")) == page_id:
-        _PAGE_TOKENS[(page_id, token)] = (token, "")
-        return token, ""
+        _PAGE_TOKENS[(page_id, token)] = FacebookPage(page_id, token)
+        return _PAGE_TOKENS[(page_id, token)]
     # Never echo the token owner's name or ID: workflow logs of a public repo are public.
     url = f"{base}/me/accounts"
     params: dict[str, str] = {"fields": "id,access_token", "limit": "100", "access_token": token}
-    managed = 0
+    managed: list[dict[str, Any]] = []
     for _ in range(5):  # admins of many Pages get several pages of results
         try:
             data = _raise_for(client.get(url, params=params), "Facebook")
@@ -357,25 +370,29 @@ def facebook_page_token(client: httpx.Client, environ: Mapping[str, str]) -> tup
                     "or store the access_token of the Page whose id is already there."
                 ) from exc
             raise
-        entries = data.get("data") or []
-        managed += len(entries)
-        for entry in entries:
-            if str(entry.get("id", "")) == page_id and entry.get("access_token"):
-                found = (str(entry["access_token"]), USER_TOKEN_NOTE)
-                _PAGE_TOKENS[(page_id, token)] = found
-                return found
+        managed.extend(e for e in (data.get("data") or []) if e.get("id") and e.get("access_token"))
         nxt = (data.get("paging") or {}).get("next")
         if not nxt:
             break
         url, params = str(nxt), {}
+    for entry in managed:
+        if str(entry["id"]) == page_id:
+            found = FacebookPage(page_id, str(entry["access_token"]), USER_TOKEN_NOTE)
+            _PAGE_TOKENS[(page_id, token)] = found
+            return found
     # Counts are safe to print; names and IDs are not.
-    if managed == 0:
+    if not managed:
         raise SocialError(
             "Facebook: FACEBOOK_PAGE_TOKEN is a personal user token that manages no Page. The Page was not ticked when the token was made. "
             "Click Generate Access Token again, choose Edit previous settings in the login window, tick the Page, then extend and store the new token."
         )
+    if len(managed) == 1:
+        only = managed[0]
+        found = FacebookPage(str(only["id"]), str(only["access_token"]), f"{STALE_ID_NOTE}. Also {USER_TOKEN_NOTE}")
+        _PAGE_TOKENS[(page_id, token)] = found
+        return found
     raise SocialError(
-        f"Facebook: FACEBOOK_PAGE_TOKEN is a personal user token that manages {managed} Page{'s' if managed != 1 else ''}, none with the id in FACEBOOK_PAGE_ID. "
+        f"Facebook: FACEBOOK_PAGE_TOKEN is a personal user token that manages {len(managed)} Pages, none with the id in FACEBOOK_PAGE_ID. "
         "In the me/accounts result, copy the id from your Page's block into FACEBOOK_PAGE_ID."
     )
 
@@ -391,9 +408,9 @@ def post_facebook(
     publish_at: int | None = None,
 ) -> tuple[str, str]:
     """Post now, or hand Facebook a scheduled post it releases at `publish_at` (unix time)."""
-    page = secret(environ, "FACEBOOK_PAGE_ID")
-    token, _note = facebook_page_token(client, environ)
-    base = f"{META_GRAPH}/{_graph_version(environ)}/{page}"
+    fb = facebook_page(client, environ)
+    token = fb.token
+    base = f"{META_GRAPH}/{_graph_version(environ)}/{fb.id}"
     timing: dict[str, str] = {}
     if publish_at:
         timing = {"published": "false", "scheduled_publish_time": str(int(publish_at))}
@@ -469,7 +486,8 @@ def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
         raise SocialError("Facebook: " + "; ".join(problems) + ". Paste the bare value from me/accounts, nothing around it.")
     # With a Page token, /me is the Page itself. With a user token, the Page's token comes from me/accounts.
     try:
-        token, note = facebook_page_token(client, environ)
+        fb = facebook_page(client, environ)
+        token, note, page_id = fb.token, fb.note, fb.id
     except SocialError as exc:
         if "could not be decrypted" in str(exc) or "Invalid OAuth access token" in str(exc) or "Error validating access token" in str(exc):
             raise SocialError("Facebook: the stored token is not one Facebook accepts. It was probably cut short, pasted with something extra, or has expired. Copy the Page's access_token from me/accounts again, whole.") from exc
