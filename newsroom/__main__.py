@@ -146,7 +146,11 @@ def cmd_social(args) -> int:
     networks = [n.strip() for n in args.networks.split(",") if n.strip()] if args.networks else None
     configured = social.configured_networks(settings, os.environ)
     if networks is None and not configured:
-        print("No social accounts connected. Add the secrets listed in the README under \"Social media\" to switch a network on.")
+        paused = sorted(social.paused_networks(settings))
+        if paused:
+            print(f"Nothing to post to. Paused in config/settings.yaml: {', '.join(paused)}. Other networks have no secrets yet.")
+        else:
+            print("No social accounts connected. Add the secrets listed in the README under \"Social media\" to switch a network on.")
         return 0
     records = social.post_articles(
         settings,

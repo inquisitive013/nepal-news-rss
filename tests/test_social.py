@@ -14,6 +14,8 @@ def _settings(tmp_path):
     s = load_settings(mock=True)
     raw = dict(s.raw)
     raw["site"] = dict(raw["site"], url=SITE)
+    # Tests start with nothing paused, whatever the live config pauses today.
+    raw["social"] = dict(raw.get("social") or {}, paused=[])
     return dataclasses.replace(s, raw=raw, root=tmp_path, data_dir=tmp_path / "data")
 
 
@@ -317,3 +319,29 @@ def test_facebook_check_rejects_a_personal_profile():
 
     with pytest.raises(social.SocialError, match="personal profile, not a Page"):
         _facebook_check("111", page_node=False)
+
+
+def test_paused_networks_are_checked_but_never_posted(tmp_path):
+    settings = _settings(tmp_path)
+    raw = dict(settings.raw)
+    raw["social"] = dict(raw.get("social") or {}, paused=["facebook"])
+    settings = dataclasses.replace(settings, raw=raw)
+    env = {k: v for k, v in ALL_ENV.items() if k.startswith(("FACEBOOK", "TELEGRAM"))}
+    assert social.configured_networks(settings, env) == ["telegram"]
+    art = _article(settings)
+    _save_run(settings, art)
+    calls = []
+    records = social.post_articles(settings, env, client=httpx.Client(transport=_fake_network(calls)), sleep=lambda s: None, max_age_hours=10**6)
+    assert [p.network for p in records[0].posts] == ["telegram"]
+    assert not any("graph.facebook.com" in str(r.url) for r in calls)
+
+    def handler(request):
+        url = str(request.url)
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "111", "name": "Nepal Wire"})
+        if "fields=name%2Ccategory" in url or "fields=name,category" in url:
+            return httpx.Response(200, json={"id": "111", "name": "Nepal Wire", "category": "News & media website"})
+        return httpx.Response(200, json={"id": "111", "followers_count": 10000})
+
+    rows = {r["network"]: r for r in social.check_networks(settings, {k: v for k, v in env.items() if k.startswith("FACEBOOK")}, client=httpx.Client(transport=httpx.MockTransport(handler)))}
+    assert rows["facebook"]["ok"] == "yes" and rows["facebook"]["note"] == "paused in settings, not posting"

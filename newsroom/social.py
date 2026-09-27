@@ -216,9 +216,15 @@ def compose(network: str, article: Article, settings: Settings) -> str:
     raise ValueError(f"unknown network {network}")
 
 
+def paused_networks(settings: Settings) -> set[str]:
+    return {str(n).strip().lower() for n in (settings.get("social.paused") or []) if str(n).strip()}
+
+
 def configured_networks(settings: Settings, environ: Mapping[str, str]) -> list[str]:
+    """Networks that have every secret and are not paused in settings, in posting order."""
     order = settings.get("social.networks") or list(NETWORKS)
-    return [n for n in order if n in ENV_KEYS and all(environ.get(k, "").strip() for k in ENV_KEYS[n])]
+    paused = paused_networks(settings)
+    return [n for n in order if n in ENV_KEYS and n not in paused and all(environ.get(k, "").strip() for k in ENV_KEYS[n])]
 
 
 def _graph_version(environ: Mapping[str, str]) -> str:
@@ -622,9 +628,10 @@ def check_networks(settings: Settings, environ: Mapping[str, str], client: httpx
             if missing:
                 rows.append({"network": network, "configured": "no", "ok": "", "account": "", "note": "missing " + ", ".join(missing)})
                 continue
+            note = "paused in settings, not posting" if network in paused_networks(settings) else ""
             try:
                 account = CHECKERS[network](client, environ)
-                rows.append({"network": network, "configured": "yes", "ok": "yes", "account": account, "note": ""})
+                rows.append({"network": network, "configured": "yes", "ok": "yes", "account": account, "note": note})
             except (SocialError, httpx.HTTPError) as exc:
                 rows.append({"network": network, "configured": "yes", "ok": "no", "account": "", "note": str(exc)[:200]})
     finally:
