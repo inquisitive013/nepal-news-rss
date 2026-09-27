@@ -93,7 +93,11 @@
   "image_headline": "Ex chief justice arrested, police will not say why",
   "theme": "GOVERNANCE",
   "country": "NEPAL",
-  "caption": {},
+  "caption": {
+    "hook": "A former Chief Justice was taken from his own home. Police still will not say why.",
+    "body": "Police arrested former Chief Justice Cholendra Shumsher Rana from his Maharajgunj home overnight into Sunday, a senior police source told several outlets. A complaint was filed at the Kathmandu Valley Crime Investigation Office, Ratopati and Desh Sanchar reported, but its contents remain undisclosed.\n\nIn 2022, 98 lawmakers registered an impeachment motion against him citing 21 allegations of misconduct and corruption. Parliament never voted on it, and he retired in December 2022. On September 9 this year the Supreme Court's Constitutional Bench ruled the motion had lost its purpose. No outlet has reported any link between that ruling and the arrest.\n\nArticle 20 of the Constitution requires anyone arrested to be brought before a judge within 24 hours. By Monday, police must bring him before a judge or let him go.",
+    "trigger": "By Monday, will police make the complaint public, or release him without ever saying why?"
+  },
   "nepali": {
     "headline": "पूर्वप्रधानन्यायाधीश जबरा घरबाटै पक्राउ, उजुरी सार्वजनिक भएन",
     "dek": "प्रहरीले न कुनै अभियोग खुलाएको छ, न पक्राउलाई दुई साताअघि सर्वोच्च अदालतले टुंग्याएको चार वर्ष लामो महाभियोग प्रकरणसँग जोडेको छ।",

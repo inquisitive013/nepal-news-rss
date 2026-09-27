@@ -233,7 +233,10 @@ def engine_caption(article: Article, settings: Settings, tags: str) -> str:
 
     def english() -> tuple[str, list[str]]:
         cap = article.caption or {}
-        parts = [article.headline.strip(), (cap.get("hook") or "").strip(), (cap.get("body") or "").strip(), (cap.get("trigger") or "").strip()]
+        if (cap.get("body") or "").strip():
+            parts = [article.headline.strip(), (cap.get("hook") or "").strip(), cap["body"].strip(), (cap.get("trigger") or "").strip()]
+        else:  # a story from before the engine caption existed: the headline, its one line hook, the take
+            parts = [article.headline.strip(), (article.social_hook or article.dek or "").strip(), (article.take or "").strip()]
         close = ([f"Full story: {article_url(settings, article)}"] if link else []) + ["Sources available in graphic.", f"Follow {site}."]
         return "\n\n".join(p for p in parts if p), close
 
@@ -273,7 +276,8 @@ def compose(network: str, article: Article, settings: Settings) -> str:
         budget = limit - X_URL_LENGTH - 2 - (len(tags) + 2 if tags else 0)
         return "\n\n".join(p for p in (fit(hook, budget), url, tags) if p)
     if network == "facebook":
-        if facebook_mode(settings) == "photo" and article.image and (article.caption or {}).get("body"):
+        nepali_caption = ((article.nepali or {}).get("caption") or {}).get("body")
+        if facebook_mode(settings) == "photo" and article.image and ((article.caption or {}).get("body") or nepali_caption):
             # The card carries the hook and the sources; the caption carries the depth, to the engine's format.
             return fit(engine_caption(article, settings, tags), limit)
         if facebook_mode(settings) == "photo" and article.image:
