@@ -112,3 +112,25 @@ def test_backfill_stops_when_the_budget_is_spent_and_keeps_what_it_has(tmp_path)
     assert [r[:2] for r in results] == [(first.id, "written")]
     stored = {a.id: a for a in publish.load_articles(settings)}
     assert nepali.usable(stored[first.id].nepali) and not stored[second.id].nepali
+
+
+def test_backfill_with_workers_writes_stories_side_by_side_in_input_order(tmp_path):
+    settings = _settings(tmp_path)
+    ids = []
+    for n in range(3):
+        a = _article(id=f"2026-09-2{6 - n}-story-{n}", slug=f"story-{n}", run_date=f"2026-09-2{6 - n}", published_at=f"2026-09-2{6 - n}T06:30:00+00:00")
+        publish.save_article(settings, a)
+        ids.append(a.id)
+    wanted = nepali.wanting(settings)
+    assert [a.id for a in wanted] == ids
+    results = nepali.backfill(settings, MockLLM(settings, UsageMeter(20)), wanted, workers=3)
+    assert [r[:2] for r in results] == [(i, "written") for i in ids]
+    stored = {a.id: a for a in publish.load_articles(settings)}
+    assert all(nepali.usable(stored[i].nepali) and stored[i].nepali["approved"] for i in ids)
+    # a budget that runs out mid way leaves the cut off stories untouched and unreported
+    for a in wanted:
+        a.nepali = {}
+        publish.save_article(settings, a)
+    partial = nepali.backfill(settings, MockLLM(settings, UsageMeter(3)), nepali.wanting(settings), workers=3)
+    stored = {a.id: a for a in publish.load_articles(settings)}
+    assert 0 <= len(partial) <= 1 and all(nepali.usable(stored[i].nepali) == (i in {r[0] for r in partial}) for i in ids)

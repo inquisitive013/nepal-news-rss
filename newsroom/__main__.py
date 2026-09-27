@@ -225,8 +225,9 @@ def cmd_nepali(args) -> int:
         return 0
     rounds = int(settings.get("pipeline.nepali_rounds", 2) or 1)
     print(f"Writing {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'} in Nepali: a writer call, then up to {rounds} editor reading{'s' if rounds != 1 else ''} with a fix after each.")
-    # Writer, then editor and fix per round, at most.
-    results = nepali.backfill(settings, make_llm(settings, UsageMeter((1 + 2 * rounds) * len(wanted))), wanted)
+    # Writer, then editor and fix per round, at most. Stories are written a few at a time.
+    workers = int(settings.get("pipeline.concurrency", 1) or 1)
+    results = nepali.backfill(settings, make_llm(settings, UsageMeter((1 + 2 * rounds) * len(wanted))), wanted, workers=workers)
     for article_id, status, detail in results:
         print(f"{status:10} {article_id}  {detail}")
     failed = sum(1 for _, status, _ in results if status == "failed")

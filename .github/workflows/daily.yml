@@ -23,6 +23,10 @@ on:
         type: choice
         options: [missing, all]
         default: missing
+      nepali_article:
+        description: "Write the Nepali edition for this one article id only, e.g. 2026-09-27-some-slug. Overrides the scope."
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -79,6 +83,7 @@ jobs:
           NEWSROOM_REBUILD_ONLY: ${{ inputs.rebuild_only == true && '1' || '' }}
           NEWSROOM_BACKFILL: ${{ inputs.backfill_nepali == true && '1' || '' }}
           NEWSROOM_BACKFILL_SCOPE: ${{ inputs.nepali_scope || 'missing' }}
+          NEWSROOM_BACKFILL_ARTICLE: ${{ inputs.nepali_article }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
@@ -99,8 +104,13 @@ jobs:
             exit 0
           fi
           if [ -n "${NEWSROOM_BACKFILL}" ]; then
-            echo "Backfill: writing the Nepali edition (${NEWSROOM_BACKFILL_SCOPE} stories), then rebuilding."
-            python -m newsroom nepali "--${NEWSROOM_BACKFILL_SCOPE}" || echo "::warning::Some stories could not be written in Nepali. The log above names them; the rest are saved."
+            if [ -n "${NEWSROOM_BACKFILL_ARTICLE}" ]; then
+              echo "Backfill: writing the Nepali edition for ${NEWSROOM_BACKFILL_ARTICLE}, then rebuilding."
+              python -m newsroom nepali --article "${NEWSROOM_BACKFILL_ARTICLE}" || echo "::warning::The story could not be written in Nepali. The log above says why."
+            else
+              echo "Backfill: writing the Nepali edition (${NEWSROOM_BACKFILL_SCOPE} stories), then rebuilding."
+              python -m newsroom nepali "--${NEWSROOM_BACKFILL_SCOPE}" || echo "::warning::Some stories could not be written in Nepali. The log above names them; the rest are saved."
+            fi
             python -m newsroom build --out site --root-rss
             exit 0
           fi

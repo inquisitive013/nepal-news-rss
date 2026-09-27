@@ -9,6 +9,7 @@ Nepali style guide, and the writer applies every fix.
 from __future__ import annotations
 
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -132,29 +133,40 @@ def wanting(settings: Settings, *, only: list[str] | None = None, everything: bo
     return wanted[:limit] if limit and limit > 0 else wanted
 
 
-def backfill(settings: Settings, llm: BaseLLM, articles: list[Article]) -> list[tuple[str, str, str]]:
-    """Write and store each article's Nepali edition in turn. Returns (article id, status, detail) per attempt.
+def backfill(settings: Settings, llm: BaseLLM, articles: list[Article], *, workers: int = 1) -> list[tuple[str, str, str]]:
+    """Write and store each article's Nepali edition. Returns (article id, status, detail) per attempt, in input order.
 
-    A spent call budget ends the loop; a refusal or model error skips the article. Everything
-    written before that point is already saved.
+    With one worker the stories go one after another and a spent call budget ends the loop.
+    With more, that many stories are written at once; a story the budget cuts off is left
+    as it was and not reported. A refusal or model error skips the article. Every story
+    written is saved the moment it is done.
     """
     from . import publish
     from .llm import BudgetExceeded, LLMError, LLMRefusal
 
-    out: list[tuple[str, str, str]] = []
-    for article in articles:
+    def one(article: Article) -> tuple[str, str, str] | None:
         try:
             article.nepali = nepali_for(llm, settings, article)
         except BudgetExceeded as exc:
-            log.warning("stopping before %s: %s", article.id, exc)
-            break
+            log.warning("budget spent before %s was finished: %s", article.id, exc)
+            return None
         except (LLMRefusal, LLMError) as exc:
             log.warning("nepali edition failed for %s: %s", article.id, exc)
-            out.append((article.id, "failed", str(exc)[:200]))
-            continue
+            return (article.id, "failed", str(exc)[:200])
         publish.save_article(settings, article)
-        out.append((article.id, "written", article.nepali.get("headline", "")))
-    return out
+        return (article.id, "written", article.nepali.get("headline", ""))
+
+    workers = max(1, min(int(workers or 1), len(articles) or 1))
+    if workers == 1:
+        out: list[tuple[str, str, str]] = []
+        for article in articles:
+            result = one(article)
+            if result is None:
+                break
+            out.append(result)
+        return out
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        return [r for r in pool.map(one, articles) if r is not None]
 
 
 def nepali_for(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, Any]:
