@@ -668,3 +668,17 @@ def test_posting_again_appends_to_the_record_and_needs_an_article_id(tmp_path):
     assert len(social.load_record(settings, art).posts) == 2
     with pytest.raises(ValueError, match="explicit article ids"):
         social.post_articles(settings, env, again=True, networks=["facebook"], client=client, sleep=lambda s: None, wait_seconds=0)
+
+
+def test_an_older_story_with_a_nepali_caption_still_gets_the_bilingual_format(tmp_path):
+    s = _settings(tmp_path)
+    art = _article(s)
+    art.take = "Nobody has said who delayed the siren."
+    art.caption = {}  # written before the engine caption existed
+    art.nepali = {"headline": "बागमती बाढीले १४० घरधुरी विस्थापित", "body_markdown": "x", "caption": {"hook": "ह", "body": "श", "trigger": "ट"}}
+    fb = social.compose("facebook", art, s)
+    assert fb.startswith("बागमती बाढीले १४० घरधुरी विस्थापित\n\nह\n\nश\n\nट\n\n" + social.RULE + "\n\n" + art.headline + "\n\n" + art.social_hook + "\n\n" + art.take)
+    assert "THE STORY" not in fb and "Sources available in graphic." in fb and "नेपाल वायर फलो गर्नुहोस्।" in fb
+    # without any caption at all the old long form still applies
+    art.nepali = {}
+    assert "THE STORY" in social.compose("facebook", art, s)

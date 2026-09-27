@@ -44,7 +44,7 @@ Write the story. Do not translate it. The English article is the verified record
 
 - Devanagari digits: १४०, १,४५३. Large numbers in Nepali units: १० लाख, २ करोड, ३ अर्ब. Never million or billion.
 - Money: रु. ५, रु. २ करोड, "प्रतिलिटर रु. ५". Foreign currency as the record gives it, in Devanagari digits.
-- Dates: the weekday first, as Nepali news does, then the Gregorian date in Devanagari when the record gives one: "आइतबार (२७ सेप्टेम्बर)". A Bikram Sambat date only when a cited Nepali source states it, and then as that source states it. "आज" means the run date.
+- Dates: the weekday first, as Nepali news does, then the Gregorian date in Devanagari when the record gives one: "आइतबार (२७ सेप्टेम्बर)". Day before month, always: "९ सेप्टेम्बर", never "सेप्टेम्बर ९". A Bikram Sambat date only when a cited Nepali source states it, and then as that source states it. "आज" means the run date.
 
 ## संरचना: structure
 
