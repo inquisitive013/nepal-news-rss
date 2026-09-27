@@ -86,7 +86,9 @@ def secret(environ: Mapping[str, str], key: str) -> str:
         if value.lower().startswith(label):
             value = value[len(label):].strip()
     value = value.strip("\"'`,;{} \t\r\n")
-    return value.strip()
+    # No secret in this file has whitespace inside it. A token copied across a wrapped
+    # line picks up a line break in the middle; drop every space and break anywhere.
+    return "".join(value.split())
 
 
 def secret_shape_problem(value: str, *, kind: str) -> str:
