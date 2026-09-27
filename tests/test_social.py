@@ -281,3 +281,39 @@ def test_articles_to_post_reads_the_latest_run_of_the_day(tmp_path):
     dated = social.articles_to_post(settings, run_date="2026-09-26", max_age_hours=10**6)
     assert [a.id for a in dated] == [second.id]
     assert social.articles_to_post(settings, run_date="2026-01-01", max_age_hours=10**6) == []
+
+
+def _facebook_check(me_id, *, page_node=True):
+    def handler(request):
+        url = str(request.url)
+        fields = request.url.params.get("fields", "")
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": me_id, "name": "Ruby D. Parajuli"})
+        if "/111?" in url and fields == "name,category":
+            if not page_node:
+                return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (category) on node type (User)", "code": 100}})
+            return httpx.Response(200, json={"id": "111", "name": "Ruby D. Parajuli", "category": "Public figure"})
+        if "/111?" in url and fields == "followers_count,fan_count":
+            return httpx.Response(200, json={"id": "111", "followers_count": 10423, "fan_count": 9870})
+        return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "fbtok"}
+    return social.check_facebook(httpx.Client(transport=httpx.MockTransport(handler)), env)
+
+
+def test_facebook_check_confirms_a_page_with_its_followers():
+    assert _facebook_check("111") == "Ruby D. Parajuli (Page, Public figure, 10,423 followers)"
+
+
+def test_facebook_check_rejects_a_user_token():
+    import pytest
+
+    with pytest.raises(social.SocialError, match="not to FACEBOOK_PAGE_ID 111"):
+        _facebook_check("999")
+
+
+def test_facebook_check_rejects_a_personal_profile():
+    import pytest
+
+    with pytest.raises(social.SocialError, match="personal profile, not a Page"):
+        _facebook_check("111", page_node=False)

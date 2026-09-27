@@ -287,9 +287,35 @@ def post_facebook(client: httpx.Client, environ: Mapping[str, str], text: str, a
 
 
 def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
-    url = f"{META_GRAPH}/{_graph_version(environ)}/{environ['FACEBOOK_PAGE_ID']}"
-    data = _raise_for(client.get(url, params={"fields": "name,id", "access_token": environ["FACEBOOK_PAGE_TOKEN"]}), "Facebook")
-    return str(data.get("name", "?"))
+    """Prove the token is a Page token for FACEBOOK_PAGE_ID and that the ID is a Page."""
+    base = f"{META_GRAPH}/{_graph_version(environ)}"
+    page_id = environ["FACEBOOK_PAGE_ID"].strip()
+    token = environ["FACEBOOK_PAGE_TOKEN"]
+    # With a Page token, /me is the Page itself. With a user token, it is the person.
+    me = _raise_for(client.get(f"{base}/me", params={"fields": "id,name", "access_token": token}), "Facebook")
+    if str(me.get("id", "")) != page_id:
+        raise SocialError(
+            f"Facebook: FACEBOOK_PAGE_TOKEN belongs to {me.get('name', '?')} (id {me.get('id', '?')}), not to FACEBOOK_PAGE_ID {page_id}. "
+            "Store the access_token and id of the Page entry from me/accounts, not the user token."
+        )
+    # Only Pages have a category. On a personal profile this field does not exist.
+    try:
+        page = _raise_for(client.get(f"{base}/{page_id}", params={"fields": "name,category", "access_token": token}), "Facebook")
+    except SocialError as exc:
+        if "node type (User)" in str(exc) or "nonexisting field" in str(exc):
+            raise SocialError(f"Facebook: {page_id} is a personal profile, not a Page. The API can only post to Pages.") from exc
+        raise
+    label = f"{page.get('name', me.get('name', '?'))} (Page"
+    if page.get("category"):
+        label += f", {page['category']}"
+    try:
+        counts = _raise_for(client.get(f"{base}/{page_id}", params={"fields": "followers_count,fan_count", "access_token": token}), "Facebook")
+        followers = counts.get("followers_count", counts.get("fan_count"))
+        if isinstance(followers, int):
+            label += f", {followers:,} followers"
+    except SocialError:
+        pass  # follower counts need pages_read_engagement; the Page is still confirmed
+    return label + ")"
 
 
 def post_instagram(client: httpx.Client, environ: Mapping[str, str], text: str, art_url: str, img_url: str, *, sleep: Callable[[float], None] = time.sleep) -> tuple[str, str]:
