@@ -145,6 +145,10 @@ Not covered, and why: LinkedIn company pages need a partner programme approval a
 
 The edition job fast forwards its checkout to the branch tip before it starts, so a run that queued behind another sees what that one published. Items already cited by an article from the last three days are dropped before clustering, and the clusterer and both ranking judges get the recent headlines under `recently_published`, so a story runs again only for a real development. If the commit at the end still collides with another push, the run fails and keeps `data/` and `rss.xml` as the workflow artifact `edition-data-<run id>` for 14 days, so nothing the models wrote is lost.
 
+## Your own domain
+
+A github.io address ties the brand to a GitHub username. Buy a domain (nepalwire.com or similar), then at the registrar add four A records for `@` pointing at `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and `185.199.111.153`, and a CNAME record for `www` pointing at `<owner>.github.io`. Set `site.custom_domain` in `config/settings.yaml` to the bare domain and merge: every link the newsroom writes, the feed, the sitemap and the CNAME file switch to it on the next build. Then in the repository open *Settings → Pages → Custom domain*, enter the domain, save, and tick *Enforce HTTPS* once the certificate shows (up to an hour after the DNS records go live). Old github.io links redirect to the new address. A repository variable `SITE_URL` still overrides everything, for a staging copy.
+
 ## Rebuilding the site without a new edition
 
 *Actions → Daily edition → Run workflow* with **rebuild_only** ticked rebuilds the site from the data already in the repository and deploys it. No model calls, nothing committed. Use it after a template change or when the site needs redeploying. The workflow also makes sure the Pages source is GitHub Actions: a site left on "deploy from a branch" rebuilds itself after every edition commit and overwrites the deployed site with a Jekyll rendering of the repository, which makes every article link a 404.

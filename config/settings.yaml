@@ -9,6 +9,8 @@ site:
   tagline: "Nepal's day, ranked and checked before it reaches you"
   # GitHub Pages serves a project site at https://<owner>.github.io/<repo>/
   url: "https://inquisitive013.github.io/nepal-news-rss"
+  # Your own domain once it points at GitHub Pages (README: Your own domain). Empty keeps the address above.
+  custom_domain: ""
   # Language of the published articles: "en" or "ne". Sources are read in both.
   language: "en"
   timezone: "Asia/Kathmandu"

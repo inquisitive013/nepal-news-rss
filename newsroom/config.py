@@ -44,8 +44,21 @@ class Settings:
         return self.get("site.name", "Nepal Wire")
 
     @property
+    def custom_domain(self) -> str:
+        """Your own domain for the site, e.g. nepalwire.com, once it points at GitHub Pages."""
+        raw = str(self.get("site.custom_domain", "") or "").strip().lower()
+        return raw.removeprefix("https://").removeprefix("http://").strip("/")
+
+    @property
     def site_url(self) -> str:
-        return os.environ.get("SITE_URL") or self.get("site.url", "").rstrip("/")
+        # Precedence: the SITE_URL repository variable, then site.custom_domain, then the
+        # project Pages address the workflow passes as PAGES_URL, then site.url in settings.yaml.
+        override = os.environ.get("SITE_URL", "").strip()
+        if override:
+            return override.rstrip("/")
+        if self.custom_domain:
+            return f"https://{self.custom_domain}"
+        return (os.environ.get("PAGES_URL", "").strip() or self.get("site.url", "")).rstrip("/")
 
     @property
     def language(self) -> str:

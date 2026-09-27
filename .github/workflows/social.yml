@@ -61,7 +61,8 @@ jobs:
           NETWORKS: ${{ inputs.networks }}
           ARTICLE: ${{ inputs.article }}
         run: |
-          export SITE_URL="${SITE_URL_OVERRIDE:-https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}}"
+          export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
+          if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
           args=()
           [ -n "$DRY_RUN" ] && args+=(--dry-run)
           [ -n "$NETWORKS" ] && args+=(--networks "$NETWORKS")

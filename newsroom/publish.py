@@ -263,6 +263,10 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
     (out_dir / "robots.txt").write_text(f"User-agent: *\nAllow: /\nSitemap: {site['url']}/sitemap.xml\n", encoding="utf-8")
     shutil.copy2(STATIC / "style.css", out_dir / "style.css")
     (out_dir / ".nojekyll").write_text("", encoding="utf-8")
+    if settings.custom_domain:
+        # GitHub Pages reads this when the site is published from a branch; with Actions the
+        # domain is set in the repository's Pages settings, and the file does no harm.
+        (out_dir / "CNAME").write_text(settings.custom_domain + "\n", encoding="utf-8")
     log.info("site built at %s with %d articles", out_dir, len(articles))
     return out_dir
 
