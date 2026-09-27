@@ -488,11 +488,10 @@ def wait_for_url(client: httpx.Client, url: str, timeout_s: float, *, sleep: Cal
 
 def articles_to_post(settings: Settings, run_date: str | None = None, max_age_hours: float | None = None) -> list[Article]:
     """Articles from the latest run (or the given run date) that are recent enough to announce."""
-    runs_dir = settings.data_dir / "runs"
+    records = publish.run_records(settings)
     if run_date:
-        run_files = [runs_dir / f"{run_date}.json"]
-    else:
-        run_files = sorted(runs_dir.glob("*.json"))[-1:]
+        records = [r for r in records if publish.run_order(r)[0] == run_date]
+    run_files = records[-1:]
     if not run_files or not run_files[0].exists():
         return []
     run = json.loads(run_files[0].read_text(encoding="utf-8"))

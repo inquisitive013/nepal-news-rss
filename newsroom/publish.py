@@ -86,8 +86,31 @@ def save_rejected(settings: Settings, article: Article) -> Path:
     return path
 
 
+def run_order(path: Path) -> tuple[str, int]:
+    """Sort key for run records: <date>.json is the day's first run, <date>-2.json the second."""
+    stem = path.stem
+    date, rest = stem[:10], stem[10:]
+    try:
+        return date, int(rest[1:]) if rest else 1
+    except ValueError:
+        return stem, 0
+
+
+def run_records(settings: Settings) -> list[Path]:
+    """Every run record, oldest first."""
+    runs = settings.data_dir / "runs"
+    return sorted(runs.glob("*.json"), key=run_order) if runs.exists() else []
+
+
 def save_run(settings: Settings, run: RunLog) -> Path:
-    path = settings.data_dir / "runs" / f"{run.run_date}.json"
+    # A day can have more than one run (a manual one and the scheduled one). The first
+    # keeps <date>.json, later ones get -2, -3, so no record is ever overwritten.
+    runs = settings.data_dir / "runs"
+    path = runs / f"{run.run_date}.json"
+    n = 2
+    while path.exists():
+        path = runs / f"{run.run_date}-{n}.json"
+        n += 1
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = dataclasses.asdict(run)
     payload["usage_totals"] = run.usage_totals()

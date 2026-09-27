@@ -161,3 +161,16 @@ def test_two_red_team_rounds_when_configured(tmp_path):
     assert art.review.validation_rounds[1].judge_2["decision"] == "approve"
     n = len(run.selected_story_ids)
     assert _calls(llm)["red_team"] == _calls(llm)["defense"] == 2 * n
+
+
+def test_second_run_on_the_same_day_keeps_both_records(tmp_path):
+    settings = _settings(tmp_path)
+    first = pipeline.run(settings, now=NOW)
+    first_file = tmp_path / "data" / "runs" / "2026-09-26.json"
+    before = first_file.read_text()
+    second = pipeline.run(settings, now=NOW)
+    assert second.run_date == first.run_date
+    assert first_file.read_text() == before
+    second_file = tmp_path / "data" / "runs" / "2026-09-26-2.json"
+    assert second_file.exists()
+    assert [p.name for p in publish.run_records(settings)] == ["2026-09-26.json", "2026-09-26-2.json"]

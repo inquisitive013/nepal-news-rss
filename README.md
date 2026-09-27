@@ -72,7 +72,7 @@ Optional: a repository variable `SITE_URL` if the site lives on a custom domain.
 |---|---|
 | `data/articles/<date>-<slug>.json` | Every published article with body, sources, image credit and the full review record |
 | `data/rejected/` | Articles that failed validation, kept for audit |
-| `data/runs/<date>.json` | The whole day: feed health, candidates, stories, debates, verdicts, token usage |
+| `data/runs/<date>.json` | The whole run: feed health, candidates, stories, debates, verdicts, token usage. A second run on the same day gets `<date>-2.json` |
 | `data/images/` | Stored images, downscaled, with a credit bar burned in |
 | `data/social/<article id>.json` | Every social post made for the article: network, id, link, text, or the error |
 | `rss.xml` | Copy of the live feed at the repo root, for automations that read the raw file |
