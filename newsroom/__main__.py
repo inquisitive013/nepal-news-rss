@@ -144,6 +144,9 @@ def cmd_social(args) -> int:
 
     settings = _settings(args)
     networks = [n.strip() for n in args.networks.split(",") if n.strip()] if args.networks else None
+    if getattr(args, "again", False) and not args.article:
+        print("--again needs --article <id>: it posts a story again even though the record says it went out.")
+        return 2
     configured = social.configured_networks(settings, os.environ)
     if networks is None and not configured:
         paused = sorted(social.paused_networks(settings))
@@ -161,6 +164,7 @@ def cmd_social(args) -> int:
         dry_run=args.dry_run,
         wait_seconds=args.wait,
         article_ids=[a.strip() for a in (args.article or []) if a.strip()] or None,
+        again=bool(getattr(args, "again", False)),
     )
     if not records:
         print(f"Nothing to post. Networks connected: {', '.join(configured) or 'none'}.")
@@ -273,6 +277,7 @@ def main(argv=None) -> int:
     p_soc.add_argument("--wait", type=float, help="seconds to wait for the article page to go live first")
     p_soc.add_argument("--article", action="append", help="post this article id regardless of age; repeatable")
     p_soc.add_argument("--dry-run", action="store_true", help="compose the posts and print them, post nothing")
+    p_soc.add_argument("--again", action="store_true", help="post the given --article again even though its record says it went out")
     p_soc.set_defaults(func=cmd_social)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")

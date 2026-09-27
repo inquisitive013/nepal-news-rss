@@ -633,3 +633,38 @@ def test_facebook_caption_puts_the_nepali_first_when_the_story_has_a_nepali_edit
     art.nepali = {}
     plain = social.compose("facebook", art, s)
     assert plain.startswith(art.headline) and social.RULE not in plain and plain.count("Sources available in graphic.") == 1
+
+
+def test_posting_again_appends_to_the_record_and_needs_an_article_id(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.caption = {"hook": "h", "body": "b", "trigger": ""}
+    publish.save_article(settings, art)
+    calls = []
+
+    def handler(request):
+        url = str(request.url)
+        if url.startswith(SITE):
+            return httpx.Response(200, text="ok")
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "111"})
+        if url.endswith("/111/photos"):
+            calls.append(dict(httpx.QueryParams(request.content.decode())))
+            return httpx.Response(200, json={"id": str(len(calls)), "post_id": f"111_{len(calls)}"})
+        return httpx.Response(404, json={"error": "unexpected " + url})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    kwargs = dict(networks=["facebook"], client=client, sleep=lambda s: None, wait_seconds=0, article_ids=[art.id], max_age_hours=1e6)
+    first = social.post_articles(settings, env, **kwargs)
+    assert len(calls) == 1 and [p.status for p in first[0].posts] == ["posted"]
+    # the record says posted, so a plain rerun posts nothing
+    rerun = social.post_articles(settings, env, **kwargs)
+    assert len(calls) == 1 and len(rerun[0].posts) == 1
+    # `again` posts once more, at once, and keeps both entries
+    again = social.post_articles(settings, env, again=True, **kwargs)
+    assert len(calls) == 2 and "scheduled_publish_time" not in calls[1]
+    assert [p.status for p in again[0].posts] == ["posted", "posted"] and again[0].posts[1].id == "111_2"
+    assert len(social.load_record(settings, art).posts) == 2
+    with pytest.raises(ValueError, match="explicit article ids"):
+        social.post_articles(settings, env, again=True, networks=["facebook"], client=client, sleep=lambda s: None, wait_seconds=0)

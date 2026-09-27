@@ -15,6 +15,10 @@ on:
         description: "Post one article only, by id, e.g. 2026-09-27-some-slug. Ignores the age window."
         type: string
         default: ""
+      again:
+        description: "Post that article again even though it already went out to the network. Needs an article id. The earlier post stays up and stays in the record."
+        type: boolean
+        default: false
   workflow_call:
 
 permissions:
@@ -60,6 +64,7 @@ jobs:
           DRY_RUN: ${{ inputs.dry_run == true && '1' || '' }}
           NETWORKS: ${{ inputs.networks }}
           ARTICLE: ${{ inputs.article }}
+          AGAIN: ${{ inputs.again == true && '1' || '' }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
@@ -67,6 +72,7 @@ jobs:
           [ -n "$DRY_RUN" ] && args+=(--dry-run)
           [ -n "$NETWORKS" ] && args+=(--networks "$NETWORKS")
           [ -n "$ARTICLE" ] && args+=(--article "$ARTICLE")
+          [ -n "$AGAIN" ] && args+=(--again)
           set -o pipefail
           python -m newsroom social "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 
