@@ -366,9 +366,13 @@ def test_post_articles_schedules_the_second_facebook_post(tmp_path):
 
 USER_TOKEN = "EAABfaketoken_1234567890abcdefghijklmnop"
 PAGE_TOKEN = "EAAPAGEtoken_1234567890abcdefghijklmnopq"
+OTHER_TOKEN = "EAAOTHERpage_1234567890abcdefghijklmnop"
+PAGES = {"111": ("Ruby D. Parajuli", "Public figure", USER_TOKEN, PAGE_TOKEN), "555": ("Nepal Wire", "Media/News Company", OTHER_TOKEN, OTHER_TOKEN)}
 
 
-def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts_has_page=True, manages_none=False):
+def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts=(("111", PAGE_TOKEN),)):
+    """me_id is what /me returns for the stored token; accounts is what me/accounts lists for a user token."""
+
     def handler(request):
         url = str(request.url)
         fields = request.url.params.get("fields", "")
@@ -376,21 +380,22 @@ def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts_has_
         if "/me/accounts" in url:
             if token_is_page:
                 return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (accounts) on node type (Page)", "code": 100}})
-            data = [{"id": "111", "access_token": PAGE_TOKEN}] if accounts_has_page else [{"id": "555", "access_token": "EAAOTHERpage_1234567890abcdefghijklmnop"}]
-            if manages_none:
-                data = []
-            return httpx.Response(200, json={"data": data, "paging": {}})
+            return httpx.Response(200, json={"data": [{"id": pid, "access_token": tok} for pid, tok in accounts], "paging": {}})
         if "/me?" in url:
             return httpx.Response(200, json={"id": me_id, "name": "Ruby D. Parajuli"})
-        # everything about the Page itself must be asked with the Page's token
-        if token != (USER_TOKEN if me_id == "111" else PAGE_TOKEN):
+        pid = url.rsplit("/", 1)[-1].split("?")[0]
+        if pid not in PAGES:
+            return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
+        name, category, own_token, derived_token = PAGES[pid]
+        # everything about a Page must be asked with that Page's token
+        if token != (own_token if me_id == pid else derived_token):
             return httpx.Response(400, json={"error": {"message": "wrong token for a Page call", "code": 190}})
-        if "/111?" in url and fields == "name,category":
+        if fields == "name,category":
             if not page_node:
                 return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (category) on node type (User)", "code": 100}})
-            return httpx.Response(200, json={"id": "111", "name": "Ruby D. Parajuli", "category": "Public figure"})
-        if "/111?" in url and fields == "followers_count,fan_count":
-            return httpx.Response(200, json={"id": "111", "followers_count": 10423, "fan_count": 9870})
+            return httpx.Response(200, json={"id": pid, "name": name, "category": category})
+        if fields == "followers_count,fan_count":
+            return httpx.Response(200, json={"id": pid, "followers_count": 10423, "fan_count": 9870})
         return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
 
     env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": USER_TOKEN}
@@ -408,13 +413,20 @@ def test_facebook_check_derives_the_page_token_from_a_user_token():
     assert "999" not in label and PAGE_TOKEN not in label
 
 
+def test_facebook_check_uses_the_only_page_a_user_token_manages_when_the_id_is_stale():
+    label = _facebook_check("999", accounts=(("555", OTHER_TOKEN),))
+    assert label.startswith("Nepal Wire (Page, Media/News Company, 10,423 followers)")
+    assert "FACEBOOK_PAGE_ID does not match the one Page this token manages" in label
+    assert "999" not in label and "555" not in label and OTHER_TOKEN not in label
+
+
 def test_facebook_check_user_token_that_does_not_manage_the_page():
-    with pytest.raises(social.SocialError, match="manages 1 Page, none with the id in FACEBOOK_PAGE_ID") as err:
-        _facebook_check("999", accounts_has_page=False)
+    with pytest.raises(social.SocialError, match="manages 2 Pages, none with the id in FACEBOOK_PAGE_ID") as err:
+        _facebook_check("999", accounts=(("555", OTHER_TOKEN), ("666", "EAATHIRDpage_1234567890abcdefghijklmnop")))
     # public logs: the message must not carry the token owner's name or any ID
     assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "555" not in str(err.value) and "111" not in str(err.value)
     with pytest.raises(social.SocialError, match="manages no Page"):
-        _facebook_check("999", manages_none=True)
+        _facebook_check("999", accounts=())
 
 
 def test_posting_with_a_user_token_uses_the_derived_page_token():
@@ -435,6 +447,12 @@ def test_posting_with_a_user_token_uses_the_derived_page_token():
     post_id, link = social.post_facebook(httpx.Client(transport=httpx.MockTransport(handler)), env, "caption", SITE + "/articles/x/", SITE + "/images/x.jpg")
     assert post_id == "111_77" and link.endswith("/111_77")
     assert posted["access_token"] == PAGE_TOKEN
+    # a stale FACEBOOK_PAGE_ID still posts to the one Page the token manages
+    social._PAGE_TOKENS.clear()
+    posted.clear()
+    stale = {"FACEBOOK_PAGE_ID": "123456789012345", "FACEBOOK_PAGE_TOKEN": USER_TOKEN}
+    post_id, _ = social.post_facebook(httpx.Client(transport=httpx.MockTransport(handler)), stale, "caption", SITE + "/articles/x/", SITE + "/images/x.jpg")
+    assert post_id == "111_77" and posted["access_token"] == PAGE_TOKEN
 
 
 def test_facebook_check_names_a_page_token_for_another_page():
