@@ -421,6 +421,8 @@ def test_secrets_survive_sloppy_pasting_and_bad_shapes_are_named():
     assert social.secret({"FACEBOOK_PAGE_TOKEN": '  "EAABsbCS1iHgBO7ZCZCZBqZBw_abcdefghijklmnop"\n'}, "FACEBOOK_PAGE_TOKEN") == "EAABsbCS1iHgBO7ZCZCZBqZBw_abcdefghijklmnop"
     assert social.secret({"FACEBOOK_PAGE_ID": "id: 123456789 "}, "FACEBOOK_PAGE_ID") == "123456789"
     assert social.secret({"FACEBOOK_PAGE_TOKEN": "access_token=EAABtokenvalue_1234567890"}, "FACEBOOK_PAGE_TOKEN") == "EAABtokenvalue_1234567890"
+    # a token copied across a wrapped line carries a break in the middle
+    assert social.secret({"FACEBOOK_PAGE_TOKEN": "EAABsbCS1iHgBO7\nZCZCZBqZBw_abcd efghijklmnop\r\n"}, "FACEBOOK_PAGE_TOKEN") == "EAABsbCS1iHgBO7ZCZCZBqZBw_abcdefghijklmnop"
     assert social.secret_shape_problem("123", kind="digits") == ""
     assert "digits" in social.secret_shape_problem("12a3", kind="digits")
     assert "short" in social.secret_shape_problem("EAAB", kind="token")
