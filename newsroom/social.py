@@ -18,7 +18,9 @@ import secrets
 import time
 import urllib.parse
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 from typing import Any, Callable, Mapping
 
 import httpx
@@ -65,6 +67,7 @@ class Post:
     url: str = ""
     error: str = ""
     posted_at: str = ""
+    scheduled_for: str = ""  # local time when the network will release it, empty when posted at once
 
 
 @dataclass
@@ -279,17 +282,79 @@ def check_x(client: httpx.Client, environ: Mapping[str, str]) -> str:
     return "@" + str((data.get("data") or {}).get("username", "?"))
 
 
-def post_facebook(client: httpx.Client, environ: Mapping[str, str], text: str, art_url: str, img_url: str, *, mode: str = "photo") -> tuple[str, str]:
+def post_facebook(
+    client: httpx.Client,
+    environ: Mapping[str, str],
+    text: str,
+    art_url: str,
+    img_url: str,
+    *,
+    mode: str = "photo",
+    publish_at: int | None = None,
+) -> tuple[str, str]:
+    """Post now, or hand Facebook a scheduled post it releases at `publish_at` (unix time)."""
     page = environ["FACEBOOK_PAGE_ID"]
     token = environ["FACEBOOK_PAGE_TOKEN"]
     base = f"{META_GRAPH}/{_graph_version(environ)}/{page}"
+    timing: dict[str, str] = {}
+    if publish_at:
+        timing = {"published": "false", "scheduled_publish_time": str(int(publish_at))}
     if mode == "photo" and img_url:
-        data = _raise_for(client.post(f"{base}/photos", data={"url": img_url, "caption": text, "access_token": token}), "Facebook")
+        data = _raise_for(client.post(f"{base}/photos", data={"url": img_url, "caption": text, "access_token": token, **timing}), "Facebook")
         post_id = str(data.get("post_id") or data.get("id") or "")
     else:
-        data = _raise_for(client.post(f"{base}/feed", data={"message": text, "link": art_url, "access_token": token}), "Facebook")
+        data = _raise_for(client.post(f"{base}/feed", data={"message": text, "link": art_url, "access_token": token, **timing}), "Facebook")
         post_id = str(data.get("id", ""))
     return post_id, f"https://www.facebook.com/{post_id}" if post_id else ""
+
+
+def facebook_slots(settings: Settings) -> list[str]:
+    """Posting slots in newsroom local time: "now" or HH:MM. One article per slot, top ranked first."""
+    slots = settings.get("social.facebook.slots") or ["now"]
+    return [str(x).strip().lower() for x in slots if str(x).strip()]
+
+
+def article_rank(article: Article) -> int:
+    """The final ranking position, from the last ranking judge that ranked it. 99 when unknown."""
+    rank = 99
+    for verdict in (article.review.ranking if article.review else []) or []:
+        try:
+            rank = int(verdict.get("rank") or rank)
+        except (TypeError, ValueError):
+            continue
+    return rank
+
+
+def plan_facebook_slots(articles: list[Article], settings: Settings, now: datetime | None = None) -> dict[str, int | None]:
+    """Article id -> unix time Facebook should release it, or None to post at once.
+
+    Today's articles come first, best ranked first, then older ones. Slots that are
+    already past, or less than ten minutes away (Facebook's minimum), post at once.
+    Articles beyond the slots post at once too.
+    """
+    try:
+        tz = ZoneInfo(settings.timezone)
+    except Exception:  # noqa: BLE001
+        tz = timezone.utc
+    now = now or datetime.now(timezone.utc)
+    local_now = now.astimezone(tz)
+    ordered = sorted(articles, key=lambda a: (a.run_date or "", article_rank(a), a.published_at), reverse=False)
+    ordered.sort(key=lambda a: a.run_date or "", reverse=True)  # stable: newest run date first, rank order kept
+    plan: dict[str, int | None] = {}
+    slots = facebook_slots(settings)
+    for i, art in enumerate(ordered):
+        slot = slots[i] if i < len(slots) else "now"
+        when: int | None = None
+        if slot != "now":
+            try:
+                hh, mm = (int(x) for x in slot.split(":", 1))
+                target = local_now.replace(hour=hh, minute=mm, second=0, microsecond=0)
+                if target - local_now >= timedelta(minutes=10):
+                    when = int(target.timestamp())
+            except ValueError:
+                log.warning("ignoring Facebook slot %r: use HH:MM or now", slot)
+        plan[art.id] = when
+    return plan
 
 
 def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
@@ -519,23 +584,27 @@ def wait_for_url(client: httpx.Client, url: str, timeout_s: float, *, sleep: Cal
 
 # --------------------------------------------------------------------------- driver
 
-def articles_to_post(settings: Settings, run_date: str | None = None, max_age_hours: float | None = None) -> list[Article]:
-    """Articles from the latest run (or the given run date) that are recent enough to announce."""
-    records = publish.run_records(settings)
-    if run_date:
-        records = [r for r in records if publish.run_order(r)[0] == run_date]
-    run_files = records[-1:]
-    if not run_files or not run_files[0].exists():
-        return []
-    run = json.loads(run_files[0].read_text(encoding="utf-8"))
-    wanted = set(run.get("published", []))
-    if not wanted:
-        return []
+def articles_to_post(
+    settings: Settings,
+    run_date: str | None = None,
+    max_age_hours: float | None = None,
+    article_ids: list[str] | None = None,
+) -> list[Article]:
+    """Published articles recent enough to announce, newest first.
+
+    `run_date` keeps only that day's articles. `article_ids` names articles outright and
+    ignores the age window. The per article record stops anything posting twice.
+    """
     max_age = float(max_age_hours if max_age_hours is not None else settings.get("social.max_age_hours", 36))
     now = time.time()
+    wanted = set(article_ids or [])
     out = []
     for art in publish.load_articles(settings):
-        if art.id not in wanted:
+        if wanted:
+            if art.id in wanted:
+                out.append(art)
+            continue
+        if run_date and art.run_date != run_date:
             continue
         try:
             published = publish._parse_iso(art.published_at).timestamp() if art.published_at else now
@@ -555,6 +624,7 @@ def post_article(
     networks: list[str] | None = None,
     dry_run: bool = False,
     sleep: Callable[[float], None] = time.sleep,
+    facebook_publish_at: int | None = None,
 ) -> SocialRecord:
     rec = load_record(settings, article)
     rec.article_url = article_url(settings, article)
@@ -573,11 +643,19 @@ def post_article(
                 kwargs["sleep"] = sleep
             if network == "bluesky":
                 kwargs["article"] = article
+            scheduled_for = ""
             if network == "facebook":
                 kwargs["mode"] = facebook_mode(settings) if article.image else "link"
+                if facebook_publish_at:
+                    kwargs["publish_at"] = facebook_publish_at
+                    try:
+                        tz = ZoneInfo(settings.timezone)
+                    except Exception:  # noqa: BLE001
+                        tz = timezone.utc
+                    scheduled_for = datetime.fromtimestamp(facebook_publish_at, tz).isoformat(timespec="minutes")
             post_id, url = POSTERS[network](client, environ, text, rec.article_url, img, **kwargs)
-            rec.posts.append(Post(network=network, status="posted", text=text, id=post_id, url=url, posted_at=utcnow_iso()))
-            log.info("posted %s to %s: %s", article.id, network, url or post_id)
+            rec.posts.append(Post(network=network, status="posted", text=text, id=post_id, url=url, posted_at=utcnow_iso(), scheduled_for=scheduled_for))
+            log.info("posted %s to %s: %s%s", article.id, network, url or post_id, f" (scheduled for {scheduled_for})" if scheduled_for else "")
         except (SocialError, httpx.HTTPError, KeyError, ValueError) as exc:
             rec.posts.append(Post(network=network, status="failed", text=text, error=str(exc)[:500], posted_at=utcnow_iso()))
             log.warning("%s failed for %s: %s", network, article.id, exc)
@@ -597,11 +675,16 @@ def post_articles(
     wait_seconds: float | None = None,
     client: httpx.Client | None = None,
     sleep: Callable[[float], None] = time.sleep,
+    article_ids: list[str] | None = None,
+    now: datetime | None = None,
 ) -> list[SocialRecord]:
     chosen = networks if networks is not None else configured_networks(settings, environ)
-    articles = articles_to_post(settings, run_date, max_age_hours)
+    articles = articles_to_post(settings, run_date, max_age_hours, article_ids)
     if not chosen or not articles:
         return []
+    # Only articles not yet on Facebook take a slot, so a rerun never shifts the plan.
+    pending = [a for a in articles if not any(p.network == "facebook" and p.status == "posted" for p in load_record(settings, a).posts)]
+    plan = plan_facebook_slots(pending, settings, now) if "facebook" in chosen else {}
     own_client = client is None
     client = client or httpx.Client(timeout=60.0, follow_redirects=True)
     try:
@@ -611,7 +694,10 @@ def post_articles(
                 if not wait_for_url(client, article_url(settings, art), wait_s, sleep=sleep):
                     log.warning("%s is not answering yet; posting anyway", article_url(settings, art))
                     break
-        return [post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep) for art in articles]
+        return [
+            post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep, facebook_publish_at=plan.get(art.id))
+            for art in articles
+        ]
     finally:
         if own_client:
             client.close()

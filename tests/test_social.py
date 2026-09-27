@@ -268,21 +268,89 @@ def test_check_networks_reports_missing_and_broken(tmp_path):
     assert rows["facebook"]["configured"] == "no" and "FACEBOOK_PAGE_ID" in rows["facebook"]["note"]
 
 
-def test_articles_to_post_reads_the_latest_run_of_the_day(tmp_path):
+def test_articles_to_post_uses_the_age_window_not_the_run_record(tmp_path):
     settings = _settings(tmp_path)
     first = _article(settings, slug="first-story")
     second = _article(settings, slug="second-story")
+    second.run_date = "2026-09-27"
+    second.id = "2026-09-27-second-story"
     publish.save_article(settings, first)
     publish.save_article(settings, second)
-    runs = settings.data_dir / "runs"
-    runs.mkdir(parents=True, exist_ok=True)
-    (runs / "2026-09-26.json").write_text(json.dumps({"run_date": "2026-09-26", "published": [first.id]}))
-    (runs / "2026-09-26-2.json").write_text(json.dumps({"run_date": "2026-09-26", "published": [second.id]}))
-    latest = social.articles_to_post(settings, max_age_hours=10**6)
-    assert [a.id for a in latest] == [second.id]
-    dated = social.articles_to_post(settings, run_date="2026-09-26", max_age_hours=10**6)
+    both = {a.id for a in social.articles_to_post(settings, max_age_hours=10**6)}
+    assert both == {first.id, second.id}
+    dated = social.articles_to_post(settings, run_date="2026-09-27", max_age_hours=10**6)
     assert [a.id for a in dated] == [second.id]
     assert social.articles_to_post(settings, run_date="2026-01-01", max_age_hours=10**6) == []
+    # too old for the window, but named outright
+    assert social.articles_to_post(settings, max_age_hours=0.0001) == []
+    assert [a.id for a in social.articles_to_post(settings, max_age_hours=0.0001, article_ids=[first.id])] == [first.id]
+
+
+def _ranked(settings, slug, run_date, rank):
+    art = _article(settings, slug=slug)
+    art.run_date = run_date
+    art.id = f"{run_date}-{slug}"
+    art.review.ranking = [{"judge": "ranking_judge_1", "rank": 3, "score": 70, "reason": ""}, {"judge": "ranking_judge_2", "rank": rank, "score": 70, "reason": ""}]
+    return art
+
+
+def test_facebook_slots_spread_the_day_best_story_first(tmp_path):
+    from datetime import datetime, timezone
+    from zoneinfo import ZoneInfo
+
+    settings = _settings(tmp_path)  # slots from settings.yaml: now, 12:30, 18:30 Kathmandu time
+    a1 = _ranked(settings, "top", "2026-09-27", 1)
+    a2 = _ranked(settings, "second", "2026-09-27", 2)
+    a3 = _ranked(settings, "third", "2026-09-27", 3)
+    old = _ranked(settings, "yesterday", "2026-09-26", 1)
+    now = datetime(2026, 9, 27, 1, 0, tzinfo=timezone.utc)  # 06:45 in Kathmandu
+    plan = social.plan_facebook_slots([old, a3, a1, a2], settings, now)
+    ktm = ZoneInfo("Asia/Kathmandu")
+    assert plan[a1.id] is None  # the best story goes out at once
+    assert datetime.fromtimestamp(plan[a2.id], ktm).strftime("%H:%M") == "12:30"
+    assert datetime.fromtimestamp(plan[a3.id], ktm).strftime("%H:%M") == "18:30"
+    assert plan[old.id] is None  # beyond the slots: at once
+    # late in the day the clock slots are past, so everything posts at once
+    evening = datetime(2026, 9, 27, 13, 0, tzinfo=timezone.utc)  # 18:45 in Kathmandu
+    assert all(v is None for v in social.plan_facebook_slots([a1, a2, a3], settings, evening).values())
+    # a slot under ten minutes away posts at once too
+    close = datetime(2026, 9, 27, 6, 42, tzinfo=timezone.utc)  # 12:27 in Kathmandu
+    assert social.plan_facebook_slots([a1, a2], settings, close)[a2.id] is None
+    assert social.article_rank(_article(settings)) == 99
+
+
+def test_post_articles_schedules_the_second_facebook_post(tmp_path):
+    from datetime import datetime, timezone
+
+    settings = _settings(tmp_path)
+    a1 = _ranked(settings, "top", "2026-09-27", 1)
+    a2 = _ranked(settings, "second", "2026-09-27", 2)
+    for a in (a1, a2):
+        publish.save_article(settings, a)
+    seen = {}
+
+    def handler(request):
+        url = str(request.url)
+        if url.startswith(SITE):
+            return httpx.Response(200, text="ok")
+        if url.endswith("/111/photos"):
+            body = dict(httpx.QueryParams(request.content.decode()))
+            seen[body["url"]] = body  # the picture URL carries the slug, so one entry per article
+            return httpx.Response(200, json={"id": "9", "post_id": "111_" + str(len(seen))})
+        return httpx.Response(404, json={"error": "unexpected " + url})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "fbtok"}
+    now = datetime(2026, 9, 27, 1, 0, tzinfo=timezone.utc)
+    records = {r.article_id: r for r in social.post_articles(settings, env, client=httpx.Client(transport=httpx.MockTransport(handler)), max_age_hours=10**6, now=now, sleep=lambda s: None)}
+    first, second = records[a1.id].posts[0], records[a2.id].posts[0]
+    assert first.status == "posted" and first.scheduled_for == ""
+    assert second.status == "posted" and second.scheduled_for.startswith("2026-09-27T12:30")
+    bodies = list(seen.values())
+    scheduled = [b for b in bodies if "scheduled_publish_time" in b]
+    assert len(scheduled) == 1 and scheduled[0]["published"] == "false"
+    # a rerun neither reposts nor reshuffles
+    again = social.post_articles(settings, env, client=httpx.Client(transport=httpx.MockTransport(handler)), max_age_hours=10**6, now=now, sleep=lambda s: None, wait_seconds=0)
+    assert len(seen) == 2 and all(p.status == "posted" for r in again for p in r.posts)
 
 
 def _facebook_check(me_id, *, page_node=True):

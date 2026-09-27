@@ -123,3 +123,8 @@ social:
     # the end. That is how pages with a following post news on Facebook and it travels
     # further than a link card. "link": a short post with the link card instead.
     mode: photo
+    # When each day's articles go out, in newsroom local time, best ranked first. "now"
+    # posts as soon as the site is live; a clock time hands Facebook a scheduled post it
+    # releases then. Three stories spread across the day reach more people than three in
+    # one minute. A slot already past, or under ten minutes away, posts at once.
+    slots: ["now", "12:30", "18:30"]
