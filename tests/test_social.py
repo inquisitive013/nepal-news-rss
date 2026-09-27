@@ -2,12 +2,19 @@ import dataclasses
 import json
 
 import httpx
+import pytest
 
 from newsroom import publish, social
 from newsroom.config import load_settings
 from newsroom.models import Article, ImageAsset, ImageCredit
 
 SITE = "https://example.github.io/nepal-news-rss"
+
+
+@pytest.fixture(autouse=True)
+def _fresh_facebook_token_cache():
+    social._PAGE_TOKENS.clear()
+    yield
 
 
 def _settings(tmp_path):
@@ -129,6 +136,8 @@ def _fake_network(calls):
             assert request.headers["Authorization"].startswith("OAuth ")
             assert json.loads(request.content)["text"]
             return httpx.Response(201, json={"data": {"id": "1001", "text": "t"}})
+        if "graph.facebook.com" in url and "/me?" in url:
+            return httpx.Response(200, json={"id": "111"})
         if "graph.facebook.com" in url and url.endswith("/111/photos"):
             body = dict(httpx.QueryParams(request.content.decode()))
             assert body["url"].endswith(".jpg") and body["access_token"] == "EAABfaketoken_1234567890abcdefghijklmnop"
@@ -333,6 +342,8 @@ def test_post_articles_schedules_the_second_facebook_post(tmp_path):
         url = str(request.url)
         if url.startswith(SITE):
             return httpx.Response(200, text="ok")
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "111"})
         if url.endswith("/111/photos"):
             body = dict(httpx.QueryParams(request.content.decode()))
             seen[body["url"]] = body  # the picture URL carries the slug, so one entry per article
@@ -353,16 +364,25 @@ def test_post_articles_schedules_the_second_facebook_post(tmp_path):
     assert len(seen) == 2 and all(p.status == "posted" for r in again for p in r.posts)
 
 
-def _facebook_check(me_id, *, page_node=True, token_is_page=False):
+USER_TOKEN = "EAABfaketoken_1234567890abcdefghijklmnop"
+PAGE_TOKEN = "EAAPAGEtoken_1234567890abcdefghijklmnopq"
+
+
+def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts_has_page=True):
     def handler(request):
         url = str(request.url)
         fields = request.url.params.get("fields", "")
-        if "/me?" in url and fields == "category":
+        token = request.url.params.get("access_token", "")
+        if "/me/accounts" in url:
             if token_is_page:
-                return httpx.Response(200, json={"id": me_id, "category": "Media/News Company"})
-            return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (category) on node type (User)", "code": 100}})
+                return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (accounts) on node type (Page)", "code": 100}})
+            data = [{"id": "111", "access_token": PAGE_TOKEN}] if accounts_has_page else [{"id": "555", "access_token": "EAAOTHERpage_1234567890abcdefghijklmnop"}]
+            return httpx.Response(200, json={"data": data, "paging": {}})
         if "/me?" in url:
             return httpx.Response(200, json={"id": me_id, "name": "Ruby D. Parajuli"})
+        # everything about the Page itself must be asked with the Page's token
+        if token != (USER_TOKEN if me_id == "111" else PAGE_TOKEN):
+            return httpx.Response(400, json={"error": {"message": "wrong token for a Page call", "code": 190}})
         if "/111?" in url and fields == "name,category":
             if not page_node:
                 return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (category) on node type (User)", "code": 100}})
@@ -371,7 +391,7 @@ def _facebook_check(me_id, *, page_node=True, token_is_page=False):
             return httpx.Response(200, json={"id": "111", "followers_count": 10423, "fan_count": 9870})
         return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
 
-    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": USER_TOKEN}
     return social.check_facebook(httpx.Client(transport=httpx.MockTransport(handler)), env)
 
 
@@ -379,18 +399,41 @@ def test_facebook_check_confirms_a_page_with_its_followers():
     assert _facebook_check("111") == "Ruby D. Parajuli (Page, Public figure, 10,423 followers)"
 
 
-def test_facebook_check_rejects_a_user_token():
-    import pytest
+def test_facebook_check_derives_the_page_token_from_a_user_token():
+    label = _facebook_check("999")
+    assert label.startswith("Ruby D. Parajuli (Page, Public figure, 10,423 followers)")
+    assert "derived from your user token" in label and "60 days" in label
+    assert "999" not in label and PAGE_TOKEN not in label
 
-    with pytest.raises(social.SocialError, match="personal user token, not a Page token") as err:
-        _facebook_check("999")
-    # public logs: the message must not carry the token owner's name or ID
-    assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "111" not in str(err.value)
+
+def test_facebook_check_user_token_that_does_not_manage_the_page():
+    with pytest.raises(social.SocialError, match="none of the Pages it manages") as err:
+        _facebook_check("999", accounts_has_page=False)
+    # public logs: the message must not carry the token owner's name or any ID
+    assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "555" not in str(err.value) and "111" not in str(err.value)
+
+
+def test_posting_with_a_user_token_uses_the_derived_page_token():
+    posted = {}
+
+    def handler(request):
+        url = str(request.url)
+        if "/me/accounts" in url:
+            return httpx.Response(200, json={"data": [{"id": "111", "access_token": PAGE_TOKEN}]})
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "999"})
+        if url.endswith("/111/photos"):
+            posted.update(dict(httpx.QueryParams(request.content.decode())))
+            return httpx.Response(200, json={"id": "9", "post_id": "111_77"})
+        return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": USER_TOKEN}
+    post_id, link = social.post_facebook(httpx.Client(transport=httpx.MockTransport(handler)), env, "caption", SITE + "/articles/x/", SITE + "/images/x.jpg")
+    assert post_id == "111_77" and link.endswith("/111_77")
+    assert posted["access_token"] == PAGE_TOKEN
 
 
 def test_facebook_check_names_a_page_token_for_another_page():
-    import pytest
-
     with pytest.raises(social.SocialError, match="Page token, but for a different Page") as err:
         _facebook_check("999", token_is_page=True)
     assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "111" not in str(err.value)
