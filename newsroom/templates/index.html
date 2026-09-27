@@ -13,7 +13,7 @@
     {% if lead.angles %}
     <p class="missed"><span>What the coverage missed</span> {{ lead.angles[0].claim }}</p>
     {% endif %}
-    <p class="lead-more"><a href="{{ root }}{{ lead.url }}">Read the story with every source</a></p>
+    <p class="lead-more"><a href="{{ root }}{{ lead.url }}">Read the story with every source</a>{% if lead.ne_url %} · <a href="{{ root }}{{ lead.ne_url }}" lang="ne" hreflang="ne">नेपालीमा पढ्नुहोस्</a>{% endif %}</p>
   </div>
 </section>
 {% if cards|length > 1 %}

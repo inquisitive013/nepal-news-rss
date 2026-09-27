@@ -6,7 +6,20 @@
     <news:news>
       <news:publication>
         <news:name>{{ site.name }}</news:name>
-        <news:language>{{ site.language }}</news:language>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>{{ a.published_at | iso }}</news:publication_date>
+      <news:title>{{ a.headline | e }}</news:title>
+    </news:news>
+  </url>
+{% endfor %}
+{% for a in ne_articles %}
+  <url>
+    <loc>{{ site.url }}/ne/articles/{{ a.slug }}/</loc>
+    <news:news>
+      <news:publication>
+        <news:name>{{ site.name }}</news:name>
+        <news:language>ne</news:language>
       </news:publication>
       <news:publication_date>{{ a.published_at | iso }}</news:publication_date>
       <news:title>{{ a.headline | e }}</news:title>

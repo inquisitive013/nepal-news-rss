@@ -43,6 +43,7 @@
   {% if article.take %}<aside class="take"><strong>{{ site.name }}'s take.</strong> {{ article.take }}</aside>{% endif %}
   {% if site.adsense_client %}<div class="ad"><ins class="adsbygoogle" style="display:block" data-ad-client="{{ site.adsense_client }}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>{% endif %}
   <p class="byline">By the {{ site.publisher }} · Ranked and checked by four judges · Version {{ article.version }}</p>
+  {% if ne_url %}<p class="lang-note"><a href="{{ ne_url }}" lang="ne" hreflang="ne">यो समाचार नेपालीमा पढ्नुहोस्</a></p>{% endif %}
   {% if image %}
   <figure>
     <img src="{{ root }}{{ image }}" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}">
@@ -120,7 +121,7 @@
     {% endif %}
     {% if review.judge_1 %}<p><strong>Judge 1:</strong> {{ review.judge_1 }}</p>{% endif %}
     {% if review.judge_2 %}<p><strong>Judge 2:</strong> {{ review.judge_2 }}</p>{% endif %}
-    <p class="small">The complete record, including the advocate, skeptic, red team and defence arguments, is stored in the <a href="{{ site.repo_url }}/tree/main/data">data folder</a> of the repository.</p>
+    <p class="small">The complete record, including the advocate, skeptic, red team and defence arguments, is {% if site.repo_url %}stored in the <a href="{{ site.repo_url }}/tree/main/data">data folder</a> of the repository{% else %}kept by the newsroom{% endif %}.</p>
   </details>
   {% if article.tags %}<p class="tags">{% for t in article.tags %}<span>#{{ t }}</span> {% endfor %}</p>{% endif %}
 </article>

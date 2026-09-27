@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+{% if cards %}
+{% set lead = cards[0] %}
+{% set la = lead.nepali or lead.article %}
+<section class="lead">
+  <div class="lead-card">
+    <a href="{{ root }}{{ lead.ne_url or lead.url }}">{% if lead.card %}<img class="lead-image" src="{{ root }}{{ lead.card }}" alt="{{ lead.article.image.alt }}" width="1080" height="1400">{% elif lead.image %}<img class="lead-image" src="{{ root }}{{ lead.image }}" alt="{{ lead.article.image.alt }}">{% endif %}</a>
+  </div>
+  <div class="lead-text"{% if not lead.nepali %} lang="en"{% endif %}>
+    <p class="kicker" lang="ne">{{ lead.article.theme or (lead.article.tags[0] if lead.article.tags else 'मुख्य समाचार') }} · {{ lead.article.published_at | fmt_date_ne }}{% if not lead.nepali %} · English{% endif %}</p>
+    <h1><a href="{{ root }}{{ lead.ne_url or lead.url }}">{{ la.headline }}</a></h1>
+    {% if la.take %}<p class="hook"><strong>{{ site.name_ne if lead.nepali else site.name ~ "'s take." }}{% if lead.nepali %}को टिप्पणी।{% endif %}</strong> {{ la.take }}</p>{% else %}<p class="dek">{{ la.dek }}</p>{% endif %}
+    <p class="lead-more" lang="ne"><a href="{{ root }}{{ lead.ne_url or lead.url }}">{{ 'सबै स्रोतसहित पूरा समाचार पढ्नुहोस्' if lead.nepali else 'अंग्रेजीमा पढ्नुहोस्' }}</a></p>
+  </div>
+</section>
+{% if cards|length > 1 %}
+<section class="wall">
+  {% for card in cards[1:] %}
+  {% set a = card.nepali or card.article %}
+  <article class="post"{% if not card.nepali %} lang="en"{% endif %}>
+    <a href="{{ root }}{{ card.ne_url or card.url }}">
+      {% if card.card %}<img src="{{ root }}{{ card.card }}" alt="{{ card.article.image.alt }}" loading="lazy" width="1080" height="1400">{% elif card.image %}<img src="{{ root }}{{ card.image }}" alt="{{ card.article.image.alt }}" loading="lazy">{% endif %}
+      <p class="kicker" lang="ne">{{ card.article.theme or (card.article.tags[0] if card.article.tags else 'समाचार') }} · {{ card.article.published_at | fmt_date_ne }}{% if not card.nepali %} · English{% endif %}</p>
+      <h2>{{ a.headline }}</h2>
+      <p class="dek">{{ a.take or a.dek }}</p>
+    </a>
+  </article>
+  {% endfor %}
+</section>
+{% endif %}
+{% if total > cards|length %}<p class="more"><a href="{{ root }}archive.html">अभिलेखमा सबै {{ total }} समाचार</a></p>{% endif %}
+{% else %}
+<section class="empty">
+  <h1>पहिलो संस्करण आउँदैछ</h1>
+  <p>यो न्युजरूम दिनमा एक पटक चल्छ। दुवै अन्तिम जाँचकर्ताबाट पास भएका समाचार यहाँ देखिन्छन्।</p>
+</section>
+{% endif %}
+<section class="signup">
+  <h2>दैनिक वायर इमेलमा पाउनुहोस्</h2>
+  <p>हरेक बिहान तीन समाचार, चार तहको जाँच पार गरेका, अरूले छुटाएको कुरासहित। निःशुल्क।</p>
+  {% if site.newsletter_embed %}{{ site.newsletter_embed | safe }}{% elif site.newsletter_url %}<a class="button" href="{{ site.newsletter_url }}">निःशुल्क सदस्यता लिनुहोस्</a>{% else %}<p class="small">साइन अप चाँडै खुल्छ। त्यतिन्जेल <a href="{{ root }}ne/rss.xml">RSS फिड</a>ले हरेक समाचार पुर्‍याउँछ।</p>{% endif %}
+  {% if site.members_url %}<p class="small">अनुसन्धानका पछाडिका कागजात चाहिन्छ? <a href="{{ site.members_url }}">सदस्य बन्नुहोस्</a>।</p>{% endif %}
+</section>
+<section class="process">
+  <h2>समाचारले यहाँ ठाउँ कसरी पाउँछ</h2>
+  <ol>
+    <li><strong>स्क्यान।</strong> पछिल्लो २४ घण्टामा नेपालका प्रमुख सञ्चारमाध्यमका हरेक शीर्षक, नेपाली र अंग्रेजी दुवैमा।</li>
+    <li><strong>बहस।</strong> हरेक समाचारमा एउटा मोडेल पक्षमा र अर्को विपक्षमा प्रमाणसहित तर्क गर्छ।</li>
+    <li><strong>क्रम।</strong> दुई जाँचकर्ताले क्रमशः आजका समाचार छान्छन्।</li>
+    <li><strong>अनुसन्धान।</strong> समाचारले छुटाएको कुरा अभिलेखसहित खोजिन्छ।</li>
+    <li><strong>जाँच।</strong> रेड टिमले तथ्य, सान्दर्भिकता, कानुनी सुरक्षा र पहुँचमा आक्रमण गर्छ। बचाव जवाफ दिन्छ। दुई थप जाँचकर्ताले निर्णय गर्छन्।</li>
+    <li><strong>अनुवाद।</strong> पास भएको समाचार सजिलो नेपालीमा लेखिन्छ, अनि अर्को मोडेलले हरेक तथ्य अंग्रेजीसँग जाँच्छ।</li>
+    <li><strong>प्रकाशन।</strong> दुवै अन्तिम जाँचकर्ताले स्वीकृत गरेका समाचार मात्र यहाँ आउँछन्।</li>
+  </ol>
+  <p class="small"><a href="{{ root }}standards.html">हरेक समाचार पालना गर्ने मापदण्ड</a> · <a href="{{ root }}sponsor.html">{{ site.name_ne }} प्रायोजन गर्नुहोस्</a></p>
+</section>
+{% endblock %}

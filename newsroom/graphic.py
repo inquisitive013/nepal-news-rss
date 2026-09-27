@@ -49,8 +49,19 @@ _THEME_BY_TAG = [
     (("tech", "internet", "digital", "app"), "TECH"),
 ]
 
+MARK_FILE = Path(__file__).resolve().parent / "static" / "logo-mark.png"
 FONT_DIRS = [Path(__file__).resolve().parent / "fonts", Path("/usr/share/fonts/truetype/dejavu")]
 FONT_FILES = {"sans-bold": "DejaVuSans-Bold.ttf", "sans": "DejaVuSans.ttf", "mono-bold": "DejaVuSansMono-Bold.ttf", "mono": "DejaVuSansMono.ttf"}
+
+
+def brand_mark(height: int) -> Image.Image | None:
+    """The Nepal Wire mark, the flag and the signal arcs, transparent, scaled to the header."""
+    try:
+        mark = Image.open(MARK_FILE).convert("RGBA")
+    except (FileNotFoundError, OSError):
+        return None
+    width = max(1, round(mark.width * height / mark.height))
+    return mark.resize((width, height), Image.LANCZOS)
 
 
 def font(kind: str, size: int):
@@ -236,6 +247,11 @@ def render_card(settings: Settings, article: Article, out_path: Path) -> Path:
     draw.rectangle([0, 0, W, HEADER_H], fill=CRIMSON)
     f_brand, f_label = font("sans-bold", 22), font("mono-bold", 15)
     x = MARGIN
+    mark = brand_mark(34)
+    if mark is not None:
+        img.paste(mark, (x, (HEADER_H - mark.height) // 2), mark)
+        draw = ImageDraw.Draw(img)
+        x += mark.width + 14
     draw.text((x, 19), site_name.upper(), font=f_brand, fill=WHITE)
     x += text_width(draw, site_name.upper(), f_brand) + 16
     draw.ellipse([x, 27, x + 9, 36], fill=GOLD)

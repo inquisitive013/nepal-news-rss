@@ -1,10 +1,11 @@
 {% extends "base.html" %}
+{% from "_macros.html" import contact %}
 {% block title %}Privacy · {{ site.name }}{% endblock %}
 {% block content %}
 <article class="story prose">
 <h1>Privacy policy</h1>
 <h2>Who runs this site</h2>
-<p>{{ site.name }} is an automated newsroom. The code and every review record are public on <a href="{{ site.repo_url }}">GitHub</a>.</p>
+<p>{{ site.name }} is an automated newsroom.{% if site.repo_url %} The code and every review record are public on <a href="{{ site.repo_url }}">GitHub</a>.{% else %} A summary of the review behind every story is published with it.{% endif %}</p>
 <h2>What the site collects</h2>
 <p>{{ site.name }} collects nothing from readers. The site has no accounts. It sets no cookies. It runs no analytics and no tracking scripts.</p>
 <p>GitHub hosts the site on GitHub Pages. GitHub logs visitor IP addresses for security. <a href="https://docs.github.com/en/site-policy/privacy-policies">GitHub's privacy policies</a> cover those logs.</p>
@@ -15,7 +16,7 @@
 <section id="data-deletion">
 <h2>Deleting your data</h2>
 <p>{{ site.name }} holds no personal data about readers or Facebook users, so there is nothing to delete.</p>
-<p>To ask a question or make a request, open an issue on <a href="{{ site.repo_url }}/issues">GitHub</a>.</p>
+<p>To ask a question or make a request: {{ contact(site, cap=false) }}.</p>
 </section>
 <p class="muted">Effective 27 September 2026.</p>
 </article>

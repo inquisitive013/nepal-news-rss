@@ -166,7 +166,9 @@ Title formulas. Accountability and alarm stories default to the contrast or betr
 
 ## 12. Caption format. Locked.
 
-English only. Continuous prose paragraphs separated by blank lines. No markdown, no bullets, no numbered lists. Ends with exactly "Sources available in graphic." then "Follow Nepal Wire." then hashtags on one line. No sourcing disclaimer inside the body. No link unless `social.facebook.include_link` is switched on. Word counts per tier in Section 4, completeness override applies.
+Continuous prose paragraphs separated by blank lines. No markdown, no bullets, no numbered lists. Ends with exactly "Sources available in graphic." then "Follow Nepal Wire." then hashtags on one line. No sourcing disclaimer inside the body. No link unless `social.facebook.include_link` is switched on. Word counts per tier in Section 4, completeness override applies.
+
+One post per story, two languages. When the story has a checked Nepali version, the caption opens with the Nepali headline, hook, body and friction line, then a rule, then the English. The close carries both: "स्रोतहरू ग्राफिकमा छन्।", "नेपाल वायर फलो गर्नुहोस्।", "Sources available in graphic.", "Follow Nepal Wire.", hashtags. The Nepali is written for a reader of OnlineKhabar or Setopati, never word for word, and a second model checks it against the English before it goes out (`social.facebook.languages`).
 
 ## 13. Virality scoring and calibration
 
@@ -253,6 +255,7 @@ The card hooks. The caption carries the depth. Zero body text on the card. Two h
 | Find a licensed real photograph and confirm its identity | picture desk | 14.2 to 14.5 |
 | Attack every claim, the card headline and the caption; the defence answers | red team, defence | 8.4, 9 |
 | Judge 1, one revision, judge 2 as the final gate | validation judges | 6, 9, 13 |
+| Render the approved story in everyday Nepali; check it against the English | translator, translation judge | 6, 9, 12 |
 | Render the card, build the site, deploy | publish | 14 |
 | Post the best ranked story now, the rest on the day's slots | social | 4 |
 | Reply in the comments for the first hour; run the correction protocol; keep the calibration log | the publisher | 17, 18 |

@@ -103,6 +103,7 @@ def article_from_output(data: dict[str, Any], story: Story, run_date: str, langu
         art.image = previous.image
         art.review = previous.review
         art.investigation = previous.investigation
+        art.nepali = previous.nepali
         if not art.image_brief:
             art.image_brief = previous.image_brief
     return art

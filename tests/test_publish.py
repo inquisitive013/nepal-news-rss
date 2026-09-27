@@ -2,6 +2,7 @@ import copy
 import dataclasses
 import re
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone
 
 from newsroom import publish
 from newsroom.config import load_settings
@@ -148,6 +149,7 @@ def test_the_money_and_trust_layer_builds(tmp_path):
         ],
         "unanswered": [{"question": "Who approved the delay?", "who_could_answer": "The CDO"}],
     }
+    art.published_at = datetime.now(timezone.utc).isoformat()  # the news sitemap keeps 48 hours
     publish.save_article(settings, art)
     publish.save_article(settings, _article(settings, slug="petrol", headline="Petrol drops Rs 5 a litre"))
     out = publish.build_site(settings, tmp_path / "site")
@@ -175,3 +177,110 @@ def test_the_money_and_trust_layer_builds(tmp_path):
     bare_index = (bare / "index.html").read_text()
     assert "adsbygoogle" not in bare_index and "google-site-verification" not in bare_index and not (bare / "ads.txt").exists()
     assert "Sign up opens soon" in bare_index
+
+
+NEPALI = {
+    "headline": "काठमाडौंमा भारी वर्षाले १४० घरधुरी सारियो",
+    "dek": "प्रहरीले परिवारलाई रातारात विद्यालयमा सारे।",
+    "take": "अधिकारीहरूले १४० घरधुरी सारिएको पुष्टि गरे। ढिलो चेतावनीमा कसले हस्ताक्षर गर्‍यो, कसैले भनेको छैन।",
+    "body_markdown": "प्रहरीले **१४० घरधुरी** सारे।\n\n## किन महत्त्वपूर्ण छ\n\nनदी छिटो बढ्यो।",
+    "image_headline": "१४० घरधुरी रातारात सारियो",
+    "social_hook": "१४० घरधुरी एकै रातमा सारिए।",
+    "caption": {"hook": "ह", "body": "श", "trigger": "ट"},
+    "checked": True,
+    "judge": "Faithful and natural.",
+    "problems_fixed": 0,
+}
+
+
+def test_the_nepali_edition_builds_beside_the_english(tmp_path):
+    settings = _settings(tmp_path)
+    site_url = settings.site_url
+    art = _article(settings)
+    art.nepali = dict(NEPALI)
+    art.published_at = datetime.now(timezone.utc).isoformat()
+    publish.save_article(settings, art)
+    publish.save_article(settings, _article(settings, slug="petrol", headline="Petrol drops Rs 5 a litre"))
+    out = publish.build_site(settings, tmp_path / "site")
+
+    ne_index = (out / "ne" / "index.html").read_text()
+    assert '<html lang="ne">' in ne_index and "काठमाडौंमा भारी वर्षाले" in ne_index and "ne/articles/rain-story/" in ne_index
+    assert "नेपाल वायरको टिप्पणी" in ne_index and "ढिलो चेतावनीमा" in ne_index
+    # the untranslated story still shows on the Nepali front, in English, pointing at its English page
+    assert "Petrol drops Rs 5 a litre" in ne_index and "articles/petrol/" in ne_index and "ne/articles/petrol/" not in ne_index
+    assert "· English" in ne_index  # the marker on the untranslated story
+    assert "logo.png" in ne_index and "favicon.png" in ne_index and (out / "logo.png").exists() and (out / "favicon.png").exists() and (out / "apple-touch-icon.png").exists()
+    assert not (out / "logo-mark.png").exists()
+
+    ne_page = (out / "ne" / "articles" / "rain-story" / "index.html").read_text()
+    assert "<h1>काठमाडौंमा भारी वर्षाले १४० घरधुरी सारियो</h1>" in ne_page and "<strong>१४० घरधुरी</strong>" in ne_page
+    assert "नेपाल वायरको टिप्पणी" in ne_page and "फाइल तस्बिर" in ne_page and "Photographer" in ne_page
+    assert f'hreflang="en" href="{site_url}/articles/rain-story/"' in ne_page
+    assert f'hreflang="ne" href="{site_url}/ne/articles/rain-story/"' in ne_page
+    assert f'hreflang="x-default" href="{site_url}/articles/rain-story/"' in ne_page
+    assert f'<link rel="canonical" href="{site_url}/ne/articles/rain-story/">' in ne_page
+    assert '"inLanguage": "ne"' in ne_page and "स्रोतहरू" in ne_page and "The Kathmandu Post" in ne_page
+    assert "Key facts" not in ne_page and "Editorial review record" not in ne_page and "अंग्रेजी पृष्ठमा" in ne_page
+    assert 'class="lang" href="../../../articles/rain-story/"' in ne_page  # the switch leads to the English twin
+
+    en_page = (out / "articles" / "rain-story" / "index.html").read_text()
+    assert f'hreflang="ne" href="{site_url}/ne/articles/rain-story/"' in en_page and 'hreflang="x-default"' in en_page
+    assert 'href="../../ne/articles/rain-story/" lang="ne"' in en_page and "यो समाचार नेपालीमा पढ्नुहोस्" in en_page
+    assert 'class="lang" href="../../ne/articles/rain-story/"' in en_page
+    petrol = (out / "articles" / "petrol" / "index.html").read_text()
+    assert "नेपालीमा पढ्नुहोस्" not in petrol and 'class="lang" href="../../ne/"' in petrol
+    assert f'hreflang="ne" href="{site_url}/ne/articles/petrol/"' not in petrol
+    assert not (out / "ne" / "articles" / "petrol").exists()
+    index = (out / "index.html").read_text()
+    assert "नेपालीमा पढ्नुहोस्" in index and 'class="lang" href="./ne/"' in index and f'hreflang="ne" href="{site_url}/ne/"' in index
+
+    feed = (out / "ne" / "rss.xml").read_text()
+    assert "<language>ne</language>" in feed and "<title>नेपाल वायर</title>" in feed and "काठमाडौंमा" in feed
+    assert "Petrol drops" not in feed and f"{site_url}/ne/articles/rain-story/" in feed and "स्रोतहरू:" in feed
+    ET.fromstring(feed.encode("utf-8"))
+    en_feed = (out / "rss.xml").read_text()
+    assert "<language>en</language>" in en_feed and "काठमाडौंमा" not in en_feed and f"{site_url}/articles/petrol/" in en_feed
+    sitemap = (out / "sitemap.xml").read_text()
+    assert f"{site_url}/ne/</loc>" in sitemap and f"{site_url}/ne/articles/rain-story/" in sitemap and "/ne/articles/petrol/" not in sitemap
+    news = (out / "news-sitemap.xml").read_text()
+    assert news.count("<news:language>ne</news:language>") == 1 and "/ne/articles/rain-story/" in news
+    assert "काठमाडौंमा भारी वर्षाले" in news
+
+
+def test_the_nepali_front_page_without_any_translation(tmp_path):
+    settings = _settings(tmp_path)
+    publish.save_article(settings, _article(settings))
+    out = publish.build_site(settings, tmp_path / "site")
+    ne_index = (out / "ne" / "index.html").read_text()
+    assert "Heavy rain moves 140 households" in ne_index and "अंग्रेजीमा पढ्नुहोस्" in ne_index
+    feed = (out / "ne" / "rss.xml").read_text()
+    assert "<item>" not in feed
+    ET.fromstring(feed.encode("utf-8"))
+    empty = publish.build_site(_settings(tmp_path / "none"), tmp_path / "site2")
+    assert "पहिलो संस्करण आउँदैछ" in (empty / "ne" / "index.html").read_text()
+
+
+def test_repository_links_appear_only_when_configured(tmp_path):
+    settings = _settings(tmp_path)
+    assert not settings.get("site.repo_url")
+    publish.save_article(settings, _article(settings))
+    out = publish.build_site(settings, tmp_path / "site")
+    pages = {p.relative_to(out).as_posix(): p.read_text() for p in out.rglob("*.html")}
+    for name, html in pages.items():
+        assert "github.com/inquisitive013" not in html and "/issues" not in html and "/tree/main/data" not in html, name
+    assert "Spotted an error? Message the Nepal Wire Facebook Page." in pages["index.html"]
+    assert "kept by the newsroom" in pages["articles/rain-story/index.html"]
+    assert "Report an error through the Nepal Wire Facebook Page." in pages["standards.html"]
+
+    raw = copy.deepcopy(settings.raw)
+    raw["site"].update({"repo_url": "https://github.com/example/newsroom/", "facebook_url": "https://www.facebook.com/nepalwire"})
+    out2 = publish.build_site(dataclasses.replace(settings, raw=raw), tmp_path / "site2")
+    index = (out2 / "index.html").read_text()
+    assert 'href="https://github.com/example/newsroom"' in index and 'href="https://github.com/example/newsroom/issues"' in index
+    assert 'href="https://www.facebook.com/nepalwire">Facebook</a>' in index
+    assert "/tree/main/data" in (out2 / "articles" / "rain-story" / "index.html").read_text()
+
+    raw["site"].update({"repo_url": "", "contact_email": "desk@example.org"})
+    out3 = publish.build_site(dataclasses.replace(settings, raw=raw), tmp_path / "site3")
+    assert "Spotted an error? Email <a href=\"mailto:desk@example.org\">desk@example.org</a>." in (out3 / "index.html").read_text()
+    assert "Report an error by email to" in (out3 / "standards.html").read_text()

@@ -25,7 +25,7 @@ from typing import Any, Callable, Mapping
 
 import httpx
 
-from . import publish
+from . import publish, translation
 from .config import Settings
 from .models import Article, utcnow_iso
 
@@ -207,15 +207,55 @@ def card_url(settings: Settings, article: Article) -> str:
     return f"{settings.site_url.rstrip('/')}/cards/{article.id}.jpg"
 
 
+def nepali_article_url(settings: Settings, article: Article) -> str:
+    return f"{settings.site_url.rstrip('/')}/ne/articles/{article.slug}/"
+
+
+def caption_languages(settings: Settings) -> list[str]:
+    """The languages of the Facebook caption, in order. Unknown codes are dropped; nothing left means English."""
+    raw = settings.get("social.facebook.languages") or ["en"]
+    codes = [str(code).strip().lower() for code in raw if str(code).strip()]
+    return [code for code in codes if code in ("en", "ne")] or ["en"]
+
+
 def engine_caption(article: Article, settings: Settings, tags: str) -> str:
-    """The Facebook caption to the content engine: headline, hook, body, trigger, the locked close."""
-    cap = article.caption or {}
+    """The Facebook caption to the content engine: headline, hook, body, trigger, the locked close.
+
+    One post per story. With a checked Nepali version and ``social.facebook.languages`` listing
+    ``ne`` first, the Nepali caption opens the post and the English follows under a rule, so a
+    reader in either language sees their own before "See more". The close carries both.
+    """
     site = (settings.get("site.name") or "Nepal Wire").strip()
-    close = f"Sources available in graphic.\nFollow {site}."
-    if settings.get("social.facebook.include_link"):
-        close = f"Full story: {article_url(settings, article)}\n{close}"
-    parts = [article.headline.strip(), (cap.get("hook") or "").strip(), (cap.get("body") or "").strip(), (cap.get("trigger") or "").strip(), close + (f"\n{tags}" if tags else "")]
-    return "\n\n".join(p for p in parts if p)
+    site_ne = str(settings.get("site.name_ne") or "").strip() or site
+    link = bool(settings.get("social.facebook.include_link"))
+    nepali = article.nepali or {}
+    ne_cap = nepali.get("caption") or {}
+
+    def english() -> tuple[str, list[str]]:
+        cap = article.caption or {}
+        parts = [article.headline.strip(), (cap.get("hook") or "").strip(), (cap.get("body") or "").strip(), (cap.get("trigger") or "").strip()]
+        close = ([f"Full story: {article_url(settings, article)}"] if link else []) + ["Sources available in graphic.", f"Follow {site}."]
+        return "\n\n".join(p for p in parts if p), close
+
+    def nepali_block() -> tuple[str, list[str]] | None:
+        if not (translation.usable(nepali) and (ne_cap.get("body") or "").strip()):
+            return None
+        parts = [str(nepali.get("headline", "")).strip(), (ne_cap.get("hook") or "").strip(), (ne_cap.get("body") or "").strip(), (ne_cap.get("trigger") or "").strip()]
+        close = ([f"पूरा समाचार: {nepali_article_url(settings, article)}"] if link else []) + ["स्रोतहरू ग्राफिकमा छन्।", f"{site_ne} फलो गर्नुहोस्।"]
+        return "\n\n".join(p for p in parts if p), close
+
+    blocks: list[str] = []
+    closes: list[str] = []
+    for lang in caption_languages(settings):
+        got = nepali_block() if lang == "ne" else english()
+        if got:
+            blocks.append(got[0])
+            closes.extend(got[1])
+    if not blocks:  # only Nepali was asked for and this story has none yet
+        text, closes = english()
+        blocks = [text]
+    close = "\n".join(closes) + (f"\n{tags}" if tags else "")
+    return f"\n\n{RULE}\n\n".join(blocks) + "\n\n" + close
 
 
 def compose(network: str, article: Article, settings: Settings) -> str:
