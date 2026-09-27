@@ -52,6 +52,9 @@ def test_mock_run_publishes_and_records(tmp_path):
     assert "## What the coverage missed" in art.body_markdown
     assert "## What we still do not know" in art.body_markdown
     assert art.review.ranking  # judge reasons carried onto the article
+    # the card headline, the chip and the engine caption ride with the article through the reviser
+    assert art.image_headline and art.theme == "DISASTER" and art.country == "NEPAL"
+    assert art.caption["hook"] and art.caption["body"] and "trigger" in art.caption
     run_file = tmp_path / "data" / "runs" / "2026-09-26.json"
     assert run_file.exists()
     data = json.loads(run_file.read_text())

@@ -16,6 +16,10 @@ Return:
 - `tags`: three to six lowercase tags.
 - `social_hook`: one sentence, under 200 characters, that a reader would share. Same rules, no clickbait.
 - `take`: one paragraph, 50 to 90 words, three to six short sentences. The desk's own critical read of the story in the voice of a senior correspondent: what the facts add up to, who has not answered, what has to happen next. Opinion is allowed, invention is not. Every fact in it must already sit in `body_markdown` with a source. Name an expert or official only when a listed source quotes them, and say who they are; never invent or imply one. The first sentence must stand alone as a hook, because on Facebook it is all most readers see before they tap See more. No clickbait, no question the body cannot answer.
+- `image_headline`: the card headline, eight to eleven words in two lines, and no line longer than 24 characters including spaces, because the renderer sets it in capitals at 52 to 72 point across 1000 pixels. Short words earn their place. Rules in the style guide under "The card headline": it names the subject, carries the buried angle, passes the legal standard alone as a screenshot, no colon.
+- `theme`: one of GEOPOLITICS, DEFENSE, SECURITY, POLITICS, GOVERNANCE, ECONOMY, HEALTH, SCIENCE, TECH, STRATEGY, DISASTER, VIRAL.
+- `country`: the country the story is about, in capitals. NEPAL unless it is not.
+- `caption`: the Facebook caption in three parts, `hook`, `body` and `trigger`, to the style guide under "The Facebook caption". Every fact in it already sits in `body_markdown` with a source.
 - `image_brief`:
   - `search_queries`: two to four English queries for finding a real photo of the place, institution or object in the story. Prefer places and things over faces. Never name a private person.
   - `generation_prompt`: a prompt for an editorial illustration if no photo is found. Describe scene, mood and colours. No text in the image. No identifiable real people. No logos.

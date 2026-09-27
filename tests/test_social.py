@@ -540,3 +540,50 @@ def test_the_take_leads_the_long_form_posts(tmp_path):
     art.take = ""
     assert social.compose("facebook", art, s).startswith(art.headline)
     assert social.compose("instagram", art, s).startswith(art.headline)
+
+
+def test_facebook_follows_the_engine_caption_when_the_writer_supplied_one(tmp_path):
+    s = _settings(tmp_path)
+    art = _article(s)
+    art.take = "Nobody has said who delayed the siren."
+    art.caption = {
+        "hook": "140 households left their homes in one night. The warning reached them after the water did.",
+        "body": "Police say the river rose faster than the siren system could follow.\n\nOfficials have promised a damage assessment on Monday.",
+        "trigger": "Fourteen years of flood warnings and the system still lost the race to the river. Whose failure is that?",
+    }
+    fb = social.compose("facebook", art, s)
+    assert fb.startswith(art.headline + "\n\n140 households left their homes")
+    assert "Whose failure is that?\n\nSources available in graphic.\nFollow Nepal Wire.\n#" in fb
+    assert SITE not in fb and "THE STORY" not in fb and art.take not in fb
+    raw = dict(s.raw)
+    raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, include_link=True))
+    with_link = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+    assert f"Full story: {SITE}/articles/{art.slug}/\nSources available in graphic." in with_link
+    # the card, not the raw photo, is what Facebook receives
+    assert social.card_url(s, art) == f"{SITE}/cards/{art.id}.jpg"
+    art.image = None
+    assert social.card_url(s, art) == ""
+
+
+def test_facebook_photo_post_carries_the_card(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.caption = {"hook": "h", "body": "b", "trigger": ""}
+    publish.save_article(settings, art)
+    seen = {}
+
+    def handler(request):
+        url = str(request.url)
+        if url.startswith(SITE):
+            return httpx.Response(200, text="ok")
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "111"})
+        if url.endswith("/111/photos"):
+            seen.update(dict(httpx.QueryParams(request.content.decode())))
+            return httpx.Response(200, json={"id": "9", "post_id": "111_1"})
+        return httpx.Response(404, json={"error": "unexpected " + url})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
+    social.post_article(settings, art, env, httpx.Client(transport=httpx.MockTransport(handler)), networks=["facebook"], sleep=lambda s: None)
+    assert seen["url"] == f"{SITE}/cards/{art.id}.jpg"
+    assert seen["caption"].startswith(art.headline)

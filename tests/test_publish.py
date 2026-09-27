@@ -77,6 +77,7 @@ def test_build_site(tmp_path):
     assert "wa.me" in page
     assert "Nepal Wire's take." in page and "Nobody has said who signed off on the late warning." in page
     assert (out / "images" / "2026-09-26-rain-story.jpg").exists()
+    assert (out / "cards" / "2026-09-26-rain-story.jpg").exists()  # the Facebook card, rendered at build time
     assert (out / "about.html").exists() and (out / "archive.html").exists() and (out / ".nojekyll").exists()
     rss = ET.parse(out / "rss.xml").getroot()
     items = rss.findall("./channel/item")

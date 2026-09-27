@@ -39,7 +39,10 @@ jobs:
           cache: pip
 
       - name: Install
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          # The card renderer draws with DejaVu. The runner image normally carries it.
+          [ -d /usr/share/fonts/truetype/dejavu ] || sudo apt-get install -y -q fonts-dejavu-core
 
       - name: Catch up with the branch
         if: ${{ inputs.mock != true }}

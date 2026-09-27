@@ -190,8 +190,13 @@ class Article:
     sources: list[dict[str, str]] = field(default_factory=list)  # {name, url, used_for}
     tags: list[str] = field(default_factory=list)
     social_hook: str = ""
-    # One paragraph, the desk's own critical read of the story. Leads every Facebook post.
+    # One paragraph, the desk's own critical read of the story. Opens the article page and Instagram.
     take: str = ""
+    # The card and the Facebook caption, to the content engine in docs/content-engine.md.
+    image_headline: str = ""  # two lines, survives alone as a screenshot, carries its own status signal
+    theme: str = ""  # one of graphic.THEMES, the chip and header label
+    country: str = ""  # the country the story is about, NEPAL unless it is not
+    caption: dict[str, str] = field(default_factory=dict)  # {"hook", "body", "trigger"}
     image_brief: dict[str, Any] = field(default_factory=dict)
     image: ImageAsset | None = None
     # What the investigator found that the coverage missed: angles with evidence, open questions.

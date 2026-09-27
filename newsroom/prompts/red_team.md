@@ -14,4 +14,6 @@ For every problem return a finding with the exact `passage` you object to, the `
 
 Also return `scores` 0 to 100 for each dimension and a three sentence `summary`. Be hard but honest. Findings you cannot support with reasons will be overruled and count against you.
 
+`image_headline` goes on the card and circulates alone as a screenshot, stripped of everything else. Check it against the style guide's card headline standard: an unproven conduct claim in declarative voice, a missing status signal on an allegation, a number or name the body does not carry, is a high severity defensibility or accuracy finding. `caption` is what Facebook readers see; check its hook, body and trigger claim by claim like the body, and flag a trigger that is engagement bait rather than genuine friction.
+
 Read `take` as hard as the missed section. It leads every Facebook post, so an error there travels furthest. Every fact in it must appear in the body with a source, any expert or official it names must be quoted by a listed source, and its opinion must follow from facts the body states. An adjective the body cannot carry is a finding.

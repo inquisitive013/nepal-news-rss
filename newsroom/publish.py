@@ -16,6 +16,7 @@ from zoneinfo import ZoneInfo
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from . import graphic
 from .config import Settings
 from .models import (
     Article,
@@ -32,6 +33,7 @@ log = logging.getLogger(__name__)
 TEMPLATES = Path(__file__).resolve().parent / "templates"
 STATIC = Path(__file__).resolve().parent / "static"
 INDEX_LIMIT = 40
+CARD_LIMIT = 60  # cards rendered per build: the recent articles social posting can still reach
 
 _SCRIPT_RE = re.compile(r"<\s*(script|style|iframe|object|embed)[^>]*>.*?<\s*/\s*\1\s*>", re.IGNORECASE | re.DOTALL)
 _ON_ATTR_RE = re.compile(r"\s+on\w+\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+)", re.IGNORECASE)
@@ -207,6 +209,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         shutil.rmtree(out_dir)
     (out_dir / "articles").mkdir(parents=True)
     (out_dir / "images").mkdir(parents=True)
+    (out_dir / "cards").mkdir(parents=True)
 
     env = _env(settings)
     articles = load_articles(settings)
@@ -232,6 +235,14 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
                 shutil.copy2(src, out_dir / "images" / src.name)
             else:
                 log.warning("image missing for %s: %s", article.id, article.image.path)
+
+    # The Facebook card for every recent article with a photo. Rendered here, never stored in git.
+    for article in articles[:CARD_LIMIT]:
+        if article.image and (settings.root / article.image.path).exists():
+            try:
+                graphic.render_card(settings, article, out_dir / "cards" / graphic.card_name(article))
+            except Exception as exc:  # noqa: BLE001 - a card is never worth a failed build
+                log.warning("card failed for %s: %s", article.id, exc)
 
     cards = [
         {
