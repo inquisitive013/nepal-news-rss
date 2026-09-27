@@ -443,3 +443,22 @@ def test_facebook_check_names_a_broken_token_without_echoing_it():
     assert "EAAB" not in str(err.value)
     with pytest.raises(social.SocialError, match="FACEBOOK_PAGE_ID should be digits only"):
         social.check_facebook(httpx.Client(transport=httpx.MockTransport(handler)), {"FACEBOOK_PAGE_ID": "NepalWire", "FACEBOOK_PAGE_TOKEN": env["FACEBOOK_PAGE_TOKEN"]})
+
+
+def test_the_take_leads_the_long_form_posts(tmp_path):
+    s = _settings(tmp_path)
+    art = _article(s)
+    art.take = "Police moved 140 households and nobody has said who delayed the siren. That answer decides whether this was weather or negligence."
+    fb = social.compose("facebook", art, s)
+    assert fb.startswith("Nepal Wire's take: Police moved 140 households")
+    assert fb.index("Nepal Wire's take") < fb.index(art.headline) < fb.index("Full story with links:")
+    ig = social.compose("instagram", art, s)
+    assert ig.startswith("Nepal Wire's take:") and art.social_hook not in ig
+    tg = social.compose("telegram", art, s)
+    assert "Nepal Wire's take:" in tg and tg.index("<b>") < tg.index("Nepal Wire's take") < tg.index("<a href")
+    # The short networks keep the one line hook.
+    assert "take:" not in social.compose("x", art, s)
+    # Without a take the headline leads, as before.
+    art.take = ""
+    assert social.compose("facebook", art, s).startswith(art.headline)
+    assert social.compose("instagram", art, s).startswith(art.headline)

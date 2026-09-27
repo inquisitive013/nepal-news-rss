@@ -5,8 +5,9 @@ from __future__ import annotations
 import logging
 import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
+from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
 from . import discovery, images, investigation, publish, ranking, validation, writing
@@ -36,11 +37,40 @@ def newsroom_now(settings: Settings, now: datetime | None = None) -> tuple[datet
     return now, local.strftime("%Y-%m-%d"), local.strftime("%d %B %Y")
 
 
-def recently_published(settings: Settings, days: int = 3) -> list[dict[str, str]]:
-    out = []
-    for art in publish.load_articles(settings)[:60]:
-        out.append({"headline": art.headline, "date": art.run_date, "story_id": art.story_id})
-    return out[: days * 10]
+def _recent_articles(settings: Settings, days: int, now: datetime | None) -> list[Article]:
+    cutoff = ((now or datetime.now(timezone.utc)) - timedelta(days=days)).strftime("%Y-%m-%d")
+    return [a for a in publish.load_articles(settings) if (a.run_date or "") >= cutoff]
+
+
+def recently_published(settings: Settings, days: int = 3, now: datetime | None = None) -> list[dict[str, str]]:
+    """What the desk already ran in the last days, for the clusterer and the judges."""
+    return [
+        {"id": a.id, "date": a.run_date, "headline": a.headline, "dek": a.dek, "story_id": a.story_id}
+        for a in _recent_articles(settings, days, now)[:60]
+    ]
+
+
+def _url_key(url: str) -> str:
+    parts = urlsplit((url or "").strip())
+    return f"{parts.netloc.lower().removeprefix('www.')}{parts.path.rstrip('/')}"
+
+
+def published_source_urls(settings: Settings, days: int = 3, now: datetime | None = None) -> set[str]:
+    """Every source a recent article already cited. An item the desk has cited is not news today."""
+    keys: set[str] = set()
+    for art in _recent_articles(settings, days, now):
+        for src in art.sources:
+            if src.get("url"):
+                keys.add(_url_key(src["url"]))
+        for fact in art.key_facts:
+            if fact.get("source_url"):
+                keys.add(_url_key(fact["source_url"]))
+    keys.discard("")
+    return keys
+
+
+def drop_already_cited(candidates: list[Candidate], cited: set[str]) -> list[Candidate]:
+    return [c for c in candidates if _url_key(c.url) not in cited] if cited else list(candidates)
 
 
 def _process_story(
@@ -111,7 +141,13 @@ def run(settings: Settings, llm: BaseLLM | None = None, now: datetime | None = N
             fixtures_dir=fixtures,
         )
         run_log.feed_health = health
+        cited = published_source_urls(settings, now=now_utc)
+        fresh = drop_already_cited(candidates, cited)
+        if len(fresh) < len(candidates):
+            log.info("dropped %d items already cited by an article published in the last three days", len(candidates) - len(fresh))
+            candidates = fresh
         run_log.candidates = candidates
+        recent = recently_published(settings, now=now_utc)
         ok_feeds = sum(1 for h in health if h.ok)
         log.info("discovery: %d candidates from %d/%d working feeds", len(candidates), ok_feeds, len(health))
         if not candidates:
@@ -120,7 +156,7 @@ def run(settings: Settings, llm: BaseLLM | None = None, now: datetime | None = N
             return run_log
 
         # 2. Stories
-        stories, notes = ranking.cluster_stories(llm, settings, candidates, run_date)
+        stories, notes = ranking.cluster_stories(llm, settings, candidates, run_date, recent=recent)
         run_log.stories = stories
         log.info("clustered into %d stories. %s", len(stories), notes)
         if not stories:
@@ -129,7 +165,7 @@ def run(settings: Settings, llm: BaseLLM | None = None, now: datetime | None = N
             return run_log
 
         # 3. Debate and rank
-        debates, verdicts, selected = ranking.rank_stories(llm, settings, stories, candidates, run_date)
+        debates, verdicts, selected = ranking.rank_stories(llm, settings, stories, candidates, run_date, recent=recent)
         run_log.debates = debates
         run_log.ranking = verdicts
         run_log.selected_story_ids = selected

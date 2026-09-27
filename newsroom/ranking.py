@@ -83,11 +83,14 @@ def _cand_view(c: Candidate) -> dict[str, Any]:
     }
 
 
-def cluster_stories(llm: BaseLLM, settings: Settings, candidates: list[Candidate], run_date: str) -> tuple[list[Story], str]:
+def cluster_stories(
+    llm: BaseLLM, settings: Settings, candidates: list[Candidate], run_date: str, recent: list[dict[str, Any]] | None = None
+) -> tuple[list[Story], str]:
     max_stories = int(settings.get("pipeline.max_debate_stories", 8))
     payload = {
         "run_date": run_date,
         "max_stories": max_stories,
+        "recently_published": recent or [],
         "exclude_topics": settings.get("editorial.exclude_topics", []),
         "candidates": [_cand_view(c) for c in candidates],
     }
@@ -194,6 +197,7 @@ def judge_ranking(
     run_date: str,
     position: int,
     previous: RankingVerdict | None = None,
+    recent: list[dict[str, Any]] | None = None,
 ) -> RankingVerdict:
     debated = [d for d in debates if d.advocate and d.skeptic and not d.error]
     valid_ids = {d.story_id for d in debated}
@@ -202,6 +206,7 @@ def judge_ranking(
         "judge_position": position,
         "articles_per_day": int(settings.get("pipeline.articles_per_day", 3)),
         "guidance": settings.get("editorial.guidance", {}),
+        "recently_published": recent or [],
         "stories": [
             {"id": s.id, "headline": s.headline, "summary": s.summary, "topic": s.topic, "languages": s.languages}
             for s in stories
@@ -222,14 +227,16 @@ def judge_ranking(
     return _verdict(f"ranking_judge_{position}", data, valid_ids)
 
 
-def rank_stories(llm: BaseLLM, settings: Settings, stories: list[Story], candidates: list[Candidate], run_date: str):
+def rank_stories(
+    llm: BaseLLM, settings: Settings, stories: list[Story], candidates: list[Candidate], run_date: str, recent: list[dict[str, Any]] | None = None
+):
     """Run debates and both judges. Returns (debates, [verdict1, verdict2], selected_story_ids)."""
     debates = debate_all(llm, settings, stories, candidates, run_date)
     usable = [d for d in debates if d.advocate and d.skeptic and not d.error]
     if not usable:
         return debates, [], []
-    v1 = judge_ranking(llm, settings, stories, debates, run_date, 1)
-    v2 = judge_ranking(llm, settings, stories, debates, run_date, 2, previous=v1)
+    v1 = judge_ranking(llm, settings, stories, debates, run_date, 1, recent=recent)
+    v2 = judge_ranking(llm, settings, stories, debates, run_date, 2, previous=v1, recent=recent)
     n = int(settings.get("pipeline.articles_per_day", 3))
     selected = [r["story_id"] for r in v2.ranked[:n]]
     return debates, [v1, v2], selected

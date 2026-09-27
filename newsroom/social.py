@@ -200,6 +200,9 @@ def compose(network: str, article: Article, settings: Settings) -> str:
     """The text for one network. Links count, limits hold, hashtags come last."""
     url = article_url(settings, article)
     hook = (article.social_hook or article.dek or article.headline).strip()
+    # The desk's take leads the long form posts: it is what readers see before "See more".
+    take = (article.take or "").strip()
+    take_line = f"{(settings.get('site.name') or 'Nepal Wire').strip()}'s take: {take}" if take else ""
     n_tags = int((settings.get("social.hashtags") or {}).get(network, DEFAULT_HASHTAGS.get(network, 0)))
     tags = " ".join(hashtags(article.tags, n_tags))
     limit = LIMITS[network]
@@ -216,6 +219,7 @@ def compose(network: str, article: Article, settings: Settings) -> str:
                 if name and name not in names:
                     names.append(name)
             parts = [
+                take_line,
                 article.headline.strip(),
                 article.dek.strip(),
                 plain_text(article.body_markdown),
@@ -224,11 +228,11 @@ def compose(network: str, article: Article, settings: Settings) -> str:
                 tags,
             ]
             return fit("\n\n".join(p for p in parts if p), limit)
-        parts = [article.headline.strip(), hook if hook != article.headline.strip() else "", url, tags]
+        parts = [take_line, article.headline.strip(), hook if hook != article.headline.strip() and not take_line else "", url, tags]
         return fit("\n\n".join(p for p in parts if p), limit)
     if network == "instagram":
         site = settings.site_url.rstrip("/")
-        parts = [article.headline.strip(), article.dek.strip(), hook if hook not in (article.dek.strip(), article.headline.strip()) else "", f"Full story at the link in our bio: {site}", tags]
+        parts = [take_line, article.headline.strip(), article.dek.strip(), hook if hook not in (article.dek.strip(), article.headline.strip()) and not take_line else "", f"Full story at the link in our bio: {site}", tags]
         return fit("\n\n".join(p for p in parts if p), limit)
     if network == "threads":
         budget = limit - len(url) - 2 - (len(tags) + 2 if tags else 0)
@@ -236,7 +240,11 @@ def compose(network: str, article: Article, settings: Settings) -> str:
     if network == "telegram":
         # HTML caption. Telegram escapes: &, <, >.
         esc = lambda s: s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")  # noqa: E731
-        body = f"<b>{esc(article.headline.strip())}</b>\n\n{esc(article.dek.strip())}\n\n<a href=\"{url}\">Read the full story</a>"
+        head = f"<b>{esc(article.headline.strip())}</b>\n\n{esc(article.dek.strip())}"
+        link = f"<a href=\"{url}\">Read the full story</a>"
+        if take_line and len(f"{head}\n\n{esc(take_line)}\n\n{link}") <= limit:
+            return f"{head}\n\n{esc(take_line)}\n\n{link}"
+        body = f"{head}\n\n{link}"
         return body if len(body) <= limit else f"<b>{esc(fit(article.headline.strip(), 200))}</b>\n\n<a href=\"{url}\">Read the full story</a>"
     if network == "bluesky":
         budget = limit - len(url) - 2 - (len(tags) + 2 if tags else 0)

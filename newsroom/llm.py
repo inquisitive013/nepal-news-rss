@@ -657,6 +657,7 @@ class MockLLM(BaseLLM):
             "sources": sources,
             "tags": ["nepal", story.get("topic", "general")],
             "social_hook": f"{headline}. Here is what is confirmed.",
+            "take": "One number is confirmed: 140 households moved to schools overnight. Officials promise a damage assessment on Monday. Until it lands, nobody can say what this night cost.",
             "image_brief": {
                 "search_queries": [story["headline"][:50], "Kathmandu Nepal"],
                 "generation_prompt": "Editorial illustration of a Kathmandu street scene during monsoon rain, no text, no identifiable faces",
@@ -679,6 +680,7 @@ class MockLLM(BaseLLM):
             "sources": art.get("sources", []),
             "tags": art.get("tags", []),
             "social_hook": art.get("social_hook", ""),
+            "take": art.get("take", ""),
             "image_brief": art["image_brief"],
         }
 

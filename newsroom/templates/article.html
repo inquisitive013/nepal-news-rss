@@ -40,6 +40,7 @@
   <p class="kicker">{{ article.tags[0] if article.tags else 'news' }} · {{ article.published_at | fmt_date }}</p>
   <h1>{{ article.headline }}</h1>
   <p class="dek">{{ article.dek }}</p>
+  {% if article.take %}<aside class="take"><strong>{{ site.name }}'s take.</strong> {{ article.take }}</aside>{% endif %}
   <p class="byline">By the {{ site.publisher }} · Ranked and checked by four judges · Version {{ article.version }}</p>
   {% if image %}
   <figure>

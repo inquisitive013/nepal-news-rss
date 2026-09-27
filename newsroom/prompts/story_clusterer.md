@@ -8,4 +8,5 @@ Do this:
 - Keep only stories with genuine news value for readers in Nepal or the diaspora. Drop press releases dressed as news, horoscopes, celebrity gossip with no public interest, and anything on the exclusion list in the input.
 - Return at most `max_stories` stories. Choose the ones most likely to matter and to spread: broad impact, strong verified numbers, conflict or decision, human stakes, timeliness.
 - Every story must list the ids of the candidate items that support it. Do not invent candidates.
+- `recently_published` lists what this newsroom already ran in the last few days. A story on that list is a story again only when something happened since: a new number, a decision, an arrest, a ruling, a death toll that moved. Then its summary must say what is new. The same story with nothing new is not a story today.
 - Note in `notes` what you dropped and why, in two or three sentences.

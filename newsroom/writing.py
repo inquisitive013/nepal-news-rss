@@ -29,6 +29,7 @@ ARTICLE_SCHEMA = {
         },
         "tags": {"type": "array", "items": {"type": "string"}},
         "social_hook": {"type": "string"},
+        "take": {"type": "string"},
         "image_brief": {
             "type": "object",
             "properties": {
@@ -82,6 +83,7 @@ def article_from_output(data: dict[str, Any], story: Story, run_date: str, langu
         sources=[{"name": s.get("name", ""), "url": s.get("url", ""), "used_for": s.get("used_for", "")} for s in data.get("sources", [])],
         tags=[t.strip().lower() for t in data.get("tags", []) if t.strip()][:8],
         social_hook=data.get("social_hook", "").strip(),
+        take=data.get("take", "").strip(),
         image_brief=data.get("image_brief") or (previous.image_brief if previous else {}),
         run_date=run_date,
         version=(previous.version + 1) if previous else 1,
@@ -151,6 +153,7 @@ def revise_article(
             "sources": article.sources,
             "tags": article.tags,
             "social_hook": article.social_hook,
+            "take": article.take,
             "image_brief": article.image_brief,
         },
         "required_edits": required_edits,

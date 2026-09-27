@@ -51,6 +51,10 @@ Every model call is one request to the Claude API asking for a JSON object that 
 
 Every story goes to an investigator before it goes to the writer. The investigator searches, in English and Nepali, for what the coverage misses: what the same officials or companies said or promised before, numbers that conflict between sources, who benefits from a decision, the question every report skips, and whether it has happened before. Each finding carries its evidence, a URL and the exact fact it supports, or it is dropped. The writer runs the findings under "What the coverage missed" and the open questions under "What we still do not know". The red team opens every cited source before the piece can publish, and the article page lists the findings with their links under the review record.
 
+## The take
+
+Every article ends the writer's call with a take: one paragraph, 50 to 90 words, the desk's own critical read of the story in the voice of a senior correspondent. Opinion is allowed, invention is not. Every fact in it must already sit in the body with a source, and an expert appears only when a listed source quotes them. The red team and both judges check it like a headline. On the article page it sits under the dek. On Facebook and Instagram it opens the post, because it is all a reader sees before they tap See more. `python -m newsroom social --dry-run` shows the posts as they would go out.
+
 ## Setup
 
 1. **Give the workflow model credentials** (one of the two options under *Model credentials* below).
@@ -121,7 +125,7 @@ The current defaults come from that run's per call costs: three debated stories,
 
 Every approved article is announced on the networks you connect, right after the site deploys. On Facebook the day's stories are spread out: the best ranked story goes out at once and the others are handed to Facebook as scheduled posts for the slots in `social.facebook.slots` (12:30 and 18:30 Kathmandu time by default), because three posts in one minute reach fewer people than three across the day. *Actions → Post to social networks* runs the same stage on demand, with a dry run option, a network filter, and an article id to post one story outright. A network is switched on by its secrets alone, added under *Settings → Secrets and variables → Actions → New repository secret*. No secrets, no posts, no error. *Actions → Check social accounts* verifies every connected account without posting anything. Each post is recorded in `data/social/`, one file per article, so a rerun never posts the same article twice. `python -m newsroom social --dry-run` prints what would go out.
 
-The text comes from the article's headline, dek, social hook and tags, cut to each network's limit, hashtags last. Facebook gets the picture with the whole article as the caption, the sources and the link at the end (`social.facebook.mode: photo`; set `link` for a short post with a link card instead). Instagram, Threads and Telegram receive the picture with a shorter caption. X, Bluesky and Mastodon show the link card that the article page's Open Graph tags describe. Only articles published in the last `social.max_age_hours` (36) are announced, so connecting a new account never floods it with the archive; `--article <id>` posts an older one on purpose.
+The text comes from the article's take, headline, dek, social hook and tags, cut to each network's limit, hashtags last. Facebook gets the picture with the take first, then the whole article as the caption, the sources and the link at the end (`social.facebook.mode: photo`; set `link` for a short post with a link card instead). Instagram, Threads and Telegram receive the picture with a shorter caption. X, Bluesky and Mastodon show the link card that the article page's Open Graph tags describe. Only articles published in the last `social.max_age_hours` (36) are announced, so connecting a new account never floods it with the archive; `--article <id>` posts an older one on purpose.
 
 | Network | Secrets | Where they come from |
 |---|---|---|
@@ -136,6 +140,10 @@ The text comes from the article's headline, dek, social hook and tags, cut to ea
 Meta's Graph API version defaults to `v23.0`; set the repository variable `META_GRAPH_VERSION` to move it.
 
 Not covered, and why: LinkedIn company pages need a partner programme approval and personal posting needs a browser login every 60 days; WhatsApp channels have no public posting API; TikTok and YouTube want video. For anything else, the feed at `/rss.xml` works with Zapier, IFTTT, Buffer, dlvr.it and similar tools.
+
+## When two editions collide
+
+The edition job fast forwards its checkout to the branch tip before it starts, so a run that queued behind another sees what that one published. Items already cited by an article from the last three days are dropped before clustering, and the clusterer and both ranking judges get the recent headlines under `recently_published`, so a story runs again only for a real development. If the commit at the end still collides with another push, the run fails and keeps `data/` and `rss.xml` as the workflow artifact `edition-data-<run id>` for 14 days, so nothing the models wrote is lost.
 
 ## Rebuilding the site without a new edition
 

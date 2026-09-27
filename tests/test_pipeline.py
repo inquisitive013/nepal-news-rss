@@ -214,3 +214,38 @@ def test_failed_investigation_never_loses_the_article(tmp_path):
     assert art.investigation["angles"] == []
     assert "investigation failed" in art.investigation["summary"]
     assert "What the coverage missed" not in art.body_markdown
+
+
+def test_items_already_cited_are_dropped_and_the_desk_sees_its_recent_stories(tmp_path):
+    from newsroom.llm import UsageMeter, make_llm
+
+    settings = _settings(tmp_path)
+    payloads: dict[str, list[dict]] = {}
+
+    def spy(llm):
+        orig = llm.structured
+
+        def structured(role, task, payload, schema, **kw):
+            payloads.setdefault(role, []).append(payload)
+            return orig(role, task, payload, schema, **kw)
+
+        llm.structured = structured
+        return llm
+
+    first = pipeline.run(settings, llm=spy(make_llm(settings, UsageMeter(90))), now=NOW)
+    assert first.published
+    assert payloads["story_clusterer"][0]["recently_published"] == []
+    assert payloads["ranking_judge"][0]["recently_published"] == []
+    cited = pipeline.published_source_urls(settings, now=NOW)
+    assert cited and any(pipeline._url_key(c.url) in cited for c in first.candidates)
+
+    payloads.clear()
+    second = pipeline.run(settings, llm=spy(make_llm(settings, UsageMeter(90))), now=NOW)
+    assert len(second.candidates) < len(first.candidates)
+    assert not any(pipeline._url_key(c.url) in cited for c in second.candidates)
+    recent = payloads["story_clusterer"][0]["recently_published"]
+    assert {r["id"] for r in recent} >= set(first.published)
+    assert payloads["ranking_judge"][0]["recently_published"] == recent
+    # the take rides on every article and survives the reviser
+    art = publish.load_articles(settings)[0]
+    assert art.take.startswith("One number is confirmed") and art.version == 2
