@@ -200,6 +200,24 @@ def image_url(settings: Settings, article: Article) -> str:
     return f"{settings.site_url.rstrip('/')}/images/{Path(article.image.path).name}"
 
 
+def card_url(settings: Settings, article: Article) -> str:
+    """The 1080x1400 card the site build renders for every article with a photo."""
+    if not article.image:
+        return ""
+    return f"{settings.site_url.rstrip('/')}/cards/{article.id}.jpg"
+
+
+def engine_caption(article: Article, settings: Settings, tags: str) -> str:
+    """The Facebook caption to the content engine: headline, hook, body, trigger, the locked close."""
+    cap = article.caption or {}
+    site = (settings.get("site.name") or "Nepal Wire").strip()
+    close = f"Sources available in graphic.\nFollow {site}."
+    if settings.get("social.facebook.include_link"):
+        close = f"Full story: {article_url(settings, article)}\n{close}"
+    parts = [article.headline.strip(), (cap.get("hook") or "").strip(), (cap.get("body") or "").strip(), (cap.get("trigger") or "").strip(), close + (f"\n{tags}" if tags else "")]
+    return "\n\n".join(p for p in parts if p)
+
+
 def compose(network: str, article: Article, settings: Settings) -> str:
     """The text for one network. Links count, limits hold, hashtags come last."""
     url = article_url(settings, article)
@@ -215,8 +233,11 @@ def compose(network: str, article: Article, settings: Settings) -> str:
         budget = limit - X_URL_LENGTH - 2 - (len(tags) + 2 if tags else 0)
         return "\n\n".join(p for p in (fit(hook, budget), url, tags) if p)
     if network == "facebook":
+        if facebook_mode(settings) == "photo" and article.image and (article.caption or {}).get("body"):
+            # The card carries the hook and the sources; the caption carries the depth, to the engine's format.
+            return fit(engine_caption(article, settings, tags), limit)
         if facebook_mode(settings) == "photo" and article.image:
-            # The whole story on Facebook itself, the way pages with a following post it.
+            # Older articles without an engine caption: the whole story, the take on top.
             names = []
             for src in article.sources:
                 name = (src.get("name") or "").strip()
@@ -767,6 +788,7 @@ def post_article(
     rec = load_record(settings, article)
     rec.article_url = article_url(settings, article)
     img = image_url(settings, article)
+    card = card_url(settings, article) if facebook_mode(settings) == "photo" else ""
     done = {p.network for p in rec.posts if p.status == "posted"}
     for network in networks if networks is not None else configured_networks(settings, environ):
         if network in done:
@@ -791,7 +813,8 @@ def post_article(
                     except Exception:  # noqa: BLE001
                         tz = timezone.utc
                     scheduled_for = datetime.fromtimestamp(facebook_publish_at, tz).isoformat(timespec="minutes")
-            post_id, url = POSTERS[network](client, environ, text, rec.article_url, img, **kwargs)
+            picture = card if network == "facebook" and card else img
+            post_id, url = POSTERS[network](client, environ, text, rec.article_url, picture, **kwargs)
             rec.posts.append(Post(network=network, status="posted", text=text, id=post_id, url=url, posted_at=utcnow_iso(), scheduled_for=scheduled_for))
             log.info("posted %s to %s: %s%s", article.id, network, url or post_id, f" (scheduled for {scheduled_for})" if scheduled_for else "")
         except (SocialError, httpx.HTTPError, KeyError, ValueError) as exc:

@@ -658,6 +658,14 @@ class MockLLM(BaseLLM):
             "tags": ["nepal", story.get("topic", "general")],
             "social_hook": f"{headline}. Here is what is confirmed.",
             "take": "One number is confirmed: 140 households moved to schools overnight. Officials promise a damage assessment on Monday. Until it lands, nobody can say what this night cost.",
+            "image_headline": "140 households moved overnight, warning came too late",
+            "theme": "DISASTER",
+            "country": "NEPAL",
+            "caption": {
+                "hook": "140 households left their homes in one night. The warning reached them after the water did.",
+                "body": "Police say the river rose faster than the siren system could follow, and by the time the alert went out families were already wading out with what they could carry. Officials have promised a damage assessment on Monday. Nobody has said what the delay cost.",
+                "trigger": "Fourteen years of flood warnings and the system still lost the race to the river. Whose failure is that?",
+            },
             "image_brief": {
                 "search_queries": [story["headline"][:50], "Kathmandu Nepal"],
                 "generation_prompt": "Editorial illustration of a Kathmandu street scene during monsoon rain, no text, no identifiable faces",
@@ -681,6 +689,10 @@ class MockLLM(BaseLLM):
             "tags": art.get("tags", []),
             "social_hook": art.get("social_hook", ""),
             "take": art.get("take", ""),
+            "image_headline": art.get("image_headline", ""),
+            "theme": art.get("theme", ""),
+            "country": art.get("country", ""),
+            "caption": art.get("caption", {}),
             "image_brief": art["image_brief"],
         }
 
