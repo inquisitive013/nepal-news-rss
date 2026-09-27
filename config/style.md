@@ -65,7 +65,7 @@ Never use any of these, in any form:
 - It circulates alone as a screenshot, without the caption. It must survive alone.
 - For contested or alleged conduct it carries a status signal (ACCUSED, ALLEGED, UNDER INVESTIGATION), or names the accuser ("NHRC NAMES OLI"), or states only the proven action. A genuinely open question is allowed only when the answer is genuinely open.
 - A fully verified fact, a vote, a court order, a death toll, a filing, may run declarative. Never an unproven conduct claim in declarative voice.
-- Two lines of five to six words. No colon. It names the subject and carries the buried angle: who they are, what was happening, what happened, the detail that makes it unforgivable.
+- Two lines of five to six words, neither longer than 24 characters including spaces. No colon. It names the subject and carries the buried angle: who they are, what was happening, what happened, the detail that makes it unforgivable.
 
 ## The Facebook caption (caption)
 - The card carries the hook and the sources. The caption carries the depth. Never duplicate the card's headline sentence in the hook.

@@ -185,12 +185,28 @@ def wrap(draw: ImageDraw.ImageDraw, text: str, fnt, max_width: int) -> list[str]
     return lines
 
 
+def balanced_two_lines(draw: ImageDraw.ImageDraw, text: str, fnt, max_width: int) -> list[str] | None:
+    """Split the words in two so the lines come out as even as possible. None when no split fits."""
+    words = text.split()
+    if len(words) < 2:
+        return [text] if text_width(draw, text, fnt) <= max_width else None
+    best: tuple[int, list[str]] | None = None
+    for i in range(1, len(words)):
+        pair = [" ".join(words[:i]), " ".join(words[i:])]
+        widths = [text_width(draw, line, fnt) for line in pair]
+        if max(widths) <= max_width and (best is None or max(widths) < best[0]):
+            best = (max(widths), pair)
+    return best[1] if best else None
+
+
 def fit_headline(draw: ImageDraw.ImageDraw, text: str, *, max_width: int = HEADLINE_MAX_WIDTH, max_lines: int = 2, largest: int = 72, smallest: int = 52):
-    """The largest size from 72 down to 52 at which the headline sits in two lines. Three lines at the floor is the last resort."""
+    """The largest size from 72 down to 52 at which the headline sits in two balanced lines. Three lines at the floor is the last resort."""
     for size in range(largest, smallest - 1, -2):
         fnt = font("sans-bold", size)
-        lines = wrap(draw, text, fnt, max_width)
-        if len(lines) <= max_lines and all(text_width(draw, line, fnt) <= max_width for line in lines):
+        if text_width(draw, text, fnt) <= max_width:
+            return fnt, [text]
+        lines = balanced_two_lines(draw, text, fnt, max_width) if max_lines == 2 else wrap(draw, text, fnt, max_width)
+        if lines and len(lines) <= max_lines:
             return fnt, lines
     fnt = font("sans-bold", smallest)
     lines = wrap(draw, text, fnt, max_width)

@@ -219,7 +219,7 @@ Recurring subjects rotate pictures. Never the same image across recent posts. Pr
 
 - Full bleed real photo covering the whole canvas.
 - Bottom gradient from 38 percent of the height, curve t to the power 0.7, up to 93 percent opaque.
-- One bold headline sentence in capitals, 52 to 72pt bold, autosized down from 72, two lines of five to six words, 1000px max width, centred. Line one white, line two off white.
+- One bold headline sentence in capitals, 52 to 72pt bold, autosized down from 72, two balanced lines of five to six words, neither longer than 24 characters, 1000px max width, centred. Line one white, line two off white. A headline that cannot fit two lines at the floor is rewritten, never clipped.
 - Gold underline below the headline.
 - Bottom stack, measured from the footer upward: the source line clears the footer by 8px; the underline clears the source line by 22px; the headline sits above its underline.
 - No stat cards, no pills, no data rows, no quote strips, no call to action on the card.
