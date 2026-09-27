@@ -46,6 +46,10 @@ ENV_KEYS: dict[str, list[str]] = {
 
 LIMITS = {"x": 280, "facebook": 60000, "instagram": 2200, "threads": 500, "telegram": 1024, "bluesky": 300, "mastodon": 500}
 X_URL_LENGTH = 23  # every link counts as 23 characters on X
+# A rule between the desk's take and the article, and before the sources, so a caption reads in sections.
+RULE = "\u2500" * 24
+STORY_LABEL = "THE STORY"
+
 DEFAULT_HASHTAGS = {"x": 2, "facebook": 3, "instagram": 8, "threads": 3, "telegram": 0, "bluesky": 2, "mastodon": 3}
 META_GRAPH = "https://graph.facebook.com"
 THREADS_GRAPH = "https://graph.threads.net/v1.0"
@@ -220,11 +224,13 @@ def compose(network: str, article: Article, settings: Settings) -> str:
                     names.append(name)
             parts = [
                 take_line,
+                f"{RULE}\n{STORY_LABEL}\n{RULE}" if take_line else "",
                 article.headline.strip(),
                 article.dek.strip(),
                 plain_text(article.body_markdown),
+                RULE,
                 ("Sources: " + ", ".join(names)) if names else "",
-                f"Full story with links: {url}",
+                f"Every source, with links: {url}",
                 tags,
             ]
             return fit("\n\n".join(p for p in parts if p), limit)
@@ -232,7 +238,15 @@ def compose(network: str, article: Article, settings: Settings) -> str:
         return fit("\n\n".join(p for p in parts if p), limit)
     if network == "instagram":
         site = settings.site_url.rstrip("/")
-        parts = [take_line, article.headline.strip(), article.dek.strip(), hook if hook not in (article.dek.strip(), article.headline.strip()) and not take_line else "", f"Full story at the link in our bio: {site}", tags]
+        parts = [
+            take_line,
+            f"{RULE}\n{STORY_LABEL}\n{RULE}" if take_line else "",
+            article.headline.strip(),
+            article.dek.strip(),
+            hook if hook not in (article.dek.strip(), article.headline.strip()) and not take_line else "",
+            f"Full story at the link in our bio: {site}",
+            tags,
+        ]
         return fit("\n\n".join(p for p in parts if p), limit)
     if network == "threads":
         budget = limit - len(url) - 2 - (len(tags) + 2 if tags else 0)
