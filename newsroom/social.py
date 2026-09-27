@@ -318,6 +318,59 @@ def check_x(client: httpx.Client, environ: Mapping[str, str]) -> str:
     return "@" + str((data.get("data") or {}).get("username", "?"))
 
 
+_PAGE_TOKENS: dict[tuple[str, str], tuple[str, str]] = {}
+
+USER_TOKEN_NOTE = (
+    "posting with a Page token derived from your user token. That user token expires in about 60 days; "
+    "store the Page's own access_token from me/accounts to make it permanent"
+)
+
+
+def facebook_page_token(client: httpx.Client, environ: Mapping[str, str]) -> tuple[str, str]:
+    """The token that acts as the Page, and a note when it had to be derived.
+
+    FACEBOOK_PAGE_TOKEN may hold the Page's own token, which never expires, or the admin's
+    user token. A user token that manages the Page is turned into the Page's token through
+    me/accounts on every run, which works until the user token itself expires.
+    """
+    base = f"{META_GRAPH}/{_graph_version(environ)}"
+    page_id = secret(environ, "FACEBOOK_PAGE_ID")
+    token = secret(environ, "FACEBOOK_PAGE_TOKEN")
+    if (page_id, token) in _PAGE_TOKENS:
+        return _PAGE_TOKENS[(page_id, token)]
+    me = _raise_for(client.get(f"{base}/me", params={"fields": "id", "access_token": token}), "Facebook")
+    if str(me.get("id", "")) == page_id:
+        _PAGE_TOKENS[(page_id, token)] = (token, "")
+        return token, ""
+    # Never echo the token owner's name or ID: workflow logs of a public repo are public.
+    url = f"{base}/me/accounts"
+    params: dict[str, str] = {"fields": "id,access_token", "limit": "100", "access_token": token}
+    for _ in range(5):  # admins of many Pages get several pages of results
+        try:
+            data = _raise_for(client.get(url, params=params), "Facebook")
+        except SocialError as exc:
+            if "node type (Page)" in str(exc):
+                raise SocialError(
+                    "Facebook: FACEBOOK_PAGE_TOKEN is a Page token, but for a different Page than FACEBOOK_PAGE_ID. "
+                    "In the me/accounts result, store the id from the same block as this token as FACEBOOK_PAGE_ID, "
+                    "or store the access_token of the Page whose id is already there."
+                ) from exc
+            raise
+        for entry in data.get("data") or []:
+            if str(entry.get("id", "")) == page_id and entry.get("access_token"):
+                found = (str(entry["access_token"]), USER_TOKEN_NOTE)
+                _PAGE_TOKENS[(page_id, token)] = found
+                return found
+        nxt = (data.get("paging") or {}).get("next")
+        if not nxt:
+            break
+        url, params = str(nxt), {}
+    raise SocialError(
+        "Facebook: FACEBOOK_PAGE_TOKEN is a personal user token and none of the Pages it manages has the id in FACEBOOK_PAGE_ID. "
+        "Check FACEBOOK_PAGE_ID against the id in me/accounts, or generate the token again and tick the Page in the login window (Edit previous settings)."
+    )
+
+
 def post_facebook(
     client: httpx.Client,
     environ: Mapping[str, str],
@@ -330,7 +383,7 @@ def post_facebook(
 ) -> tuple[str, str]:
     """Post now, or hand Facebook a scheduled post it releases at `publish_at` (unix time)."""
     page = secret(environ, "FACEBOOK_PAGE_ID")
-    token = secret(environ, "FACEBOOK_PAGE_TOKEN")
+    token, _note = facebook_page_token(client, environ)
     base = f"{META_GRAPH}/{_graph_version(environ)}/{page}"
     timing: dict[str, str] = {}
     if publish_at:
@@ -394,7 +447,7 @@ def plan_facebook_slots(articles: list[Article], settings: Settings, now: dateti
 
 
 def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
-    """Prove the token is a Page token for FACEBOOK_PAGE_ID and that the ID is a Page."""
+    """Prove the token can act as the Page FACEBOOK_PAGE_ID and that the ID is a Page."""
     base = f"{META_GRAPH}/{_graph_version(environ)}"
     page_id = secret(environ, "FACEBOOK_PAGE_ID")
     token = secret(environ, "FACEBOOK_PAGE_TOKEN")
@@ -405,31 +458,13 @@ def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
         problems.append(f"FACEBOOK_PAGE_TOKEN {p}")
     if problems:
         raise SocialError("Facebook: " + "; ".join(problems) + ". Paste the bare value from me/accounts, nothing around it.")
-    # With a Page token, /me is the Page itself. With a user token, it is the person.
+    # With a Page token, /me is the Page itself. With a user token, the Page's token comes from me/accounts.
     try:
-        me = _raise_for(client.get(f"{base}/me", params={"fields": "id,name", "access_token": token}), "Facebook")
+        token, note = facebook_page_token(client, environ)
     except SocialError as exc:
         if "could not be decrypted" in str(exc) or "Invalid OAuth access token" in str(exc) or "Error validating access token" in str(exc):
             raise SocialError("Facebook: the stored token is not one Facebook accepts. It was probably cut short, pasted with something extra, or has expired. Copy the Page's access_token from me/accounts again, whole.") from exc
         raise
-    if str(me.get("id", "")) != page_id:
-        # Never echo the token owner's name or ID: workflow logs of a public repo are public.
-        # A Page has a category; asking a user node for one fails. That tells the two mistakes apart.
-        try:
-            _raise_for(client.get(f"{base}/me", params={"fields": "category", "access_token": token}), "Facebook")
-            token_is_page = True
-        except SocialError:
-            token_is_page = False
-        if token_is_page:
-            raise SocialError(
-                "Facebook: FACEBOOK_PAGE_TOKEN is a Page token, but for a different Page than FACEBOOK_PAGE_ID. "
-                "In the me/accounts result, store the id from the same block as this token as FACEBOOK_PAGE_ID, "
-                "or store the access_token of the Page whose id is already there."
-            )
-        raise SocialError(
-            "Facebook: FACEBOOK_PAGE_TOKEN is a personal user token, not a Page token. "
-            "In the me/accounts result, copy the access_token inside the Page's own block, not the token at the top of the Explorer."
-        )
     # Only Pages have a category. On a personal profile this field does not exist.
     try:
         page = _raise_for(client.get(f"{base}/{page_id}", params={"fields": "name,category", "access_token": token}), "Facebook")
@@ -439,7 +474,7 @@ def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
         if "node type (User)" in str(exc) or "nonexisting field" in str(exc):
             raise SocialError(f"Facebook: {page_id} is a personal profile, not a Page. The API can only post to Pages.") from exc
         raise
-    label = f"{page.get('name', me.get('name', '?'))} (Page"
+    label = f"{page.get('name', '?')} (Page"
     if page.get("category"):
         label += f", {page['category']}"
     try:
@@ -449,7 +484,7 @@ def check_facebook(client: httpx.Client, environ: Mapping[str, str]) -> str:
             label += f", {followers:,} followers"
     except SocialError:
         pass  # follower counts need pages_read_engagement; the Page is still confirmed
-    return label + ")"
+    return label + ")" + (f". Note: {note}" if note else "")
 
 
 def post_instagram(client: httpx.Client, environ: Mapping[str, str], text: str, art_url: str, img_url: str, *, sleep: Callable[[float], None] = time.sleep) -> tuple[str, str]:
