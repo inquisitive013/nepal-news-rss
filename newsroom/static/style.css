@@ -116,6 +116,8 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 18px 16px 40px; }
 .byline { color: var(--muted); font-size: 0.9rem; border-bottom: 1px solid var(--rule); padding-bottom: 14px; margin: 14px 0 20px; }
 figure { margin: 0 0 22px; }
 figure img { width: 100%; border-radius: 6px; }
+.card-figure img { max-width: 600px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.18); }
+.card-figure figcaption { text-align: center; }
 figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 8px; }
 .body { font-size: 1.12rem; line-height: 1.7; }
 .body p { margin: 0 0 1.15em; }

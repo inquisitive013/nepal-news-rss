@@ -321,6 +321,8 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         ne_path = f"ne/articles/{a.slug}/" if a.id in in_nepali else None
         alts = alternates_for(en_path, ne_path)
         og_image = f"{site['url']}/{_image_rel(a)}" if a.image else ""
+        # The card carries the header, the headline, the source line and the credit: the page shows it too.
+        card = f"cards/{graphic.card_name(a)}" if (a.image and (out_dir / "cards" / graphic.card_name(a)).exists()) else ""
         render(
             "article.html",
             out_dir / "articles" / a.slug / "index.html",
@@ -330,6 +332,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
             article=a,
             ne_url=f"../../{ne_path}" if ne_path else "",
             image=_image_rel(a),
+            card=card,
             body_html=render_markdown(a.body_markdown),
             review=_review_summary(a),
             canonical=f"{site['url']}/{en_path}",
@@ -347,6 +350,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
                 article=view,
                 english_url=f"{site['url']}/{en_path}",
                 image=_image_rel(a),
+                card=card,
                 body_html=render_markdown(view.body_markdown),
                 review=_review_summary(a),
                 canonical=f"{site['url']}/{ne_path}",

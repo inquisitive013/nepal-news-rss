@@ -45,8 +45,8 @@
   {% if site.adsense_client %}<div class="ad"><ins class="adsbygoogle" style="display:block" data-ad-client="{{ site.adsense_client }}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>{% endif %}
   <p class="byline">{{ site.name_ne }} न्युजरूम · चार तहको स्वतन्त्र जाँच पार गरेको · संस्करण {{ article.version }} · <a href="{{ english_url }}" hreflang="en">अंग्रेजीमा पढ्नुहोस्</a></p>
   {% if image %}
-  <figure>
-    <img src="{{ root }}{{ image }}" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}">
+  <figure{% if card %} class="card-figure"{% endif %}>
+    {% if card %}<img src="{{ root }}{{ card }}" alt="{{ article.image.alt }}" width="1080" height="1400">{% else %}<img src="{{ root }}{{ image }}" alt="{{ article.image.alt }}" width="{{ article.image.width }}" height="{{ article.image.height }}">{% endif %}
     <figcaption>
       {% set c = article.image.credit %}
       {% if c.kind == 'found' %}
