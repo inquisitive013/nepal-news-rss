@@ -353,10 +353,14 @@ def test_post_articles_schedules_the_second_facebook_post(tmp_path):
     assert len(seen) == 2 and all(p.status == "posted" for r in again for p in r.posts)
 
 
-def _facebook_check(me_id, *, page_node=True):
+def _facebook_check(me_id, *, page_node=True, token_is_page=False):
     def handler(request):
         url = str(request.url)
         fields = request.url.params.get("fields", "")
+        if "/me?" in url and fields == "category":
+            if token_is_page:
+                return httpx.Response(200, json={"id": me_id, "category": "Media/News Company"})
+            return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (category) on node type (User)", "code": 100}})
         if "/me?" in url:
             return httpx.Response(200, json={"id": me_id, "name": "Ruby D. Parajuli"})
         if "/111?" in url and fields == "name,category":
@@ -378,9 +382,17 @@ def test_facebook_check_confirms_a_page_with_its_followers():
 def test_facebook_check_rejects_a_user_token():
     import pytest
 
-    with pytest.raises(social.SocialError, match="does not belong to FACEBOOK_PAGE_ID") as err:
+    with pytest.raises(social.SocialError, match="personal user token, not a Page token") as err:
         _facebook_check("999")
     # public logs: the message must not carry the token owner's name or ID
+    assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "111" not in str(err.value)
+
+
+def test_facebook_check_names_a_page_token_for_another_page():
+    import pytest
+
+    with pytest.raises(social.SocialError, match="Page token, but for a different Page") as err:
+        _facebook_check("999", token_is_page=True)
     assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "111" not in str(err.value)
 
 
