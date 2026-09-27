@@ -368,7 +368,7 @@ USER_TOKEN = "EAABfaketoken_1234567890abcdefghijklmnop"
 PAGE_TOKEN = "EAAPAGEtoken_1234567890abcdefghijklmnopq"
 
 
-def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts_has_page=True):
+def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts_has_page=True, manages_none=False):
     def handler(request):
         url = str(request.url)
         fields = request.url.params.get("fields", "")
@@ -377,6 +377,8 @@ def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts_has_
             if token_is_page:
                 return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (accounts) on node type (Page)", "code": 100}})
             data = [{"id": "111", "access_token": PAGE_TOKEN}] if accounts_has_page else [{"id": "555", "access_token": "EAAOTHERpage_1234567890abcdefghijklmnop"}]
+            if manages_none:
+                data = []
             return httpx.Response(200, json={"data": data, "paging": {}})
         if "/me?" in url:
             return httpx.Response(200, json={"id": me_id, "name": "Ruby D. Parajuli"})
@@ -407,10 +409,12 @@ def test_facebook_check_derives_the_page_token_from_a_user_token():
 
 
 def test_facebook_check_user_token_that_does_not_manage_the_page():
-    with pytest.raises(social.SocialError, match="none of the Pages it manages") as err:
+    with pytest.raises(social.SocialError, match="manages 1 Page, none with the id in FACEBOOK_PAGE_ID") as err:
         _facebook_check("999", accounts_has_page=False)
     # public logs: the message must not carry the token owner's name or any ID
     assert "Ruby" not in str(err.value) and "999" not in str(err.value) and "555" not in str(err.value) and "111" not in str(err.value)
+    with pytest.raises(social.SocialError, match="manages no Page"):
+        _facebook_check("999", manages_none=True)
 
 
 def test_posting_with_a_user_token_uses_the_derived_page_token():

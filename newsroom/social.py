@@ -345,6 +345,7 @@ def facebook_page_token(client: httpx.Client, environ: Mapping[str, str]) -> tup
     # Never echo the token owner's name or ID: workflow logs of a public repo are public.
     url = f"{base}/me/accounts"
     params: dict[str, str] = {"fields": "id,access_token", "limit": "100", "access_token": token}
+    managed = 0
     for _ in range(5):  # admins of many Pages get several pages of results
         try:
             data = _raise_for(client.get(url, params=params), "Facebook")
@@ -356,7 +357,9 @@ def facebook_page_token(client: httpx.Client, environ: Mapping[str, str]) -> tup
                     "or store the access_token of the Page whose id is already there."
                 ) from exc
             raise
-        for entry in data.get("data") or []:
+        entries = data.get("data") or []
+        managed += len(entries)
+        for entry in entries:
             if str(entry.get("id", "")) == page_id and entry.get("access_token"):
                 found = (str(entry["access_token"]), USER_TOKEN_NOTE)
                 _PAGE_TOKENS[(page_id, token)] = found
@@ -365,9 +368,15 @@ def facebook_page_token(client: httpx.Client, environ: Mapping[str, str]) -> tup
         if not nxt:
             break
         url, params = str(nxt), {}
+    # Counts are safe to print; names and IDs are not.
+    if managed == 0:
+        raise SocialError(
+            "Facebook: FACEBOOK_PAGE_TOKEN is a personal user token that manages no Page. The Page was not ticked when the token was made. "
+            "Click Generate Access Token again, choose Edit previous settings in the login window, tick the Page, then extend and store the new token."
+        )
     raise SocialError(
-        "Facebook: FACEBOOK_PAGE_TOKEN is a personal user token and none of the Pages it manages has the id in FACEBOOK_PAGE_ID. "
-        "Check FACEBOOK_PAGE_ID against the id in me/accounts, or generate the token again and tick the Page in the login window (Edit previous settings)."
+        f"Facebook: FACEBOOK_PAGE_TOKEN is a personal user token that manages {managed} Page{'s' if managed != 1 else ''}, none with the id in FACEBOOK_PAGE_ID. "
+        "In the me/accounts result, copy the id from your Page's block into FACEBOOK_PAGE_ID."
     )
 
 
