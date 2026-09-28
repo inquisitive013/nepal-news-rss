@@ -367,7 +367,7 @@ def test_post_articles_schedules_the_second_facebook_post(tmp_path):
 USER_TOKEN = "EAABfaketoken_1234567890abcdefghijklmnop"
 PAGE_TOKEN = "EAAPAGEtoken_1234567890abcdefghijklmnopq"
 OTHER_TOKEN = "EAAOTHERpage_1234567890abcdefghijklmnop"
-PAGES = {"111": ("Ruby D. Parajuli", "Public figure", USER_TOKEN, PAGE_TOKEN), "555": ("Nepal Wire", "Media/News Company", OTHER_TOKEN, OTHER_TOKEN)}
+PAGES = {"111": ("Sample Person", "Public figure", USER_TOKEN, PAGE_TOKEN), "555": ("Nepal Wire", "Media/News Company", OTHER_TOKEN, OTHER_TOKEN)}
 
 
 def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts=(("111", PAGE_TOKEN),)):
@@ -382,7 +382,7 @@ def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts=(("1
                 return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (accounts) on node type (Page)", "code": 100}})
             return httpx.Response(200, json={"data": [{"id": pid, "access_token": tok} for pid, tok in accounts], "paging": {}})
         if "/me?" in url:
-            return httpx.Response(200, json={"id": me_id, "name": "Ruby D. Parajuli"})
+            return httpx.Response(200, json={"id": me_id, "name": "Sample Person"})
         pid = url.rsplit("/", 1)[-1].split("?")[0]
         if pid not in PAGES:
             return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
@@ -395,7 +395,7 @@ def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts=(("1
                 return httpx.Response(400, json={"error": {"message": "(#100) Tried accessing nonexisting field (category) on node type (User)", "code": 100}})
             return httpx.Response(200, json={"id": pid, "name": name, "category": category})
         if fields == "followers_count,fan_count":
-            return httpx.Response(200, json={"id": pid, "followers_count": 10423, "fan_count": 9870})
+            return httpx.Response(200, json={"id": pid, "followers_count": 1234, "fan_count": 1100})
         return httpx.Response(404, json={"error": {"message": f"unexpected {url}"}})
 
     env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": USER_TOKEN}
@@ -403,19 +403,19 @@ def _facebook_check(me_id, *, page_node=True, token_is_page=False, accounts=(("1
 
 
 def test_facebook_check_confirms_a_page_with_its_followers():
-    assert _facebook_check("111") == "Ruby D. Parajuli (Page, Public figure, 10,423 followers)"
+    assert _facebook_check("111") == "Sample Person (Page, Public figure, 1,234 followers)"
 
 
 def test_facebook_check_derives_the_page_token_from_a_user_token():
     label = _facebook_check("999")
-    assert label.startswith("Ruby D. Parajuli (Page, Public figure, 10,423 followers)")
+    assert label.startswith("Sample Person (Page, Public figure, 1,234 followers)")
     assert "derived from your user token" in label and "60 days" in label
     assert "999" not in label and PAGE_TOKEN not in label
 
 
 def test_facebook_check_uses_the_only_page_a_user_token_manages_when_the_id_is_stale():
     label = _facebook_check("999", accounts=(("555", OTHER_TOKEN),))
-    assert label.startswith("Nepal Wire (Page, Media/News Company, 10,423 followers)")
+    assert label.startswith("Nepal Wire (Page, Media/News Company, 1,234 followers)")
     assert "FACEBOOK_PAGE_ID does not match the one Page this token manages" in label
     assert "999" not in label and "555" not in label and OTHER_TOKEN not in label
 

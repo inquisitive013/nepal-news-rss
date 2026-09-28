@@ -1,7 +1,10 @@
 name: CI
 
+# Once per change: on the pull request, then on main after the merge. A push to a branch with an
+# open pull request used to run everything twice.
 on:
   push:
+    branches: [main]
   pull_request:
 
 permissions:
@@ -27,9 +30,12 @@ jobs:
         with:
           name: mock-site
           path: site
+          retention-days: 3
 
   sources:
     # Informational. Probes the live feeds and image providers from a runner with open network access.
+    # About three minutes, so it runs once per merged change, on main, not on every pull request update.
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
