@@ -169,22 +169,22 @@
   },
   "image": {
     "path": "data/images/2026-09-27-nepal-floods-landslides-kill-six-407-rescued.jpg",
-    "alt": "A swollen, muddy river overflows its banks near flooded homes under a grey monsoon sky in Nepal.",
-    "width": 1536,
-    "height": 1024,
+    "alt": "A turquoise river flows past a small dam and rocky banks surrounded by green forest in the Tinau River valley near Butwal, Nepal.",
+    "width": 1600,
+    "height": 1195,
     "credit": {
-      "kind": "generated",
-      "title": "",
-      "author": "",
+      "kind": "found",
+      "title": "तिनाउ नदी",
+      "author": "Saroj Pandey",
       "author_url": "",
-      "source": "Nepal Wire",
-      "source_url": "",
-      "license": "",
-      "license_url": "",
-      "model": "gpt-image-1",
-      "note": "Made for Nepal Wire. Not a photograph."
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:%E0%A4%A4%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%89_%E0%A4%A8%E0%A4%A6%E0%A5%80.jpg",
+      "license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "model": "",
+      "note": ""
     },
-    "original_url": ""
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/%E0%A4%A4%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%89_%E0%A4%A8%E0%A4%A6%E0%A5%80.jpg/1920px-%E0%A4%A4%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%89_%E0%A4%A8%E0%A4%A6%E0%A5%80.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "investigation": {},
   "review": {
@@ -579,7 +579,49 @@
       }
     ],
     "final_decision": "approved",
-    "final_reason": "Judge 2: All four version 3 edits were made: the subheading, the Republica used_for, the social_hook without 'police say', and 'earlier' in place of 'last month' in the Rasuwa sentence. Every one of judge 1's eleven edits still holds. A full reread found no new unsourced sentence, no changed name, date or number, and no style violation. September 27, 2026 is a Sunday, so 'early Sunday' and the Friday to Saturday Humla window fit the source dates. Every number and claim traces to a listed source, and no high severity finding remains, so the piece can publish."
+    "final_reason": "Judge 2: All four version 3 edits were made: the subheading, the Republica used_for, the social_hook without 'police say', and 'earlier' in place of 'last month' in the Rasuwa sentence. Every one of judge 1's eleven edits still holds. A full reread found no new unsourced sentence, no changed name, date or number, and no style violation. September 27, 2026 is a Sunday, so 'early Sunday' and the Friday to Saturday Humla window fit the source dates. Every number and claim traces to a listed source, and no high severity finding remains, so the piece can publish.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Narayani river flood Devghat Nepal",
+          "entity": "Q849494 Gandaki River",
+          "found": {
+            "wikidata image": 1,
+            "depicts": 7
+          }
+        },
+        {
+          "subject": "Tinau river Butwal flood",
+          "entity": "Q18394503 Tinau River",
+          "found": {
+            "wikidata image": 1,
+            "commons category": 7
+          }
+        },
+        {
+          "subject": "East-West Highway landslide Nepal",
+          "entity": "Q3595565 Mahendra Highway",
+          "found": {
+            "wikidata image": 1,
+            "depicts": 1,
+            "commons category": 5,
+            "commons search": 1
+          }
+        }
+      ],
+      "requests": 22,
+      "candidates": 24,
+      "shown": 6,
+      "rounds": 1,
+      "decision": "found",
+      "reason": "This file is documented via Wikidata as depicting the Tinau River, one of the three rivers named in the dek, making it an acceptable generic scene of a story-relevant place since no flood-specific imagery exists among the candidates.",
+      "chosen": {
+        "page": "https://commons.wikimedia.org/wiki/File:%E0%A4%A4%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%89_%E0%A4%A8%E0%A4%A6%E0%A5%80.jpg",
+        "found_via": "wikidata image",
+        "subject": "Tinau river Butwal flood",
+        "depicts": "Tinau River, river in Nepal (Wikidata Q18394503), matched on the shorter name \"Tinau river\" while looking for \"Tinau river Butwal flood\""
+      }
+    }
   },
   "run_date": "2026-09-27",
   "published_at": "2026-09-27T01:20:19+00:00",

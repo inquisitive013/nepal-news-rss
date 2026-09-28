@@ -109,22 +109,22 @@
   },
   "image": {
     "path": "data/images/2026-09-27-bhotekoshi-floods-one-month-recovery-missing.jpg",
-    "alt": "A temporary bridge crosses a debris-strewn river in a Nepali valley a month after devastating floods.",
-    "width": 1536,
-    "height": 1024,
+    "alt": "A metal truss bridge spans the fast-flowing Bhotekoshi River in Sindhupalchok District, with piles of construction rubble and rebuilding materials near the riverbank.",
+    "width": 1600,
+    "height": 1200,
     "credit": {
-      "kind": "generated",
-      "title": "",
-      "author": "",
+      "kind": "found",
+      "title": "Larcha Bridge on Bhotekoshi River, Sindhupalchok District, Nepal",
+      "author": "Saddam19",
       "author_url": "",
-      "source": "Nepal Wire",
-      "source_url": "",
-      "license": "",
-      "license_url": "",
-      "model": "gpt-image-1",
-      "note": "Made for Nepal Wire. Not a photograph."
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Larcha_Bridge_on_Bhotekoshi_River,_Sindhupalchok_District,_Nepal.jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "model": "",
+      "note": ""
     },
-    "original_url": ""
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Larcha_Bridge_on_Bhotekoshi_River%2C_Sindhupalchok_District%2C_Nepal.jpg/1920px-Larcha_Bridge_on_Bhotekoshi_River%2C_Sindhupalchok_District%2C_Nepal.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "investigation": {},
   "review": {
@@ -593,7 +593,49 @@
       }
     ],
     "final_decision": "approved",
-    "final_reason": "Judge 2: Every number traces to a named outlet. The conflicting missing counts are reported as a disagreement rather than settled by fiat, and no sustained finding is high severity. The remaining weaknesses are medium or low and cannot be fixed with no revisions left: the hydropower overlap ambiguity, ABC's unexplained basis, the 'four decades' subheading against the body's 35 to 40 years, and a social hook that says 'officials' disagree when only one figure is official. None of these is false enough to block a well attributed, fair story. Both defence edits that would add unsupported claims, the ABC sourcing and the parliamentary check, are not endorsed."
+    "final_reason": "Judge 2: Every number traces to a named outlet. The conflicting missing counts are reported as a disagreement rather than settled by fiat, and no sustained finding is high severity. The remaining weaknesses are medium or low and cannot be fixed with no revisions left: the hydropower overlap ambiguity, ABC's unexplained basis, the 'four decades' subheading against the body's 35 to 40 years, and a social hook that says 'officials' disagree when only one figure is official. None of these is false enough to block a well attributed, fair story. Both defence edits that would add unsupported claims, the ABC sourcing and the parliamentary check, are not endorsed.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Bhotekoshi river flood damage Nepal",
+          "entity": "",
+          "found": {
+            "commons search": 2
+          }
+        },
+        {
+          "subject": "Sindhupalchok bridge flood repair",
+          "entity": "",
+          "found": {
+            "commons search": 8
+          }
+        },
+        {
+          "subject": "Nepal flood displaced families relief camp",
+          "entity": "",
+          "found": {
+            "commons search": 1
+          }
+        },
+        {
+          "subject": "Trishuli valley flood destroyed road Nepal",
+          "entity": "",
+          "found": {}
+        }
+      ],
+      "requests": 37,
+      "candidates": 11,
+      "shown": 6,
+      "rounds": 1,
+      "decision": "found",
+      "reason": "The file is explicitly titled and described as the Larcha Bridge on the Bhotekoshi River in Sindhupalchok District, matching the story's exact location, and the frame shows construction debris and a repaired truss bridge consistent with post-flood rebuilding.",
+      "chosen": {
+        "page": "https://commons.wikimedia.org/wiki/File:Larcha_Bridge_on_Bhotekoshi_River,_Sindhupalchok_District,_Nepal.jpg",
+        "found_via": "commons search",
+        "subject": "Sindhupalchok bridge flood repair",
+        "depicts": ""
+      }
+    }
   },
   "run_date": "2026-09-27",
   "published_at": "2026-09-26T18:26:54+00:00",

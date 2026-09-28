@@ -504,7 +504,41 @@
       }
     ],
     "final_decision": "approved",
-    "final_reason": "Judge 2: Every ordered edit was made. The v3 headline now puts the army's 'incomparable, historic and exemplary' verdict on the whole flood response, which matches Ratopati, the lede and the first key fact, and nothing else changed. A full reread found no new unsourced claims, moved facts or changed numbers. One gap is left: neither judge could check OnlineKhabar's exact wording on the 2,798 figure because the search tool hit its limit, so that number rests on the red team and defence readings and is attributed to OnlineKhabar in the text. That does not block publication."
+    "final_reason": "Judge 2: Every ordered edit was made. The v3 headline now puts the army's 'incomparable, historic and exemplary' verdict on the whole flood response, which matches Ratopati, the lede and the first key fact, and nothing else changed. A full reread found no new unsourced claims, moved facts or changed numbers. One gap is left: neither judge could check OnlineKhabar's exact wording on the 2,798 figure because the search tool hit its limit, so that number rests on the red team and defence readings and is attributed to OnlineKhabar in the text. That does not block publication.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Bhotekoshi flood hydropower tunnel Rasuwa rescue",
+          "entity": "",
+          "found": {}
+        },
+        {
+          "subject": "Nepali Army helicopter rescue Rasuwa flood",
+          "entity": "Q16056518 Nepalese Army",
+          "found": {
+            "depicts": 1,
+            "commons search": 3,
+            "openverse": 3
+          }
+        },
+        {
+          "subject": "Devighat temporary bridge Nuwakot Trishuli",
+          "entity": "",
+          "found": {}
+        },
+        {
+          "subject": "Rasuwagadhi border road flood damage Nepal",
+          "entity": "",
+          "found": {}
+        }
+      ],
+      "requests": 41,
+      "candidates": 7,
+      "shown": 7,
+      "rounds": 2,
+      "decision": "kept the generated",
+      "reason": "None of the candidates depict the Bhotekoshi flood rescue, Rasuwa, or even authentic current Nepali Army rescue operations; they show unrelated tourist group photos, an airport tarmac, a transport aircraft, parade soldiers, a US cemetery ceremony, and a 2015 earthquake-era Nuwakot group shot, none tied to this flood story's subject or place. The only candidate depicts British/Australian officials and Nepalese Army in Nuwakot during a past unrelated deployment, with no connection to the Bhotekoshi flood rescue, Rasuwa district, or the hydropower tunnel rescue described in this story."
+    }
   },
   "run_date": "2026-09-27",
   "published_at": "2026-09-27T01:20:19+00:00",

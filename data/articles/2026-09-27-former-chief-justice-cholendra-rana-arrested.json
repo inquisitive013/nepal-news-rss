@@ -129,22 +129,22 @@
   },
   "image": {
     "path": "data/images/2026-09-27-former-chief-justice-cholendra-rana-arrested.jpg",
-    "alt": "Exterior view of a Kathmandu courthouse style building at dusk, evoking the setting of Nepal's judiciary and the reported arrest.",
-    "width": 1536,
-    "height": 1024,
+    "alt": "Exterior daytime view of the pink and grey Supreme Court of Nepal building in Kathmandu with its distinctive tower and a Nepali flag out front.",
+    "width": 1600,
+    "height": 1200,
     "credit": {
-      "kind": "generated",
-      "title": "",
-      "author": "",
+      "kind": "found",
+      "title": "Supreme Court of Nepal 01",
+      "author": "Sandeep Raut",
       "author_url": "",
-      "source": "Nepal Wire",
-      "source_url": "",
-      "license": "",
-      "license_url": "",
-      "model": "gpt-image-1",
-      "note": "Made for Nepal Wire. Not a photograph."
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Supreme_Court_of_Nepal_01.jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "model": "",
+      "note": ""
     },
-    "original_url": ""
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/46/Supreme_Court_of_Nepal_01.jpg/1920px-Supreme_Court_of_Nepal_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "investigation": {},
   "review": {
@@ -471,7 +471,50 @@
       }
     ],
     "final_decision": "approved",
-    "final_reason": "Judge 2: All 13 edits judge 1 ordered appear in version 2. A full reread found no new unsourced claim, no changed name, date or number, and no break of house style. The headline is 87 characters, and the body has no dashes, semicolons or parentheses. The dek, key fact 5 and the social hook still say 'four year' while the body says 'more than four years'. That is loose rounding, not an error, and the dek wording is exactly what judge 1 ordered. The core arrest is attributed to many outlets, and every link to the impeachment is clearly marked unconfirmed. I could not run an independent web check this round because the search tool hit its usage limit, so this approval rests on the sources cited in the article, the red team's checks and the source-backed edits."
+    "final_reason": "Judge 2: All 13 edits judge 1 ordered appear in version 2. A full reread found no new unsourced claim, no changed name, date or number, and no break of house style. The headline is 87 characters, and the body has no dashes, semicolons or parentheses. The dek, key fact 5 and the social hook still say 'four year' while the body says 'more than four years'. That is loose rounding, not an error, and the dek wording is exactly what judge 1 ordered. The core arrest is attributed to many outlets, and every link to the impeachment is clearly marked unconfirmed. I could not run an independent web check this round because the search tool hit its usage limit, so this approval rests on the sources cited in the article, the red team's checks and the source-backed edits.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Supreme Court of Nepal building Kathmandu exterior",
+          "entity": "Q7644951 Supreme Court of Nepal",
+          "found": {
+            "commons category": 3,
+            "commons search": 1
+          }
+        },
+        {
+          "subject": "Nepal Police Valley Crime Investigation Office Teku",
+          "entity": "Q12436070 Nepal Police",
+          "found": {
+            "commons search": 4
+          }
+        },
+        {
+          "subject": "Maharajgunj Kathmandu residential street",
+          "entity": "",
+          "found": {
+            "commons search": 5
+          }
+        },
+        {
+          "subject": "Cholendra Shumsher Rana Chief Justice Nepal",
+          "entity": "Q61123791 Cholendra Shumsher JBR",
+          "found": {}
+        }
+      ],
+      "requests": 42,
+      "candidates": 13,
+      "shown": 6,
+      "rounds": 1,
+      "decision": "found",
+      "reason": "The Supreme Court of Nepal building exterior (documented as Supreme Court of Nepal, Q7644951) is a fitting institutional image for a story about a former chief justice's arrest tied to his impeachment saga at that court, and it is the sharpest, best-framed candidate with the subject filling the upper two-thirds.",
+      "chosen": {
+        "page": "https://commons.wikimedia.org/wiki/File:Supreme_Court_of_Nepal_01.jpg",
+        "found_via": "commons category",
+        "subject": "Supreme Court of Nepal building Kathmandu exterior",
+        "depicts": "in the Commons category Supreme Court of Nepal, which Wikidata gives for Supreme Court of Nepal, highest court in Nepal (Wikidata Q7644951), matched on the shorter name \"Supreme Court of Nepal\" while looking for \"Supreme Court of Nepal building Kathmandu exterior\""
+      }
+    }
   },
   "run_date": "2026-09-27",
   "published_at": "2026-09-27T01:20:19+00:00",
