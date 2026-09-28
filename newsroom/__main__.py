@@ -25,10 +25,23 @@ def _settings(args):
     return settings
 
 
+def with_articles(settings, count):
+    """The settings with this run's article count. The judges still rank every debated story and publish the top ones."""
+    if count is None:
+        return settings
+    if count < 1:
+        raise SystemExit("--articles must be 1 or more")
+    raw = dict(settings.raw)
+    raw["pipeline"] = dict(raw.get("pipeline") or {}, articles_per_day=count)
+    return dataclasses.replace(settings, raw=raw)
+
+
 def cmd_run(args) -> int:
     from .pipeline import run
 
-    settings = _settings(args)
+    settings = with_articles(_settings(args), args.articles)
+    if args.articles is not None:
+        logging.info("this run publishes at most %d stor%s", args.articles, "y" if args.articles == 1 else "ies")
     if not settings.mock:
         from .llm import auth_mode, scrub_empty_credentials
 
@@ -397,6 +410,7 @@ def main(argv=None) -> int:
     p_run.add_argument("--build", action="store_true", help="build the site after the run")
     p_run.add_argument("--out", default="site")
     p_run.add_argument("--root-rss", action="store_true", help="also copy rss.xml to the repository root")
+    p_run.add_argument("--articles", type=int, help="publish at most this many stories this run, instead of pipeline.articles_per_day")
     p_run.set_defaults(func=cmd_run)
 
     p_dis = sub.add_parser("discover", help="only scan the feeds and print what was found")

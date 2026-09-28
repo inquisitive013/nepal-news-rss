@@ -10,6 +10,10 @@ on:
         description: "Preview run: mock model, fixture feeds, nothing committed or deployed"
         type: boolean
         default: false
+      stories:
+        description: "Publish and post at most this many stories this run, 1 to 9. Empty uses pipeline.articles_per_day."
+        type: string
+        default: ""
       rebuild_only:
         description: "Rebuild and deploy the site from existing data. No model calls, nothing committed."
         type: boolean
@@ -92,6 +96,7 @@ jobs:
           NEWSROOM_BACKFILL_SCOPE: ${{ inputs.nepali_scope || 'missing' }}
           NEWSROOM_BACKFILL_ARTICLE: ${{ inputs.nepali_article }}
           NEWSROOM_FIND_PHOTOS: ${{ inputs.find_photos == true && '1' || '' }}
+          NEWSROOM_STORIES: ${{ inputs.stories }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
@@ -131,8 +136,14 @@ jobs:
           # An edition that stops short (spend limit, credit, call budget) has still built the site
           # and may have published stories. Keep going: commit what it made, deploy it, post what
           # passed every check. The verdict job at the end fails the workflow and says why.
+          articles=()
+          case "${NEWSROOM_STORIES}" in
+            "") ;;
+            [1-9]) articles=(--articles "${NEWSROOM_STORIES}"); echo "This run publishes at most ${NEWSROOM_STORIES} stories." ;;
+            *) echo "::error::stories must be a number from 1 to 9, got '${NEWSROOM_STORIES}'."; exit 1 ;;
+          esac
           set +e
-          python -m newsroom run --build --out site --root-rss
+          python -m newsroom run --build --out site --root-rss "${articles[@]}"
           code=$?
           set -e
           if [ "$code" -eq 0 ]; then

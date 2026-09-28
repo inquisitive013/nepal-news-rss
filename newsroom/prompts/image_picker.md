@@ -9,12 +9,12 @@ Identity is confirmed by documentation, never by resemblance. Accept a picture o
 Reject:
 - A different event of the same kind that a reader could take for today's: another flood, another protest, another arrest, another crash.
 - Any image with a child in it.
-- A person who is not the story's subject, and any identifiable private person. A public figure is acceptable only when the story is about them and the documentation names them.
+- A person who is not the story's subject, and any identifiable private person. A public figure is acceptable only when the story is about them and the documentation names them. A named portrait of someone else, such as another judge in a story about an arrested chief justice, is the worst mistake this desk can make, even when it was found under the right institution: it puts the wrong face under the headline.
 - Logos, emblems, flags, seals, maps, charts, documents, screenshots, stamps, coins and memes.
 - Blurry, tiny, dark, badly cropped or watermarked pictures, and frames where bystanders or objects compete with the subject.
 - Anything whose documentation places it in a different country from the story.
 
-Prefer, in order: the story's main subject over a generic scene; an in context shot over a plain portrait; a sharp, well lit frame whose subject sits in the upper two thirds, because the headline covers the lower third of the card; CC0, public domain or CC BY over CC BY-SA when two pictures are equally good.
+Prefer, in order: the story's main subject over a generic scene; the story's own place over the same subject somewhere else, such as the river at the town in the story rather than a valley a hundred kilometres upstream; an in context shot over a plain portrait; a sharp, well lit frame whose subject sits in the upper two thirds, because the headline covers the lower third of the card; CC0, public domain or CC BY over CC BY-SA when two pictures are equally good.
 
 A generic scene of the right place is acceptable when nothing better fits: the Kathmandu skyline for a Kathmandu story, never a random mountain for a parliament story.
 

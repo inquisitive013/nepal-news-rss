@@ -305,3 +305,16 @@ def test_items_already_cited_are_dropped_and_the_desk_sees_its_recent_stories(tm
     # the take rides on every article and survives the reviser
     art = publish.load_articles(settings)[0]
     assert art.take.startswith("One number is confirmed") and art.version == 2
+
+
+def test_one_story_tonight_publishes_only_the_judges_top_pick(tmp_path):
+    from newsroom.__main__ import with_articles
+
+    settings = with_articles(_settings(tmp_path), 1)
+    assert settings.get("pipeline.articles_per_day") == 1
+    assert settings.get("pipeline.max_debate_stories") == _settings(tmp_path).get("pipeline.max_debate_stories")  # every story is still debated
+    run = pipeline.run(settings, now=NOW)
+    assert run.status == "ok", run.errors
+    assert len(run.selected_story_ids) == 1 and run.selected_story_ids[0] == run.ranking[-1].ranked[0]["story_id"]
+    assert len(run.published) == 1
+    assert with_articles(_settings(tmp_path), None).get("pipeline.articles_per_day") == 3  # no flag, no change

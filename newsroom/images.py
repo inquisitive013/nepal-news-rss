@@ -286,6 +286,10 @@ def parse_openverse(data: dict, allowed: list[str]) -> list[ImageCandidate]:
         url = item.get("url") or ""
         if not url:
             continue
+        # Openverse also indexes Commons. The desk asks Commons directly, with the file's full
+        # documentation, so a Commons copy here would only come back as a duplicate under another address.
+        if "wikimedia" in {str(item.get("source") or "").lower(), str(item.get("provider") or "").lower()}:
+            continue
         tags = [t.get("name", "") for t in (item.get("tags") or []) if isinstance(t, dict)]
         out.append(
             ImageCandidate(
@@ -449,7 +453,7 @@ def resolve_subject(query: str, fetch: JsonFetcher, country: str = "") -> Subjec
 # --------------------------------------------------------------------------- the search
 
 _NOT_A_PHOTO = re.compile(
-    r"\b(?:logo|logos|emblem|seal|coat of arms|flag of|map|maps|locator|signature|diagram|chart|graph|icon|symbol|insignia|stamp|coin|banknote|screenshot|infographic|poster|letterhead)\b",
+    r"\b(?:(?:logo|emblem|seal|map|locator|signature|diagram|chart|graph|icon|symbol|stamp|coin|banknote|screenshot|infographic|poster|letterhead)s?|insignia|coats? of arms|flags? of)\b",
     re.IGNORECASE,
 )
 
@@ -542,15 +546,15 @@ def find_candidates(
                 if subject.category and len(mine) < per_subject:
                     filed = f"in the Commons category {subject.category}, which Wikidata gives for {subject.depicts}"
                     attempt("commons category", lambda: take(parse_commons(counted(commons_category_url(subject.category, per_subject, width)), allowed, filed), "commons category"))
+            # The item's label, the name that found it, then the query and its heads.
+            tries = list(dict.fromkeys(t for t in [subject.label, subject.matched_on, *heads(text)] if t))
             if len(mine) < per_subject:
-                tries = ([subject.label] if subject.label else []) + [h for h in heads(text) if h != subject.label]
                 for head in tries[:4]:
                     got = attempt("commons search", lambda head=head: parse_commons(counted(commons_search_url(head, per_subject, width)), allowed))
                     if got:
                         take(got, "commons search")
                         break
             if len(mine) < per_subject:
-                tries = ([subject.label] if subject.label else []) + [h for h in heads(text) if h != subject.label]
                 for head in tries[:2]:
                     got = attempt("openverse", lambda head=head: parse_openverse(counted(openverse_search_url(head, per_subject)), allowed))
                     if got:
@@ -564,17 +568,21 @@ def find_candidates(
 
     if stats is not None:
         stats["requests"] = counted.used
-    rank = {s: i for i, s in enumerate(subjects)}
-    ordered = sorted(
-        enumerate(found),
-        key=lambda item: (
-            rank.get(item[1].subject, 99),
-            VIA_ORDER.index(item[1].found_via) if item[1].found_via in VIA_ORDER else len(VIA_ORDER),
-            license_rank(item[1].license),
-            item[0],
-        ),
-    )
-    return [cand for _, cand in ordered][:total], trail
+    return interleave(found, subjects)[:total], trail
+
+
+def interleave(found: list[ImageCandidate], subjects: list[str]) -> list[ImageCandidate]:
+    """Best documented first within each subject, then the subjects in turn, so one round of the
+    picture editor sees every subject instead of eight shots of the first."""
+    lanes: list[list[ImageCandidate]] = []
+    for subject in subjects:
+        lane = [(i, c) for i, c in enumerate(found) if c.subject == subject]
+        lane.sort(key=lambda item: (VIA_ORDER.index(item[1].found_via) if item[1].found_via in VIA_ORDER else len(VIA_ORDER), license_rank(item[1].license), item[0]))
+        lanes.append([c for _, c in lane])
+    out: list[ImageCandidate] = []
+    for depth in range(max((len(lane) for lane in lanes), default=0)):
+        out.extend(lane[depth] for lane in lanes if depth < len(lane))
+    return out
 
 
 def recent_photo_keys(settings: Settings, article_id: str = "", days: int = 30) -> set[str]:

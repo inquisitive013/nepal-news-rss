@@ -431,3 +431,32 @@ def test_the_photos_command_gives_a_story_a_real_photo(tmp_path, monkeypatch, ca
     assert stored.image.credit.kind == "found" and stored.image.path.endswith(".jpg")
     assert stored.review.picture["decision"] == "found"
     assert not (tmp_path / "data/images/2026-09-28-court.png").exists()  # the old cover card is gone
+
+
+def test_one_round_shows_every_subject_not_eight_shots_of_the_first():
+    def cand(subject, via, n):
+        return images.ImageCandidate("Wikimedia Commons", f"https://x/{subject}{n}.jpg", f"https://x/{subject}{n}.jpg", f"https://p/{subject}{n}", found_via=via, subject=subject)
+
+    found = [cand("river", "depicts", i) for i in range(4)] + [cand("town", "commons search", 0), cand("town", "wikidata image", 1), cand("road", "openverse", 0)]
+    order = [(c.subject, c.found_via) for c in images.interleave(found, ["river", "town", "road"])]
+    assert order[:3] == [("river", "depicts"), ("town", "wikidata image"), ("road", "openverse")]
+    assert order[3:5] == [("river", "depicts"), ("town", "commons search")]
+    assert len(order) == len(found)
+
+
+def test_openverse_copies_of_commons_files_are_skipped():
+    data = {"results": [
+        {"title": "Supreme Court of Nepal 03", "url": "https://upload.wikimedia.org/x.jpg", "foreign_landing_url": "https://commons.wikimedia.org/w/index.php?curid=1", "license": "by-sa", "license_version": "4.0", "source": "wikimedia", "provider": "wikimedia"},
+        {"title": "Nuwakot relief", "url": "https://live.staticflickr.com/1.jpg", "foreign_landing_url": "https://www.flickr.com/photos/x/1", "license": "by", "license_version": "2.0", "source": "flickr", "provider": "flickr"},
+    ]}
+    assert [c.title for c in images.parse_openverse(data, ALLOWED)] == ["Nuwakot relief"]
+
+
+def test_plural_logos_posters_and_maps_are_not_card_photos():
+    def named(name):
+        return images.ImageCandidate("Wikimedia Commons", "u", "u", "p", file_name=name, width=3000, height=2000)
+
+    for name in ("Nepalese army recruiting posters.jpg", "District maps of Nepal.jpg", "Party logos.jpg", "Coats of arms.jpg", "Flags of Nepal and India.jpg"):
+        assert not images.usable(named(name)), name
+    for name in ("Photograph of Singha Durbar.jpg", "Mapping volunteers in Kathmandu.jpg", "Iconic Dharahara.jpg"):
+        assert images.usable(named(name)), name
