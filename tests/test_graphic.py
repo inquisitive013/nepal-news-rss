@@ -89,3 +89,35 @@ def test_dark_photos_are_lifted_not_darkened(tmp_path):
     assert graphic.brightness_factor(Image.open(settings.root / dark.image.path)) == 1.0
     out = graphic.render_card(settings, dark, tmp_path / "dark.jpg")
     assert Image.open(out).getpixel((540, 300))[0] >= 30  # still identifiable, not crushed to black
+
+
+def test_the_writers_line_break_gives_two_centred_lines_clear_of_the_underline(tmp_path):
+    """The 28 September card drew its second line straight through the gold underline, where it read
+    like a strike through "NOW SAY NO", and left both lines hanging from the left."""
+    settings = _settings(tmp_path)
+    art = _article(settings, shade=20, headline="EX-CJ RANA HELD 12 HOURS\nPOLICE SAY NOT AN ARREST")
+    draw = ImageDraw.Draw(Image.new("RGB", (graphic.W, graphic.H)))
+    fnt, lines = graphic.headline_lines(draw, art.image_headline)
+    assert lines == ["EX-CJ RANA HELD 12 HOURS", "POLICE SAY NOT AN ARREST"] and 52 <= fnt.size <= 72
+    im = Image.open(graphic.render_card(settings, art, tmp_path / "card.jpg")).convert("RGB")
+
+    src_y = graphic.H - graphic.FOOTER_H - 8 - 19
+    ul_bottom = src_y - 22
+    band = [(x, y) for y in range(ul_bottom - 16, ul_bottom + 1) for x in range(0, graphic.W, 2)]
+    assert not any(min(im.getpixel(p)) > 200 for p in band)  # no headline white on or just above the underline
+
+    line_h = int(fnt.size * 1.18)
+    top = ul_bottom - 4 - 26 - line_h * len(lines)
+    for i in range(len(lines)):
+        rows = range(top + i * line_h + int(fnt.size * 0.35), top + i * line_h + int(fnt.size * 0.9))
+        xs = [x for y in rows for x in range(0, graphic.W) if min(im.getpixel((x, y))) > 200]
+        assert xs, f"line {i + 1} not drawn where expected"
+        assert abs(min(xs) - (graphic.W - 1 - max(xs))) <= 8, f"line {i + 1} is not centred"
+
+
+def test_a_break_that_cannot_fit_is_rebalanced_and_one_line_stays_one():
+    draw = ImageDraw.Draw(Image.new("RGB", (graphic.W, graphic.H)))
+    fnt, lines = graphic.headline_lines(draw, "SHORT\n" + "AN EXTREMELY LONG SECOND LINE THAT WILL NEVER FIT")
+    assert len(lines) >= 2 and all(graphic.text_width(draw, line, fnt) <= graphic.HEADLINE_MAX_WIDTH for line in lines)
+    fnt, lines = graphic.headline_lines(draw, "Rain")
+    assert lines == ["RAIN"]

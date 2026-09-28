@@ -207,4 +207,6 @@ Each article's review record says what the desk looked for, what each library ga
 
 ## Corrections
 
+A card or caption with an error is replaced, not left to circulate as a screenshot. Edit the article's JSON, then run *Actions → Post to social networks* with the article id and **replace** ticked: it takes the story's Facebook post down and posts the corrected card and caption. Nothing new goes out if the takedown fails, so two copies never stand side by side.
+
 Readers reach the newsroom through the channel the site shows: the contact email when set, the issue tracker when `site.repo_url` points at a public repository, the Facebook Page otherwise. The full record behind every story is in `data/`, so an error can be traced to the source, the writer's draft, or a judge's ruling.

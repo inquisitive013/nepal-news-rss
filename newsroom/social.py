@@ -65,7 +65,7 @@ class SocialError(Exception):
 @dataclass
 class Post:
     network: str
-    status: str  # posted | skipped | failed
+    status: str  # posted | skipped | failed | removed (taken down and replaced by a corrected post)
     text: str = ""
     id: str = ""
     url: str = ""
@@ -218,6 +218,40 @@ def caption_languages(settings: Settings) -> list[str]:
     return [code for code in codes if code in ("en", "ne")] or ["en"]
 
 
+_ABBREVIATIONS = {"mr.", "mrs.", "ms.", "dr.", "st.", "no.", "rs.", "jr.", "sr.", "lt.", "col.", "gen.", "capt.", "prof.", "u.s.", "u.k.", "e.g.", "i.e.", "vs.", "etc.", "govt.", "dept."}
+_SENTENCE_BREAK = re.compile(r"([.!?\u0964][\"\u201d\u2019)]?)\s+(?=[\"\u201c\u2018(]?[A-Z0-9\u0900-\u097F])")
+
+
+def split_sentences(text: str) -> list[str]:
+    """Sentences in English or Nepali. Initials and common abbreviations never end one."""
+    out: list[str] = []
+    start = 0
+    for m in _SENTENCE_BREAK.finditer(text):
+        head = text[start : m.end(1)]
+        last = head.split()[-1].lower() if head.split() else ""
+        if last in _ABBREVIATIONS or re.fullmatch(r"[a-z]\.", last):
+            continue
+        out.append(head.strip())
+        start = m.end()
+    out.append(text[start:].strip())
+    return [s for s in out if s]
+
+
+def paragraphs(body: str, per: int = 2, min_words: int = 60) -> str:
+    """A caption body in short paragraphs, as the style guide asks, even when the writer sent one block.
+
+    Only the line breaks change; every word stays where it was. A body that already has
+    paragraphs, or is short, is left alone.
+    """
+    text = (body or "").strip()
+    if "\n\n" in text or len(text.split()) < min_words:
+        return text
+    sentences = split_sentences(text)
+    if len(sentences) <= per:
+        return text
+    return "\n\n".join(" ".join(sentences[i : i + per]) for i in range(0, len(sentences), per))
+
+
 def engine_caption(article: Article, settings: Settings, tags: str) -> str:
     """The Facebook caption to the content engine: headline, hook, body, trigger, the locked close.
 
@@ -234,7 +268,7 @@ def engine_caption(article: Article, settings: Settings, tags: str) -> str:
     def english() -> tuple[str, list[str]]:
         cap = article.caption or {}
         if (cap.get("body") or "").strip():
-            parts = [article.headline.strip(), (cap.get("hook") or "").strip(), cap["body"].strip(), (cap.get("trigger") or "").strip()]
+            parts = [article.headline.strip(), (cap.get("hook") or "").strip(), paragraphs(cap["body"]), (cap.get("trigger") or "").strip()]
         else:  # a story from before the engine caption existed: the headline, its one line hook, the take
             parts = [article.headline.strip(), (article.social_hook or article.dek or "").strip(), (article.take or "").strip()]
         close = ([f"Full story: {article_url(settings, article)}"] if link else []) + ["Sources available in graphic.", f"Follow {site}."]
@@ -243,7 +277,7 @@ def engine_caption(article: Article, settings: Settings, tags: str) -> str:
     def nepali_block() -> tuple[str, list[str]] | None:
         if not (nepali_edition.usable(nepali) and (ne_cap.get("body") or "").strip()):
             return None
-        parts = [str(nepali.get("headline", "")).strip(), (ne_cap.get("hook") or "").strip(), (ne_cap.get("body") or "").strip(), (ne_cap.get("trigger") or "").strip()]
+        parts = [str(nepali.get("headline", "")).strip(), (ne_cap.get("hook") or "").strip(), paragraphs(ne_cap.get("body") or ""), (ne_cap.get("trigger") or "").strip()]
         close = ([f"पूरा समाचार: {nepali_article_url(settings, article)}"] if link else []) + ["स्रोतहरू ग्राफिकमा छन्।", f"{site_ne} फलो गर्नुहोस्।"]
         return "\n\n".join(p for p in parts if p), close
 
@@ -500,6 +534,14 @@ def post_facebook(
         data = _raise_for(client.post(f"{base}/feed", data={"message": text, "link": art_url, "access_token": token, **timing}), "Facebook")
         post_id = str(data.get("id", ""))
     return post_id, f"https://www.facebook.com/{post_id}" if post_id else ""
+
+
+def delete_facebook_post(client: httpx.Client, environ: Mapping[str, str], post_id: str) -> None:
+    """Take a post down, for the correction protocol: a card with an error is replaced, not left to circulate."""
+    fb = facebook_page(client, environ)
+    data = _raise_for(client.delete(f"{META_GRAPH}/{_graph_version(environ)}/{post_id}", params={"access_token": fb.token}), "Facebook")
+    if data.get("success") is False:
+        raise SocialError(f"Facebook did not delete post {post_id}")
 
 
 def facebook_slots(settings: Settings) -> list[str]:
@@ -829,13 +871,15 @@ def post_article(
     sleep: Callable[[float], None] = time.sleep,
     facebook_publish_at: int | None = None,
     again: bool = False,
+    replace: bool = False,
 ) -> SocialRecord:
     rec = load_record(settings, article)
     rec.article_url = article_url(settings, article)
     img = image_url(settings, article)
     card = card_url(settings, article) if facebook_mode(settings) == "photo" else ""
     # `again` posts even where the record says posted; the new post is appended, the old one kept.
-    done = set() if again else {p.network for p in rec.posts if p.status == "posted"}
+    # `replace` takes the last Facebook post down first, then posts the corrected one.
+    done = set() if (again or replace) else {p.network for p in rec.posts if p.status == "posted"}
     for network in networks if networks is not None else configured_networks(settings, environ):
         if network in done:
             continue
@@ -843,6 +887,19 @@ def post_article(
         if dry_run:
             rec.posts.append(Post(network=network, status="skipped", text=text, error="dry run"))
             continue
+        if replace and network == "facebook":
+            old = next((p for p in reversed(rec.posts) if p.network == "facebook" and p.status == "posted" and p.id), None)
+            if old is not None:
+                try:
+                    delete_facebook_post(client, environ, old.id)
+                except (SocialError, httpx.HTTPError) as exc:
+                    # Never leave two copies up: without the takedown, the corrected post waits.
+                    rec.posts.append(Post(network=network, status="failed", text=text, error=f"could not take down {old.id}, so the corrected post was not sent: {str(exc)[:300]}", posted_at=utcnow_iso()))
+                    log.warning("facebook takedown failed for %s: %s", article.id, exc)
+                    continue
+                old.status = "removed"
+                old.error = f"taken down {utcnow_iso()} and replaced by a corrected post"
+                log.info("took down %s for %s", old.id, article.id)
         try:
             kwargs: dict[str, Any] = {}
             if network in ("instagram", "threads"):
@@ -885,8 +942,9 @@ def post_articles(
     article_ids: list[str] | None = None,
     now: datetime | None = None,
     again: bool = False,
+    replace: bool = False,
 ) -> list[SocialRecord]:
-    if again and not article_ids:
+    if (again or replace) and not article_ids:
         raise ValueError("posting again needs explicit article ids, or every recent story would go out twice")
     chosen = networks if networks is not None else configured_networks(settings, environ)
     articles = articles_to_post(settings, run_date, max_age_hours, article_ids)
@@ -905,7 +963,7 @@ def post_articles(
                     log.warning("%s is not answering yet; posting anyway", article_url(settings, art))
                     break
         return [
-            post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep, facebook_publish_at=plan.get(art.id), again=again)
+            post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep, facebook_publish_at=None if replace else plan.get(art.id), again=again, replace=replace)
             for art in articles
         ]
     finally:

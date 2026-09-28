@@ -164,6 +164,9 @@ def cmd_social(args) -> int:
     if getattr(args, "again", False) and not args.article:
         print("--again needs --article <id>: it posts a story again even though the record says it went out.")
         return 2
+    if getattr(args, "replace", False) and not args.article:
+        print("--replace needs --article <id>: it takes that story's Facebook post down and posts the corrected one.")
+        return 2
     configured = social.configured_networks(settings, os.environ)
     if networks is None and not configured:
         paused = sorted(social.paused_networks(settings))
@@ -182,6 +185,7 @@ def cmd_social(args) -> int:
         wait_seconds=args.wait,
         article_ids=[a.strip() for a in (args.article or []) if a.strip()] or None,
         again=bool(getattr(args, "again", False)),
+        replace=bool(getattr(args, "replace", False)),
     )
     if not records:
         print(f"Nothing to post. Networks connected: {', '.join(configured) or 'none'}.")
@@ -434,6 +438,7 @@ def main(argv=None) -> int:
     p_soc.add_argument("--article", action="append", help="post this article id regardless of age; repeatable")
     p_soc.add_argument("--dry-run", action="store_true", help="compose the posts and print them, post nothing")
     p_soc.add_argument("--again", action="store_true", help="post the given --article again even though its record says it went out")
+    p_soc.add_argument("--replace", action="store_true", help="take the given --article's Facebook post down and post the corrected one; nothing goes out if the takedown fails")
     p_soc.set_defaults(func=cmd_social)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")

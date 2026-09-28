@@ -19,6 +19,10 @@ on:
         description: "Post that article again even though it already went out to the network. Needs an article id. The earlier post stays up and stays in the record."
         type: boolean
         default: false
+      replace:
+        description: "Take that article's Facebook post down and post the corrected one, for a card or caption with an error. Needs an article id. Nothing goes out if the takedown fails."
+        type: boolean
+        default: false
   workflow_call:
 
 permissions:
@@ -65,6 +69,7 @@ jobs:
           NETWORKS: ${{ inputs.networks }}
           ARTICLE: ${{ inputs.article }}
           AGAIN: ${{ inputs.again == true && '1' || '' }}
+          REPLACE: ${{ inputs.replace == true && '1' || '' }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
@@ -73,6 +78,7 @@ jobs:
           [ -n "$NETWORKS" ] && args+=(--networks "$NETWORKS")
           [ -n "$ARTICLE" ] && args+=(--article "$ARTICLE")
           [ -n "$AGAIN" ] && args+=(--again)
+          [ -n "$REPLACE" ] && args+=(--replace)
           set -o pipefail
           python -m newsroom social "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 
