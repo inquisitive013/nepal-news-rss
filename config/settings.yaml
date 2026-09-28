@@ -79,6 +79,11 @@ pipeline:
   # the second reading still found errors the first fix had left or made: a detail not in the
   # record, a dropped attribution, a headline that read as if Rana was still held. Keep two.
   nepali_rounds: 2
+  # How the editor's fixes go in. "rewrite": the writer applies them all and returns the whole
+  # piece, re-read for flow. "in_place": each fix replaces the passage the editor quoted and
+  # nothing else moves; the writer places only the fixes whose passage it cannot find. In place
+  # stays off until a side by side trial on stored stories shows it reads as well.
+  nepali_fix: rewrite
   # Safety valve. The run stops taking new work after this many model calls.
   # A normal day is about 48: clusterer 1, advocate 3, skeptic 3, ranking judges 2, then per
   # story investigator 1, writer 1, picture check 1, red team 1, defence 1, judges 2, reviser 1,

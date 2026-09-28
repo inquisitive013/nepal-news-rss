@@ -1,0 +1,54 @@
+name: Nepali fix trial
+
+# Writes stored stories in Nepali again and fixes each draft both ways, rewrite and in place,
+# from the same draft and the same first reading, then reads each finished piece once more.
+# Saves nothing to the site. About 2.30 dollars a story at list prices, half with llm.batch on.
+on:
+  workflow_dispatch:
+    inputs:
+      articles:
+        description: "Stored story ids, comma separated. Empty takes the newest three."
+        default: ""
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Fix the same drafts both ways and compare
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+          ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+          ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
+          ARTICLES: ${{ inputs.articles }}
+        run: |
+          set -o pipefail
+          args=()
+          IFS=',' read -ra ids <<< "${ARTICLES}"
+          for id in "${ids[@]}"; do
+            id="${id//[[:space:]]/}"
+            case "$id" in
+              "") ;;
+              *[!a-z0-9-]*) echo "::error::Not a story id: '$id'. Use ids like 2026-09-28-cholendra-rana-detention-arrest-protective-custody."; exit 1 ;;
+              *) args+=(--article "$id") ;;
+            esac
+          done
+          python -m newsroom nepali-trial "${args[@]}" --out trial | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nepali-trial
+          path: trial/
+          retention-days: 14

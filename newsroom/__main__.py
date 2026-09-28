@@ -242,6 +242,59 @@ def cmd_batch_probe(args) -> int:
     return 0 if len(answered) == len(rows) and searched else 1
 
 
+def cmd_nepali_trial(args) -> int:
+    """Fix stored stories' Nepali both ways, from one draft and one first reading, and compare. Saves nothing."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    from . import nepali
+    from .llm import UsageMeter, make_llm, scrub_empty_credentials, usage_cost
+
+    settings = _settings(args)
+    if not settings.mock:
+        scrub_empty_credentials()
+    articles = publish.load_articles(settings)
+    wanted = [a for a in articles if a.id in set(args.article or [])] if args.article else articles[: args.limit]
+    if not wanted:
+        print("No stored story matches.")
+        return 1
+    print(f"## Nepali fix trial: rewrite against in place, {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'}\n")
+    print("One draft and one first reading per story. Then each way fixes, reads again and fixes again, as two readings do in an edition. A closing reading counts what each finished piece still gets wrong, which is what an edition would publish unread.\n")
+
+    def one(article):
+        # Each story gets its own client and meter, so each way's cost is its own.
+        return nepali.trial(make_llm(settings, UsageMeter(20)), settings, article)
+
+
+    with ThreadPoolExecutor(max_workers=max(1, int(settings.get("pipeline.concurrency", 1) or 1))) as pool:
+        results = list(pool.map(one, wanted))
+    print("| Story | First reading | Rewrite: second, closing | In place: second, closing, placed word for word |")
+    print("|---|---|---|---|")
+    for r in results:
+        a, b = r["rewrite"], r["in_place"]
+        print(f"| {r['id']} | {len(r['first_reading'])} | {len(a['second_reading'])}, {len(a['closing_reading'])} | {len(b['second_reading'])}, {len(b['closing_reading'])}, {b['placed']} |")
+    cost_a = usage_cost(settings, [x for r in results for x in r["rewrite"]["records"]])[0]
+    cost_b = usage_cost(settings, [x for r in results for x in r["in_place"]["records"]])[0]
+    print(f"\nFixing cost after the shared draft and first reading, closing reading included: rewrite ${cost_a:.2f}, in place ${cost_b:.2f}.")
+    for r in results:
+        print(f"\n### {r['id']}")
+        for way, label in (("rewrite", "Rewrite"), ("in_place", "In place")):
+            piece = r[way]["piece"]
+            cap = piece.get("caption") or {}
+            print(f"\n**{label}: the closing reading finds {len(r[way]['closing_reading'])}**")
+            for p in r[way]["closing_reading"]:
+                print(f"- {p.get('problem', '').strip()} (\"{p.get('passage', '').strip()[:120]}\")")
+            print(f"\n{label}, as it would open the Facebook post:\n")
+            for line in (piece.get("headline", ""), cap.get("hook", ""), cap.get("body", ""), cap.get("trigger", "")):
+                if line.strip():
+                    print("> " + line.strip().replace("\n", "\n> ") + "\n>")
+    if args.out:
+        out = Path(args.out)
+        out.mkdir(parents=True, exist_ok=True)
+        slim = [{**r, "rewrite": {k: v for k, v in r["rewrite"].items() if k != "records"}, "in_place": {k: v for k, v in r["in_place"].items() if k != "records"}} for r in results]
+        (out / "nepali-trial.json").write_text(json.dumps(slim, ensure_ascii=False, indent=2), encoding="utf-8")
+    return 0
+
+
 def cmd_social(args) -> int:
     from . import social
 
@@ -542,6 +595,13 @@ def main(argv=None) -> int:
     p_ne.add_argument("--article", action="append", help="write this article id; repeatable")
     p_ne.add_argument("--limit", type=int, help="stop after this many stories")
     p_ne.set_defaults(func=cmd_nepali)
+
+    p_nt = sub.add_parser("nepali-trial", help="fix stored stories' Nepali both ways, rewrite and in place, from one draft and one first reading, and compare; saves nothing")
+    p_nt.add_argument("--article", action="append", help="a stored story id; repeat for more")
+    p_nt.add_argument("--limit", type=int, default=3, help="without --article, the newest this many stories")
+    p_nt.add_argument("--out", help="folder for nepali-trial.json, with both finished pieces for every story")
+    p_nt.add_argument("--mock", action="store_true", help="no network, no keys, deterministic outputs")
+    p_nt.set_defaults(func=cmd_nepali_trial)
 
     p_ph = sub.add_parser("photos", help="look again for a licensed real photo for stored stories (by default the ones with an illustration or a cover card)")
     p_ph.add_argument("--all", action="store_true", help="every stored story, photos included")
