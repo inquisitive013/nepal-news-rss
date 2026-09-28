@@ -198,11 +198,11 @@ The card features a real photograph of the subject. Person, place or thing. A cr
 
 ### 14.2 Photo sourcing
 
-Licensed libraries first: Wikimedia Commons, then Openverse, under the licences in `images.allowed_licenses`. Official sites where the licence is explicit. Never a news site's own photograph. When no real photograph passes the gate, the desk uses an illustration and the card says so in the footer: "Illustration: AI generated for Nepal Wire. Not a photograph." No illustration ever passes as a photo.
+Licensed libraries first: Wikimedia Commons, then Openverse, under the licences in `images.allowed_licenses`. The writer names the subjects the way a library files them: the public figure, the institution, the building, the place, never the day's event. For each subject the desk takes, in order, the image Wikidata keeps for it, the Commons files documented as depicting it, its Commons category, a Commons search, then Openverse. Official sites where the licence is explicit. Never a news site's own photograph. A file photo of the subject is the norm, because the libraries never hold the day's event, and the credit says File photo. When no real photograph passes the gate, the desk uses an illustration and the card says so in the footer: "Illustration: AI generated for Nepal Wire. Not a photograph." No illustration ever passes as a photo. The article's review record says why the story carries what it carries.
 
 ### 14.3 Photo identity gate
 
-Identity is confirmed by documentation, never by resemblance: the file's own caption, title or description naming the person, place or event. The picture desk rejects anything it cannot confirm. A wrong face under an accountability headline is the single worst failure this engine can produce.
+Identity is confirmed by documentation, never by resemblance: the file's own caption, title, description, categories or structured depicts statement naming the person, place or event, or Wikidata naming the file as the subject's image. The picture desk rejects anything it cannot confirm, and a different event of the same kind that a reader could take for the day's. A wrong face under an accountability headline is the single worst failure this engine can produce.
 
 ### 14.4 Photo rotation
 
@@ -231,7 +231,7 @@ Recurring subjects rotate pictures. Never the same image across recent posts. Pr
 - Header. CRIMSON strip, 64px. "NEPAL WIRE" bold white 22pt, gold separator dot, the theme in MONO bold 15pt off white, the date in MONO bold gold right aligned.
 - Country and theme chip, top left. Off white country plus gold theme. Dark fill, gold outline, gold left tab. Themes: GEOPOLITICS, DEFENSE, SECURITY, POLITICS, GOVERNANCE, ECONOMY, HEALTH, SCIENCE, TECH, STRATEGY, DISASTER, VIRAL.
 - Source line. "SOURCE:" in gold MONO bold plus up to three outlets in off white MONO 16pt, separated by middle dots, centred above the footer.
-- Footer. DEEP_RED strip, 56px, MONO 13pt light grey: "© Nepal Wire · Informational only. No liability assumed for use of this content." A second line carries the photo credit and licence, or the illustration label.
+- Footer. DEEP_RED strip, 56px, MONO 13pt light grey: "© Nepal Wire · Informational only. No liability assumed for use of this content." A second line carries the photo credit and licence, or the illustration label: "File photo: author, licence, via library. Adapted by Nepal Wire." The adaptation notice is required by CC BY and BY-SA 4.0, because the card crops, tones and titles the photo.
 - Corner brackets. DARK_RED, 40px, all four corners, drawn last.
 
 ### 14.8 Palette and fonts

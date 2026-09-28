@@ -21,7 +21,7 @@ Return:
 - `country`: the country the story is about, in capitals. NEPAL unless it is not.
 - `caption`: the Facebook caption in three parts, `hook`, `body` and `trigger`, to the style guide under "The Facebook caption". Every fact in it already sits in `body_markdown` with a source.
 - `image_brief`:
-  - `search_queries`: two to four English queries for finding a real photo of the place, institution or object in the story. Prefer places and things over faces. Never name a private person.
+  - `search_queries`: two to four photo subjects, most specific first. Each is the name a photo library or Wikipedia files the picture under: the public figure the story is about under the full name Wikipedia gives, the institution, the building, the place (the district, the river, the town), in English. Names only, one to five words, such as "Supreme Court of Nepal", "Singha Durbar", "Bhote Koshi", "Rasuwa District". No dates, no years, no event words such as flood damage, arrest or protest, no descriptions such as exterior or residential street, because the libraries hold file photos of subjects, never today's event. Name a person only when the story is about that public figure. Never name a private person.
   - `generation_prompt`: a prompt for an editorial illustration if no photo is found. Describe scene, mood and colours. No text in the image. No identifiable real people. No logos.
   - `alt_text`: one sentence describing the image you expect, for screen readers.
 

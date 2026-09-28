@@ -137,7 +137,14 @@ images:
   # Licences accepted for found images. Matched case insensitively as substrings
   # of the licence short name reported by the provider.
   allowed_licenses: ["cc0", "public domain", "pdm", "cc by", "cc-by", "by-sa", "cc by-sa"]
-  max_candidates_for_vision: 6
+  # The picture desk looks for a real photo of each subject the writer names: the image
+  # Wikidata keeps for it, Commons files that depict it, its Commons category, a Commons
+  # search, then Openverse. Only when none passes does it generate an illustration.
+  max_candidates_for_vision: 6  # pictures the model sees in one round
+  picker_rounds: 2  # rounds before the desk gives up on a real photo
+  max_search_requests: 48  # free library requests per story, all libraries together
+  max_upscale: 2.2  # the card never enlarges a photo more than this
+  rotation_days: 30  # a photo a story used in this window is not used again
   max_width: 1600
   jpeg_quality: 84
   # Burn a small credit bar into the stored image so shared copies carry attribution.

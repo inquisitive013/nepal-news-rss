@@ -72,7 +72,10 @@ def test_theme_country_credit_and_date(tmp_path):
     assert graphic.theme_for(art) == "DISASTER"
     art.theme = "not a theme"
     assert graphic.theme_for(art) == "DISASTER"
-    assert graphic.photo_credit(art, "Nepal Wire") == "Photo: A. Photographer via Wikimedia Commons · CC BY-SA 4.0"
+    assert graphic.photo_credit(art, "Nepal Wire") == "File photo: A. Photographer, CC BY-SA 4.0, via Wikimedia Commons. Adapted by Nepal Wire."
+    art.image.credit.author = "unknown author"
+    assert graphic.photo_credit(art, "Nepal Wire") == "File photo: CC BY-SA 4.0, via Wikimedia Commons. Adapted by Nepal Wire."
+    art.image.credit.author = "A. Photographer"
     assert graphic.photo_credit(_article(settings, kind="generated"), "Nepal Wire") == "Illustration: AI generated for Nepal Wire. Not a photograph."
     assert graphic.date_label(settings, art) == "SEP 27, 2026"
     assert graphic.source_names(art) == ["Kathmandu Post", "Ratopati", "OnlineKhabar"]
