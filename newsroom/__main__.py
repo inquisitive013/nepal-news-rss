@@ -227,12 +227,18 @@ def cmd_nepali(args) -> int:
     print(f"Writing {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'} in Nepali: a writer call, then up to {rounds} editor reading{'s' if rounds != 1 else ''} with a fix after each.")
     # Writer, then editor and fix per round, at most. Stories are written a few at a time.
     workers = int(settings.get("pipeline.concurrency", 1) or 1)
-    results = nepali.backfill(settings, make_llm(settings, UsageMeter((1 + 2 * rounds) * len(wanted))), wanted, workers=workers)
+    llm = make_llm(settings, UsageMeter((1 + 2 * rounds) * len(wanted)))
+    results = nepali.backfill(settings, llm, wanted, workers=workers)
     for article_id, status, detail in results:
         print(f"{status:10} {article_id}  {detail}")
     failed = sum(1 for _, status, _ in results if status == "failed")
     skipped = len(wanted) - len(results)
     print(f"\n{len(results) - failed} written, {failed} failed, {skipped} not attempted.")
+    # The daily run record carries its own usage; a backfill has no record, so it says what it used here.
+    from .models import RunLog
+
+    usage = RunLog(run_date="", usage=list(llm.meter.records)).usage_totals()
+    print("Model usage: " + ", ".join(f"{k.replace('_', ' ')} {v:,}" for k, v in usage.items()))
     return 1 if failed or skipped else 0
 
 

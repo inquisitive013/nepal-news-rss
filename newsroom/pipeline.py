@@ -112,7 +112,14 @@ def _process_story(
     def reviser(art: Article, edits: list[str], findings: list[dict[str, Any]], defense: dict[str, Any]) -> Article:
         return writing.revise_article(llm, settings, art, story, edits, findings, defense)
 
-    article, record = validation.validate_article(llm, settings, article, story, candidates, reviser, pool)
+    try:
+        article, record = validation.validate_article(llm, settings, article, story, candidates, reviser, pool)
+    except BudgetExceeded as exc:
+        # The research and the draft are the expensive part. Keep them in the record, unpublished.
+        article.review.final_decision = "cut off"
+        article.review.final_reason = f"Checks stopped before a verdict: {exc}"
+        publish.save_rejected(settings, article)
+        raise
     if record.final_decision == "approved":
         article.published_at = now_iso
         if settings.get("pipeline.nepali_edition", True):

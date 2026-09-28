@@ -43,6 +43,9 @@ jobs:
     timeout-minutes: 120
     outputs:
       no_key: ${{ steps.newsroom.outputs.no_key }}
+      # "partial" when the edition stopped short. The verdict job at the end reports it.
+      status: ${{ steps.newsroom.outputs.status }}
+      reason: ${{ steps.newsroom.outputs.reason }}
     steps:
       - uses: actions/checkout@v4
 
@@ -114,7 +117,31 @@ jobs:
             python -m newsroom build --out site --root-rss
             exit 0
           fi
+          # An edition that stops short (spend limit, credit, call budget) has still built the site
+          # and may have published stories. Keep going: commit what it made, deploy it, post what
+          # passed every check. The verdict job at the end fails the workflow and says why.
+          set +e
           python -m newsroom run --build --out site --root-rss
+          code=$?
+          set -e
+          if [ "$code" -eq 0 ]; then
+            echo "status=ok" >> "$GITHUB_OUTPUT"
+          else
+            reason=$(python - <<'PY'
+          import glob, json, os
+          paths = sorted(glob.glob("data/runs/*.json"), key=os.path.getmtime)
+          try:
+              errors = json.load(open(paths[-1])).get("errors") or [] if paths else []
+          except Exception:  # a half written record
+              errors = []
+          first = errors[0].splitlines()[0] if errors else "the edition did not finish; the edition job log says why"
+          print(first[:400])
+          PY
+          )
+            echo "status=partial" >> "$GITHUB_OUTPUT"
+            echo "reason=${reason}" >> "$GITHUB_OUTPUT"
+            echo "::warning::The edition stopped short: ${reason}"
+          fi
 
       - name: Commit the edition data
         id: commit
@@ -255,3 +282,36 @@ jobs:
     if: ${{ inputs.mock != true && inputs.rebuild_only != true && inputs.backfill_nepali != true && needs.edition.outputs.no_key != 'true' }}
     uses: ./.github/workflows/social.yml
     secrets: inherit
+
+  verdict:
+    # Runs last, only when the edition stopped short. Everything the edition made is already
+    # committed, deployed and posted by now; this job turns the run red so GitHub notifies the
+    # owner, and writes the reason and the fix at the top of the run page.
+    needs: [edition, deploy, social]
+    if: ${{ always() && inputs.mock != true && needs.edition.outputs.status == 'partial' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say why the edition stopped short
+        env:
+          REASON: ${{ needs.edition.outputs.reason }}
+        run: |
+          {
+            echo "## The edition stopped short"
+            echo
+            echo "Everything it produced was committed and deployed. Any story that passed every check was published and posted; nothing unchecked was."
+            echo
+            echo "**Reason:** ${REASON}"
+            case "${REASON}" in
+              *"spend limit set in the Claude Console"*)
+                echo
+                echo "**Fix:** Claude Console → Settings → Billing → Spend limits → Adjust limit. Then run *Daily edition* again." ;;
+              *"spend cap"*)
+                echo
+                echo "**Fix:** Claude Console → Settings → Limits → Request rate limit increase, or wait for the date above." ;;
+              *"credit"*)
+                echo
+                echo "**Fix:** add credit in the Claude Console under Settings → Billing. Then run *Daily edition* again." ;;
+            esac
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error::The edition stopped short: ${REASON}"
+          exit 1
