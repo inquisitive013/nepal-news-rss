@@ -1,18 +1,34 @@
 name: Nepali fix trial
 
-# Writes stored stories in Nepali again and fixes each draft both ways, rewrite and in place,
-# from the same draft and the same first reading, then reads each finished piece once more.
-# Saves nothing to the site. About 2.30 dollars a story at list prices, half with llm.batch on.
+# Writes stored stories in Nepali again and fixes each draft one or both ways, rewrite and in
+# place, from the same draft and the same first reading, then reads each finished piece once more.
+# Saves nothing to the site. Both ways cost about 2.30 dollars a story at list prices, half with
+# llm.batch on; one way makes up to 6 calls a story instead of 10.
 on:
   workflow_dispatch:
     inputs:
       articles:
         description: "Stored story ids, comma separated. Empty takes the newest three."
         default: ""
+      ways:
+        description: "Which ways to fix each draft."
+        type: choice
+        options: [both, rewrite, in_place]
+        default: both
+      rejudge_runs:
+        description: "Earlier trial run ids, comma separated. Set, it reads those trials' finished rewrite pieces again with today's editor instead of running a trial."
+        default: ""
+      readings:
+        description: "With rejudge_runs: readings per piece."
+        type: choice
+        options: ["1", "2", "3"]
+        default: "2"
 
 permissions:
   contents: read
   id-token: write
+  # To download the files of the earlier trials that rejudge_runs names.
+  actions: read
 
 jobs:
   trial:
@@ -25,7 +41,39 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Fix the same drafts both ways and compare
+      - name: Read earlier trials again with one editor
+        if: ${{ inputs.rejudge_runs != '' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+          ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+          ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
+          GH_TOKEN: ${{ github.token }}
+          RUNS: ${{ inputs.rejudge_runs }}
+          READINGS: ${{ inputs.readings }}
+        run: |
+          set -o pipefail
+          case "${READINGS:-2}" in
+            1|2|3) ;;
+            *) echo "::error::readings must be 1, 2 or 3."; exit 1 ;;
+          esac
+          args=(--readings "${READINGS:-2}")
+          IFS=',' read -ra ids <<< "${RUNS}"
+          for id in "${ids[@]}"; do
+            id="${id//[[:space:]]/}"
+            case "$id" in
+              "") ;;
+              *[!0-9]*) echo "::error::Not a run id: '$id'."; exit 1 ;;
+              *)
+                gh run download "$id" --repo "${GITHUB_REPOSITORY}" -n nepali-trial -D "prior/$id"
+                args+=(--pieces "prior/$id/nepali-trial.json")
+                ;;
+            esac
+          done
+          python -m newsroom nepali-rejudge "${args[@]}" --out trial | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Fix the same drafts and compare
+        if: ${{ inputs.rejudge_runs == '' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
@@ -33,9 +81,14 @@ jobs:
           ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
           ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
           ARTICLES: ${{ inputs.articles }}
+          WAYS: ${{ inputs.ways }}
         run: |
           set -o pipefail
-          args=()
+          case "${WAYS:-both}" in
+            both|rewrite|in_place) ;;
+            *) echo "::error::ways must be both, rewrite or in_place."; exit 1 ;;
+          esac
+          args=(--ways "${WAYS:-both}")
           IFS=',' read -ra ids <<< "${ARTICLES}"
           for id in "${ids[@]}"; do
             id="${id//[[:space:]]/}"

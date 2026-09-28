@@ -251,12 +251,20 @@ def _read(llm: BaseLLM, record: dict[str, Any], piece: dict[str, Any]) -> dict[s
     return check
 
 
-def trial(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, Any]:
-    """Write one story in Nepali and fix it both ways from the same draft and the same first reading.
+def read_again(llm: BaseLLM, settings: Settings, article: Article, piece: dict[str, Any]) -> list[dict[str, Any]]:
+    """One more reading of a finished piece, so pieces from different trials meet the same editor."""
+    return _read(llm, _record(settings, article), piece)["problems"]
 
-    Nothing is saved. For "rewrite" and "in_place" it returns the finished piece, what the second
-    reading found, what a closing reading finds in the finished piece, how many fixes went in word
-    for word, and what that way cost in model calls after the shared draft and first reading.
+
+WAYS = ("rewrite", "in_place")
+
+
+def trial(llm: BaseLLM, settings: Settings, article: Article, *, ways: tuple[str, ...] = WAYS) -> dict[str, Any]:
+    """Write one story in Nepali and fix it each way in `ways` from the same draft and the same first reading.
+
+    Nothing is saved. For each way it returns the finished piece, what the second reading found,
+    what a closing reading finds in the finished piece, how many fixes went in word for word, and
+    what that way cost in model calls after the shared draft and first reading.
     """
     record = _record(settings, article)
     searches = settings.web_search_uses("nepali_writer")
@@ -264,7 +272,7 @@ def trial(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, Any]:
     draft = _clean(llm.structured("nepali_writer", "Write this story in Nepali from the verified record.", {"article": record}, WRITER_SCHEMA, web_search_uses=searches))
     first = _read(llm, record, draft)["problems"]
     out: dict[str, Any] = {"id": article.id, "first_reading": first}
-    for way in ("rewrite", "in_place"):
+    for way in ways:
         mark = len(meter.records)
         piece, placed, second = draft, 0, []
         if first:
@@ -282,8 +290,8 @@ def fix_piece(llm: BaseLLM, record: dict[str, Any], piece: dict[str, Any], probl
     """Apply the editor's fixes. Returns the piece and how many fixes went in word for word.
 
     In place, each fix replaces its passage and nothing else moves; the writer places only the
-    fixes whose passage it could not find. Otherwise the writer applies them all and returns
-    the whole piece, re-read for flow.
+    fixes whose passage it could not find. Otherwise the writer applies them all, leaves every
+    sentence no fix touches as it was, and returns the whole piece.
     """
     placed = 0
     if in_place:
@@ -297,7 +305,7 @@ def fix_piece(llm: BaseLLM, record: dict[str, Any], piece: dict[str, Any], probl
         piece = _clean(
             llm.structured(
                 "nepali_writer",
-                "Apply the editor's fixes where each passage sits, re-read the whole piece for flow, and return it complete.",
+                "Apply the editor's fixes where each passage sits, leave every sentence no fix touches word for word, keep each fact's source in its sentence, and return the piece complete.",
                 {"article": record, "nepali": _piece(piece), "fixes": problems},
                 WRITER_SCHEMA,
             )

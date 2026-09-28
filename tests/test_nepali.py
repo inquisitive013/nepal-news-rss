@@ -169,9 +169,11 @@ class ScriptedLLM:
     def __init__(self, *replies):
         self.replies = list(replies)
         self.calls = []
+        self.texts = []
 
     def structured(self, role, user_text, payload, schema, **kw):
         self.calls.append((role, payload, kw.get("web_search_uses", 0)))
+        self.texts.append(user_text)
         return copy.deepcopy(self.replies.pop(0))
 
 
@@ -202,6 +204,9 @@ def test_by_default_the_writer_applies_every_fix(tmp_path):
     llm = ScriptedLLM(PIECE, {"decision": "revise", "problems": [placed], "reason": "r"}, {**PIECE, "take": "लेखकले मिलाएको।"})
     ne = nepali.nepali_for(llm, settings, _article())
     assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer"] and ne["fixed_in_place"] == 0
+    # The fix pass changes what the fixes name and keeps every other sentence, and every source, where it was.
+    fix_text = llm.texts[2]
+    assert "word for word" in fix_text and "source" in fix_text and "re-read the whole piece" not in fix_text
 
 
 def test_the_trial_fixes_one_draft_both_ways_and_reads_each_result_again(tmp_path):
@@ -243,10 +248,58 @@ def test_the_trial_fixes_one_draft_both_ways_and_reads_each_result_again(tmp_pat
     assert writer_fix_for_b["fixes"] == [lost] and writer_fix_for_b["nepali"]["body_markdown"] == fixed_body  # from the same draft, placed fix in
 
 
+def test_the_trial_can_fix_the_draft_one_way_only(tmp_path):
+    settings = _settings(tmp_path)
+    problem = {"passage": "चेतावनी प्रणाली असफल भयो।", "problem": "a fact without its source", "fix": "प्रहरीका अनुसार चेतावनी ढिलो आयो।"}
+    llm = ScriptedLLM(
+        PIECE,
+        {"decision": "revise", "problems": [problem], "reason": "r"},  # the first reading
+        {**PIECE, "take": "पुनर्लेखन १"},
+        {"decision": "approve", "problems": [], "reason": "ok"},  # the second reading finds nothing, so no second fix
+        {"decision": "approve", "problems": [], "reason": "ok"},  # the closing reading
+    )
+    llm.meter = UsageMeter(20)
+    out = nepali.trial(llm, settings, _article(), ways=("rewrite",))
+    assert "in_place" not in out and out["rewrite"]["piece"]["take"] == "पुनर्लेखन १" and out["rewrite"]["closing_reading"] == []
+    assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor", "nepali_editor"]
+
+
+def test_rejudge_reads_every_trials_pieces_again_with_one_editor(tmp_path, capsys):
+    import json
+
+    from newsroom import __main__ as cli
+    from newsroom.config import load_settings
+
+    story = publish.load_articles(load_settings(mock=True))[0].id
+    paths = []
+    for trial_id in ("111", "222"):
+        folder = tmp_path / trial_id
+        folder.mkdir()
+        rows = [{"id": story, "rewrite": {"piece": PIECE}}, {"id": "no-such-story", "rewrite": {"piece": PIECE}}]
+        (folder / "nepali-trial.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+        paths += ["--pieces", str(folder / "nepali-trial.json")]
+    before = sorted(p.name for p in (cli.ROOT / "data").rglob("*"))
+    assert cli.main(["nepali-rejudge", "--mock", *paths, "--readings", "2", "--out", str(tmp_path / "out")]) == 0
+    out = capsys.readouterr().out
+    assert "read again by one editor: 111, 222" in out and "Skipped 111 no-such-story" in out
+    saved = json.loads((tmp_path / "out" / "nepali-rejudge.json").read_text(encoding="utf-8"))
+    assert sorted((r["trial"], r["reading"]) for r in saved) == [("111", 1), ("111", 2), ("222", 1), ("222", 2)]
+    assert sorted(p.name for p in (cli.ROOT / "data").rglob("*")) == before
+
+
 def test_the_trial_command_saves_nothing(tmp_path, monkeypatch, capsys):
+    import json
+
     from newsroom import __main__ as cli
 
     before = sorted(p.name for p in (cli.ROOT / "data").rglob("*"))
     assert cli.main(["nepali-trial", "--mock", "--limit", "1", "--out", str(tmp_path / "trial")]) == 0
     assert sorted(p.name for p in (cli.ROOT / "data").rglob("*")) == before
     assert "Nepali fix trial" in capsys.readouterr().out and (tmp_path / "trial" / "nepali-trial.json").exists()
+
+    assert cli.main(["nepali-trial", "--mock", "--limit", "1", "--ways", "rewrite", "--out", str(tmp_path / "one")]) == 0
+    out = capsys.readouterr().out
+    assert "Nepali fix trial: rewrite, 1 story" in out and "In place" not in out
+    [saved] = json.loads((tmp_path / "one" / "nepali-trial.json").read_text(encoding="utf-8"))
+    assert "rewrite" in saved and "in_place" not in saved and "records" not in saved["rewrite"]
+    assert sorted(p.name for p in (cli.ROOT / "data").rglob("*")) == before

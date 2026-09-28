@@ -243,7 +243,7 @@ def cmd_batch_probe(args) -> int:
 
 
 def cmd_nepali_trial(args) -> int:
-    """Fix stored stories' Nepali both ways, from one draft and one first reading, and compare. Saves nothing."""
+    """Fix stored stories' Nepali one or both ways, from one draft and one first reading, and compare. Saves nothing."""
     from concurrent.futures import ThreadPoolExecutor
 
     from . import nepali
@@ -257,27 +257,30 @@ def cmd_nepali_trial(args) -> int:
     if not wanted:
         print("No stored story matches.")
         return 1
-    print(f"## Nepali fix trial: rewrite against in place, {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'}\n")
+    ways = nepali.WAYS if args.ways == "both" else (args.ways,)
+    labels = {"rewrite": "Rewrite", "in_place": "In place"}
+    print(f"## Nepali fix trial: {' against '.join(labels[w].lower() for w in ways)}, {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'}\n")
     print("One draft and one first reading per story. Then each way fixes, reads again and fixes again, as two readings do in an edition. A closing reading counts what each finished piece still gets wrong, which is what an edition would publish unread.\n")
 
     def one(article):
         # Each story gets its own client and meter, so each way's cost is its own.
-        return nepali.trial(make_llm(settings, UsageMeter(20)), settings, article)
+        return nepali.trial(make_llm(settings, UsageMeter(20)), settings, article, ways=ways)
 
 
     with ThreadPoolExecutor(max_workers=max(1, int(settings.get("pipeline.concurrency", 1) or 1))) as pool:
         results = list(pool.map(one, wanted))
-    print("| Story | First reading | Rewrite: second, closing | In place: second, closing, placed word for word |")
-    print("|---|---|---|---|")
+    heads = [f"{labels[w]}: second, closing" + (", placed word for word" if w == "in_place" else "") for w in ways]
+    print("| Story | First reading | " + " | ".join(heads) + " |")
+    print("|---|---|" + "---|" * len(ways))
     for r in results:
-        a, b = r["rewrite"], r["in_place"]
-        print(f"| {r['id']} | {len(r['first_reading'])} | {len(a['second_reading'])}, {len(a['closing_reading'])} | {len(b['second_reading'])}, {len(b['closing_reading'])}, {b['placed']} |")
-    cost_a = usage_cost(settings, [x for r in results for x in r["rewrite"]["records"]])[0]
-    cost_b = usage_cost(settings, [x for r in results for x in r["in_place"]["records"]])[0]
-    print(f"\nFixing cost after the shared draft and first reading, closing reading included: rewrite ${cost_a:.2f}, in place ${cost_b:.2f}.")
+        cells = [f"{len(r[w]['second_reading'])}, {len(r[w]['closing_reading'])}" + (f", {r[w]['placed']}" if w == "in_place" else "") for w in ways]
+        print(f"| {r['id']} | {len(r['first_reading'])} | " + " | ".join(cells) + " |")
+    costs = [f"{labels[w].lower()} ${usage_cost(settings, [x for r in results for x in r[w]['records']])[0]:.2f}" for w in ways]
+    print(f"\nFixing cost after the shared draft and first reading, closing reading included: {', '.join(costs)}.")
     for r in results:
         print(f"\n### {r['id']}")
-        for way, label in (("rewrite", "Rewrite"), ("in_place", "In place")):
+        for way in ways:
+            label = labels[way]
             piece = r[way]["piece"]
             cap = piece.get("caption") or {}
             print(f"\n**{label}: the closing reading finds {len(r[way]['closing_reading'])}**")
@@ -290,8 +293,75 @@ def cmd_nepali_trial(args) -> int:
     if args.out:
         out = Path(args.out)
         out.mkdir(parents=True, exist_ok=True)
-        slim = [{**r, "rewrite": {k: v for k, v in r["rewrite"].items() if k != "records"}, "in_place": {k: v for k, v in r["in_place"].items() if k != "records"}} for r in results]
+        slim = [{**r, **{w: {k: v for k, v in r[w].items() if k != "records"} for w in ways}} for r in results]
         (out / "nepali-trial.json").write_text(json.dumps(slim, ensure_ascii=False, indent=2), encoding="utf-8")
+    return 0
+
+
+def cmd_nepali_rejudge(args) -> int:
+    """Read the finished pieces of earlier Nepali trials again with today's editor. Saves nothing.
+
+    A trial's closing reading is done by the editor of its own day, so two trials run on
+    different prompts were judged by different readers. This reads each trial's finished pieces
+    again with one editor, each piece `--readings` times, so the trials can be compared.
+    """
+    import copy
+    from concurrent.futures import ThreadPoolExecutor
+
+    from . import nepali
+    from .llm import UsageMeter, make_llm, scrub_empty_credentials, usage_cost
+
+    settings = _settings(args)
+    if not settings.mock:
+        scrub_empty_credentials()
+    # A handful of calls: the normal way, not the batch queue, which can hold one call 25 minutes.
+    raw = copy.deepcopy(settings.raw)
+    raw.setdefault("llm", {}).setdefault("batch", {})["enabled"] = False
+    settings = dataclasses.replace(settings, raw=raw)
+    articles = {a.id: a for a in publish.load_articles(settings)}
+    runs = []
+    for path in args.pieces:
+        label = Path(path).parent.name or Path(path).stem
+        runs.append((label, json.loads(Path(path).read_text(encoding="utf-8"))))
+    jobs = []
+    for label, results in runs:
+        for r in results:
+            piece = (r.get(args.way) or {}).get("piece")
+            if r.get("id") not in articles or not piece:
+                print(f"Skipped {label} {r.get('id')}: no stored story or no {args.way} piece.")
+                continue
+            jobs += [(label, r["id"], n, piece) for n in range(args.readings)]
+    if not jobs:
+        print("Nothing to read.")
+        return 1
+    llm = make_llm(settings, UsageMeter(len(jobs) + 5))
+
+    def one(job):
+        label, story, n, piece = job
+        return label, story, n, nepali.read_again(llm, settings, articles[story], piece)
+
+    with ThreadPoolExecutor(max_workers=max(1, int(settings.get("pipeline.concurrency", 1) or 1))) as pool:
+        found = list(pool.map(one, jobs))
+    labels = [label for label, _ in runs]
+    stories = list(dict.fromkeys(story for _, story, _, _ in found))
+    counts = {(label, story): [] for label in labels for story in stories}
+    for label, story, n, problems in found:
+        counts[(label, story)].append(len(problems))
+    print(f"## Nepali trials read again by one editor: {', '.join(labels)}, the {args.way} pieces, {args.readings} reading{'s' if args.readings != 1 else ''} each\n")
+    print("| Story | " + " | ".join(labels) + " |")
+    print("|---|" + "---|" * len(labels))
+    for story in stories:
+        print(f"| {story} | " + " | ".join(", ".join(str(c) for c in counts[(label, story)]) or "not read" for label in labels) + " |")
+    print(f"\nCost: ${usage_cost(settings, llm.meter.records)[0]:.2f}.")
+    for label, story, n, problems in found:
+        print(f"\n### {label}: {story}, reading {n + 1} finds {len(problems)}")
+        for p in problems:
+            print(f"- {p.get('problem', '').strip()} (\"{p.get('passage', '').strip()[:120]}\")")
+    if args.out:
+        out = Path(args.out)
+        out.mkdir(parents=True, exist_ok=True)
+        rows = [{"trial": label, "id": story, "reading": n + 1, "problems": problems} for label, story, n, problems in found]
+        (out / "nepali-rejudge.json").write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
     return 0
 
 
@@ -596,12 +666,21 @@ def main(argv=None) -> int:
     p_ne.add_argument("--limit", type=int, help="stop after this many stories")
     p_ne.set_defaults(func=cmd_nepali)
 
-    p_nt = sub.add_parser("nepali-trial", help="fix stored stories' Nepali both ways, rewrite and in place, from one draft and one first reading, and compare; saves nothing")
+    p_nt = sub.add_parser("nepali-trial", help="fix stored stories' Nepali one or both ways, rewrite and in place, from one draft and one first reading, and compare; saves nothing")
     p_nt.add_argument("--article", action="append", help="a stored story id; repeat for more")
     p_nt.add_argument("--limit", type=int, default=3, help="without --article, the newest this many stories")
     p_nt.add_argument("--out", help="folder for nepali-trial.json, with both finished pieces for every story")
+    p_nt.add_argument("--ways", choices=["both", "rewrite", "in_place"], default="both", help="which ways to fix each draft; one way makes up to 6 calls a story instead of 10")
     p_nt.add_argument("--mock", action="store_true", help="no network, no keys, deterministic outputs")
     p_nt.set_defaults(func=cmd_nepali_trial)
+
+    p_nr = sub.add_parser("nepali-rejudge", help="read the finished pieces of earlier Nepali trials again with today's editor, so trials meet one reader; saves nothing")
+    p_nr.add_argument("--pieces", action="append", required=True, help="a trial's nepali-trial.json; repeat for each trial")
+    p_nr.add_argument("--way", choices=["rewrite", "in_place"], default="rewrite", help="which finished piece to read")
+    p_nr.add_argument("--readings", type=int, default=2, choices=[1, 2, 3], help="readings per piece")
+    p_nr.add_argument("--out", help="folder for nepali-rejudge.json")
+    p_nr.add_argument("--mock", action="store_true", help="no network, no keys, deterministic outputs")
+    p_nr.set_defaults(func=cmd_nepali_rejudge)
 
     p_ph = sub.add_parser("photos", help="look again for a licensed real photo for stored stories (by default the ones with an illustration or a cover card)")
     p_ph.add_argument("--all", action="store_true", help="every stored story, photos included")
