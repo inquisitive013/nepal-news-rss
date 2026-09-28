@@ -32,6 +32,16 @@ The house style's reader test binds the Nepali too, and the Nepali reader is the
 - Attribution goes where Nepali puts it: "प्रहरीका अनुसार", "प्रवक्ताले बताए", "मन्त्रालयले जनाएको छ", "उजुरीमा भनिएको छ", "…को दाबी छ". Contested conduct stays inside the attribution, never in the newsroom's own voice.
 - Quotes: double quotes, the reporting clause after: "…," उनले भने। When the cited source is a Nepali outlet, use the speaker's original Nepali words from that report. When the source is English, render the quote in plain spoken Nepali, no ornament. Never a quote that is not in the record.
 
+## स्रोत: every fact keeps its source
+
+The English names a source in nearly every sentence. The Nepali keeps each one where its fact is.
+- Every sentence that carries a fact the English attributes names that source inside the same sentence. A source named in the sentence before or after does not cover it. "रातोपाटीका अनुसार प्रहरीले राणालाई बिहान करिब २ बजे टेकु प्रहरी कार्यालय ल्यायो। प्रहरीले उनको मोबाइल फोन झन्डै १२ घण्टा राख्यो।" leaves the second fact bare. It becomes "प्रहरीले उनको मोबाइल फोन झन्डै १२ घण्टा राखेको रातोपाटीले जनाएको छ।"
+- One English sentence written as two Nepali sentences: each one that carries the source's fact keeps the source.
+- Two sentences from one source: attribute both and vary the verb: जनाएको छ, बताएको छ, लेखेको छ, …का अनुसार. Join them under one attribution only when the English carries them as one idea. A repeated attribution is fixed the same way, never by dropping a source.
+- An outlet reporting what an official said: the outlet first, the official with the verb. "नेपाल प्रेसका अनुसार जिल्ला प्रहरीले राजमार्ग अवरुद्ध भएको जनाएको छ।" Never both stacked at the end of the sentence.
+- Only what the English states in its own voice stands without a source.
+- Nothing stronger, nothing joined. No झन् where the English does not say worse, no ठीक where it does not say exactly, and no connector that adds a cause the English does not state: त्यसैले, किनभने, or a त that reads as one. Two facts the English keeps apart stay in separate sentences.
+
 ## अनुवादको गन्ध: translationese, and its cure
 
 - English passive with a known agent: "पक्राउ गरिएको थियो" becomes "प्रहरीले पक्राउ गरेको छ".
