@@ -140,7 +140,7 @@ def _fake_network(calls):
             return httpx.Response(200, json={"id": "111"})
         if "graph.facebook.com" in url and url.endswith("/111/photos"):
             body = dict(httpx.QueryParams(request.content.decode()))
-            assert body["url"].endswith(".jpg") and body["access_token"] == "EAABfaketoken_1234567890abcdefghijklmnop"
+            assert body["url"].split("?")[0].endswith(".jpg") and body["access_token"] == "EAABfaketoken_1234567890abcdefghijklmnop"
             assert "Every source, with links: " + SITE in body["caption"] and "Sources:" in body["caption"]
             return httpx.Response(200, json={"id": "90", "post_id": "111_2002"})
         if "graph.facebook.com" in url and url.endswith("/111/feed"):
@@ -560,7 +560,9 @@ def test_facebook_follows_the_engine_caption_when_the_writer_supplied_one(tmp_pa
     with_link = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
     assert f"Full story: {SITE}/articles/{art.slug}/\nSources available in graphic." in with_link
     # the card, not the raw photo, is what Facebook receives
-    assert social.card_url(s, art) == f"{SITE}/cards/{art.id}.jpg"
+    assert social.card_url(s, art) == f"{SITE}/cards/{art.id}.jpg?v=1"
+    art.version = 4  # a corrected card gets a fresh address, so no cache serves the one it replaced
+    assert social.card_url(s, art) == f"{SITE}/cards/{art.id}.jpg?v=4"
     art.image = None
     assert social.card_url(s, art) == ""
 
@@ -585,7 +587,7 @@ def test_facebook_photo_post_carries_the_card(tmp_path):
 
     env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
     social.post_article(settings, art, env, httpx.Client(transport=httpx.MockTransport(handler)), networks=["facebook"], sleep=lambda s: None)
-    assert seen["url"] == f"{SITE}/cards/{art.id}.jpg"
+    assert seen["url"] == f"{SITE}/cards/{art.id}.jpg?v=1"
     assert seen["caption"].startswith(art.headline)
 
 
