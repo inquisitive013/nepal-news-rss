@@ -16,13 +16,13 @@ The house style's reader test binds the Nepali too, and the Nepali reader is the
 
 ## शीर्षक: the headline
 
-- Short, and verb final or built on an action noun, the way Nepali headlines are: "पूर्वप्रधानन्यायाधीश राणा घरबाटै पक्राउ, प्रहरीले कारण खुलाएन". At most two clauses, joined by a comma. No colon lists.
+- Short, and verb final or built on an action noun, the way Nepali headlines are: "बाढीपहिरोमा ६ जनाको मृत्यु, ४०७ जनाको उद्धार". At most two clauses, joined by a comma. No colon lists.
 - The status signal survives: पक्राउ, आरोप, अनुसन्धानमा, अदालतमा, धरौटीमा रिहा. Never stronger than the record.
 - Under 60 characters where the story allows.
 
 ## पहिलो अनुच्छेद: the lede
 
-- Open with the place and the news in one sentence, as Nepali wires do: "काठमाडौं । प्रहरीले पूर्वप्रधानन्यायाधीश चोलेन्द्रशमशेर राणालाई आइतबार काठमाडौंस्थित घरबाट पक्राउ गरेको छ।"
+- Open with the place and the news in one sentence, as Nepali wires do: "काठमाडौं । देशभर बाढी र पहिरोमा परी ६ जनाको मृत्यु भएको र ४०७ जनाको उद्धार भएको प्रहरीले जनाएको छ।"
 - Recent events take the news tense, the present perfect: गरेको छ, भएको छ, बताएका छन्. Events that ended before the story take the simple past: गरे, भयो. What continues stays in the present: छ, गरिरहेको छ.
 
 ## वाक्य: sentences
@@ -35,7 +35,7 @@ The house style's reader test binds the Nepali too, and the Nepali reader is the
 ## स्रोत: every fact keeps its source
 
 The English names a source in nearly every sentence. The Nepali keeps each one where its fact is.
-- Every sentence that carries a fact the English attributes names that source inside the same sentence. A source named in the sentence before or after does not cover it. "रातोपाटीका अनुसार प्रहरीले राणालाई बिहान करिब २ बजे टेकु प्रहरी कार्यालय ल्यायो। प्रहरीले उनको मोबाइल फोन झन्डै १२ घण्टा राख्यो।" leaves the second fact bare. It becomes "प्रहरीले उनको मोबाइल फोन झन्डै १२ घण्टा राखेको रातोपाटीले जनाएको छ।"
+- Every sentence that carries a fact the English attributes names that source inside the same sentence. A source named in the sentence before or after does not cover it. "नागरिक न्युजका अनुसार नारायणी नदी आइतबार बिहानै देवघाटमा खतराको सीमा नाघ्यो। बाढी पूर्वानुमान महाशाखाले साँझसम्म उच्च सतर्कता अपनाउन आग्रह गरेको छ।" leaves the second fact bare. It becomes "बाढी पूर्वानुमान महाशाखाले साँझसम्म उच्च सतर्कता अपनाउन आग्रह गरेको नागरिक न्युजले जनाएको छ।"
 - One English sentence written as two Nepali sentences: each one that carries the source's fact keeps the source.
 - Two sentences from one source: attribute both and vary the verb: जनाएको छ, बताएको छ, लेखेको छ, …का अनुसार. Join them under one attribution only when the English carries them as one idea. A repeated attribution is fixed the same way, never by dropping a source.
 - An outlet reporting what an official said: the outlet first, the official with the verb. "नेपाल प्रेसका अनुसार जिल्ला प्रहरीले राजमार्ग अवरुद्ध भएको जनाएको छ।" Never both stacked at the end of the sentence.

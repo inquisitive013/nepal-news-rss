@@ -264,6 +264,29 @@ def test_the_trial_can_fix_the_draft_one_way_only(tmp_path):
     assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor", "nepali_editor"]
 
 
+def test_rejudge_reads_every_trials_pieces_again_with_one_editor(tmp_path, capsys):
+    import json
+
+    from newsroom import __main__ as cli
+    from newsroom.config import load_settings
+
+    story = publish.load_articles(load_settings(mock=True))[0].id
+    paths = []
+    for trial_id in ("111", "222"):
+        folder = tmp_path / trial_id
+        folder.mkdir()
+        rows = [{"id": story, "rewrite": {"piece": PIECE}}, {"id": "no-such-story", "rewrite": {"piece": PIECE}}]
+        (folder / "nepali-trial.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+        paths += ["--pieces", str(folder / "nepali-trial.json")]
+    before = sorted(p.name for p in (cli.ROOT / "data").rglob("*"))
+    assert cli.main(["nepali-rejudge", "--mock", *paths, "--readings", "2", "--out", str(tmp_path / "out")]) == 0
+    out = capsys.readouterr().out
+    assert "read again by one editor: 111, 222" in out and "Skipped 111 no-such-story" in out
+    saved = json.loads((tmp_path / "out" / "nepali-rejudge.json").read_text(encoding="utf-8"))
+    assert sorted((r["trial"], r["reading"]) for r in saved) == [("111", 1), ("111", 2), ("222", 1), ("222", 2)]
+    assert sorted(p.name for p in (cli.ROOT / "data").rglob("*")) == before
+
+
 def test_the_trial_command_saves_nothing(tmp_path, monkeypatch, capsys):
     import json
 

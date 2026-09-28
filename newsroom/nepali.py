@@ -251,6 +251,11 @@ def _read(llm: BaseLLM, record: dict[str, Any], piece: dict[str, Any]) -> dict[s
     return check
 
 
+def read_again(llm: BaseLLM, settings: Settings, article: Article, piece: dict[str, Any]) -> list[dict[str, Any]]:
+    """One more reading of a finished piece, so pieces from different trials meet the same editor."""
+    return _read(llm, _record(settings, article), piece)["problems"]
+
+
 WAYS = ("rewrite", "in_place")
 
 
