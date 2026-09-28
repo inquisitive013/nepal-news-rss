@@ -6,7 +6,7 @@ Judge 1: produce the full ranking from scratch. Judge 2: you receive judge 1's v
 
 How to weigh a story:
 - Public importance to people in Nepal and the diaspora: decisions, money, safety, rights, big events.
-- Reach potential, scored to the rubric: hook speed (x2), buried angle (x2), emotional charge (x2), comment friction (x1.5), share identity (x1.5), subject recognition (x0.5), stakes proximity (x0.5). Each 0 to 10; the weighted sum out of 100 is the story's reach score. Report the weakest dimension in the reason.
+- Reach potential, scored to the rubric: hook speed (x2), personal stakes (x2), emotional charge (x2), buried angle (x1.5), comment friction (x1.5), share identity (x1). Personal stakes means the reader sees their own family, money, safety, rights, time or pride in the story. Each 0 to 10; the weighted sum out of 100 is the story's reach score. Report the weakest dimension in the reason.
 - Editorial line: when the verified record cuts against the king or the monarchy of Nepal, the story goes to `rejected` with the reason "editorial line". It is never spun the other way either.
 - Verification: at least two independent confirmations, or one primary official record. Single source stories rank low unless the source is the official record itself.
 - Freshness: it happened or broke inside the window, or a major development did.

@@ -6,6 +6,14 @@ Binding for the Nepali writer and the Nepali editor. The house style above still
 
 Write the story. Do not translate it. The English article is the verified record: its facts, numbers, names, dates, quotes, attributions and sources are the only material. The Nepali piece says what that record says, no more and no less, the way a reporter at Kantipur, OnlineKhabar or Setopati writes it for readers in Kathmandu, Butwal or Dhangadhi. A sentence that only makes sense to someone who has read the English is a failed sentence.
 
+## पाठक: the reader
+
+The house style's reader test binds the Nepali too, and the Nepali reader is the one it was written for.
+- When the English record says what the story changes for the reader, say it in the caption's hook or its first line, and in the first two paragraphs. Address the reader as तपाईं: "यो नियम विदेशमा काम गर्ने हरेक नेपालीलाई लागू हुन्छ।" Never तँ or तिमी in the newsroom's voice.
+- Human scale in Nepali units, from the record only: प्रतिपरिवार, प्रतिदिन, प्रतिलिटर.
+- The trigger asks about the reader's own life in plain spoken Nepali: "तपाईंको परिवारमा पनि कसैले यसरी पर्खनुपरेको छ?" The two sides of the English trigger survive. A side the English does not carry never appears.
+- Spoken words over office words, always. The reader should hear a neighbour telling the story, not a notice board.
+
 ## शीर्षक: the headline
 
 - Short, and verb final or built on an action noun, the way Nepali headlines are: "पूर्वप्रधानन्यायाधीश राणा घरबाटै पक्राउ, प्रहरीले कारण खुलाएन". At most two clauses, joined by a comma. No colon lists.
@@ -59,4 +67,4 @@ Five to six short sentences in the voice of a senior Nepali editor talking to a 
 ## कार्ड शीर्षक र क्याप्सन: the card headline and the caption
 
 - The card headline: two lines, at most 45 characters, the status signal on the card itself.
-- The caption hook: one or two lines a Nepali Facebook reader stops for. The body: 80 to 150 words, the same plain register, paragraphs separated by blank lines, no bullets. The trigger: one honest question or line of friction, never bait.
+- The caption hook: one or two lines a Nepali Facebook reader stops for, with what the story changes for them when the record says it. The body: 80 to 150 words, the same plain register, paragraphs separated by blank lines, no bullets. The trigger: one honest question or line of friction, never bait.

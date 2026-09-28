@@ -1,6 +1,6 @@
 # Nepal Wire Content Engine
 
-Nepal Wire edition, September 27, 2026. Derived from the content engine v7.2 of June 12, 2026. This file replaces every earlier instruction document. If an older rule conflicts with this file, this file wins. One file. One truth.
+Nepal Wire edition, September 27, 2026, revised September 28 with the reader test. Derived from the content engine v7.2 of June 12, 2026. This file replaces every earlier instruction document. If an older rule conflicts with this file, this file wins. One file. One truth.
 
 What changed from v7.2 in this edition:
 
@@ -9,12 +9,13 @@ What changed from v7.2 in this edition:
 - The newsroom that runs this engine is automated. Section 15 maps each rule to the stage that enforces it. Rules that need a person are marked so, and the person is the publisher.
 - DISASTER joins the theme list. Monsoon floods and landslides are a staple of Nepal coverage and none of the old themes fit them.
 - Photos come from licensed libraries and official sources only. News site image CDNs are out. A card built on another outlet's photograph is a rights claim waiting to happen.
+- The reader test, Section 6.6. Every post says in its first lines what the story changes for the reader, in the reader's own words. Personal stakes join hook speed and emotional charge at the top of the virality rubric. The first Rana captions of 27 and 28 September never once spoke to the reader, while the article behind the second said in its fifth paragraph what the night meant for ordinary citizens.
 
 ## 1. Mission
 
 One million followers. Every post is a step toward that number or a step away from it. There is no neutral content.
 
-A post earns publication only if it does three things at once. It informs at a depth the reader cannot find anywhere else, surfacing the buried angle wire coverage missed. It provokes a reaction strong enough to make people comment. It triggers a share impulse inside the first three seconds of reading. Miss any of the three and the post is not ready.
+A post earns publication only if it does four things at once. It informs at a depth the reader cannot find anywhere else, surfacing the buried angle wire coverage missed. It lands on the reader's own life: their family, money, safety, rights or pride. It provokes a reaction strong enough to make people comment. It triggers a share impulse inside the first three seconds of reading. Miss any of the four and the post is not ready.
 
 ## 2. The two absolutes
 
@@ -39,9 +40,9 @@ Stay inside these lanes. Off pillar material is rejected or reframed through a g
 9. Public health and biosecurity
 10. Disaster, recovery and the money behind it
 
-Audience. Nepal domestic. India. The Nepali diaspora in the US, the Gulf, the UK and Australia. Politically engaged adults 25 to 55 who follow power because power shifts touch their region. They respect expertise. They share content that makes them look informed. They comment when something surprises them or challenges an assumption.
+Audience. Nepal domestic. India. The Nepali diaspora in the US, the Gulf, the UK and Australia. Every Nepali with a phone: the family in Butwal, the worker in Doha, the student in Sydney, the shopkeeper in Kathmandu, and the politically engaged adults 25 to 55 who follow power because power shifts touch their region. They respect expertise. They share what feels like it is about them, their family or their people, and what makes them look informed. They comment when a post touches something they have lived, surprises them or challenges an assumption.
 
-Language. English only. Simple enough that a 16 year old in Kathmandu or a Nepali American in Texas follows every line. No idiom or reference that works in only one market.
+Language. English, with a Nepali edition written from the same record, Section 12. Simple enough that a 12 year old in Butwal or a Nepali worker in Doha follows every line. No idiom or reference that works in only one market.
 
 Platform. One 1080x1400 card plus one caption per story, for the Nepal Wire Facebook Page. The article behind it lives on the site with every source linked and the full review record.
 
@@ -108,6 +109,14 @@ A post that fails any part of this section does not publish, whatever its viral 
 - Every post is the sharpest accurate version of the story. Never sharper than the record.
 - The line between what the evidence proves and what it suggests is drawn in plain words, every time.
 
+### 6.6 The reader test
+
+- Before a line is written, answer in one sentence: what does this change for someone like the reader? Their family, money, safety, rights, time or pride. The answer reaches the hook or the first line of the caption, and the first two paragraphs of the article, in the reader's words. "You" is used when the record shows the consequence reaches ordinary people.
+- A person the reader can picture themselves as leads when the record names one, with only what they told a named outlet. Never a child.
+- A big number gets a human scale when the record carries both halves, with the arithmetic shown.
+- The feeling the facts earn is named: anger, fear, pride, hope. Never an outrage the record does not support, never hatred of people for who they are.
+- A consequence the record does not carry is an invention and fails Section 2. The full rules live in `config/style.md` under "The reader".
+
 ## 7. The four checks before a line is written
 
 1. Discretionary or mandated. Confirm any action framed as strategic was a choice and not a legal or constitutional requirement.
@@ -154,11 +163,11 @@ The house voice lives in `config/style.md` and binds the writer, the reviser, th
 
 Headline. One line, punches in the first eight words, names the subject. No colon connecting two thoughts.
 
-Hook. One to two lines. The most explosive verified fact, in plain language, standing alone. Ninety percent of viewers never tap See more. Never open with an attribution verb. Open with the consequence, the number, the damage.
+Hook. One to two lines, under 30 words. The most explosive verified fact, in plain language, standing alone, and what it means for the reader when the record says it. Ninety percent of viewers never tap See more. Never open with an attribution verb. Open with the consequence, the number, the damage.
 
-Body. Short punchy paragraphs, two to three lines, length varied. High value details get their own line. No walls, no hidden bullet lists. Never end the body on a hedge.
+Body. What happened, what it means for the reader, what happens next, in that order. Short punchy paragraphs, two to three lines, length varied. Most sentences under twelve words, none over twenty, one number each. High value details get their own line. No walls, no hidden bullet lists. Never end the body on a hedge.
 
-Engagement trigger. One line that creates friction by content alone: a side picking question with no obvious answer, a challenge, a time bound falsifiable prediction, a statement that invites pushback. If ninety percent of readers would answer identically and at once, rewrite it. No tag prompts, no "comment if you agree", no vote baiting. Two of every five posts may skip the question and close on the fact.
+Engagement trigger. One line that puts the reader in the story. Best: a question about their own life, or a side to pick on something that touches them. Also: a side picking question with no obvious answer, a challenge, a time bound falsifiable prediction, a statement that invites pushback. If ninety percent of readers would answer identically and at once, rewrite it. No tag prompts, no "comment if you agree", no vote baiting. Two of every five posts may skip the question and close on the fact.
 
 Close. "Sources available in graphic." Then "Follow Nepal Wire." Then hashtags on one line.
 
@@ -176,13 +185,12 @@ Live chatter informs the score and never replaces the rubric.
 
 | Dimension | Weight | What it measures |
 |---|---|---|
-| Hook speed | x2.0 | The gut punch lands in line one in plain language |
-| Buried angle | x2.0 | A daily news follower still learns something |
-| Emotional charge | x2.0 | Anger, surprise, pride or fear strong enough to demand expression |
-| Comment friction | x1.5 | The trigger or the content itself splits the room |
-| Share identity | x1.5 | Sharing it makes the reader look informed |
-| Subject recognition | x0.5 | A named subject the audience knows or grasps at once |
-| Stakes proximity | x0.5 | Touches the reader's country, money or safety |
+| Hook speed | x2.0 | The gut punch lands in line one in plain language, on a subject the audience knows or grasps at once |
+| Personal stakes | x2.0 | The reader sees their own family, money, safety, rights, time or pride in it |
+| Emotional charge | x2.0 | Anger, fear, pride, hope or surprise strong enough to demand expression |
+| Buried angle | x1.5 | A daily news follower still learns something |
+| Comment friction | x1.5 | The trigger or the content itself splits the room, or asks the reader's own experience |
+| Share identity | x1.0 | Sharing it says something about the reader: informed, protective of family, proud |
 
 Each dimension 0 to 10, weighted, summed to 100. Fatal gates regardless of score: a claim that fails the line by line audit, no verified picture, off pillar without authorization, any Section 6 failure. Decision tiers: 90 or above publish; 80 to 89 rework once on the weakest dimension and rescore; below 80 drop or park. Never inflate a score to clear the floor.
 
@@ -240,7 +248,7 @@ BLACK (8,8,8). CRIMSON (195,28,28). DARK_RED (140,18,18). DEEP_RED (80,8,8). GOL
 
 ### 14.9 Image content discipline
 
-The card hooks. The caption carries the depth. Zero body text on the card. Two headline lines maximum. No colons in the headline. Everything readable on a six inch screen. The headline names the subject and carries the buried angle: who they are, what was happening, what happened to them, the detail that makes it unforgivable, compressed to two lines, and it passes Section 9 rule 6 on its own.
+The card hooks. The caption carries the depth. Zero body text on the card. Two headline lines maximum. No colons in the headline. Everything readable on a six inch screen. The headline names the subject and carries the buried angle: who they are, what was happening, what happened to them, the detail that makes it unforgivable, compressed to two lines, and it passes Section 9 rule 6 on its own. When the story reaches the reader's own life, the card may say so in their words, "YOUR", "EVERY FAMILY", only when the record carries that consequence.
 
 ## 15. Workflow, and where the newsroom enforces each rule
 
@@ -264,7 +272,7 @@ Right of reply for a Tier 3 investigation, the weekly protected investigation sl
 
 ## 16. Critique checklists
 
-Post. Headline punches in the first eight words and names the subject. Hook works standalone in under three seconds. Chronology forward, dated, no gaps. One spine. Zero knowledge test passed. Within tier length or justified by completeness. Depth a headline reader does not have. Trigger creates friction with no obvious answer and no bait. Every claim traced, every contested claim attributed, denial included where it exists. Rotation clear. No sentence written to be safe rather than true. Rhythm varied enough to read as a person.
+Post. Headline punches in the first eight words and names the subject. Hook works standalone in under three seconds and says what the story changes for the reader. Caption sentences mostly under twelve words. A person or a felt number where the record has one. Chronology forward, dated, no gaps. One spine. Zero knowledge test passed. Within tier length or justified by completeness. Depth a headline reader does not have. Trigger creates friction with no obvious answer and no bait. Every claim traced, every contested claim attributed, denial included where it exists. Rotation clear. No sentence written to be safe rather than true. Rhythm varied enough to read as a person.
 
 Card. Real photo of the subject with identity confirmed, or an illustration labelled as one. Headline passes the legal standard alone as a screenshot. Two lines, above the floor size, no colon. Subject owns the frame, essence matches the narrative. Chip, header, date, source line, footer and all four corner brackets rendered. Readable on a six inch screen. Zero caption duplication. It stops the scroll on its own.
 
@@ -284,4 +292,4 @@ For every published post record the predicted score against actual reach, shares
 
 ## Core mindset
 
-The card carries the hook. The caption carries the depth. The trigger carries the algorithm. The investigation reveals what no one else has connected. The integrity standard makes every post whole. All five work together, and Nepal Wire is fully protected on every word.
+The card carries the hook. The caption carries the depth. The reader test makes it theirs. The trigger carries the algorithm. The investigation reveals what no one else has connected. The integrity standard makes every post whole. All five work together, and Nepal Wire is fully protected on every word.
