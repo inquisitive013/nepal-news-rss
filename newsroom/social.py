@@ -201,10 +201,14 @@ def image_url(settings: Settings, article: Article) -> str:
 
 
 def card_url(settings: Settings, article: Article) -> str:
-    """The 1080x1400 card the site build renders for every article with a photo."""
+    """The 1080x1400 card the site build renders for every article with a photo.
+
+    The article's version rides on the address, so a corrected card is fetched fresh: neither
+    the site's cache nor Facebook's can hand back the card it replaced.
+    """
     if not article.image:
         return ""
-    return f"{settings.site_url.rstrip('/')}/cards/{article.id}.jpg"
+    return f"{settings.site_url.rstrip('/')}/cards/{article.id}.jpg?v={max(1, int(article.version or 1))}"
 
 
 def nepali_article_url(settings: Settings, article: Article) -> str:
