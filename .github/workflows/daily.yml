@@ -2,8 +2,10 @@ name: Daily edition
 
 on:
   schedule:
-    # 00:30 UTC is 06:15 in Nepal. Editions publish before the morning commute.
-    - cron: "30 0 * * *"
+    # 23:30 UTC is 05:15 in Nepal. GitHub has started scheduled runs about 45 minutes late,
+    # so the edition starts near 06:00. With llm.batch on it takes about two hours, and the
+    # first story posts near 08:00, before the morning commute.
+    - cron: "30 23 * * *"
   workflow_dispatch:
     inputs:
       mock:

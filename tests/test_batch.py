@@ -223,3 +223,22 @@ def test_the_probe_sends_the_editions_shapes_and_reports_the_queue(monkeypatch, 
         assert params["output_config"]["format"]["type"] == "json_schema"
     out = capsys.readouterr().out
     assert "4 of 4 batch requests answered with valid JSON" in out and "Web search inside a batch request: works" in out
+
+
+def test_a_spend_limit_met_in_the_queue_still_stops_the_run_at_once(live, monkeypatch):
+    import anthropic
+
+    httpx2 = pytest.importorskip("httpx2")
+    limit = "You have reached your specified API usage limits. You will regain access on 2026-10-01 at 00:00 UTC."
+    client, _ = live({"result": "errored", "error": limit})
+    attempts = []
+
+    def refuse(kwargs):
+        attempts.append(1)
+        response = httpx2.Response(400, request=httpx2.Request("POST", "https://api.anthropic.com/v1/messages"))
+        raise anthropic.BadRequestError(limit, response=response, body=None)
+
+    monkeypatch.setattr(client, "_create", refuse)
+    with pytest.raises(llmmod.SpendLimitReached, match="2026-10-01 at 00:00 UTC"):
+        client.structured("writer", "Write it.", {"story": "x"}, SCHEMA)
+    assert attempts == [1] and not client.batch.open()  # one normal attempt names the limit; no retry, no more batches
