@@ -542,10 +542,13 @@ class MockLLM(BaseLLM):
         # When true the Nepali editor sends the piece back once.
         self.send_back_nepali = send_back_nepali
         self.calls: list[str] = []
+        # The web search budget each call asked for, in call order, so tests can see which calls carry the tool.
+        self.searches: list[tuple[str, int]] = []
 
     def structured(self, role, user_text, payload, schema, *, images=None, web_search_uses=0, max_tokens=None):
         self.meter.reserve()
         self.calls.append(role)
+        self.searches.append((role, web_search_uses))
         handler = getattr(self, f"_{role}", None)
         if handler is None:
             raise LLMError(f"MockLLM has no handler for role {role}")

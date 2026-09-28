@@ -75,14 +75,15 @@ pipeline:
   # publish the English edition only.
   nepali_edition: true
   # Editor passes per story. One means: the editor reads the piece once and the writer applies
-  # every fix it asks for. Two adds a second reading and fix. On 28 September the second pass
-  # took 7.8 of the story's 52 minutes and 77 cents at list prices.
-  nepali_rounds: 1
+  # every fix it asks for. Two adds a second reading and fix. In all five stories written so far
+  # the second reading still found errors the first fix had left or made: a detail not in the
+  # record, a dropped attribution, a headline that read as if Rana was still held. Keep two.
+  nepali_rounds: 2
   # Safety valve. The run stops taking new work after this many model calls.
-  # A normal day is about 39: clusterer 1, advocate 3, skeptic 3, ranking judges 2,
-  # investigator 3, writer 3, picture check 3, red team 3, defence 3, validation judges 6,
-  # reviser 3, Nepali writer 3, Nepali editor 3, plus one more per story when the editor
-  # sends a piece back.
+  # A normal day is about 48: clusterer 1, advocate 3, skeptic 3, ranking judges 2, then per
+  # story investigator 1, writer 1, picture check 1, red team 1, defence 1, judges 2, reviser 1,
+  # Nepali writer 3 and Nepali editor 2. The worst day, every send back the caps allow and a
+  # second picture round for each story, is 55.
   max_llm_calls: 60
 
 llm:

@@ -347,14 +347,18 @@ def test_the_red_team_defence_and_judges_see_the_take_card_and_caption(tmp_path)
                 assert view["take"] == art.take and view["image_headline"] == art.image_headline and view["caption"] == art.caption, role
 
 
-def test_by_default_the_nepali_editor_reads_once_and_the_fixed_story_still_publishes_in_nepali(tmp_path):
+def test_by_default_the_nepali_editor_reads_the_fix_again_and_only_the_draft_searches(tmp_path):
+    """Every second reading on 27 and 28 September still found errors the first fix left or made,
+    so a fixed piece is read again by default. The fix itself works from the editor's notes."""
     settings = _settings(tmp_path)
-    assert settings.get("pipeline.nepali_rounds") == 1
+    assert settings.get("pipeline.nepali_rounds") == 2
     llm = MockLLM(settings, UsageMeter(200), send_back_nepali=True)
     run = pipeline.run(settings, llm=llm, now=NOW)
     assert run.status == "ok" and run.published
     calls = _calls(llm)
-    assert calls["nepali_writer"] == 2 * len(run.published) and calls["nepali_editor"] == len(run.published)
+    assert calls["nepali_writer"] == 2 * len(run.published) and calls["nepali_editor"] == 2 * len(run.published)
+    budgets = [n for role, n in llm.searches if role == "nepali_writer"]
+    assert budgets.count(settings.web_search_uses("nepali_writer")) == len(run.published) and budgets.count(0) == len(run.published)
     for a in publish.load_articles(settings):
         assert nepali.usable(a.nepali) and "सच्याइएको" in a.nepali["body_markdown"]
-        assert a.nepali["passes"] == 1 and a.nepali["problems_fixed"] == 1 and a.nepali["approved"] is False  # the record says the fix was not read again
+        assert a.nepali["passes"] == 2 and a.nepali["problems_fixed"] == 1 and a.nepali["approved"] is True
