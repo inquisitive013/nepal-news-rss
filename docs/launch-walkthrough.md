@@ -2,6 +2,16 @@
 
 The order matters. Each step feeds the next. Nothing here needs code: every value you collect goes into `config/settings.yaml`, and I apply it the moment you send it. Never paste a token or key into chat, a commit or this file. Secrets go only into *Settings → Secrets and variables → Actions*.
 
+## The Anthropic spend limit. Whenever an edition stops short.
+
+The account has a monthly spend limit, and when it is reached every model call stops until the first of the next month. On 28 September it stopped the morning edition part way, so nothing was published or posted.
+
+1. Claude Console → **Settings → Billing**. The **Spend limits** section shows the limit and what this month has used.
+2. Click **Adjust limit** and raise it. It cannot go above your usage tier's monthly cap, which the same page shows.
+3. Tell me, or run *Actions → Daily edition → Run workflow*. Access returns the moment the limit is raised.
+
+An English edition costs about 5.30 dollars at list prices, measured on 27 September. The Nepali edition adds to that; the first full run records how much. Leave headroom for a month of daily editions plus the occasional rerun.
+
 ## 0. Two Facebook fixes first. Five minutes.
 
 1. **The Page ID secret is stale.** Open the Page, *About → Page transparency*, copy the Page ID. In the repository open *Settings → Secrets and variables → Actions*, edit `FACEBOOK_PAGE_ID`, paste, save. The newsroom tolerates the stale value only while the token manages exactly one Page.

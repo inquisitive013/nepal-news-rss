@@ -60,12 +60,40 @@ class CreditExhausted(BudgetExceeded):
     """The Anthropic account has no credit left. Nothing else in this run can succeed."""
 
 
+class SpendLimitReached(CreditExhausted):
+    """The account's monthly spend limit is reached. Nothing else in this run can succeed until it is raised."""
+
+
 MAX_OUTPUT_TOKENS = 128000
 
 
 def is_credit_error(text: str) -> bool:
     lowered = text.lower()
     return "credit balance" in lowered or "purchase credits" in lowered
+
+
+# A limit the account owner set returns 400 "You have reached your specified (workspace) API usage
+# limits"; the usage tier's own monthly cap returns 429 with error_code enforced_spend_limit_reached.
+_OWN_LIMIT_MARKERS = ("specified api usage limits", "specified workspace api usage limits")
+_TIER_CAP_MARKERS = ("enforced_spend_limit_reached", "monthly api usage threshold")
+
+
+def is_spend_limit_error(text: str) -> bool:
+    lowered = text.lower()
+    return any(m in lowered for m in _OWN_LIMIT_MARKERS + _TIER_CAP_MARKERS)
+
+
+def spend_limit_message(text: str) -> str:
+    """One plain sentence for the run record: what stopped the run, when it clears, how to clear it now."""
+    lowered = text.lower()
+    found = re.search(r"regain access on (\d{4}-\d{2}-\d{2}) at (\d{2}:\d{2}) utc", lowered)
+    when = f" Access returns on its own on {found.group(1)} at {found.group(2)} UTC." if found else ""
+    if any(m in lowered for m in _TIER_CAP_MARKERS) and not any(m in lowered for m in _OWN_LIMIT_MARKERS):
+        return ("the Anthropic account reached its usage tier's monthly spend cap." + when
+                + " To continue sooner, request a higher limit in the Claude Console under Settings > Limits.")
+    scope = "workspace spend limit" if "workspace" in lowered else "monthly spend limit"
+    return (f"the Anthropic account reached the {scope} set in the Claude Console." + when
+            + " Raise or remove it under Settings > Billing > Spend limits, then run the edition again.")
 
 
 # --------------------------------------------------------------------------- schema helpers
@@ -417,6 +445,8 @@ class ClaudeLLM(BaseLLM):
                 msg = self._create(kwargs)
             except anthropic.BadRequestError as exc:
                 text = str(exc)
+                if is_spend_limit_error(text):
+                    raise SpendLimitReached(spend_limit_message(text)) from exc
                 if is_credit_error(text):
                     raise CreditExhausted("the Anthropic account has run out of credit. Add credit in the Console under Billing.") from exc
                 if self.use_fallback and ("fallback" in text.lower()):
@@ -433,6 +463,8 @@ class ClaudeLLM(BaseLLM):
                     continue
                 raise LLMError(f"bad request for {role}: {text[:300]}") from exc
             except anthropic.APIStatusError as exc:
+                if is_spend_limit_error(str(exc)):
+                    raise SpendLimitReached(spend_limit_message(str(exc))) from exc
                 raise LLMError(f"API error for {role}: {exc.status_code} {str(exc)[:200]}") from exc
             except anthropic.APIConnectionError as exc:
                 raise LLMError(f"connection error for {role}: {exc}") from exc

@@ -106,6 +106,34 @@ def test_credit_exhaustion_stops_the_run(tmp_path):
     assert "red_team" not in llm.calls
 
 
+def test_a_spend_limit_during_the_checks_keeps_every_draft_and_says_why(tmp_path):
+    from newsroom.llm import SpendLimitReached, spend_limit_message
+
+    reason = spend_limit_message("You have reached your specified API usage limits. You will regain access on 2026-10-01 at 00:00 UTC.")
+
+    class CappedLLM(MockLLM):
+        def structured(self, role, *args, **kwargs):
+            if role == "red_team":
+                self.calls.append(role)
+                raise SpendLimitReached(reason)
+            return super().structured(role, *args, **kwargs)
+
+    settings = _settings(tmp_path)
+    llm = CappedLLM(settings, UsageMeter(200))
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "partial" and not run.published
+    assert run.errors and all("Settings > Billing > Spend limits" in e for e in run.errors)
+    # the researched, written drafts are kept, unpublished, with the reason on each
+    drafts = sorted((tmp_path / "data" / "rejected").glob("*.json"))
+    assert len(drafts) == len(run.selected_story_ids) > 0
+    for path in drafts:
+        review = json.loads(path.read_text())["review"]
+        assert review["final_decision"] == "cut off" and "2026-10-01 at 00:00 UTC" in review["final_reason"]
+    assert not list((tmp_path / "data" / "articles").glob("*.json"))
+    # nothing past the red team ran once the limit was hit
+    assert "validation_judge" not in llm.calls and "nepali_writer" not in llm.calls
+
+
 def test_call_budget_matches_the_settings(tmp_path):
     settings = _settings(tmp_path)
     llm = MockLLM(settings, UsageMeter(200))

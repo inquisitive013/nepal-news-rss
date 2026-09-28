@@ -89,3 +89,47 @@ def test_mock_outputs_match_every_schema():
 def test_credit_error_detection():
     assert llmmod.is_credit_error("Error code: 400 - Your credit balance is too low to access the Anthropic API.")
     assert not llmmod.is_credit_error("Error code: 400 - messages: field required")
+
+
+# The spend limit responses, verbatim: this morning's run, and the tier cap and workspace forms from Anthropic's rate limits page.
+OWN_LIMIT = "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified API usage limits. You will regain access on 2026-10-01 at 00:00 UTC.'}}"
+WORKSPACE_LIMIT = "Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'You have reached your specified workspace API usage limits. You will regain access on 2026-10-01 at 00:00 UTC.'}}"
+TIER_CAP = "Error code: 429 - {'type': 'error', 'error': {'type': 'rate_limit_error', 'message': 'You have reached your API usage limits: your organization has crossed its monthly API usage threshold, set based on your organization's API tier. You will regain access on 2026-10-01 at 00:00 UTC.', 'details': {'error_code': 'enforced_spend_limit_reached'}}}"
+
+
+def test_spend_limit_detection_and_the_plain_reason():
+    for text in (OWN_LIMIT, WORKSPACE_LIMIT, TIER_CAP):
+        assert llmmod.is_spend_limit_error(text)
+    assert not llmmod.is_spend_limit_error("Error code: 429 - rate_limit_error: Number of request tokens has exceeded your per-minute rate limit")
+    assert not llmmod.is_spend_limit_error("Error code: 400 - Your credit balance is too low to access the Anthropic API.")
+    own = llmmod.spend_limit_message(OWN_LIMIT)
+    assert "monthly spend limit set in the Claude Console" in own and "2026-10-01 at 00:00 UTC" in own and "Settings > Billing > Spend limits" in own
+    assert "workspace spend limit" in llmmod.spend_limit_message(WORKSPACE_LIMIT)
+    cap = llmmod.spend_limit_message(TIER_CAP)
+    assert "usage tier's monthly spend cap" in cap and "Settings > Limits" in cap and "2026-10-01 at 00:00 UTC" in cap
+    assert "Access returns" not in llmmod.spend_limit_message("You have reached your specified API usage limits.")
+
+
+@pytest.mark.parametrize(
+    "error_class,status,text",
+    [("BadRequestError", 400, OWN_LIMIT), ("RateLimitError", 429, TIER_CAP)],
+)
+def test_the_live_client_stops_on_a_spend_limit_instead_of_retrying(monkeypatch, error_class, status, text):
+    import anthropic
+    httpx2 = pytest.importorskip("httpx2")
+
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test-not-a-real-key")
+    for key in ("ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_FEDERATION_RULE_ID", "ANTHROPIC_ORGANIZATION_ID", "ANTHROPIC_PROFILE"):
+        monkeypatch.delenv(key, raising=False)
+    client = llmmod.ClaudeLLM(load_settings(mock=False), llmmod.UsageMeter(10))
+    attempts = []
+
+    def refuse(kwargs):
+        attempts.append(1)
+        response = httpx2.Response(status, request=httpx2.Request("POST", "https://api.anthropic.com/v1/messages"))
+        raise getattr(anthropic, error_class)(text, response=response, body=None)
+
+    monkeypatch.setattr(client, "_create", refuse)
+    with pytest.raises(llmmod.SpendLimitReached, match="2026-10-01 at 00:00 UTC"):
+        client.structured("writer", "Write it.", {"story": "x"}, {"type": "object", "properties": {"headline": {"type": "string"}}})
+    assert attempts == [1]  # no retry: nothing else in the run can succeed
