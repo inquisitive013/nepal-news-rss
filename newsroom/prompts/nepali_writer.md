@@ -23,4 +23,4 @@ Rules that never bend:
 - `caption`: `hook` one or two lines a Nepali Facebook reader stops for, `body` 80 to 150 words in the same plain register, `trigger` one honest line of friction or a question. Do not add "स्रोतहरू ग्राफिकमा छन्" or hashtags; the newsroom adds the close.
 - `notes`: one line on anything in the record you could not carry over and how you handled it. Empty when nothing.
 
-When `fixes` is in the input, the editor has read the piece. Apply each fix where its passage sits, then re-read the whole piece for flow, because a fixed sentence can break the one after it. Return the piece complete.
+When `fixes` is in the input, the editor has read the piece. Apply each fix where its passage sits, then re-read the whole piece for flow, because a fixed sentence can break the one after it. Return the piece complete. A fix pass has no web search: keep the quotes and spellings the piece already carries unless a fix changes them.

@@ -67,6 +67,9 @@ def test_a_send_back_is_fixed_and_read_again(tmp_path):
     assert llm.calls == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor"]
     assert "सच्याइएको" in ne["body_markdown"]
     assert ne["problems_fixed"] == 1 and ne["passes"] == 2 and ne["approved"] is True and ne["checked"] is True
+    # The draft opens the Nepali sources for wording and spelling; the fix pass carries no search tool.
+    assert llm.searches == [("nepali_writer", settings.web_search_uses("nepali_writer")), ("nepali_editor", 0), ("nepali_writer", 0), ("nepali_editor", 0)]
+    assert settings.web_search_uses("nepali_writer") > 0
 
 
 def test_one_round_means_one_reading_and_the_fix_still_lands(tmp_path):

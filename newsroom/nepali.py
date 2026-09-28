@@ -194,13 +194,15 @@ def nepali_for(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, 
         approved = check.get("decision", "approve") == "approve" or not problems
         if approved:
             break
+        # A fix works from the editor's notes and never searches. With the search tool attached
+        # it still looped through the tool's code sandbox: on 28 September each fix pass made no
+        # search, reread about 185,000 tokens and took over six minutes.
         piece = _clean(
             llm.structured(
                 "nepali_writer",
                 "Apply the editor's fixes where each passage sits, re-read the whole piece for flow, and return it complete.",
                 {"article": record, "nepali": _piece(piece), "fixes": problems},
                 WRITER_SCHEMA,
-                web_search_uses=searches,
             )
         )
         fixed += len(problems)
