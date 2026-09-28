@@ -4,7 +4,7 @@ import dataclasses
 import json
 from datetime import datetime, timezone
 
-from newsroom import pipeline, publish
+from newsroom import nepali, pipeline, publish
 from newsroom.config import load_settings
 from newsroom.llm import MockLLM, UsageMeter
 from tests.conftest import FIXTURES
@@ -168,7 +168,7 @@ def test_the_nepali_edition_can_be_switched_off(tmp_path):
 
 
 def test_a_nepali_send_back_is_fixed_and_read_again_within_the_run(tmp_path):
-    settings = _settings(tmp_path)
+    settings = _settings(tmp_path, nepali_rounds=2)
     llm = MockLLM(settings, UsageMeter(200), send_back_nepali=True)
     run = pipeline.run(settings, llm=llm, now=NOW)
     assert run.status == "ok" and run.published
@@ -345,3 +345,16 @@ def test_the_red_team_defence_and_judges_see_the_take_card_and_caption(tmp_path)
                 assert field in view, (role, field)
             if art is not None and view["version"] == art.version:
                 assert view["take"] == art.take and view["image_headline"] == art.image_headline and view["caption"] == art.caption, role
+
+
+def test_by_default_the_nepali_editor_reads_once_and_the_fixed_story_still_publishes_in_nepali(tmp_path):
+    settings = _settings(tmp_path)
+    assert settings.get("pipeline.nepali_rounds") == 1
+    llm = MockLLM(settings, UsageMeter(200), send_back_nepali=True)
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.status == "ok" and run.published
+    calls = _calls(llm)
+    assert calls["nepali_writer"] == 2 * len(run.published) and calls["nepali_editor"] == len(run.published)
+    for a in publish.load_articles(settings):
+        assert nepali.usable(a.nepali) and "सच्याइएको" in a.nepali["body_markdown"]
+        assert a.nepali["passes"] == 1 and a.nepali["problems_fixed"] == 1 and a.nepali["approved"] is False  # the record says the fix was not read again

@@ -113,6 +113,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 18px 16px 40px; }
 .story h1 { font-family: var(--serif); font-size: clamp(30px, 5vw, 44px); line-height: 1.1; margin: 4px 0 10px; letter-spacing: -0.01em; }
 .story .dek { font-size: 1.2rem; }
 .take { border-left: 4px solid var(--accent, #b3261e); background: var(--panel, #f6f1ea); padding: 10px 14px; margin: 14px 0 0; font-size: 1.05rem; line-height: 1.5; }
+.update { border-left: 4px solid #c9a227; background: var(--panel, #f6f1ea); padding: 10px 14px; margin: 14px 0 0; font-size: 1rem; line-height: 1.5; }
 .byline { color: var(--muted); font-size: 0.9rem; border-bottom: 1px solid var(--rule); padding-bottom: 14px; margin: 14px 0 20px; }
 figure { margin: 0 0 22px; }
 figure img { width: 100%; border-radius: 6px; }
