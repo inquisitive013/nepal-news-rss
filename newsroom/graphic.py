@@ -216,6 +216,7 @@ def balanced_two_lines(draw: ImageDraw.ImageDraw, text: str, fnt, max_width: int
 
 def fit_headline(draw: ImageDraw.ImageDraw, text: str, *, max_width: int = HEADLINE_MAX_WIDTH, max_lines: int = 2, largest: int = 72, smallest: int = 52):
     """The largest size from 72 down to 52 at which the headline sits in two balanced lines. Three lines at the floor is the last resort."""
+    text = " ".join(text.split())  # a line break inside the text would draw as a second line nobody measured
     for size in range(largest, smallest - 1, -2):
         fnt = font("sans-bold", size)
         if text_width(draw, text, fnt) <= max_width:
@@ -229,6 +230,21 @@ def fit_headline(draw: ImageDraw.ImageDraw, text: str, *, max_width: int = HEADL
         log.warning("image headline too long for the card, cut to three lines: %s", text)
         lines = lines[:3]
     return fnt, lines
+
+
+def headline_lines(draw: ImageDraw.ImageDraw, text: str, *, largest: int = 72, smallest: int = 52):
+    """The card headline in the two lines the writer broke it into, at the largest size where both fit.
+
+    The writer breaks the headline where the sense breaks. When that break cannot fit even at
+    the floor, or there is no break, the renderer balances the words itself.
+    """
+    given = [" ".join(line.split()) for line in (text or "").upper().splitlines() if line.strip()]
+    if len(given) == 2:
+        for size in range(largest, smallest - 1, -2):
+            fnt = font("sans-bold", size)
+            if all(text_width(draw, line, fnt) <= HEADLINE_MAX_WIDTH for line in given):
+                return fnt, given
+    return fit_headline(draw, " ".join(given), largest=largest, smallest=smallest)
 
 
 def _rect(draw: ImageDraw.ImageDraw, x1: int, y1: int, x2: int, y2: int, fill) -> None:
@@ -313,8 +329,7 @@ def render_card(settings: Settings, article: Article, out_path: Path) -> Path:
     draw.rectangle([(W - ul_w) // 2, ul_bottom - ul_h, (W + ul_w) // 2, ul_bottom], fill=GOLD)
 
     # The headline, two lines, line one white, line two off white.
-    headline = (article.image_headline or article.headline).strip().upper()
-    f_head, lines = fit_headline(draw, headline)
+    f_head, lines = headline_lines(draw, article.image_headline or article.headline)
     line_h = int(f_head.size * 1.18)
     y = ul_bottom - ul_h - 26 - line_h * len(lines)
     for i, line in enumerate(lines):

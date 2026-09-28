@@ -682,3 +682,66 @@ def test_an_older_story_with_a_nepali_caption_still_gets_the_bilingual_format(tm
     # without any caption at all the old long form still applies
     art.nepali = {}
     assert "THE STORY" in social.compose("facebook", art, s)
+
+
+def test_a_one_block_caption_body_goes_out_in_short_paragraphs_with_every_word_kept():
+    body = (
+        "Police took Cholendra Shumsher Rana, who led Nepal's Supreme Court until 2022, from his Maharajgunj home shortly after midnight on Sunday, the Kathmandu Post reported. "
+        "They held his phone for nearly 12 hours, Ratopati reported. "
+        "Officers first called it an arrest, then said he had not been arrested at all, the Statesman reported. "
+        "His family said no warrant was ever shown. "
+        "Mr. Dahal called the security threat an excuse, Republica reported. "
+        "Rana has since asked police for more protection."
+    )
+    out = social.paragraphs(body)
+    assert out.split() == body.split()  # only line breaks change
+    paras = out.split("\n\n")
+    assert len(paras) == 3 and paras[2].startswith("Mr. Dahal")  # "Mr." never ends a sentence
+    assert social.paragraphs("Short. Body.") == "Short. Body."
+    kept = "One paragraph.\n\nAnother one, already broken."
+    assert social.paragraphs(kept + " " + "word " * 80) == (kept + " " + "word " * 80).strip()
+    ne = "प्रहरीले उनलाई घरबाट लगेको थियो। " * 12
+    assert social.paragraphs(ne).count("\n\n") == 5  # Nepali sentences end with the danda
+
+
+def test_replace_takes_the_old_facebook_post_down_before_posting_the_corrected_one(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.caption = {"hook": "h", "body": "b", "trigger": ""}
+    publish.save_article(settings, art)
+    calls = []
+    delete_ok = {"value": True}
+
+    def handler(request):
+        url = str(request.url)
+        if url.startswith(SITE):
+            return httpx.Response(200, text="ok")
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "111"})
+        if request.method == "DELETE":
+            calls.append(("DELETE", url.split("?")[0].rsplit("/", 1)[-1]))
+            return httpx.Response(200, json={"success": True}) if delete_ok["value"] else httpx.Response(400, json={"error": {"message": "cannot delete", "code": 100}})
+        if url.endswith("/111/photos"):
+            calls.append(("POST", "photos"))
+            n = sum(1 for c in calls if c == ("POST", "photos"))
+            return httpx.Response(200, json={"id": str(n), "post_id": f"111_{n}"})
+        return httpx.Response(404, json={"error": "unexpected " + url})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    kwargs = dict(networks=["facebook"], client=client, sleep=lambda s: None, wait_seconds=0, article_ids=[art.id], max_age_hours=1e6)
+    social.post_articles(settings, env, **kwargs)
+    assert calls == [("POST", "photos")]
+
+    rec = social.post_articles(settings, env, replace=True, **kwargs)[0]
+    assert calls[1:] == [("DELETE", "111_1"), ("POST", "photos")]  # down first, then the corrected post
+    assert [(p.status, p.id) for p in rec.posts] == [("removed", "111_1"), ("posted", "111_2")]
+
+    delete_ok["value"] = False
+    rec = social.post_articles(settings, env, replace=True, **kwargs)[0]
+    assert calls[3:] == [("DELETE", "111_2")]  # the takedown failed, so nothing new went out
+    assert rec.posts[-1].status == "failed" and "not sent" in rec.posts[-1].error
+    assert [p.status for p in rec.posts[:2]] == ["removed", "posted"]
+
+    with pytest.raises(ValueError):
+        social.post_articles(settings, env, replace=True, networks=["facebook"], client=client, wait_seconds=0)
