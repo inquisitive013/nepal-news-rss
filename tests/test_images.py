@@ -124,3 +124,37 @@ def test_make_image_uses_generation_when_available(tmp_path):
     asset = images.make_image_for_article(llm, settings, art, "26 September 2026", fetch_json_fn=lambda url: {"query": {"pages": {}}}, generate_fn=lambda prompt, s: (_png(1024, 1024, (10, 10, 200)), "test-model"))
     assert asset.credit.kind == "generated" and asset.credit.model == "test-model"
     assert "AI generated" in asset.credit.line()
+
+
+def test_the_openai_key_check_costs_nothing_and_never_echoes_the_key():
+    import httpx
+    from newsroom import images
+    from newsroom.config import load_settings
+
+    settings = load_settings(mock=True)
+    seen = []
+
+    def transport(status, body):
+        def handler(request):
+            seen.append((request.method, str(request.url), request.headers.get("authorization")))
+            return httpx.Response(status, json=body)
+        return httpx.Client(transport=httpx.MockTransport(handler))
+
+    ok = images.check_openai_key(settings, {"OPENAI_API_KEY": "  sk-proj-test123\n"}, transport(200, {"id": "gpt-image-1"}))
+    assert ok == ("ok", "OpenAI accepted the key and can see gpt-image-1")
+    # a model lookup, never a generation; the pasted key is trimmed
+    assert seen[-1] == ("GET", "https://api.openai.com/v1/models/gpt-image-1", "Bearer sk-proj-test123")
+
+    bad = {"error": {"message": "Incorrect API key provided: sk-proj-****t123.", "type": "invalid_request_error", "code": "invalid_api_key"}}
+    status, note = images.check_openai_key(settings, {"OPENAI_API_KEY": "sk-proj-test123"}, transport(401, bad))
+    assert status == "failed" and "invalid_api_key" in note and "replace the OPENAI_API_KEY secret" in note
+    assert "sk-" not in note  # OpenAI's message quotes part of the key; the note never does
+
+    status, note = images.check_openai_key(settings, {"OPENAI_API_KEY": "sk-proj-test123"}, transport(404, {"error": {"code": "model_not_found"}}))
+    assert status == "failed" and "cannot use gpt-image-1" in note and "model_not_found" in note
+
+    assert images.check_openai_key(settings, {}, transport(200, {}))[0] == "not set"
+    raw = dict(settings.raw)
+    raw["images"] = dict(raw["images"], generation=dict(raw["images"]["generation"], provider="none"))
+    import dataclasses
+    assert images.check_openai_key(dataclasses.replace(settings, raw=raw), {"OPENAI_API_KEY": "sk-proj-x"}, transport(200, {}))[0] == "off"
