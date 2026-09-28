@@ -196,6 +196,22 @@ class UsageMeter:
             self.records.append(rec)
 
 
+def usage_cost(settings: Settings, records: list[UsageRecord]) -> tuple[float, int]:
+    """Dollars at the list prices in `llm.prices`, and how many calls had no price to go by."""
+    prices = settings.get("llm.prices", {}) or {}
+    per_search = float(settings.get("llm.web_search_per_1000", 0) or 0) / 1000
+    total, unpriced = 0.0, 0
+    for rec in records:
+        price = prices.get(rec.model)
+        if not price:
+            unpriced += 1
+            continue
+        pin, pout, read = float(price["input"]), float(price["output"]), float(price["cache_read"])
+        tokens = rec.input_tokens * pin + rec.cache_creation_input_tokens * pin * 1.25 + rec.cache_read_input_tokens * read + rec.output_tokens * pout
+        total += tokens / 1e6 * (0.5 if rec.batch else 1.0) + rec.web_search_requests * per_search
+    return total, unpriced
+
+
 # --------------------------------------------------------------------------- base
 
 def _payload_block(user_text: str, payload: dict[str, Any]) -> str:
@@ -351,6 +367,106 @@ def build_client(timeout: float = 600.0, max_retries: int = 3):
     return anthropic.Anthropic(timeout=timeout, max_retries=max_retries, **extra)
 
 
+# --------------------------------------------------------------------------- batch lane
+
+def batch_custom_id(role: str) -> str:
+    """A batch request id: letters, digits, _ and -, at most 64 characters."""
+    safe = re.sub(r"[^A-Za-z0-9_-]", "-", role)[:40] or "call"
+    return f"{safe}-{os.urandom(6).hex()}"
+
+
+class BatchLane:
+    """Sends a call through the Message Batches API, where every token costs half.
+
+    Each call becomes a batch of one request and waits in Anthropic's queue. The request is the
+    same one the normal way sends: same model, prompt, effort and searches, so the answer is
+    too. Three valves keep an edition from stalling. A call that waits longer than `max_wait`
+    seconds is cancelled and goes the normal way at full price, and so does the rest of the
+    run, because a slow queue stays slow. Once the run is `run_seconds` old, every new call goes
+    the normal way. If the batch API fails once, the rest of the run skips it. `send` never
+    raises: None means go the normal way.
+    """
+
+    def __init__(self, client, *, max_wait: float, run_seconds: float, poll: float, sleep: Callable[[float], None] = time.sleep, clock: Callable[[], float] = time.monotonic) -> None:
+        self.client = client
+        self.max_wait = max_wait
+        self.run_seconds = run_seconds
+        self.poll = poll
+        self.sleep = sleep
+        self.clock = clock
+        self.started = clock()
+        self.off_reason = ""
+        self.waits: list[float] = []  # seconds each batched call spent in the lane, answered or not
+        self._lock = threading.Lock()
+
+    @classmethod
+    def from_settings(cls, client, settings: Settings) -> "BatchLane":
+        return cls(
+            client,
+            max_wait=60 * float(settings.get("llm.batch.max_wait_minutes", 25)),
+            run_seconds=60 * float(settings.get("llm.batch.run_minutes", 180)),
+            poll=float(settings.get("llm.batch.poll_seconds", 15)),
+        )
+
+    def open(self) -> bool:
+        if self.off_reason:
+            return False
+        if self.clock() - self.started >= self.run_seconds:
+            self.close(f"the run is past {self.run_seconds / 60:.0f} minutes")
+            return False
+        return True
+
+    def close(self, reason: str) -> None:
+        with self._lock:
+            if self.off_reason:
+                return
+            self.off_reason = reason
+        log.warning("batch: the rest of this run goes the normal way at full price: %s", reason)
+
+    def send(self, role: str, params: dict[str, Any]):
+        """The finished message, or None when the call should go the normal way."""
+        batches = self.client.messages.batches
+        begun = self.clock()
+        try:
+            batch = batches.create(requests=[{"custom_id": batch_custom_id(role), "params": params}])
+            while batch.processing_status != "ended":
+                if self.clock() - begun >= self.max_wait:
+                    return self._give_up(batches, batch, role)
+                self.sleep(self.poll)
+                batch = batches.retrieve(batch.id)
+            return self._answer(batches, batch, role)
+        except Exception as exc:  # noqa: BLE001 - any failure here sends the call the normal way
+            self.close(f"{role}: the batch API failed ({type(exc).__name__}: {str(exc)[:160]})")
+            return None
+        finally:
+            with self._lock:
+                self.waits.append(self.clock() - begun)
+
+    def _answer(self, batches, batch, role: str):
+        for item in batches.results(batch.id):
+            result = item.result
+            if result.type == "succeeded":
+                return result.message
+            if result.type == "errored":
+                err = getattr(result, "error", None)
+                detail = getattr(getattr(err, "error", None), "message", "") or str(err)[:160]
+                self.close(f"{role}: the batch request failed ({detail[:160]})")
+            return None
+        return None
+
+    def _give_up(self, batches, batch, role: str):
+        """Cancel a batch that waited too long. A request that finished meanwhile still counts."""
+        self.close(f"{role} waited {self.max_wait / 60:.0f} minutes in the batch queue")
+        batch = batches.cancel(batch.id)
+        settle = self.clock()
+        while batch.processing_status != "ended" and self.clock() - settle < 2 * self.poll:
+            self.sleep(self.poll)
+            batch = batches.retrieve(batch.id)
+        if batch.processing_status == "ended":
+            return self._answer(batches, batch, role)
+        return None
+
+
 # --------------------------------------------------------------------------- live client
 
 class ClaudeLLM(BaseLLM):
@@ -367,6 +483,7 @@ class ClaudeLLM(BaseLLM):
         self.use_fallback = bool(settings.get("llm.refusal_fallback", True))
         self.use_format = True
         self._lock = threading.Lock()
+        self.batch = BatchLane.from_settings(self.client, settings) if settings.get("llm.batch.enabled", False) else None
 
     # -- request building -------------------------------------------------
     def _messages(self, user_text: str, payload: dict[str, Any], images, schema_hint: str | None) -> list[dict]:
@@ -402,6 +519,23 @@ class ClaudeLLM(BaseLLM):
         if web_search_uses > 0:
             kwargs["tools"] = [{"type": WEB_SEARCH_TOOL_TYPE, "name": "web_search", "max_uses": int(web_search_uses)}]
         return kwargs
+
+    def _send(self, role: str, kwargs: dict):
+        """The reply, and whether it came through the batch lane at half price.
+
+        Only a first request rides the lane; a research turn's continuation goes the normal way.
+        A batch request carries no server side fallback, so a refusal there is counted and asked
+        again the normal way, where the fallback model can answer.
+        """
+        lane = self.batch
+        if lane is not None and len(kwargs["messages"]) == 1 and lane.open():
+            asked = time.time()
+            msg = lane.send(role, kwargs)
+            if msg is not None:
+                if msg.stop_reason != "refusal" or not self.use_fallback:
+                    return msg, True
+                self._record_usage(role, kwargs["model"], msg, time.time() - asked, batch=True)
+        return self._create(kwargs), False
 
     def _create(self, kwargs: dict):
         if self.use_fallback:
@@ -442,7 +576,7 @@ class ClaudeLLM(BaseLLM):
         continuations = 0
         while True:
             try:
-                msg = self._create(kwargs)
+                msg, batched = self._send(role, kwargs)
             except anthropic.BadRequestError as exc:
                 text = str(exc)
                 if is_spend_limit_error(text):
@@ -469,7 +603,7 @@ class ClaudeLLM(BaseLLM):
             except anthropic.APIConnectionError as exc:
                 raise LLMError(f"connection error for {role}: {exc}") from exc
 
-            self._record_usage(role, kwargs["model"], msg, time.time() - started)
+            self._record_usage(role, kwargs["model"], msg, time.time() - started, batch=batched)
             if msg.stop_reason == "pause_turn":
                 continuations += 1
                 if continuations > MAX_PAUSE_CONTINUATIONS:
@@ -494,9 +628,9 @@ class ClaudeLLM(BaseLLM):
             raise LLMError(f"{role}: output failed schema check: {problems[:5]}")
         return data
 
-    def _record_usage(self, role: str, model: str, msg, seconds: float) -> None:
+    def _record_usage(self, role: str, model: str, msg, seconds: float, *, batch: bool = False) -> None:
         usage = getattr(msg, "usage", None)
-        rec = UsageRecord(role=role, model=getattr(msg, "model", model) or model, seconds=round(seconds, 1))
+        rec = UsageRecord(role=role, model=getattr(msg, "model", model) or model, seconds=round(seconds, 1), batch=batch)
         if usage is not None:
             rec.input_tokens = int(getattr(usage, "input_tokens", 0) or 0)
             rec.output_tokens = int(getattr(usage, "output_tokens", 0) or 0)

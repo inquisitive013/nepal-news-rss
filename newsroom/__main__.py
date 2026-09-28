@@ -156,6 +156,92 @@ def cmd_auth_check(args) -> int:
     return 1 if failed else 0
 
 
+def cmd_batch_probe(args) -> int:
+    """Time the Message Batches queue with two tiny requests per round, before batch mode goes on.
+
+    One request has the shape most calls have (Sonnet, a JSON schema, the web search tool), the
+    other the judges' shape (Opus, a JSON schema, no tools). Each is its own batch of one, as in
+    an edition. A few cents in all.
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    from .llm import WEB_SEARCH_TOOL_TYPE, BatchLane, auth_mode, build_client, scrub_empty_credentials, strict_schema, usage_cost
+    from .models import UsageRecord
+
+    settings = _settings(args)
+    scrub_empty_credentials()
+    print(f"Anthropic credential source: {auth_mode()}")
+    client = build_client(timeout=120.0, max_retries=2)
+
+    def fmt(props: dict) -> dict:
+        return {"type": "json_schema", "schema": strict_schema({"type": "object", "properties": props})}
+
+    def system(text: str) -> list[dict]:
+        return [{"type": "text", "text": text, "cache_control": {"type": "ephemeral"}}]
+
+    # The edition's own output cap and cache marker, so the probe proves the queue takes them.
+    cap = int(settings.get("llm.max_tokens", 64000))
+
+    shapes = {
+        "search": {
+            "model": settings.role_model("writer"),
+            "max_tokens": cap,
+            "system": system("You check facts for a Nepali newsroom. Answer with one JSON object."),
+            "messages": [{"role": "user", "content": "Search the web once for today's front page of the Kathmandu Post and give its top headline and the page you read it on."}],
+            "output_config": {"effort": "low", "format": fmt({"headline": {"type": "string"}, "url": {"type": "string"}})},
+            "tools": [{"type": WEB_SEARCH_TOOL_TYPE, "name": "web_search", "max_uses": 1}],
+        },
+        "judge": {
+            "model": settings.role_model("validation_judge"),
+            "max_tokens": cap,
+            "system": system("You are a news judge. Answer with one JSON object."),
+            "messages": [{"role": "user", "content": "Reply with the word ready."}],
+            "output_config": {"effort": "low", "format": fmt({"answer": {"type": "string"}})},
+        },
+    }
+
+    def one(round_no: int, shape: str) -> dict:
+        lane = BatchLane(client, max_wait=60 * args.max_wait_minutes, run_seconds=float("inf"), poll=10.0)
+        msg = lane.send(f"probe-{shape}", shapes[shape])
+        row = {"round": round_no, "shape": shape, "model": shapes[shape]["model"], "seconds": round(lane.waits[-1]) if lane.waits else 0}
+        if msg is None:
+            return {**row, "result": f"no answer: {lane.off_reason or 'unknown'}"}
+        usage = msg.usage
+        stu = getattr(usage, "server_tool_use", None)
+        rec = UsageRecord(
+            role=shape, model=getattr(msg, "model", row["model"]) or row["model"], batch=True,
+            input_tokens=usage.input_tokens or 0, output_tokens=usage.output_tokens or 0,
+            cache_read_input_tokens=getattr(usage, "cache_read_input_tokens", 0) or 0,
+            cache_creation_input_tokens=getattr(usage, "cache_creation_input_tokens", 0) or 0,
+            web_search_requests=int(getattr(stu, "web_search_requests", 0) or 0) if stu else 0,
+        )
+        text = next((b.text for b in msg.content if getattr(b, "type", "") == "text"), "")
+        try:
+            json.loads(text)
+            result = f"answered ({msg.stop_reason}), valid JSON"
+        except ValueError:
+            result = f"answered ({msg.stop_reason}), not JSON"
+        return {**row, "result": result, "record": rec}
+
+    rows = []
+    with ThreadPoolExecutor(max_workers=len(shapes)) as pool:
+        for round_no in range(1, args.rounds + 1):
+            rows += list(pool.map(lambda s: one(round_no, s), shapes))
+    print("\n| Round | Shape | Model | Seconds in the queue | Result | Searches |")
+    print("|---|---|---|---|---|---|")
+    for r in rows:
+        rec = r.get("record")
+        print(f"| {r['round']} | {r['shape']} | {r['model']} | {r['seconds']} | {r['result']} | {rec.web_search_requests if rec else ''} |")
+    answered = [r for r in rows if r.get("record") and "valid JSON" in r["result"]]
+    waits = sorted(r["seconds"] for r in rows)
+    cost, _ = usage_cost(settings, [r["record"] for r in rows if r.get("record")])
+    print(f"\n{len(answered)} of {len(rows)} batch requests answered with valid JSON. Seconds in the queue: shortest {waits[0]}, median {waits[len(waits) // 2]}, longest {waits[-1]}.")
+    print(f"Cost at batch prices: ${cost:.3f}")
+    searched = any(r.get("record") and r["shape"] == "search" and r["record"].web_search_requests > 0 for r in rows)
+    print("Web search inside a batch request: " + ("works" if searched else "not seen"))
+    return 0 if len(answered) == len(rows) and searched else 1
+
+
 def cmd_social(args) -> int:
     from . import social
 
@@ -425,6 +511,11 @@ def main(argv=None) -> int:
 
     p_auth = sub.add_parser("auth-check", help="verify the Anthropic credentials (API key or identity federation) without spending tokens")
     p_auth.set_defaults(func=cmd_auth_check)
+
+    p_bp = sub.add_parser("batch-probe", help="time the Message Batches queue with a few tiny requests (a few cents) before batch mode is switched on")
+    p_bp.add_argument("--rounds", type=int, default=2, help="pairs of requests, one round after the other")
+    p_bp.add_argument("--max-wait-minutes", type=float, default=30, help="give up on a request after this long in the queue")
+    p_bp.set_defaults(func=cmd_batch_probe)
 
     p_chk = sub.add_parser("check-sources", help="probe every live feed and image provider, print a health report")
     p_chk.add_argument("--no-probe", action="store_true", help="skip feed autodiscovery for failing sources")

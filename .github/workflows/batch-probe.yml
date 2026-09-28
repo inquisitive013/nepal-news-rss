@@ -1,0 +1,43 @@
+name: Time the batch queue
+
+# Two tiny requests per round through the Message Batches API, each its own batch as in an
+# edition: one with the web search tool and a JSON schema on the writer's model, one with a
+# JSON schema on the judges' model. Reports the seconds each waited and whether web search
+# works inside a batch. A few cents. Run it before switching llm.batch on.
+on:
+  workflow_dispatch:
+    inputs:
+      rounds:
+        description: "Rounds of two requests, one after the other"
+        default: "2"
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Send the probe batches and time them
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+          ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+          ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
+          ROUNDS: ${{ inputs.rounds }}
+        run: |
+          set -o pipefail
+          case "${ROUNDS}" in
+            [1-5]) ;;
+            *) echo "::error::rounds must be a number from 1 to 5, got '${ROUNDS}'."; exit 1 ;;
+          esac
+          python -m newsroom batch-probe --rounds "${ROUNDS}" | tee -a "$GITHUB_STEP_SUMMARY"

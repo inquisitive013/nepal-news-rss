@@ -18,6 +18,7 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from . import graphic, nepali
 from .config import Settings
+from .llm import usage_cost
 from .models import (
     Article,
     ImageAsset,
@@ -116,6 +117,8 @@ def save_run(settings: Settings, run: RunLog) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = dataclasses.asdict(run)
     payload["usage_totals"] = run.usage_totals()
+    cost, unpriced = usage_cost(settings, run.usage)
+    payload["cost_usd"] = {"estimate": round(cost, 2), "unpriced_calls": unpriced}
     with open(path, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False, indent=2, default=str)
         fh.write("\n")
