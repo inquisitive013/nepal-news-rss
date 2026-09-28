@@ -90,8 +90,8 @@ llm:
   # Default model and thinking effort for every role. Override a role under `roles`.
   # The first live edition on claude-opus-5 at high effort with two revision rounds
   # cost about 19 dollars. The second, on Sonnet 5 with Opus 5.5 judges and two red team
-  # rounds, about 6.40. This configuration is built for about 6 a day, of which the
-  # investigator is about 1.50.
+  # rounds, about 6.40. With the investigator and the Nepali edition, a three story day with
+  # every check comes to about 12 at list prices; llm.batch halves every token of it.
   model: "claude-sonnet-5"
   effort: "medium"
   # Replies stream, so this can be large. Thinking counts against it, and the
@@ -99,6 +99,23 @@ llm:
   max_tokens: 64000
   # Server side refusal fallback (beta). Set false if your org rejects the beta header.
   refusal_fallback: true
+  # The Message Batches API bills every token at half price. Each call becomes a batch of one
+  # and waits in Anthropic's queue, so an edition takes longer; the request is the same, so the
+  # answer is too. A call that waits past max_wait_minutes is cancelled and asked the normal way
+  # at full price, and so is the rest of that run. After run_minutes every new call goes the
+  # normal way. `python -m newsroom batch-probe` measures the queue before this is switched on.
+  batch:
+    enabled: false
+    max_wait_minutes: 25
+    run_minutes: 180
+    poll_seconds: 15
+  # List prices in dollars per million tokens, September 2026, for the cost each run records.
+  # A cache write costs 1.25 times input. A batch call costs half for every token; searches are
+  # counted at full price either way.
+  prices:
+    claude-sonnet-5: { input: 2.0, output: 10.0, cache_read: 0.2 }
+    claude-opus-5-5: { input: 4.0, output: 20.0, cache_read: 0.2 }
+  web_search_per_1000: 10.0
   # Web search uses allowed per role call.
   web_search_uses:
     advocate: 3

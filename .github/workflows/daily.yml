@@ -48,7 +48,9 @@ concurrency:
 jobs:
   edition:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    # With llm.batch on, calls wait in Anthropic's batch queue. Its valves send every call the
+    # normal way once the run passes llm.batch.run_minutes (180), so four hours leaves room.
+    timeout-minutes: 240
     outputs:
       no_key: ${{ steps.newsroom.outputs.no_key }}
       # "partial" when the edition stopped short. The verdict job at the end reports it.
@@ -266,6 +268,10 @@ jobs:
           print(f"- Not published: {len(run['rejected'])}")
           t = run.get('usage_totals', {})
           print(f"- Model calls: {t.get('calls')} | input tokens {t.get('input_tokens')} | output tokens {t.get('output_tokens')} | web searches {t.get('web_search_requests')}")
+          c = run.get('cost_usd') or {}
+          if c:
+              left_out = f", {c['unpriced_calls']} calls without a list price left out" if c.get('unpriced_calls') else ""
+              print(f"- Estimated cost at list prices: ${c['estimate']:.2f} ({t.get('batch_calls', 0)} of {t.get('calls')} calls through the batch queue{left_out})")
           for e in run['errors'][:5]:
               print(f"- Error: {e.splitlines()[0][:200]}")
           PY

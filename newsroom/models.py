@@ -226,6 +226,7 @@ class UsageRecord:
     cache_creation_input_tokens: int = 0
     web_search_requests: int = 0
     seconds: float = 0.0
+    batch: bool = False  # answered through the Message Batches API, where every token costs half
 
 
 @dataclass
@@ -249,6 +250,7 @@ class RunLog:
     def usage_totals(self) -> dict[str, int]:
         totals = {
             "calls": len(self.usage),
+            "batch_calls": sum(1 for u in self.usage if u.batch),
             "input_tokens": 0,
             "output_tokens": 0,
             "cache_read_input_tokens": 0,

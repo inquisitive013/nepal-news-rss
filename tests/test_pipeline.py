@@ -61,6 +61,9 @@ def test_mock_run_publishes_and_records(tmp_path):
     assert run_file.exists()
     data = json.loads(run_file.read_text())
     assert data["usage_totals"]["calls"] == len(run.usage) > 10
+    assert data["usage_totals"]["batch_calls"] == 0
+    # the mock model has no list price, so the record says the estimate leaves every call out
+    assert data["cost_usd"] == {"estimate": 0.0, "unpriced_calls": len(run.usage)}
     assert data["feed_health"]
 
 
