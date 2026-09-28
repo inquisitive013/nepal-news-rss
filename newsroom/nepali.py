@@ -9,6 +9,7 @@ Nepali style guide, and the writer applies every fix.
 from __future__ import annotations
 
 import logging
+import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from typing import Any
@@ -114,6 +115,41 @@ def _piece(nepali: dict[str, Any]) -> dict[str, Any]:
     return {k: nepali[k] for k in (*FIELDS, "caption")}
 
 
+def _slots(piece: dict[str, Any]) -> list[tuple[str, str | None]]:
+    """Every text a reader sees: the top level fields, then the caption's three parts."""
+    return [(k, None) for k in FIELDS] + [("caption", k) for k in ("hook", "body", "trigger")]
+
+
+def apply_fixes(piece: dict[str, Any], problems: list[dict[str, Any]]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Write each of the editor's fixes in where its passage stands, and nothing else.
+
+    The editor quotes each passage exactly as it stands and writes the fix out in Nepali. A
+    passage found once in the whole piece, allowing for spacing, is replaced by its fix. One
+    found nowhere, or in more than one place, is returned for the writer to place.
+    """
+    out = {**piece, "caption": dict(piece.get("caption") or {})}
+    left: list[dict[str, Any]] = []
+    for problem in problems:
+        passage = str(problem.get("passage", "") or "").strip()
+        fix = str(problem.get("fix", "") or "").strip()
+        if not passage or not fix:
+            left.append(problem)
+            continue
+        pattern = re.compile(r"\s+".join(re.escape(word) for word in passage.split()))
+        hits = [(field, key, m) for field, key in _slots(out) for m in pattern.finditer((out[field] if key is None else out[field].get(key, "")) or "")]
+        if len(hits) != 1:
+            left.append(problem)
+            continue
+        field, key, match = hits[0]
+        text = out[field] if key is None else out[field][key]
+        text = text[: match.start()] + fix + text[match.end():]
+        if key is None:
+            out[field] = text
+        else:
+            out[field][key] = text
+    return out, left
+
+
 def usable(nepali: dict[str, Any] | None) -> bool:
     return bool(nepali and nepali.get("headline") and nepali.get("body_markdown"))
 
@@ -172,28 +208,89 @@ def backfill(settings: Settings, llm: BaseLLM, articles: list[Article], *, worke
 def nepali_for(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, Any]:
     """Write the piece, then let the editor read it up to `pipeline.nepali_rounds` times, fixing after each pass that asks.
 
-    Returns the Nepali fields plus `checked`, `approved`, `passes`, `problems_fixed` and the editor's last `reason`.
+    Returns the Nepali fields plus `checked`, `approved`, `passes`, `problems_fixed`, `fixed_in_place`
+    and the editor's last `reason`.
     """
     record = _record(settings, article)
     searches = settings.web_search_uses("nepali_writer")
     piece = _clean(llm.structured("nepali_writer", "Write this story in Nepali from the verified record.", {"article": record}, WRITER_SCHEMA, web_search_uses=searches))
     rounds = max(1, int(settings.get("pipeline.nepali_rounds", 2) or 1))
-    passes = fixed = 0
+    in_place = settings.get("pipeline.nepali_fix", "rewrite") == "in_place"
+    passes = fixed = fixed_in_place = 0
     approved = False
     reason = ""
     for _ in range(rounds):
-        check = llm.structured(
-            "nepali_editor",
-            "Check the Nepali piece against the verified English record and the Nepali style guide.",
-            {"record": record, "nepali": _piece(piece)},
-            CHECK_SCHEMA,
-        )
+        check = _read(llm, record, piece)
         passes += 1
         reason = str(check.get("reason", "") or "").strip()
-        problems = [p for p in (check.get("problems") or []) if (p.get("problem") or "").strip()]
+        problems = check["problems"]
         approved = check.get("decision", "approve") == "approve" or not problems
         if approved:
             break
+        piece, placed = fix_piece(llm, record, piece, problems, in_place=in_place)
+        fixed += len(problems)
+        fixed_in_place += placed
+    piece["checked"] = True
+    piece["approved"] = approved
+    piece["passes"] = passes
+    piece["problems_fixed"] = fixed
+    piece["fixed_in_place"] = fixed_in_place
+    piece["editor"] = reason
+    return piece
+
+
+def _read(llm: BaseLLM, record: dict[str, Any], piece: dict[str, Any]) -> dict[str, Any]:
+    """One reading by the Nepali editor. `problems` keeps only the entries that name a problem."""
+    check = llm.structured(
+        "nepali_editor",
+        "Check the Nepali piece against the verified English record and the Nepali style guide.",
+        {"record": record, "nepali": _piece(piece)},
+        CHECK_SCHEMA,
+    )
+    check["problems"] = [p for p in (check.get("problems") or []) if (p.get("problem") or "").strip()]
+    return check
+
+
+def trial(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, Any]:
+    """Write one story in Nepali and fix it both ways from the same draft and the same first reading.
+
+    Nothing is saved. For "rewrite" and "in_place" it returns the finished piece, what the second
+    reading found, what a closing reading finds in the finished piece, how many fixes went in word
+    for word, and what that way cost in model calls after the shared draft and first reading.
+    """
+    record = _record(settings, article)
+    searches = settings.web_search_uses("nepali_writer")
+    meter = llm.meter
+    draft = _clean(llm.structured("nepali_writer", "Write this story in Nepali from the verified record.", {"article": record}, WRITER_SCHEMA, web_search_uses=searches))
+    first = _read(llm, record, draft)["problems"]
+    out: dict[str, Any] = {"id": article.id, "first_reading": first}
+    for way in ("rewrite", "in_place"):
+        mark = len(meter.records)
+        piece, placed, second = draft, 0, []
+        if first:
+            piece, placed = fix_piece(llm, record, draft, first, in_place=way == "in_place")
+            second = _read(llm, record, piece)["problems"]
+            if second:
+                piece, more = fix_piece(llm, record, piece, second, in_place=way == "in_place")
+                placed += more
+        closing = _read(llm, record, piece)["problems"]
+        out[way] = {"piece": piece, "second_reading": second, "closing_reading": closing, "placed": placed, "records": meter.records[mark:]}
+    return out
+
+
+def fix_piece(llm: BaseLLM, record: dict[str, Any], piece: dict[str, Any], problems: list[dict[str, Any]], *, in_place: bool) -> tuple[dict[str, Any], int]:
+    """Apply the editor's fixes. Returns the piece and how many fixes went in word for word.
+
+    In place, each fix replaces its passage and nothing else moves; the writer places only the
+    fixes whose passage it could not find. Otherwise the writer applies them all and returns
+    the whole piece, re-read for flow.
+    """
+    placed = 0
+    if in_place:
+        piece, left = apply_fixes(piece, problems)
+        placed = len(problems) - len(left)
+        problems = left
+    if problems:
         # A fix works from the editor's notes and never searches. With the search tool attached
         # it still looped through the tool's code sandbox: on 28 September each fix pass made no
         # search, reread about 185,000 tokens and took over six minutes.
@@ -205,10 +302,4 @@ def nepali_for(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, 
                 WRITER_SCHEMA,
             )
         )
-        fixed += len(problems)
-    piece["checked"] = True
-    piece["approved"] = approved
-    piece["passes"] = passes
-    piece["problems_fixed"] = fixed
-    piece["editor"] = reason
-    return piece
+    return piece, placed

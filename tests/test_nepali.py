@@ -137,3 +137,116 @@ def test_backfill_with_workers_writes_stories_side_by_side_in_input_order(tmp_pa
     partial = nepali.backfill(settings, MockLLM(settings, UsageMeter(3)), nepali.wanting(settings), workers=3)
     stored = {a.id: a for a in publish.load_articles(settings)}
     assert 0 <= len(partial) <= 1 and all(nepali.usable(stored[i].nepali) == (i in {r[0] for r in partial}) for i in ids)
+
+
+PIECE = {
+    "headline": "बागमती उर्लियो, १४० घरधुरी विस्थापित",
+    "dek": "प्रहरीका अनुसार चेतावनी ढिलो आयो।",
+    "take": "एउटा कुरा पक्का छ।",
+    "body_markdown": "काठमाडौं । नदी बढ्यो।\n\nचेतावनी प्रणाली असफल भयो।",
+    "image_headline": "१४० घरधुरी विस्थापित",
+    "social_hook": "१४० घरधुरी एकै रातमा।",
+    "caption": {"hook": "एकै रातमा घर छोड्नुपर्‍यो।", "body": "सरकारले  चेतावनी\nलुकायो।", "trigger": "कसको असफलता?"},
+    "notes": "",
+}
+
+
+def test_a_fix_goes_in_where_its_passage_stands_and_nothing_else_moves():
+    problems = [
+        {"passage": "सरकारले चेतावनी लुकायो।", "problem": "not in the record", "fix": "प्रहरीका अनुसार चेतावनी ढिलो आयो।"},  # spacing differs from the piece
+        {"passage": "यो वाक्य कतै छैन।", "problem": "p", "fix": "f"},
+        {"passage": "१४० घरधुरी", "problem": "p", "fix": "f"},  # in three places: the writer must place it
+        {"passage": "कसको असफलता?", "problem": "p", "fix": ""},
+    ]
+    out, left = nepali.apply_fixes(PIECE, problems)
+    assert out["caption"]["body"] == "प्रहरीका अनुसार चेतावनी ढिलो आयो।"
+    assert [p["passage"] for p in left] == ["यो वाक्य कतै छैन।", "१४० घरधुरी", "कसको असफलता?"]
+    assert {k: v for k, v in out.items() if k != "caption"} == {k: v for k, v in PIECE.items() if k != "caption"}
+    assert PIECE["caption"]["body"] == "सरकारले  चेतावनी\nलुकायो।"  # the original is not touched
+
+
+class ScriptedLLM:
+    def __init__(self, *replies):
+        self.replies = list(replies)
+        self.calls = []
+
+    def structured(self, role, user_text, payload, schema, **kw):
+        self.calls.append((role, payload, kw.get("web_search_uses", 0)))
+        return copy.deepcopy(self.replies.pop(0))
+
+
+def test_in_place_fixes_skip_the_writer_unless_a_passage_cannot_be_found(tmp_path):
+    settings = _settings(tmp_path, nepali_rounds=2, nepali_fix="in_place")
+    placed = {"passage": "चेतावनी प्रणाली असफल भयो।", "problem": "stronger than the record", "fix": "प्रहरीका अनुसार चेतावनी ढिलो आयो।"}
+    llm = ScriptedLLM(PIECE, {"decision": "revise", "problems": [placed], "reason": "r"}, {"decision": "approve", "problems": [], "reason": "ok"})
+    ne = nepali.nepali_for(llm, settings, _article())
+    assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_editor"]
+    assert ne["body_markdown"].endswith("प्रहरीका अनुसार चेतावनी ढिलो आयो।") and ne["approved"] is True
+    assert ne["problems_fixed"] == 1 and ne["fixed_in_place"] == 1
+    assert llm.calls[2][1]["nepali"]["body_markdown"] == ne["body_markdown"]  # the second reading reads the fixed piece
+
+    lost = {"passage": "यो वाक्य कतै छैन।", "problem": "p", "fix": "f"}
+    fixed_by_writer = {**PIECE, "take": "लेखकले मिलाएको।"}
+    llm = ScriptedLLM(PIECE, {"decision": "revise", "problems": [placed, lost], "reason": "r"}, fixed_by_writer, {"decision": "approve", "problems": [], "reason": "ok"})
+    ne = nepali.nepali_for(llm, settings, _article())
+    role, payload, searches = llm.calls[2]
+    assert role == "nepali_writer" and payload["fixes"] == [lost] and searches == 0
+    assert payload["nepali"]["body_markdown"].endswith("प्रहरीका अनुसार चेतावनी ढिलो आयो।")  # the placed fix rides along
+    assert ne["problems_fixed"] == 2 and ne["fixed_in_place"] == 1 and ne["take"] == "लेखकले मिलाएको।"
+
+
+def test_by_default_the_writer_applies_every_fix(tmp_path):
+    settings = _settings(tmp_path, nepali_rounds=1)
+    assert settings.get("pipeline.nepali_fix", "rewrite") == "rewrite"
+    placed = {"passage": "चेतावनी प्रणाली असफल भयो।", "problem": "p", "fix": "f"}
+    llm = ScriptedLLM(PIECE, {"decision": "revise", "problems": [placed], "reason": "r"}, {**PIECE, "take": "लेखकले मिलाएको।"})
+    ne = nepali.nepali_for(llm, settings, _article())
+    assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer"] and ne["fixed_in_place"] == 0
+
+
+def test_the_trial_fixes_one_draft_both_ways_and_reads_each_result_again(tmp_path):
+    from newsroom.llm import UsageMeter
+    from newsroom.models import UsageRecord
+
+    class MeteredLLM(ScriptedLLM):
+        def __init__(self, *replies):
+            super().__init__(*replies)
+            self.meter = UsageMeter(50)
+
+        def structured(self, role, user_text, payload, schema, **kw):
+            self.meter.record(UsageRecord(role=role, model="mock"))
+            return super().structured(role, user_text, payload, schema, **kw)
+
+    settings = _settings(tmp_path)
+    placed = {"passage": "चेतावनी प्रणाली असफल भयो।", "problem": "stronger than the record", "fix": "प्रहरीका अनुसार चेतावनी ढिलो आयो।"}
+    lost = {"passage": "यो वाक्य कतै छैन।", "problem": "a fact is missing", "fix": "थप तथ्य।"}
+    fixed_body = PIECE["body_markdown"].replace(placed["passage"], placed["fix"])
+    llm = MeteredLLM(
+        PIECE,
+        {"decision": "revise", "problems": [placed, lost], "reason": "r"},  # the first reading, shared
+        {**PIECE, "take": "पुनर्लेखन १"},  # rewrite: the writer applies both
+        {"decision": "revise", "problems": [{"passage": "पुनर्लेखन १", "problem": "p", "fix": "पुनर्लेखन २"}], "reason": "r"},
+        {**PIECE, "take": "पुनर्लेखन २"},
+        {"decision": "approve", "problems": [], "reason": "ok"},  # rewrite: the closing reading
+        {**PIECE, "body_markdown": fixed_body, "take": "लेखकले राखेको"},  # in place: the writer places only the lost fix
+        {"decision": "approve", "problems": [], "reason": "ok"},
+        {"decision": "approve", "problems": [], "reason": "ok"},  # in place: the closing reading
+    )
+    out = nepali.trial(llm, settings, _article())
+    assert out["first_reading"] == [placed, lost]
+    a, b = out["rewrite"], out["in_place"]
+    assert a["piece"]["take"] == "पुनर्लेखन २" and len(a["second_reading"]) == 1 and a["closing_reading"] == [] and a["placed"] == 0
+    assert b["piece"]["body_markdown"] == fixed_body and b["second_reading"] == [] and b["closing_reading"] == [] and b["placed"] == 1
+    assert [r.role for r in a["records"]] == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor"]
+    assert [r.role for r in b["records"]] == ["nepali_writer", "nepali_editor", "nepali_editor"]
+    writer_fix_for_b = llm.calls[6][1]
+    assert writer_fix_for_b["fixes"] == [lost] and writer_fix_for_b["nepali"]["body_markdown"] == fixed_body  # from the same draft, placed fix in
+
+
+def test_the_trial_command_saves_nothing(tmp_path, monkeypatch, capsys):
+    from newsroom import __main__ as cli
+
+    before = sorted(p.name for p in (cli.ROOT / "data").rglob("*"))
+    assert cli.main(["nepali-trial", "--mock", "--limit", "1", "--out", str(tmp_path / "trial")]) == 0
+    assert sorted(p.name for p in (cli.ROOT / "data").rglob("*")) == before
+    assert "Nepali fix trial" in capsys.readouterr().out and (tmp_path / "trial" / "nepali-trial.json").exists()
