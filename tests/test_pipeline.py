@@ -318,3 +318,30 @@ def test_one_story_tonight_publishes_only_the_judges_top_pick(tmp_path):
     assert len(run.selected_story_ids) == 1 and run.selected_story_ids[0] == run.ranking[-1].ranked[0]["story_id"]
     assert len(run.published) == 1
     assert with_articles(_settings(tmp_path), None).get("pipeline.articles_per_day") == 3  # no flag, no change
+
+
+def test_the_red_team_defence_and_judges_see_the_take_card_and_caption(tmp_path):
+    """They reach readers first, often alone. A judge that cannot see them orders them written
+    again and again, then blocks the story: the 28 September edition lost its only story that way."""
+    settings = _settings(tmp_path)
+    llm = MockLLM(settings, UsageMeter(200))
+    seen = collections.defaultdict(list)
+    real = llm.structured
+
+    def spy(role, user_text, payload, schema, **kw):
+        if role in ("red_team", "defense", "validation_judge"):
+            seen[role].append(payload["article"])
+        return real(role, user_text, payload, schema, **kw)
+
+    llm.structured = spy
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.published
+    assert set(seen) == {"red_team", "defense", "validation_judge"}
+    stored = {a.id: a for a in publish.load_articles(settings)}
+    for role, views in seen.items():
+        for view in views:
+            art = stored.get(view["id"])
+            for field in ("take", "image_headline", "theme", "country", "caption"):
+                assert field in view, (role, field)
+            if art is not None and view["version"] == art.version:
+                assert view["take"] == art.take and view["image_headline"] == art.image_headline and view["caption"] == art.caption, role

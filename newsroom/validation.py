@@ -121,6 +121,13 @@ def article_view(article: Article) -> dict[str, Any]:
         "sources": article.sources,
         "tags": article.tags,
         "social_hook": article.social_hook,
+        # The take, the card and the caption reach readers first, often alone. The red team, the
+        # defence and both judges must see every word of them, or they order them written again.
+        "take": article.take,
+        "image_headline": article.image_headline,
+        "theme": article.theme,
+        "country": article.country,
+        "caption": article.caption,
         "image": image,
         "version": article.version,
     }
