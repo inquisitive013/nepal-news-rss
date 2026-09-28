@@ -121,22 +121,26 @@ def cmd_check_sources(args) -> int:
 
 
 def cmd_auth_check(args) -> int:
-    """Prove the model credentials work without spending tokens."""
+    """Prove the model credentials work without spending tokens: Anthropic, then OpenAI for images."""
     from .llm import auth_mode, build_client, scrub_empty_credentials
 
     settings = _settings(args)
     scrub_empty_credentials()
     mode = auth_mode()
     model = settings.role_model("writer")
-    print(f"credential source: {mode}")
+    print(f"Anthropic credential source: {mode}")
+    failed = False
     try:
         client = build_client(timeout=60.0, max_retries=1)
         info = client.models.retrieve(model)
+        print(f"Anthropic ok: authenticated and found model {getattr(info, 'id', model)}")
     except Exception as exc:  # noqa: BLE001 - report every failure the same way
-        print(f"FAILED: {type(exc).__name__}: {str(exc)[:400]}")
-        return 1
-    print(f"ok: authenticated and found model {getattr(info, 'id', model)}")
-    return 0
+        print(f"Anthropic FAILED: {type(exc).__name__}: {str(exc)[:400]}")
+        failed = True
+    status, note = images.check_openai_key(settings)
+    print(f"OpenAI {status}: {note}")
+    failed = failed or status == "failed"
+    return 1 if failed else 0
 
 
 def cmd_social(args) -> int:

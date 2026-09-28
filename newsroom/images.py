@@ -259,13 +259,55 @@ def pick_image(
 
 # --------------------------------------------------------------------------- generation
 
+def _openai_error_code(resp: httpx.Response) -> str:
+    """OpenAI's machine readable error code. Never the message: it can quote part of the key."""
+    try:
+        err = (resp.json() or {}).get("error") or {}
+    except ValueError:
+        return "no detail"
+    return str(err.get("code") or err.get("type") or "no detail")
+
+
+def check_openai_key(settings: Settings, environ=None, client: httpx.Client | None = None) -> tuple[str, str]:
+    """Prove the OpenAI key works without generating anything. Returns (status, note).
+
+    status is "ok", "failed", "not set" (no key, generation skipped) or "off" (generation disabled).
+    Looking up the configured model is free and fails on the same bad key a generation would.
+    """
+    environ = os.environ if environ is None else environ
+    if (settings.get("images.generation.provider") or "none").lower() != "openai":
+        return "off", "image generation is switched off in config/settings.yaml"
+    key = str(environ.get("OPENAI_API_KEY", "") or "").strip()
+    if not key:
+        return "not set", "OPENAI_API_KEY is not set; stories without a licensed photo get the cover card"
+    model = settings.get("images.generation.openai_model", "gpt-image-1")
+    own = client is None
+    client = client or httpx.Client(timeout=30.0)
+    try:
+        resp = client.get(f"https://api.openai.com/v1/models/{model}", headers={"Authorization": f"Bearer {key}"})
+    except httpx.HTTPError as exc:
+        return "failed", f"could not reach OpenAI: {type(exc).__name__}"
+    finally:
+        if own:
+            client.close()
+    if resp.status_code == 200:
+        return "ok", f"OpenAI accepted the key and can see {model}"
+    code = _openai_error_code(resp)
+    if resp.status_code == 401:
+        return "failed", f"OpenAI rejected the key ({code}). Create a new key and replace the OPENAI_API_KEY secret."
+    if resp.status_code == 404:
+        return "failed", f"the key works but this OpenAI account cannot use {model} ({code})"
+    return "failed", f"OpenAI answered HTTP {resp.status_code} ({code})"
+
+
 def generate_image(prompt: str, settings: Settings) -> tuple[bytes, str] | None:
     """Return (png_or_jpeg_bytes, model_name) or None when generation is unavailable."""
     provider = (settings.get("images.generation.provider") or "none").lower()
     if provider == "none" or not prompt.strip():
         return None
     if provider == "openai":
-        key = os.environ.get("OPENAI_API_KEY", "")
+        # Strip what a copy and paste can drag along: a space or a newline makes a valid key fail.
+        key = os.environ.get("OPENAI_API_KEY", "").strip()
         if not key:
             log.info("OPENAI_API_KEY not set, skipping image generation")
             return None
@@ -290,6 +332,9 @@ def generate_image(prompt: str, settings: Settings) -> tuple[bytes, str] | None:
             if item.get("url"):
                 data, _ = fetch_bytes(item["url"])
                 return data, model
+        except httpx.HTTPStatusError as exc:
+            log.warning("image generation failed: HTTP %s from OpenAI (%s)", exc.response.status_code, _openai_error_code(exc.response))
+            return None
         except Exception as exc:  # noqa: BLE001
             log.warning("image generation failed: %s", exc)
             return None
