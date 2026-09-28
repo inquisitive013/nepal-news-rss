@@ -291,3 +291,31 @@ def test_repository_links_appear_only_when_configured(tmp_path):
     out3 = publish.build_site(dataclasses.replace(settings, raw=raw), tmp_path / "site3")
     assert "Spotted an error? Email <a href=\"mailto:desk@example.org\">desk@example.org</a>." in (out3 / "index.html").read_text()
     assert "Report an error by email to" in (out3 / "standards.html").read_text()
+
+
+def test_a_dated_update_shows_under_the_headline_in_both_languages(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.nepali = dict(NEPALI)
+    art.published_at = datetime.now(timezone.utc).isoformat()
+    art.updates = [{
+        "date": "2026-09-28T16:00:00+00:00",
+        "kind": "update",
+        "text": "Police later said it was not an arrest, the Statesman reported.",
+        "text_ne": "प्रहरीले पछि पक्राउ नभएको बतायो, द स्टेट्स्म्यानले जनाएको छ।",
+        "link": "articles/petrol/",
+    }]
+    publish.save_article(settings, art)
+    publish.save_article(settings, _article(settings, slug="petrol", headline="Petrol drops Rs 5 a litre"))
+    out = publish.build_site(settings, tmp_path / "site")
+
+    en = (out / "articles" / "rain-story" / "index.html").read_text()
+    assert '<aside class="update"><strong>Update, 28 September 2026.</strong> Police later said it was not an arrest, the Statesman reported.' in en
+    assert '<a href="../../articles/petrol/">Read the follow-up</a>' in en
+    assert en.index('class="update"') < en.index('class="take"')  # the reader meets it before anything else
+    ne = (out / "ne" / "articles" / "rain-story" / "index.html").read_text()
+    assert '<aside class="update"><strong>अपडेट, २८ सेप्टेम्बर २०२६।</strong> प्रहरीले पछि पक्राउ नभएको बतायो' in ne
+    assert '<a href="../../../ne/articles/petrol/">थप पढ्नुहोस्</a>' in ne
+    assert 'class="update"' not in (out / "articles" / "petrol" / "index.html").read_text()  # no update, no box
+    reloaded = [a for a in publish.load_articles(settings) if a.id == art.id][0]
+    assert reloaded.updates == art.updates

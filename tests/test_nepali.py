@@ -61,7 +61,7 @@ def test_the_editor_approves_a_clean_piece_first_time(tmp_path):
 
 
 def test_a_send_back_is_fixed_and_read_again(tmp_path):
-    settings = _settings(tmp_path)
+    settings = _settings(tmp_path, nepali_rounds=2)
     llm = MockLLM(settings, UsageMeter(10), send_back_nepali=True)
     ne = nepali.nepali_for(llm, settings, _article())
     assert llm.calls == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor"]

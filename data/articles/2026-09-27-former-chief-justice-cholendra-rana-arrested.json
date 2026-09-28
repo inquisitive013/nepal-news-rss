@@ -518,5 +518,14 @@
   },
   "run_date": "2026-09-27",
   "published_at": "2026-09-27T01:20:19+00:00",
-  "version": 2
+  "version": 3,
+  "updates": [
+    {
+      "date": "2026-09-28T16:00:00+00:00",
+      "kind": "update",
+      "text": "Police later said Rana had not been arrested at all but taken to a safe place, the Statesman reported. He was held for about 12 hours and released to his family, the Kathmandu Post reported.",
+      "text_ne": "राणालाई पक्राउ नगरी सुरक्षित स्थानमा मात्र लगिएको प्रहरीले पछि बतायो, द स्टेट्स्म्यानले जनाएको छ। उनलाई करिब १२ घण्टा राखेर परिवारलाई बुझाइएको द काठमाडौं पोस्टले जनाएको छ।",
+      "link": "articles/cholendra-rana-detention-arrest-protective-custody/"
+    }
+  ]
 }

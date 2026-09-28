@@ -208,6 +208,9 @@ class Article:
     # What the investigator found that the coverage missed: angles with evidence, open questions.
     investigation: dict[str, Any] = field(default_factory=dict)
     review: ReviewRecord = field(default_factory=ReviewRecord)
+    # Dated notes shown under the headline when a story moves on or is corrected after it ran:
+    # {"date": ISO timestamp, "kind": "update" | "correction", "text", "text_ne", "link": "articles/<slug>/"}.
+    updates: list[dict[str, str]] = field(default_factory=list)
     run_date: str = ""  # YYYY-MM-DD in newsroom timezone
     published_at: str = ""  # ISO timestamp
     version: int = 1

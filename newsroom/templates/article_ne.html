@@ -41,6 +41,9 @@
   <p class="kicker">{{ article.theme or (article.tags[0] if article.tags else 'समाचार') }} · {{ article.published_at | fmt_date_ne }}</p>
   <h1>{{ article.headline }}</h1>
   <p class="dek">{{ article.dek }}</p>
+  {% for u in article.updates if u.text_ne %}
+  <aside class="update"><strong>{{ 'सच्याइएको' if u.kind == 'correction' else 'अपडेट' }}, {{ u.date | fmt_date_ne }}।</strong> {{ u.text_ne }}{% if u.link %} <a href="{{ root }}ne/{{ u.link }}">थप पढ्नुहोस्</a>।{% endif %}</aside>
+  {% endfor %}
   {% if article.take %}<aside class="take"><strong>{{ site.name_ne }}को टिप्पणी।</strong> {{ article.take }}</aside>{% endif %}
   {% if site.adsense_client %}<div class="ad"><ins class="adsbygoogle" style="display:block" data-ad-client="{{ site.adsense_client }}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>{% endif %}
   <p class="byline">{{ site.name_ne }} न्युजरूम · चार तहको स्वतन्त्र जाँच पार गरेको · संस्करण {{ article.version }} · <a href="{{ english_url }}" hreflang="en">अंग्रेजीमा पढ्नुहोस्</a></p>
