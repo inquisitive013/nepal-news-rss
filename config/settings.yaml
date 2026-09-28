@@ -108,9 +108,12 @@ llm:
   # and waits in Anthropic's queue, so an edition takes longer; the request is the same, so the
   # answer is too. A call that waits past max_wait_minutes is cancelled and asked the normal way
   # at full price, and so is the rest of that run. After run_minutes every new call goes the
-  # normal way. `python -m newsroom batch-probe` measures the queue before this is switched on.
+  # normal way. `python -m newsroom batch-probe` measures the queue: on 28 September its four
+  # requests waited 125 to 758 seconds, all answered, and web search worked inside a batch. An
+  # edition makes about 17 calls one after another, so batch adds about an hour; the daily
+  # workflow starts early enough to post near 08:00 anyway.
   batch:
-    enabled: false
+    enabled: true
     max_wait_minutes: 25
     run_minutes: 180
     poll_seconds: 15

@@ -122,6 +122,7 @@ def test_the_live_client_stops_on_a_spend_limit_instead_of_retrying(monkeypatch,
     for key in ("ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_FEDERATION_RULE_ID", "ANTHROPIC_ORGANIZATION_ID", "ANTHROPIC_PROFILE"):
         monkeypatch.delenv(key, raising=False)
     client = llmmod.ClaudeLLM(load_settings(mock=False), llmmod.UsageMeter(10))
+    client.batch = None  # the normal way; tests/test_batch.py covers a spend limit met in the batch queue
     attempts = []
 
     def refuse(kwargs):
