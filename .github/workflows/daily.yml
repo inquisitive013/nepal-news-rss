@@ -10,6 +10,10 @@ on:
         description: "Preview run: mock model, fixture feeds, nothing committed or deployed"
         type: boolean
         default: false
+      stories:
+        description: "Publish and post at most this many stories this run, 1 to 9. Empty uses pipeline.articles_per_day."
+        type: string
+        default: ""
       rebuild_only:
         description: "Rebuild and deploy the site from existing data. No model calls, nothing committed."
         type: boolean
@@ -27,6 +31,10 @@ on:
         description: "Write the Nepali edition for this one article id only, e.g. 2026-09-27-some-slug. Overrides the scope."
         type: string
         default: ""
+      find_photos:
+        description: "Look again for a licensed real photo for stories that carry an illustration or a cover card, commit and deploy. No new edition, no posts. Up to two model calls per story."
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -87,6 +95,8 @@ jobs:
           NEWSROOM_BACKFILL: ${{ inputs.backfill_nepali == true && '1' || '' }}
           NEWSROOM_BACKFILL_SCOPE: ${{ inputs.nepali_scope || 'missing' }}
           NEWSROOM_BACKFILL_ARTICLE: ${{ inputs.nepali_article }}
+          NEWSROOM_FIND_PHOTOS: ${{ inputs.find_photos == true && '1' || '' }}
+          NEWSROOM_STORIES: ${{ inputs.stories }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
@@ -106,6 +116,12 @@ jobs:
             python -m newsroom build --out site
             exit 0
           fi
+          if [ -n "${NEWSROOM_FIND_PHOTOS}" ]; then
+            echo "Photos: looking again for a licensed real photo for stories that carry an illustration or a cover card."
+            python -m newsroom photos || echo "::warning::The photo search stopped short. The log above says why; every story it finished is saved."
+            python -m newsroom build --out site --root-rss
+            exit 0
+          fi
           if [ -n "${NEWSROOM_BACKFILL}" ]; then
             if [ -n "${NEWSROOM_BACKFILL_ARTICLE}" ]; then
               echo "Backfill: writing the Nepali edition for ${NEWSROOM_BACKFILL_ARTICLE}, then rebuilding."
@@ -120,8 +136,14 @@ jobs:
           # An edition that stops short (spend limit, credit, call budget) has still built the site
           # and may have published stories. Keep going: commit what it made, deploy it, post what
           # passed every check. The verdict job at the end fails the workflow and says why.
+          articles=()
+          case "${NEWSROOM_STORIES}" in
+            "") ;;
+            [1-9]) articles=(--articles "${NEWSROOM_STORIES}"); echo "This run publishes at most ${NEWSROOM_STORIES} stories." ;;
+            *) echo "::error::stories must be a number from 1 to 9, got '${NEWSROOM_STORIES}'."; exit 1 ;;
+          esac
           set +e
-          python -m newsroom run --build --out site --root-rss
+          python -m newsroom run --build --out site --root-rss "${articles[@]}"
           code=$?
           set -e
           if [ "$code" -eq 0 ]; then
@@ -156,6 +178,8 @@ jobs:
           else
             if [ -n "${{ inputs.backfill_nepali == true && '1' || '' }}" ]; then
               git commit -m "Nepali edition $(TZ=Asia/Kathmandu date +%F)"
+            elif [ -n "${{ inputs.find_photos == true && '1' || '' }}" ]; then
+              git commit -m "Photos $(TZ=Asia/Kathmandu date +%F)"
             else
               git commit -m "Edition $(TZ=Asia/Kathmandu date +%F)"
             fi
@@ -279,7 +303,7 @@ jobs:
     # Runs after the site is live because Instagram and Threads fetch the picture from it.
     # The same job runs on its own from Actions → "Post to social networks".
     needs: [edition, deploy]
-    if: ${{ inputs.mock != true && inputs.rebuild_only != true && inputs.backfill_nepali != true && needs.edition.outputs.no_key != 'true' }}
+    if: ${{ inputs.mock != true && inputs.rebuild_only != true && inputs.backfill_nepali != true && inputs.find_photos != true && needs.edition.outputs.no_key != 'true' }}
     uses: ./.github/workflows/social.yml
     secrets: inherit
 

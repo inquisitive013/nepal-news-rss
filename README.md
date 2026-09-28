@@ -113,13 +113,14 @@ python -m pytest -q                              # unit tests, no network
 python -m newsroom run --mock --build            # full pipeline with a mock model and fixture feeds
 python -m newsroom discover                      # live scan, prints feed health and today's candidates
 python -m newsroom check-sources                 # probe every feed and image provider
+python -m newsroom photos --dry-run              # what the picture desk finds for stories without a real photo
 ANTHROPIC_API_KEY=... python -m newsroom run --build --root-rss   # a real edition
 python -m http.server -d site 8000               # look at the result
 ```
 
 ## Cost and safety valves
 
-A live edition on the defaults makes about 33 model calls: one clustering call, two per debated story (three stories), two ranking judges, and per article one investigator, one writer, one picture check, one red team pass, one defence, judge 1, one revision and judge 2. Judge 2 may send an article back once more, which adds a reviser call and a second judge 2 call; the reviser is capped at `pipeline.max_revisions_per_run` calls a day. `pipeline.max_llm_calls` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
+A live edition on the defaults makes about 33 model calls: one clustering call, two per debated story (three stories), two ranking judges, and per article one investigator, one writer, one or two picture checks, one red team pass, one defence, judge 1, one revision and judge 2. Judge 2 may send an article back once more, which adds a reviser call and a second judge 2 call; the reviser is capped at `pipeline.max_revisions_per_run` calls a day. `pipeline.max_llm_calls` stops the run when it is reached, and the run log records exact token counts and web search requests so you can see what a day costs before changing anything.
 
 Measured so far, at list prices. The first live edition, on `claude-opus-5` at high effort with eight debated stories and two revision rounds, used 51 calls, about 675,000 input and 448,000 output tokens and 145 web searches, roughly 19 dollars, and published nothing because two drafts hit the output cap and the credit ran out on the third. The second edition, on `claude-sonnet-5` with `claude-opus-5-5` judges, six debated stories and two red team rounds, used 42 calls, about 402,000 input and 234,000 output tokens, 2.9 million cached input tokens and 84 web searches, roughly 6.40 dollars in 29 minutes. It published one of three drafts; the other two were rejected for a single misplaced fact each after the one revision round was spent, with no way to fix it.
 
@@ -178,14 +179,31 @@ A github.io address ties the brand to a GitHub username. Buy a domain (nepalwire
 
 ## Images and credits
 
-Found photos come only from Wikimedia Commons and Openverse, filtered to CC0, public domain, CC BY and CC BY-SA. The model looks at the candidate pictures and rejects anything that does not show the story, anything with an identifiable private person, logos, maps and screenshots. Author, source page, licence and licence link are stored with the article, shown under the image, embedded in the RSS `media:credit`, and burned into the bottom of the image file itself. AI generated images are labelled as such in the caption and in the file. When neither is available a branded cover card is used.
+The card carries a real photograph of the story's subject whenever one passes the checks. An AI illustration is the last resort before the cover card, never the first choice.
+
+The writer names two to four subjects the way a photo library files them: the public figure the story is about, the institution, the building, the place. For each subject the picture desk looks in this order and stops when it has enough:
+
+1. the image Wikidata keeps for the subject,
+2. Commons files whose structured data says they depict it,
+3. the subject's Commons category,
+4. a Commons full text search, shortening the name until something turns up,
+5. Openverse.
+
+Every candidate goes to the model with its documentation: title, description, categories, date and what it depicts. Identity is confirmed by that documentation, never by resemblance. The model rejects a different event of the same kind, children, private people, logos, maps, small or blurred frames, and anything from another country. It sees up to six pictures a round for up to two rounds (`images.picker_rounds`). Logos, maps and photos too small to cover the card without being blown up more than 2.2 times are dropped before the model sees them. A photo a story used in the last 30 days is not used again (`images.rotation_days`).
+
+Only licences in `images.allowed_licenses` pass: CC0, public domain, CC BY and CC BY-SA. Author, source page, licence and licence link are stored with the article, shown under the image, embedded in the RSS `media:credit`, and burned into the bottom of the stored image. The card's footer says "File photo", names the author, the licence and the library, and says the picture was adapted, as CC BY 4.0 and BY-SA 4.0 require. An illustration says "Illustration: AI generated for Nepal Wire. Not a photograph." When neither is available the branded cover card is used.
+
+Each article's review record says what the desk looked for, what each library gave, how many pictures the model saw and why the story carries what it carries (`review.picture`).
+
+`python -m newsroom photos --dry-run` shows what the desk finds for the stories that carry an illustration or a cover card, with no model calls and no changes. CI runs it for every stored story on each push. `python -m newsroom photos` looks again for those stories and swaps in a real photo when one passes, and the *Daily edition* workflow does the same with **find_photos** ticked.
 
 ## Decisions to confirm
 
 - **Language.** Articles are written and judged in English (`site.language: en`) and published in English and Nepali (see "The Nepali edition"). Sources are read in both either way.
 - **Image generation provider.** OpenAI's image API is wired in because it is the most common choice. Any other provider can be added in `newsroom/images.py::generate_image`.
 - **Feed coverage.** On 2026-09-26 a GitHub Actions runner confirmed 14 of the 17 native feeds. Kantipur, The Himalayan Times and Setopati English expose no reachable feed and run on the Google News fallback, which delivered 27, 1 and 17 items respectively that day. The *Check sources* workflow repeats this check weekly and suggests feed URLs for anything that breaks.
-- **Openverse** allows unauthenticated requests with a low hourly limit. Commons is queried first, so this rarely matters, but registering for an Openverse key is an option if it does.
+- **Openverse** throttles unauthenticated callers. The desk spaces its Openverse requests just over a second apart and asks Openverse last, so this rarely matters, but registering for an Openverse key is an option if it does.
+- **Share alike photos.** CC BY-SA asks that an adaptation be shared under the same licence. The card crops a BY-SA photo and sets a headline across it, so the media lawyer's one time review of the card template should settle whether a BY-SA card needs its own licence line. Until then the picture editor prefers CC0, public domain and CC BY when two pictures are equally good.
 
 ## Corrections
 

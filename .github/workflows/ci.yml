@@ -41,3 +41,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Check sources
         run: python -m newsroom check-sources
+      - name: Picture desk dry run
+        # What the desk finds for every stored story, from a runner that can reach the
+        # libraries: no model calls, nothing changed. Compared with the old one search per query way.
+        run: python -m newsroom photos --dry-run --all --compare

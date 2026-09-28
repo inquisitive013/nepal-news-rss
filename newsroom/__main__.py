@@ -25,10 +25,23 @@ def _settings(args):
     return settings
 
 
+def with_articles(settings, count):
+    """The settings with this run's article count. The judges still rank every debated story and publish the top ones."""
+    if count is None:
+        return settings
+    if count < 1:
+        raise SystemExit("--articles must be 1 or more")
+    raw = dict(settings.raw)
+    raw["pipeline"] = dict(raw.get("pipeline") or {}, articles_per_day=count)
+    return dataclasses.replace(settings, raw=raw)
+
+
 def cmd_run(args) -> int:
     from .pipeline import run
 
-    settings = _settings(args)
+    settings = with_articles(_settings(args), args.articles)
+    if args.articles is not None:
+        logging.info("this run publishes at most %d stor%s", args.articles, "y" if args.articles == 1 else "ies")
     if not settings.mock:
         from .llm import auth_mode, scrub_empty_credentials
 
@@ -246,6 +259,137 @@ def cmd_nepali(args) -> int:
     return 1 if failed or skipped else 0
 
 
+def _photo_targets(settings, args):
+    """The stored stories to look at: named ones, every one, or by default the ones without a real photo."""
+    articles = publish.load_articles(settings)
+    only = [a.strip() for a in (args.article or []) if a.strip()]
+    if only:
+        wanted = [a for a in articles if a.id in only]
+        for missing in sorted(set(only) - {a.id for a in wanted}):
+            print(f"No stored story with id {missing}.")
+    elif args.all:
+        wanted = articles
+    else:
+        wanted = [a for a in articles if not a.image or a.image.credit.kind != "found"]
+    return wanted[: args.limit] if args.limit else wanted
+
+
+def _old_way_count(settings, queries: list[str]) -> int:
+    """What the desk found before it learned to look: one full text search per query and library."""
+    allowed = list(settings.get("images.allowed_licenses", []))
+    seen: set[str] = set()
+    for query in queries[:4]:
+        for url_fn, parser in ((images.commons_search_url, images.parse_commons), (images.openverse_search_url, images.parse_openverse)):
+            try:
+                seen.update(c.url for c in parser(images.fetch_json(url_fn(query, 6)), allowed))
+            except Exception:  # noqa: BLE001
+                continue
+    return len(seen)
+
+
+def _photos_dry_run(settings, wanted, compare: bool) -> int:
+    """Search the libraries for each story and print what the desk would show the model. No model calls, no changes."""
+    allowed = list(settings.get("images.allowed_licenses", []))
+    report = ["## Picture desk dry run", ""]
+    thumbs_checked = 0
+    for art in wanted:
+        queries = [q for q in (art.image_brief or {}).get("search_queries") or [] if str(q).strip()] or [art.headline]
+        stats: dict = {}
+        cands, trail = images.find_candidates(
+            queries,
+            allowed,
+            images.fetch_json,
+            country=(art.country or "Nepal").title(),
+            exclude=images.recent_photo_keys(settings, art.id, int(settings.get("images.rotation_days", 30))),
+            max_requests=int(settings.get("images.max_search_requests", 48)),
+            max_upscale=float(settings.get("images.max_upscale", 2.2)),
+            stats=stats,
+        )
+        now = art.image.credit.kind if art.image else "none"
+        report.append(f"### {art.id} (carries: {now})")
+        report.append("")
+        for step in trail:
+            found = ", ".join(f"{via} {n}" for via, n in step["found"].items()) or "nothing"
+            entity = step["entity"] or "no Wikidata item"
+            errors = f" Errors: {'; '.join(step['errors'])}." if step.get("errors") else ""
+            report.append(f"- \"{step['subject']}\": {entity}. Found: {found}.{errors}")
+        line = f"- **{len(cands)} candidates** from {stats.get('requests', 0)} library requests."
+        if compare:
+            line += f" The old one search per query way found {_old_way_count(settings, queries)}."
+        report.append(line)
+        for i, c in enumerate(cands[:8], 1):
+            size = f"{c.width}x{c.height}" if c.width and c.height else "size unknown"
+            depicts = f" Depicts: {c.depicts}." if c.depicts else ""
+            report.append(f"  {i}. [{c.found_via}] {c.file_name or c.title} | {c.license} | {size} | {c.page_url}{depicts}")
+        if cands and thumbs_checked < 2:
+            thumbs_checked += 1
+            try:
+                data, ctype = images.fetch_bytes(cands[0].thumb_url)
+                report.append(f"- First picture download: {ctype or 'no type'}, {len(data) // 1024} KB.")
+            except Exception as exc:  # noqa: BLE001
+                report.append(f"- First picture download FAILED: {type(exc).__name__}: {str(exc)[:160]}")
+        report.append("")
+    text = "\n".join(report)
+    print(text)
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a", encoding="utf-8") as fh:
+            fh.write(text + "\n")
+    return 0
+
+
+def cmd_photos(args) -> int:
+    """Look again for a licensed real photo for stored stories. By default the ones carrying an illustration or a cover card."""
+    settings = _settings(args)
+    wanted = _photo_targets(settings, args)
+    if not wanted:
+        print("Nothing to do: every stored story carries a real photo.")
+        return 0
+    if args.dry_run:
+        return _photos_dry_run(settings, wanted, args.compare)
+
+    from .llm import BudgetExceeded, UsageMeter, auth_mode, make_llm, scrub_empty_credentials
+    from .models import RunLog
+
+    if not settings.mock:
+        scrub_empty_credentials()
+        logging.info("model access via %s", auth_mode())
+    rounds = max(1, int(settings.get("images.picker_rounds", 2)))
+    print(f"Looking for a real photo for {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'}: up to {rounds} picture editor round{'s' if rounds != 1 else ''} each.")
+    llm = make_llm(settings, UsageMeter(rounds * len(wanted)))
+    found = kept = failed = 0
+    for art in wanted:
+        try:
+            asset, record = images.find_real_photo(llm, settings, art, images.fetch_json, images.fetch_bytes)
+        except BudgetExceeded as exc:
+            print(f"stopped    {art.id}  {exc}")
+            failed += 1
+            break
+        except Exception as exc:  # noqa: BLE001 - one story's failure must not stop the rest
+            print(f"failed     {art.id}  {type(exc).__name__}: {exc}")
+            failed += 1
+            continue
+        if asset is not None:
+            old = art.image
+            art.image = asset
+            art.review.picture = record
+            publish.save_article(settings, art)
+            if old and old.path != asset.path:
+                (settings.root / old.path).unlink(missing_ok=True)
+            print(f"photo      {art.id}  {asset.credit.line()}")
+            found += 1
+        else:
+            record["decision"] = f"kept the {art.image.credit.kind.replace('_', ' ')}" if art.image else "no picture"
+            art.review.picture = record
+            publish.save_article(settings, art)
+            print(f"kept       {art.id}  {record['reason']}")
+            kept += 1
+    print(f"\n{found} given a real photo, {kept} kept what they had, {failed} failed.")
+    usage = RunLog(run_date="", usage=list(llm.meter.records)).usage_totals()
+    print("Model usage: " + ", ".join(f"{k.replace('_', ' ')} {v:,}" for k, v in usage.items()))
+    return 1 if failed else 0
+
+
 def cmd_build(args) -> int:
     settings = _settings(args)
     out = publish.build_site(settings, Path(args.out))
@@ -266,6 +410,7 @@ def main(argv=None) -> int:
     p_run.add_argument("--build", action="store_true", help="build the site after the run")
     p_run.add_argument("--out", default="site")
     p_run.add_argument("--root-rss", action="store_true", help="also copy rss.xml to the repository root")
+    p_run.add_argument("--articles", type=int, help="publish at most this many stories this run, instead of pipeline.articles_per_day")
     p_run.set_defaults(func=cmd_run)
 
     p_dis = sub.add_parser("discover", help="only scan the feeds and print what was found")
@@ -301,6 +446,14 @@ def main(argv=None) -> int:
     p_ne.add_argument("--article", action="append", help="write this article id; repeatable")
     p_ne.add_argument("--limit", type=int, help="stop after this many stories")
     p_ne.set_defaults(func=cmd_nepali)
+
+    p_ph = sub.add_parser("photos", help="look again for a licensed real photo for stored stories (by default the ones with an illustration or a cover card)")
+    p_ph.add_argument("--all", action="store_true", help="every stored story, photos included")
+    p_ph.add_argument("--article", action="append", help="this article id; repeatable")
+    p_ph.add_argument("--limit", type=int, help="stop after this many stories")
+    p_ph.add_argument("--dry-run", action="store_true", help="search the libraries and print what the model would see; no model calls, nothing changed")
+    p_ph.add_argument("--compare", action="store_true", help="with --dry-run, also count what the old one search per query way finds")
+    p_ph.set_defaults(func=cmd_photos)
 
     p_build = sub.add_parser("build", help="build the static site from data/")
     p_build.add_argument("--out", default="site")

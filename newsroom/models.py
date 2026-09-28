@@ -175,6 +175,9 @@ class ReviewRecord:
     validation_rounds: list[ValidationRound] = field(default_factory=list)
     final_decision: str = ""  # approved | rejected | error
     final_reason: str = ""
+    # The picture desk's record: the subjects it looked for, what each library gave, how many
+    # pictures the model saw, and why the story carries a photo, an illustration or the cover card.
+    picture: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

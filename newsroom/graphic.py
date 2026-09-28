@@ -104,21 +104,25 @@ def source_names(article: Article, limit: int = 3) -> list[str]:
 
 
 def photo_credit(article: Article, site_name: str) -> str:
-    """Licensed photos stay attributed on the card; an illustration says so in plain words."""
+    """The footer's second line. An illustration says so in plain words.
+
+    A licensed photo names its author, its licence and its library, as CC BY and BY-SA require,
+    says File photo because the libraries never hold the day's event, and says it was adapted,
+    because the card crops and tones it and sets a headline across it.
+    """
     if not article.image:
         return ""
     c = article.image.credit
     if c.kind == "generated":
         return f"Illustration: AI generated for {site_name}. Not a photograph."
     if c.kind == "found":
-        bits = ["Photo:"]
-        if c.author:
-            bits.append(c.author)
-        if c.source:
-            bits.append(f"via {c.source}" if c.author else c.source)
-        if c.license:
-            bits.append(f"· {c.license}")
-        return " ".join(bits)
+        author = (c.author or "").strip()
+        if author.lower() == "unknown author":
+            author = ""
+        if len(author) > 40:
+            author = author[:39].rstrip() + "…"
+        bits = [b for b in (author, c.license, f"via {c.source}" if c.source else "") if b]
+        return f"File photo: {', '.join(bits)}. Adapted by {site_name}." if bits else f"File photo. Adapted by {site_name}."
     return ""
 
 
