@@ -20,7 +20,11 @@ on:
         type: boolean
         default: false
       replace:
-        description: "Take that article's Facebook post down and post the corrected one, for a card or caption with an error. Needs an article id. Nothing goes out if the takedown fails."
+        description: "Take that article's Facebook post down and post the corrected one, for a card with an error. Needs an article id. Nothing goes out if the takedown fails."
+        type: boolean
+        default: false
+      edit:
+        description: "Rewrite the caption of that article's live Facebook post in place. The post keeps its reactions, comments and shares. For a caption fix only; a card fix needs replace. Needs an article id."
         type: boolean
         default: false
   workflow_call:
@@ -70,6 +74,7 @@ jobs:
           ARTICLE: ${{ inputs.article }}
           AGAIN: ${{ inputs.again == true && '1' || '' }}
           REPLACE: ${{ inputs.replace == true && '1' || '' }}
+          EDIT: ${{ inputs.edit == true && '1' || '' }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           if [ -n "${SITE_URL_OVERRIDE}" ]; then export SITE_URL="${SITE_URL_OVERRIDE}"; fi
@@ -79,6 +84,7 @@ jobs:
           [ -n "$ARTICLE" ] && args+=(--article "$ARTICLE")
           [ -n "$AGAIN" ] && args+=(--again)
           [ -n "$REPLACE" ] && args+=(--replace)
+          [ -n "$EDIT" ] && args+=(--edit)
           set -o pipefail
           python -m newsroom social "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 

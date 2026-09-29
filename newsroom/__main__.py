@@ -377,6 +377,12 @@ def cmd_social(args) -> int:
     if getattr(args, "replace", False) and not args.article:
         print("--replace needs --article <id>: it takes that story's Facebook post down and posts the corrected one.")
         return 2
+    if getattr(args, "edit", False) and not args.article:
+        print("--edit needs --article <id>: it rewrites the caption of that story's live Facebook post in place.")
+        return 2
+    if sum(bool(getattr(args, k, False)) for k in ("again", "replace", "edit")) > 1:
+        print("Choose one of --again, --replace and --edit.")
+        return 2
     configured = social.configured_networks(settings, os.environ)
     if networks is None and not configured:
         paused = sorted(social.paused_networks(settings))
@@ -396,6 +402,7 @@ def cmd_social(args) -> int:
         article_ids=[a.strip() for a in (args.article or []) if a.strip()] or None,
         again=bool(getattr(args, "again", False)),
         replace=bool(getattr(args, "replace", False)),
+        edit=bool(getattr(args, "edit", False)),
     )
     if not records:
         print(f"Nothing to post. Networks connected: {', '.join(configured) or 'none'}.")
@@ -412,6 +419,8 @@ def cmd_social(args) -> int:
             detail = post.url or post.id or post.error.replace("|", "/")[:120]
             if post.scheduled_for:
                 detail = f"scheduled for {post.scheduled_for} · {detail}"
+            if post.edited_at:
+                detail = f"caption edited {post.edited_at} · {detail}"
             print(f"| {rec.article_id} | {post.network} | {post.status} | {detail} |")
     if args.dry_run:
         for rec in records:
@@ -654,6 +663,7 @@ def main(argv=None) -> int:
     p_soc.add_argument("--dry-run", action="store_true", help="compose the posts and print them, post nothing")
     p_soc.add_argument("--again", action="store_true", help="post the given --article again even though its record says it went out")
     p_soc.add_argument("--replace", action="store_true", help="take the given --article's Facebook post down and post the corrected one; nothing goes out if the takedown fails")
+    p_soc.add_argument("--edit", action="store_true", help="rewrite the caption of the given --article's live Facebook post in place; it keeps its reactions, comments and shares")
     p_soc.set_defaults(func=cmd_social)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")
