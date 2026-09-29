@@ -1,0 +1,71 @@
+name: Answer comments
+
+on:
+  schedule:
+    # Every quarter hour in the two hours after each posting slot, Nepal time: the morning post
+    # after the edition (05:15 start), 12:30 and 18:30. The desk reads only posts younger than
+    # social.facebook.comments.window_minutes, so a run outside a window ends at once.
+    - cron: "7,22,37,52 0-3 * * *"
+    - cron: "7,22,37,52 6-8 * * *"
+    - cron: "7,22,37,52 12-14 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Sort the comments and draft the replies. Post and save nothing."
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  # Identity federation for the model, as in the daily edition.
+  id-token: write
+
+concurrency:
+  group: comments
+  cancel-in-progress: false
+
+jobs:
+  comments:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Answer the comments
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_FEDERATION_RULE_ID: ${{ vars.ANTHROPIC_FEDERATION_RULE_ID }}
+          ANTHROPIC_ORGANIZATION_ID: ${{ vars.ANTHROPIC_ORGANIZATION_ID }}
+          ANTHROPIC_SERVICE_ACCOUNT_ID: ${{ vars.ANTHROPIC_SERVICE_ACCOUNT_ID }}
+          ANTHROPIC_WORKSPACE_ID: ${{ vars.ANTHROPIC_WORKSPACE_ID }}
+          META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run == true && '1' || '' }}
+        run: |
+          args=()
+          [ -n "$DRY_RUN" ] && args+=(--dry-run)
+          set -o pipefail
+          python -m newsroom comments "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Record what the desk did
+        if: always()
+        run: |
+          git config user.name "nepal-wire-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data/social
+          if git diff --cached --quiet; then
+            echo "Nothing new to record."
+          else
+            git commit -m "Comment desk $(TZ=Asia/Kathmandu date +%F)"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

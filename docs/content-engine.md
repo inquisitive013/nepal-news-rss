@@ -284,7 +284,7 @@ Card. Real photo of the subject with identity confirmed, or an illustration labe
 
 ## 17. Publishing package. Needs a person.
 
-Optimal posting windows: 7 to 9 AM or 7 to 10 PM in Nepal and India. The newsroom posts the best ranked story at once and the others at 12:30 and 18:30 Kathmandu time. First hour doctrine: the publisher replies in the comments for the first 60 to 90 minutes after every post. Early replies multiply the thread. Anticipated pushback and the counter framing are ready before posting. Diaspora seeding through WhatsApp per post.
+Optimal posting windows: 7 to 9 AM or 7 to 10 PM in Nepal and India. The newsroom posts the best ranked story at once and the others at 12:30 and 18:30 Kathmandu time. First hour doctrine: the publisher replies in the comments for the first 60 to 90 minutes after every post. Early replies multiply the thread. From 30 September the comment desk does the first two hours (README, "Answering comments"): it replies to readers who answer the post's question, to questions the story answers and to thanks, from the record only, and leaves corrections, legal complaints and comments exposing a private person to the publisher, who still owns them. Anticipated pushback and the counter framing are ready before posting. Diaspora seeding through WhatsApp per post.
 
 ## 18. After publishing
 

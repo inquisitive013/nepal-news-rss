@@ -152,6 +152,15 @@ The text comes from the article's caption, take, headline, dek, social hook and 
 
 Meta's Graph API version defaults to `v23.0`; set the repository variable `META_GRAPH_VERSION` to move it.
 
+### Answering comments
+
+*Actions → Answer comments* (`.github/workflows/comments.yml`, `python -m newsroom comments`) runs every quarter hour in the two hours after each posting slot and reads the new top level comments under Facebook posts younger than `social.facebook.comments.window_minutes` (120). One model call (`comment_desk`, `newsroom/prompts/comment_desk.md`, with both style guides) sorts them:
+- **Replied to:** a reader answering the post's question or sharing their experience, a question the story answers, and thanks. The reply is one or two short sentences in the reader's language, from the record only.
+- **Left for a person, and listed in the run summary with the post's link:** a correction, a legal complaint, or a comment exposing a private person.
+- **Left alone:** politics, anything about the monarchy, abuse, questions the story cannot answer, and the rest.
+
+Code checks every reply again before it goes out: no links, hashtags or tagging, no repeats, at most 280 characters, and caps per post and per run. The record keeps each comment's id and category and Nepal Wire's own reply, never the reader's words, and the public run summary prints only Nepal Wire's replies. `reply: false` sorts and lists without replying; the workflow's **dry_run** drafts without posting. The Page token needs `pages_read_user_content` to read comments and `pages_manage_engagement` to reply.
+
 ### Measuring what posts do
 
 *Actions → Read post insights* (`.github/workflows/insights.yml`, `python -m newsroom insights`) runs every six hours. It reads every live Facebook post twice, 24 and 72 hours after it went live, each reading taken within a day of its mark: unique viewers and views from Meta's post insights (`post_total_media_view_unique` and `post_media_view`, the names Meta has used since June 2026, in `social.facebook.insights.metrics`), and shares, comments and reactions from the post. The readings go on the post in `data/social/<article id>.json`. Each run also notes the Page's follower count in `data/insights/followers.json`, and the report in the run summary sets each post of the last week beside the reach score the ranking judges forecast for its story (`reach` in the verdict) and the follower change over its first day. Posts that go live within a day of each other share that follower window, so read the column as a day's change, not one post's.

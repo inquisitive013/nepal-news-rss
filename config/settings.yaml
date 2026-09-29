@@ -152,6 +152,8 @@ llm:
     investigator: { effort: "high" }
     # The Nepali edition: Sonnet writes the story in Nepali, Opus edits it against the record.
     nepali_writer: { effort: "high" }
+    # A reply is a public statement by Nepal Wire, so the desk thinks before it writes one.
+    comment_desk: { effort: "high" }
     nepali_editor: { model: "claude-opus-5-5", effort: "medium" }
 
 editorial:
@@ -228,6 +230,18 @@ social:
     # these hours after it went live, each reading taken within a day of its mark. Meta's
     # names for the post insights to read; it renamed them in November 2025 and June 2026,
     # and a retired name comes back as error code 100 in the reading.
+    # The comment desk (python -m newsroom comments, every quarter hour after each slot): new
+    # top level comments on posts younger than window_minutes. A reader answering the post's
+    # question, a question the story answers, and thanks get a short reply grounded in the
+    # record; corrections, legal complaints and comments exposing a private person are left for
+    # a person and listed in the run summary; politics, the monarchy and abuse get nothing.
+    # reply: false still sorts and lists, and posts nothing. max_calls caps model calls a run.
+    comments:
+      reply: true
+      window_minutes: 120
+      max_replies_per_post: 10
+      max_replies_per_run: 10
+      max_calls: 6
     insights:
       readings_hours: [24, 72]
       metrics:

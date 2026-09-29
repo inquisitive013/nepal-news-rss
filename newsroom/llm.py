@@ -933,6 +933,20 @@ class MockLLM(BaseLLM):
             "notes": "",
         }
 
+    def _comment_desk(self, p, _images):
+        decisions = []
+        for i, c in enumerate(p.get("comments") or []):
+            text = c.get("text", "")
+            if "गलत" in text:
+                decisions.append({"comment_id": c["id"], "category": "correction", "reply": "", "why": "says the story is wrong"})
+            elif "http" in text:
+                decisions.append({"comment_id": c["id"], "category": "abuse", "reply": "", "why": "a link"})
+            elif "?" in text:
+                decisions.append({"comment_id": c["id"], "category": "question", "reply": f"प्रहरीका अनुसार १४० घरधुरी विद्यालयमा सारिएका छन्। ({i + 1})", "why": "the record answers it"})
+            else:
+                decisions.append({"comment_id": c["id"], "category": "answer", "reply": f"तपाईंको अनुभव सुनेर मन छोयो, तपाईंको टोलमा चेतावनी कति ढिलो आयो? ({i + 1})", "why": "shares an experience"})
+        return {"decisions": decisions}
+
     def _nepali_editor(self, p, _images):
         if "सच्याइएको" in p["nepali"].get("body_markdown", "") or not self.send_back_nepali:
             return {"decision": "approve", "problems": [], "reason": "Faithful to the record and reads as Nepali writing."}

@@ -76,6 +76,9 @@ class Post:
     # What the post did, read by `python -m newsroom insights`: "24h" and "72h", each a reading
     # {at, hours, viewers, views, shares, comments, reactions, errors}.
     metrics: dict[str, dict[str, Any]] = field(default_factory=dict)
+    # What the comment desk did with each reader comment: its id, category and time, and Nepal
+    # Wire's reply when one went out. Never the reader's words.
+    comment_desk: list[dict[str, Any]] = field(default_factory=list)
 
 
 @dataclass
