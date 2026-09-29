@@ -450,6 +450,41 @@ def cmd_social_check(args) -> int:
     return 0
 
 
+def cmd_insights(args) -> int:
+    """Read what each Facebook post did at 24 and 72 hours, note the followers, print the week."""
+    from . import insights, social
+
+    settings = _settings(args)
+    # Secrets, not the posting list: a paused network's posts are still read.
+    if not all(os.environ.get(k, "").strip() for k in social.ENV_KEYS["facebook"]):
+        print("Facebook is not connected, so there is nothing to read. Add FACEBOOK_PAGE_ID and FACEBOOK_PAGE_TOKEN (README, \"Social media\").")
+        return 0
+    print("## Post readings")
+    print()
+    try:
+        result = insights.take_readings(settings, os.environ)
+    except social.SocialError as exc:
+        print(f"::warning::Facebook refused the token, so nothing was read: {str(exc)[:200]}")
+        return 1
+    for article_id, hour, values, errors in result["read"]:
+        got = ", ".join(f"{k} {v:,}" for k, v in values.items())
+        missing = f"; not read: {', '.join(f'{k} ({v})' for k, v in errors.items())}" if errors else ""
+        print(f"- {article_id}, {hour} hours: {got}{missing}")
+    for article_id, hour, errors in result["failed"]:
+        print(f"- {article_id}, {hour} hours: nothing came back ({', '.join(sorted(set(errors.values())))}); the next run tries again")
+    if not result["read"] and not result["failed"]:
+        print("- No post was due for a reading.")
+    if result["followers"] is not None:
+        print(f"- Page followers: {result['followers']:,}")
+    elif result["followers_error"]:
+        print(f"- Page followers not read ({result['followers_error']})")
+    if result["stopped"]:
+        print(f"\n::warning::Stopped early: {result['stopped']}. Replace FACEBOOK_PAGE_TOKEN with a Page token that also grants read_insights and pages_read_engagement (README, \"Measuring what posts do\").")
+    print(f"\n## The last {args.days} days\n")
+    print("\n".join(insights.report(settings, days=args.days)))
+    return 0
+
+
 def cmd_nepali(args) -> int:
     """Write the Nepali edition of stored stories. By default only the ones without one."""
     from . import nepali
@@ -672,6 +707,10 @@ def main(argv=None) -> int:
     p_soc.add_argument("--replace", action="store_true", help="take the given --article's Facebook post down and post the corrected one; nothing goes out if the takedown fails")
     p_soc.add_argument("--edit", action="store_true", help="rewrite the caption of the given --article's live Facebook post in place; it keeps its reactions, comments and shares")
     p_soc.set_defaults(func=cmd_social)
+
+    p_ins = sub.add_parser("insights", help="read what each Facebook post did at 24 and 72 hours, note the Page's followers, print the week against the judges' forecasts")
+    p_ins.add_argument("--days", type=int, default=7, help="how many days of posts the report covers (default 7)")
+    p_ins.set_defaults(func=cmd_insights)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")
     p_socchk.set_defaults(func=cmd_social_check)

@@ -801,7 +801,7 @@ class MockLLM(BaseLLM):
                 scored.append((round((adv + sk) / 2), d["story_id"]))
             scored.sort(reverse=True)
             ranked = [
-                {"story_id": sid, "rank": i + 1, "score": sc, "reason": "advocate case stronger than the skeptic's objections"}
+                {"story_id": sid, "rank": i + 1, "score": sc, "reach": sc, "reason": "advocate case stronger than the skeptic's objections"}
                 for i, (sc, sid) in enumerate(scored)
                 if sc >= 40
             ]

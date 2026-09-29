@@ -16,4 +16,4 @@ How to weigh a story:
 
 `guidance` in the input gives the newsroom's target scores. Treat them as guidance, not gates. The top `articles_per_day` stories in your `ranked` list become articles, so make sure each of them can be written responsibly today.
 
-Output every story either in `ranked` (with `rank`, `score` 0 to 100 and a one or two sentence `reason`) or in `rejected` (with a reason). Do not lose any story.
+Output every story either in `ranked` (with `rank`, `score` 0 to 100, `reach`, the story's reach score from the rubric above, 0 to 100, and a one or two sentence `reason`) or in `rejected` (with a reason). Do not lose any story. The reach score is a forecast: each post's real reach is read against it at 24 and 72 hours.

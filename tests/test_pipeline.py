@@ -30,6 +30,8 @@ def test_mock_run_publishes_and_records(tmp_path):
     assert run.run_date == "2026-09-26"
     assert run.candidates and run.stories and run.debates
     assert [v.judge for v in run.ranking] == ["ranking_judge_1", "ranking_judge_2"]
+    # every ranked story carries the judges' reach forecast, which the calibration log reads
+    assert all(isinstance(r.get("reach"), int) and 0 <= r["reach"] <= 100 for r in run.ranking[-1].ranked)
     assert run.selected_story_ids
     assert run.published, run.rejected
     articles = publish.load_articles(settings)

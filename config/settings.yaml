@@ -222,3 +222,12 @@ social:
     # releases then. Three stories spread across the day reach more people than three in
     # one minute. A slot already past, or under ten minutes away, posts at once.
     slots: ["now", "12:30", "18:30"]
+    # The calibration loop (python -m newsroom insights, every six hours): each post read at
+    # these hours after it went live, each reading taken within a day of its mark. Meta's
+    # names for the post insights to read; it renamed them in November 2025 and June 2026,
+    # and a retired name comes back as error code 100 in the reading.
+    insights:
+      readings_hours: [24, 72]
+      metrics:
+        viewers: post_total_media_view_unique
+        views: post_media_view
