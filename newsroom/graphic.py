@@ -112,12 +112,10 @@ def country_for(article: Article) -> str:
 
 
 def source_names(article: Article, limit: int = 3) -> list[str]:
-    names: list[str] = []
-    for src in article.sources:
-        name = (src.get("name") or "").strip()
-        if name and name not in names:
-            names.append(name)
-    return names[:limit]
+    """The card's source line: the outlets the story cites most, once each."""
+    from .outlets import ranked_sources
+
+    return ranked_sources(article)[:limit]
 
 
 def photo_credit(article: Article, site_name: str) -> str:

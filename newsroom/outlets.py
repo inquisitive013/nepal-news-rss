@@ -7,6 +7,8 @@ the writer returns, so a slip like रातोपाती for रातोप�
 
 from __future__ import annotations
 
+import re
+
 from .models import Article
 
 NEPALI_NAMES = {
@@ -38,6 +40,7 @@ NEPALI_NAMES = {
     "desh sanchar (english)": "देशसञ्चार",
     "khabarhub": "खबरहब",
     "khabarhub (english)": "खबरहब",
+    "the statesman": "द स्टेट्सम्यान",
 }
 
 # Wrong spelling, right spelling. Only joined forms that name an outlet.
@@ -59,11 +62,39 @@ def fix_spellings(text: str) -> str:
     return text
 
 
-def source_line_ne(article: Article, limit: int = 5) -> str:
-    """"स्रोत: नेपाल प्रेस, रिपब्लिका, ..." for the Nepali caption: every outlet the story cites, once, in its order."""
+def ranked_sources(article: Article) -> list[str]:
+    """The story's outlets, once each, the ones its text cites most first; ties keep the list's order.
+
+    A short source line then names the outlets the story leans on: on 29 September the first
+    five in list order left out OnlineKhabar, the source for the Rana caption's 12:30 am.
+    """
     names: list[str] = []
+    stems: set[str] = set()
     for src in article.sources:
-        name = nepali_name(src.get("name", ""))
-        if name and name not in names:
+        name = " ".join((src.get("name") or "").split())
+        if name and _stem(name) not in stems:  # "OnlineKhabar English" and "OnlineKhabar" are one outlet here
+            stems.add(_stem(name))
             names.append(name)
+    text = (article.body_markdown or "").lower()
+
+    def cited(name: str) -> int:
+        return len(re.findall(r"(?<![\w])" + re.escape(_stem(name)) + r"(?![\w])", text))
+
+    order = {name: i for i, name in enumerate(names)}
+    return sorted(names, key=lambda n: (-cited(n), order[n]))
+
+
+def _stem(name: str) -> str:
+    """The outlet's name as a story's text cites it: no leading "the", no edition tag."""
+    bare = re.sub(r"^the\s+", "", name.lower().strip())
+    return re.sub(r"\s*\(?\b(english|nepali)\b\)?$", "", bare).strip()
+
+
+def source_line_ne(article: Article, limit: int = 5) -> str:
+    """"स्रोत: नेपाल प्रेस, रिपब्लिका, ..." for the Nepali caption: the outlets the story cites most, once each."""
+    names: list[str] = []
+    for name in ranked_sources(article):
+        ne = nepali_name(name)
+        if ne not in names:
+            names.append(ne)
     return f"स्रोत: {', '.join(names[:limit])}" if names else ""
