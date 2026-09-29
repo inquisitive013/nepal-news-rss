@@ -111,11 +111,11 @@ def country_for(article: Article) -> str:
     return (article.country or "NEPAL").strip().upper() or "NEPAL"
 
 
-def source_names(article: Article, limit: int = 3) -> list[str]:
-    """The card's source line: the outlets the story cites most, once each."""
+def source_names(article: Article) -> list[str]:
+    """The card's source line: every outlet the story used, once each, the ones it cites most first."""
     from .outlets import ranked_sources
 
-    return ranked_sources(article)[:limit]
+    return ranked_sources(article)
 
 
 def photo_credit(article: Article, site_name: str) -> str:
@@ -227,6 +227,40 @@ def balanced_two_lines(draw: ImageDraw.ImageDraw, text: str, fnt, max_width: int
         if max(widths) <= max_width and (best is None or max(widths) < best[0]):
             best = (max(widths), pair)
     return best[1] if best else None
+
+
+SOURCE_LABEL = "SOURCE:"
+SOURCE_GAP = 8  # between the label and the first outlet
+
+
+def source_rows(draw: ImageDraw.ImageDraw, names: list[str], label_font, name_font, *, max_width: int = W - 2 * MARGIN) -> list[str]:
+    """The outlets on the card's source line: one line when they fit, else two balanced lines.
+
+    The label leads line one. The captions carry no source line, so the card is where a post
+    credits its outlets. On 29 September a cap of three cut Ratopati from the floods card, and
+    the style guide's caption for that story opens on Ratopati's Gandaki relief fact. Only a story
+    with more outlets than two lines hold loses any, the least cited first, and the log names them.
+    """
+    lead = text_width(draw, SOURCE_LABEL, label_font) + SOURCE_GAP
+
+    def width(row: list[str], first: bool) -> int:
+        return (lead if first else 0) + text_width(draw, " · ".join(row), name_font)
+
+    kept = list(names)
+    while kept:
+        if len(kept) == 1 or width(kept, True) <= max_width:
+            rows = [kept]
+            break
+        widest, i = min((max(width(kept[:i], True), width(kept[i:], False)), i) for i in range(1, len(kept)))
+        if widest <= max_width:
+            rows = [kept[:i], kept[i:]]
+            break
+        kept = kept[:-1]
+    else:
+        return []
+    if len(kept) < len(names):
+        log.warning("the card's source line holds %d of %d outlets, left off: %s", len(kept), len(names), ", ".join(names[len(kept):]))
+    return [" · ".join(row) for row in rows]
 
 
 def fit_headline(draw: ImageDraw.ImageDraw, text: str, *, max_width: int = HEADLINE_MAX_WIDTH, max_lines: int = 2, largest: int = 72, smallest: int = 52, kind: str = "sans-bold"):
@@ -370,23 +404,21 @@ def render_card(settings: Settings, article: Article, out_path: Path, *, languag
             credit = credit[:-4].rstrip() + "…"
         draw.text(((W - text_width(draw, credit, f_credit)) // 2, footer_top + 32), credit, font=f_credit, fill=LIGHT_GRAY)
 
-    # Source line, centred, clearing the footer by 8px.
+    # Source line, every outlet, centred: one line or two, the last clearing the footer by 8px.
     f_src_b, f_src = font("mono-bold", 16), font("mono", 16)
-    names = source_names(article)
-    label = "SOURCE:"
-    while True:
-        outlets = " · ".join(names) or site_name
-        total = text_width(draw, label, f_src_b) + 8 + text_width(draw, outlets, f_src)
-        if total <= W - 2 * MARGIN or len(names) <= 1:
-            break
-        names = names[:-1]
-    src_h = 19
-    src_y = footer_top - 8 - src_h
-    sx = (W - total) // 2
-    draw.text((sx, src_y), label, font=f_src_b, fill=GOLD)
-    draw.text((sx + text_width(draw, label, f_src_b) + 8, src_y), outlets, font=f_src, fill=OFF_WHITE)
+    rows = source_rows(draw, source_names(article) or [site_name], f_src_b, f_src)
+    src_h, src_pitch = 19, 25
+    src_y = footer_top - 8 - src_h - src_pitch * (len(rows) - 1)
+    lead = text_width(draw, SOURCE_LABEL, f_src_b) + SOURCE_GAP
+    for i, row in enumerate(rows):
+        y = src_y + i * src_pitch
+        sx = (W - (lead if i == 0 else 0) - text_width(draw, row, f_src)) // 2
+        if i == 0:
+            draw.text((sx, y), SOURCE_LABEL, font=f_src_b, fill=GOLD)
+            sx += lead
+        draw.text((sx, y), row, font=f_src, fill=OFF_WHITE)
 
-    # Gold underline, 22px above the source line.
+    # Gold underline, 22px above the first source line.
     ul_h, ul_w = 4, 420
     ul_bottom = src_y - 22
     draw.rectangle([(W - ul_w) // 2, ul_bottom - ul_h, (W + ul_w) // 2, ul_bottom], fill=GOLD)

@@ -943,4 +943,4 @@ def test_the_card_source_line_names_the_outlets_the_story_cites_most(tmp_path):
     # cited most first, ties in list order, one line per outlet whatever its edition
     assert outlets.ranked_sources(art) == ["OnlineKhabar English", "The Kathmandu Post", "Nepal Press", "Ratopati", "Nagarik News", "DC Nepal"]
     from newsroom import graphic
-    assert graphic.source_names(art) == ["OnlineKhabar English", "The Kathmandu Post", "Nepal Press"]
+    assert graphic.source_names(art) == outlets.ranked_sources(art)  # all six on the card, none cut
