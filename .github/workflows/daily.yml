@@ -50,8 +50,9 @@ concurrency:
 jobs:
   edition:
     runs-on: ubuntu-latest
-    # With llm.batch on, calls wait in Anthropic's batch queue. Its valves send every call the
-    # normal way once the run passes llm.batch.run_minutes (180), so four hours leaves room.
+    # With llm.batch on, calls wait in Anthropic's batch queue, each at most
+    # llm.batch.max_wait_minutes (15). Once the run passes llm.batch.run_minutes (150) every
+    # call goes the normal way, so even a slow queue day finishes inside four hours.
     timeout-minutes: 240
     outputs:
       no_key: ${{ steps.newsroom.outputs.no_key }}
@@ -274,6 +275,13 @@ jobs:
           if c:
               left_out = f", {c['unpriced_calls']} calls without a list price left out" if c.get('unpriced_calls') else ""
               print(f"- Estimated cost at list prices: ${c['estimate']:.2f} ({t.get('batch_calls', 0)} of {t.get('calls')} calls through the batch queue{left_out})")
+          waits = run.get('batch_waits') or []
+          if waits:
+              try:
+                  from newsroom.llm import wait_report
+                  print(f"- Batch queue: {wait_report(waits)}")
+              except Exception as exc:  # the summary never fails the job
+                  print(f"- Batch queue: {len(waits)} calls waited; the detail could not be read ({type(exc).__name__})")
           for e in run['errors'][:5]:
               print(f"- Error: {e.splitlines()[0][:200]}")
           PY

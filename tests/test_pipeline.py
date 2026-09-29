@@ -62,9 +62,23 @@ def test_mock_run_publishes_and_records(tmp_path):
     data = json.loads(run_file.read_text())
     assert data["usage_totals"]["calls"] == len(run.usage) > 10
     assert data["usage_totals"]["batch_calls"] == 0
+    assert data["batch_waits"] == []  # the mock model has no batch queue
     # the mock model has no list price, so the record says the estimate leaves every call out
     assert data["cost_usd"] == {"estimate": 0.0, "unpriced_calls": len(run.usage)}
     assert data["feed_health"]
+
+
+def test_the_run_record_keeps_every_batch_wait(tmp_path):
+    from types import SimpleNamespace
+
+    settings = _settings(tmp_path)
+    llm = MockLLM(settings, UsageMeter(200))
+    waits = [{"role": "writer", "model": "claude-sonnet-5", "searches": 0, "at": 120, "seconds": 900, "outcome": "timed out"}]
+    llm.batch = SimpleNamespace(waits=waits)  # what the live client's lane holds at the end of a run
+    run = pipeline.run(settings, llm=llm, now=NOW)
+    assert run.batch_waits == waits
+    data = json.loads((tmp_path / "data" / "runs" / "2026-09-26.json").read_text())
+    assert data["batch_waits"] == waits
 
 
 def test_mock_run_rejection_path(tmp_path):
