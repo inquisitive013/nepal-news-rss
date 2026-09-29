@@ -28,7 +28,6 @@ import httpx
 from . import graphic, nepali as nepali_edition, publish
 from .config import Settings
 from .models import Article, utcnow_iso
-from .outlets import source_line_ne
 
 log = logging.getLogger(__name__)
 
@@ -73,6 +72,7 @@ class Post:
     error: str = ""
     posted_at: str = ""
     scheduled_for: str = ""  # local time when the network will release it, empty when posted at once
+    edited_at: str = ""  # when the caption was last rewritten in place; `text` is the caption now live
 
 
 @dataclass
@@ -291,10 +291,10 @@ def engine_caption(article: Article, settings: Settings, tags: str) -> str:
     """The Facebook caption to the content engine.
 
     With ``social.facebook.caption`` on "synopsis" and a checked Nepali piece that has one, the
-    post is the Nepali two line synopsis and a Nepali source line, nothing else. Otherwise the long
-    form: headline, hook, body, trigger and the locked close. With a checked Nepali version and
-    ``social.facebook.languages`` listing ``ne`` first, the Nepali caption opens the post and the
-    English follows under a rule. The close carries both.
+    post is the Nepali two line synopsis, nothing else: the sources live on the card. Otherwise
+    the long form: headline, hook, body, trigger and the locked close. With a checked Nepali
+    version and ``social.facebook.languages`` listing ``ne`` first, the Nepali caption opens the
+    post and the English follows under a rule. The close carries both.
     """
     site = (settings.get("site.name") or "Nepal Wire").strip()
     site_ne = str(settings.get("site.name_ne") or "").strip() or site
@@ -303,9 +303,9 @@ def engine_caption(article: Article, settings: Settings, tags: str) -> str:
     ne_cap = nepali.get("caption") or {}
     synopsis = nepali_synopsis(article)
     if caption_style(settings) == "synopsis" and synopsis:
-        # The card carries the headline; the caption is the story in two Nepali lines and its sources.
+        # The card carries the headline and the sources; the caption is the story in two Nepali lines.
         extra = [f"पूरा समाचार: {nepali_article_url(settings, article)}"] if link else []
-        return "\n\n".join(p for p in (synopsis, *extra, source_line_ne(article)) if p)
+        return "\n\n".join(p for p in (synopsis, *extra) if p)
 
     def english() -> tuple[str, list[str]]:
         cap = article.caption or {}
@@ -585,6 +585,14 @@ def delete_facebook_post(client: httpx.Client, environ: Mapping[str, str], post_
     data = _raise_for(client.delete(f"{META_GRAPH}/{_graph_version(environ)}/{post_id}", params={"access_token": fb.token}), "Facebook")
     if data.get("success") is False:
         raise SocialError(f"Facebook did not delete post {post_id}")
+
+
+def edit_facebook_caption(client: httpx.Client, environ: Mapping[str, str], post_id: str, text: str) -> None:
+    """Rewrite a live post's caption in place. Unlike a takedown, the post keeps its reactions, comments and shares."""
+    fb = facebook_page(client, environ)
+    data = _raise_for(client.post(f"{META_GRAPH}/{_graph_version(environ)}/{post_id}", data={"message": text, "access_token": fb.token}), "Facebook")
+    if data.get("success") is False:
+        raise SocialError(f"Facebook did not edit post {post_id}")
 
 
 def facebook_slots(settings: Settings) -> list[str]:
@@ -915,22 +923,44 @@ def post_article(
     facebook_publish_at: int | None = None,
     again: bool = False,
     replace: bool = False,
+    edit: bool = False,
 ) -> SocialRecord:
     rec = load_record(settings, article)
     rec.article_url = article_url(settings, article)
     img = image_url(settings, article)
     card = card_url(settings, article) if facebook_mode(settings) == "photo" else ""
-    if card and not dry_run and "facebook" in (networks if networks is not None else configured_networks(settings, environ)):
+    if card and not dry_run and not edit and "facebook" in (networks if networks is not None else configured_networks(settings, environ)):
         card = facebook_card_url(settings, article, client)
     # `again` posts even where the record says posted; the new post is appended, the old one kept.
     # `replace` takes the last Facebook post down first, then posts the corrected one.
-    done = set() if (again or replace) else {p.network for p in rec.posts if p.status == "posted"}
+    # `edit` rewrites the live Facebook post's caption in place and posts nothing new: a caption fix
+    # that keeps the post's reactions, comments and shares. A card fix still needs `replace`.
+    done = set() if (again or replace or edit) else {p.network for p in rec.posts if p.status == "posted"}
     for network in networks if networks is not None else configured_networks(settings, environ):
-        if network in done:
+        if network in done or (edit and network != "facebook"):
             continue
         text = compose(network, article, settings)
         if dry_run:
             rec.posts.append(Post(network=network, status="skipped", text=text, error="dry run"))
+            continue
+        if edit:
+            live = next((p for p in reversed(rec.posts) if p.network == "facebook" and p.status == "posted" and p.id), None)
+            if live is None:
+                rec.posts.append(Post(network=network, status="failed", text=text, error="no live Facebook post to edit", posted_at=utcnow_iso()))
+                log.warning("no live Facebook post to edit for %s", article.id)
+            elif live.text == text:
+                log.info("the Facebook post for %s already carries this caption", article.id)
+            else:
+                try:
+                    edit_facebook_caption(client, environ, live.id, text)
+                except (SocialError, httpx.HTTPError) as exc:
+                    # The live post stays exactly as it was; the attempt is recorded beside it.
+                    rec.posts.append(Post(network=network, status="failed", text=text, error=f"could not edit {live.id}, so it stays as it was: {str(exc)[:300]}", posted_at=utcnow_iso()))
+                    log.warning("facebook edit failed for %s: %s", article.id, exc)
+                else:
+                    live.text = text
+                    live.edited_at = utcnow_iso()
+                    log.info("edited the caption of %s for %s", live.id, article.id)
             continue
         if replace and network == "facebook":
             old = next((p for p in reversed(rec.posts) if p.network == "facebook" and p.status == "posted" and p.id), None)
@@ -988,9 +1018,12 @@ def post_articles(
     now: datetime | None = None,
     again: bool = False,
     replace: bool = False,
+    edit: bool = False,
 ) -> list[SocialRecord]:
-    if (again or replace) and not article_ids:
-        raise ValueError("posting again needs explicit article ids, or every recent story would go out twice")
+    if (again or replace or edit) and not article_ids:
+        raise ValueError("posting again or editing needs explicit article ids, or every recent story would be touched")
+    if sum((again, replace, edit)) > 1:
+        raise ValueError("choose one of again, replace and edit")
     chosen = networks if networks is not None else configured_networks(settings, environ)
     articles = articles_to_post(settings, run_date, max_age_hours, article_ids)
     if not chosen or not articles:
@@ -1008,7 +1041,7 @@ def post_articles(
                     log.warning("%s is not answering yet; posting anyway", article_url(settings, art))
                     break
         return [
-            post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep, facebook_publish_at=None if replace else plan.get(art.id), again=again, replace=replace)
+            post_article(settings, art, environ, client, networks=chosen, dry_run=dry_run, sleep=sleep, facebook_publish_at=None if (replace or edit) else plan.get(art.id), again=again, replace=replace, edit=edit)
             for art in articles
         ]
     finally:

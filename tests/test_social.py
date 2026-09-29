@@ -1,5 +1,6 @@
 import dataclasses
 import json
+import urllib.parse
 
 import httpx
 import pytest
@@ -749,6 +750,71 @@ def test_replace_takes_the_old_facebook_post_down_before_posting_the_corrected_o
         social.post_articles(settings, env, replace=True, networks=["facebook"], client=client, wait_seconds=0)
 
 
+def test_edit_rewrites_the_live_facebook_caption_in_place(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.caption = {"hook": "h", "body": "b", "trigger": ""}
+    art.nepali = _nepali(synopsis=SYNOPSIS)
+    publish.save_article(settings, art)
+    calls = []
+    edit_ok = {"value": True}
+
+    def handler(request):
+        url = str(request.url)
+        if url.startswith(SITE):
+            return httpx.Response(200, text="ok")
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "111"})
+        if url.endswith("/111/photos"):
+            calls.append(("photos", ""))
+            return httpx.Response(200, json={"id": "1", "post_id": "111_1"})
+        if request.method == "POST" and url.endswith("/111_1"):
+            form = dict(urllib.parse.parse_qsl(request.content.decode()))
+            calls.append(("edit", form["message"]))
+            return httpx.Response(200, json={"success": True}) if edit_ok["value"] else httpx.Response(400, json={"error": {"message": "cannot edit", "code": 100}})
+        calls.append(("unexpected", f"{request.method} {url}"))
+        return httpx.Response(404, json={"error": "unexpected " + url})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    kwargs = dict(networks=["facebook"], client=client, sleep=lambda s: None, wait_seconds=0, article_ids=[art.id], max_age_hours=1e6)
+    first = social.post_articles(settings, env, **kwargs)[0]
+    assert calls == [("photos", "")]
+    # the caption as it went out, with the source line it carried before 29 September's change
+    first.posts[0].text = SYNOPSIS + "\n\nस्रोत: नेपाल प्रेस"
+    social.save_record(settings, first)
+
+    rec = social.post_articles(settings, env, edit=True, **kwargs)[0]
+    assert calls[1:] == [("edit", SYNOPSIS)]  # the live post, rewritten; nothing new posted
+    [live] = rec.posts
+    assert (live.status, live.id, live.text) == ("posted", "111_1", SYNOPSIS) and live.edited_at
+    assert social.load_record(settings, art).posts[0].edited_at == live.edited_at
+
+    social.post_articles(settings, env, edit=True, **kwargs)
+    assert len(calls) == 2  # the live caption already says this: no call
+
+    art.nepali = _nepali(synopsis="पहिलो लाइन।\nदोस्रो लाइन।")
+    publish.save_article(settings, art)
+    edit_ok["value"] = False
+    rec = social.post_articles(settings, env, edit=True, **kwargs)[0]
+    assert calls[2:] == [("edit", "पहिलो लाइन।\nदोस्रो लाइन।")]
+    assert rec.posts[0].text == SYNOPSIS and rec.posts[0].status == "posted"  # a refused edit leaves the post as it was
+    assert rec.posts[-1].status == "failed" and "stays as it was" in rec.posts[-1].error
+
+    with pytest.raises(ValueError):
+        social.post_articles(settings, env, edit=True, networks=["facebook"], client=client, wait_seconds=0)
+    with pytest.raises(ValueError):
+        social.post_articles(settings, env, edit=True, replace=True, **kwargs)
+
+    other = _article(settings)
+    other.id, other.slug = "2026-09-29-never-posted", "never-posted"
+    other.nepali = _nepali(synopsis=SYNOPSIS)
+    publish.save_article(settings, other)
+    rec = social.post_articles(settings, env, edit=True, **dict(kwargs, article_ids=[other.id]))[0]
+    assert [(p.status, p.error) for p in rec.posts] == [("failed", "no live Facebook post to edit")]
+    assert not [c for c in calls if c[0] == "unexpected"]
+
+
 SYNOPSIS = "सरकारी तथ्यांकअनुसार बिहीबारदेखिको बाढीपहिरोमा देशभर २७ जनाको मृत्यु भएको छ।\nविद्युत् पूर्वाधारमा भएको रु. ७४ अर्बको क्षति भने भदौको भोटेकोशी बाढीले पुर्‍याएको हो।"
 
 
@@ -761,7 +827,7 @@ def _nepali(**caption):
     }
 
 
-def test_the_facebook_caption_is_the_two_line_synopsis_and_a_nepali_source_line(tmp_path):
+def test_the_facebook_caption_is_the_two_line_synopsis_and_nothing_else(tmp_path):
     s = _settings(tmp_path)
     art = _article(s)
     art.sources = art.sources + [{"name": "OnlineKhabar English", "url": "u"}, {"name": "Ratopati", "url": "r"}, {"name": "ESPNcricinfo", "url": "e"}]
@@ -769,13 +835,14 @@ def test_the_facebook_caption_is_the_two_line_synopsis_and_a_nepali_source_line(
     art.nepali = _nepali(synopsis=SYNOPSIS)
     assert social.caption_style(s) == "synopsis"
     fb = social.compose("facebook", art, s)
-    # the whole post: two lines, a blank line, the outlets once each, Nepali names where readers use them
-    assert fb == SYNOPSIS + "\n\nस्रोत: काठमाडौं पोस्ट, अनलाइनखबर, रातोपाटी, ESPNcricinfo"
+    # the whole post is the two lines: the sources are on the card and nowhere else
+    assert fb == SYNOPSIS
+    assert "स्रोत" not in fb and "OnlineKhabar" not in fb and "अनलाइनखबर" not in fb
     assert "English" not in fb and "#" not in fb and social.RULE not in fb and "फलो" not in fb and "?" not in fb
-    # the link option adds the Nepali page above the sources
+    # the link option adds the Nepali page under them
     raw = dict(s.raw)
     raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, include_link=True))
-    assert f"{SYNOPSIS}\n\nपूरा समाचार: {SITE}/ne/articles/{art.slug}/\n\nस्रोत:" in social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+    assert social.compose("facebook", art, dataclasses.replace(s, raw=raw)) == f"{SYNOPSIS}\n\nपूरा समाचार: {SITE}/ne/articles/{art.slug}/"
     # "full" brings back the long bilingual caption; a story without a synopsis gets it too
     raw = dict(s.raw)
     raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, caption="full"))
@@ -822,7 +889,7 @@ def test_facebook_gets_the_nepali_card_when_the_site_has_it(tmp_path):
     assert seen["url"] == f"{SITE}/cards/{art.id}.jpg?v=1"
 
 
-def test_the_source_line_names_the_outlets_the_story_cites_most(tmp_path):
+def test_the_card_source_line_names_the_outlets_the_story_cites_most(tmp_path):
     from newsroom import outlets
 
     s = _settings(tmp_path)
@@ -843,6 +910,5 @@ def test_the_source_line_names_the_outlets_the_story_cites_most(tmp_path):
     )
     # cited most first, ties in list order, one line per outlet whatever its edition
     assert outlets.ranked_sources(art) == ["OnlineKhabar English", "The Kathmandu Post", "Nepal Press", "Ratopati", "Nagarik News", "DC Nepal"]
-    assert outlets.source_line_ne(art) == "स्रोत: अनलाइनखबर, काठमाडौं पोस्ट, नेपाल प्रेस, रातोपाटी, नागरिक"
     from newsroom import graphic
     assert graphic.source_names(art) == ["OnlineKhabar English", "The Kathmandu Post", "Nepal Press"]
