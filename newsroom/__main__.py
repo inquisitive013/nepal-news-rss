@@ -510,6 +510,11 @@ def cmd_comments(args) -> int:
     # Replies belong in the first hour: the normal way, never the batch queue.
     raw = copy.deepcopy(settings.raw)
     raw.setdefault("llm", {}).setdefault("batch", {})["enabled"] = False
+    if args.window_minutes:
+        if not args.dry_run:
+            print("--window-minutes is for dry runs only: a live reply outside the first hours is not the desk's job.")
+            return 2
+        raw.setdefault("social", {}).setdefault("facebook", {}).setdefault("comments", {})["window_minutes"] = args.window_minutes
     settings = dataclasses.replace(settings, raw=raw)
     llm = make_llm(settings, UsageMeter(int(settings.get("social.facebook.comments.max_calls", 6))))
     try:
@@ -751,6 +756,7 @@ def main(argv=None) -> int:
 
     p_com = sub.add_parser("comments", help="answer readers under Facebook posts still inside their reply window; corrections and legal complaints are left for a person")
     p_com.add_argument("--dry-run", action="store_true", help="sort the comments and draft the replies, post and save nothing")
+    p_com.add_argument("--window-minutes", type=int, default=0, help="with --dry-run: read posts this many minutes old, to test on older posts")
     p_com.set_defaults(func=cmd_comments)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")

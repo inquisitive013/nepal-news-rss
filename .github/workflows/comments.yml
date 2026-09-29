@@ -14,6 +14,10 @@ on:
         description: "Sort the comments and draft the replies. Post and save nothing."
         type: boolean
         default: false
+      window_minutes:
+        description: "Dry runs only: read posts up to this many minutes old, to test on older posts. Empty keeps the setting."
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -50,9 +54,12 @@ jobs:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
           FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run == true && '1' || '' }}
+          WINDOW: ${{ inputs.window_minutes }}
         run: |
+          case "$WINDOW" in *[!0-9]*) echo "::error::window_minutes must be a whole number, not '$WINDOW'."; exit 1 ;; esac
           args=()
           [ -n "$DRY_RUN" ] && args+=(--dry-run)
+          [ -n "$WINDOW" ] && args+=(--window-minutes "$WINDOW")
           set -o pipefail
           python -m newsroom comments "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 
