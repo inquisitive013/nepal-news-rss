@@ -193,3 +193,14 @@ def test_a_model_failure_records_nothing_and_a_spent_budget_stops_the_run(tmp_pa
     spent = Failing(BudgetExceeded("cap"))
     result = comments.run_desk(settings, ENV, spent, client=client, now=NOW)
     assert spent.asked == 1 and "model calls ran out" in result["held"][0][1]  # the second post waits for the next run
+
+
+def test_a_wider_window_is_for_dry_runs_only(tmp_path, monkeypatch, capsys):
+    from newsroom import __main__ as cli
+
+    settings = _settings(tmp_path)
+    monkeypatch.setattr(cli, "_settings", lambda args: settings)
+    monkeypatch.setenv("FACEBOOK_PAGE_ID", ENV["FACEBOOK_PAGE_ID"])
+    monkeypatch.setenv("FACEBOOK_PAGE_TOKEN", ENV["FACEBOOK_PAGE_TOKEN"])
+    assert cli.main(["comments", "--window-minutes", "600"]) == 2
+    assert "dry runs only" in capsys.readouterr().out
