@@ -126,22 +126,22 @@
   },
   "image": {
     "path": "data/images/2026-09-29-nepal-flood-death-toll-27-power-damage-confusion.jpg",
-    "alt": "The Nepal Electricity Authority head office building decorated with lights during Tihar.",
+    "alt": "A dam structure on the Bhote Koshi River in Sindhupalchok District, Nepal, surrounded by steep hillsides.",
     "width": 1600,
     "height": 1200,
     "credit": {
       "kind": "found",
-      "title": "Nepal Electricity Authority Head office tihar",
-      "author": "Nawaraj Ghimire",
+      "title": "A dam on the Bhote Koshi River, located in Sindhupalchok District, Nepal.",
+      "author": "Saddam19",
       "author_url": "",
       "source": "Wikimedia Commons",
-      "source_url": "https://commons.wikimedia.org/wiki/File:Nepal_Electricity_Authority_Head_office_tihar.jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:A_dam_on_the_Bhote_Koshi_River,_located_in_Sindhupalchok_District,_Nepal..jpg",
       "license": "CC BY-SA 4.0",
       "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
       "model": "",
       "note": ""
     },
-    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Nepal_Electricity_Authority_Head_office_tihar.jpg/1920px-Nepal_Electricity_Authority_Head_office_tihar.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/A_dam_on_the_Bhote_Koshi_River%2C_located_in_Sindhupalchok_District%2C_Nepal..jpg/1920px-A_dam_on_the_Bhote_Koshi_River%2C_located_in_Sindhupalchok_District%2C_Nepal..jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
   },
   "investigation": {
     "angles": [
@@ -624,12 +624,11 @@
     "picture": {
       "searched": [
         {
-          "subject": "Nepal Electricity Authority",
-          "entity": "Q16257981 Nepal Electricity Authority",
+          "subject": "Kaligandaki River",
+          "entity": "Q849494 Gandaki River",
           "found": {
-            "commons category": 3,
-            "commons search": 2,
-            "openverse": 3
+            "wikidata image": 1,
+            "depicts": 7
           }
         },
         {
@@ -640,25 +639,25 @@
           }
         },
         {
-          "subject": "Kaligandaki River",
-          "entity": "Q849494 Gandaki River",
+          "subject": "Bhote Koshi River",
+          "entity": "Q3695389 Bhote Koshi",
           "found": {
             "wikidata image": 1,
-            "depicts": 7
+            "commons category": 7
           }
         }
       ],
-      "requests": 17,
+      "requests": 16,
       "candidates": 24,
       "shown": 6,
       "rounds": 1,
       "decision": "found",
-      "reason": "The Nepal Electricity Authority head office building is directly named in the file title, description and Wikidata depicts line, matching the story's focus on NEA's damage estimate, and is sharp and well-composed compared to the smaller Janakpur branch image.",
+      "reason": "The file is documented as a dam on the Bhote Koshi River in Sindhupalchok District, directly tying to the NEA's August 26 Bhote Koshi flood that generated the Rs 74 billion damage estimate central to this story.",
       "chosen": {
-        "page": "https://commons.wikimedia.org/wiki/File:Nepal_Electricity_Authority_Head_office_tihar.jpg",
+        "page": "https://commons.wikimedia.org/wiki/File:A_dam_on_the_Bhote_Koshi_River,_located_in_Sindhupalchok_District,_Nepal..jpg",
         "found_via": "commons category",
-        "subject": "Nepal Electricity Authority",
-        "depicts": "in the Commons category Nepal Electricity Authority, which Wikidata gives for Nepal Electricity Authority, generator and distributor of electric power under the supervision of the government of Nepal (Wikidata Q16257981)"
+        "subject": "Bhote Koshi River",
+        "depicts": "in the Commons category Bhote Kosi, which Wikidata gives for Bhote Koshi, river in Sindhupalchowk, Nepal, and Tibet, China (Wikidata Q3695389), matched on the shorter name \"Bhote Koshi\" while looking for \"Bhote Koshi River\""
       }
     }
   },
