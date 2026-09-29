@@ -112,6 +112,7 @@ A post that fails any part of this section does not publish, whatever its viral 
 ### 6.6 The reader test
 
 - Before a line is written, answer in one sentence: what does this change for someone like the reader? Their family, money, safety, rights, time or pride. The answer reaches the hook or the first line of the caption, and the first two paragraphs of the article, in the reader's words. "You" is used when the record shows the consequence reaches ordinary people.
+- A "you" line never widens a payment, a rule or a risk beyond the place or group the record names, and keeps the record's qualifiers: matching, about, so far, estimated. On 29 September "If your family lost someone to these floods, Gandaki province has promised Rs 100,000" spoke to every reader about money only Gandaki's families were promised.
 - A person the reader can picture themselves as leads when the record names one, with only what they told a named outlet. Never a child.
 - A big number gets a human scale when the record carries both halves, with the arithmetic shown.
 - The feeling the facts earn is named: anger, fear, pride, hope. Never an outrage the record does not support, never hatred of people for who they are.
@@ -224,6 +225,7 @@ Recurring subjects rotate pictures. Never the same image across recent posts. Pr
 - Brightness 0.70 for well lit sources, colour 0.75. Dark photo exception, locked: a dark source is lifted as far as needed to keep the subject identifiable. Identifiability overrides the darkening cap.
 - The subject owns the frame. Reject photos where background objects or bystanders compete for the eye.
 - Essence rule: the photo embodies the narrative before the caption is read.
+- Mood rule: never a festive or celebratory frame, festival lights, decorations, a party or a ceremony, on a story about deaths, disaster or grief, even when it shows the right subject.
 - No gradient over the subject. Bottom anchored gradient only.
 - No children in images. Ever.
 
