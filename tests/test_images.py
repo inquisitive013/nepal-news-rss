@@ -424,7 +424,14 @@ def test_the_photos_command_gives_a_story_a_real_photo(tmp_path, monkeypatch, ca
     monkeypatch.setattr(cli, "_settings", lambda args: settings)
     monkeypatch.setattr(images, "fetch_json", _library([]))
     monkeypatch.setattr(images, "fetch_bytes", lambda url: (_png(), "image/jpeg"))
+    from newsroom import llm as llm_mod
+
+    made = []
+    real_make = llm_mod.make_llm
+    monkeypatch.setattr(llm_mod, "make_llm", lambda s, meter=None: made.append(s.get("llm.batch.enabled")) or real_make(s, meter))
+    assert settings.get("llm.batch.enabled") is True  # the edition batches
     assert cli.main(["photos"]) == 0
+    assert made == [False]  # a manual photo run never waits in the batch queue
     out = capsys.readouterr().out
     assert "1 given a real photo, 0 kept what they had, 0 failed." in out
     stored = publish.load_articles(settings)[0]

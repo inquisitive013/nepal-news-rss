@@ -17,6 +17,7 @@ The house style's reader test binds the Nepali too, and the Nepali reader is the
 
 - Short, and verb final or built on an action noun, the way Nepali headlines are: "बाढीपहिरोमा ६ जनाको मृत्यु, ४०७ जनाको उद्धार". At most two clauses, joined by a comma. No colon lists.
 - The status signal survives: पक्राउ, आरोप, अनुसन्धानमा, अदालतमा, धरौटीमा रिहा. Never stronger than the record.
+- When sources give one act different names (पक्राउ, हिरासत, सुरक्षाका लागि ल्याएको), our own sentence states the plain action, "घरबाट लगेर करिब १० घण्टा राखेको", and each name goes to whoever used it: "सुरुमा प्रहरीले यसलाई पक्राउ भनेको थियो।" The first word police use is not the status, on the card, in the headline and in the synopsis as in the body.
 - Under 60 characters where the story allows.
 
 ## पहिलो अनुच्छेद: the lede

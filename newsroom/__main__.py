@@ -563,7 +563,14 @@ def _photos_dry_run(settings, wanted, compare: bool) -> int:
 
 def cmd_photos(args) -> int:
     """Look again for a licensed real photo for stored stories. By default the ones carrying an illustration or a cover card."""
+    import copy
+
     settings = _settings(args)
+    # One call after another, the normal way. On 29 September a one story run's only picker call
+    # waited 935 seconds in the batch queue, then went at full price anyway.
+    raw = copy.deepcopy(settings.raw)
+    raw.setdefault("llm", {}).setdefault("batch", {})["enabled"] = False
+    settings = dataclasses.replace(settings, raw=raw)
     wanted = _photo_targets(settings, args)
     if not wanted:
         print("Nothing to do: every stored story carries a real photo.")

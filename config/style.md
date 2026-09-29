@@ -62,6 +62,7 @@ Never use any of these, in any form:
 - Never assert guilt. Show the record and let the reader draw the conclusion.
 - Contested conduct is attributed to the outlet or body that alleged it, never stated in the newsroom's own voice: "Ratopati reported", "the NHRC named", "court filings show".
 - Legal status is precise and re-verified before every piece that touches it. "Under investigation, released on bail, not charged" is not "faces prosecution".
+- When officials and outlets give one act different names (arrest, detention, custody, brought in for his own safety), the newsroom's own voice states the plain action, "taken from his home at 12:30 am and held about 10 hours", and each name goes to whoever used it: "Police first called it an arrest, then said he was brought in over a security threat." The first word police use is not the status. This holds on the card, in the headline and in the caption as in the body.
 - A subject's on record denial or response is always included when one exists. A documented attempt to reach the subject is noted when one was made.
 - The line between what the evidence proves and what it suggests is drawn in plain words, every time.
 
