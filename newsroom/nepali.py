@@ -37,7 +37,7 @@ WRITER_SCHEMA = {
         "social_hook": {"type": "string"},
         "caption": {
             "type": "object",
-            "properties": {"synopsis": {"type": "string"}},
+            "properties": {"hook": {"type": "string"}, "angle": {"type": "string"}, "trigger": {"type": "string"}},
         },
         "notes": {"type": "string"},
     },
@@ -56,8 +56,9 @@ CHECK_SCHEMA = {
 }
 
 FIELDS = ("headline", "dek", "take", "body_markdown", "image_headline", "social_hook")
-# The Facebook caption: the whole story in two native lines. The newsroom adds the source line.
-CAPTION_KEYS = ("synopsis",)
+# The Facebook caption under the card: what the story changes for the reader, the one fact the
+# coverage missed, and a question about the reader's own life. The card carries the sources.
+CAPTION_KEYS = ("hook", "angle", "trigger")
 
 
 def date_words(settings: Settings, value: str) -> tuple[str, str]:

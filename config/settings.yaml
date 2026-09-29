@@ -208,10 +208,12 @@ social:
     # headline in Mukta ExtraBold, falling back to the English card when a story has no Nepali
     # card headline or the site build cannot shape Devanagari. "en": the English card.
     card: ne
-    # "synopsis": the Nepali writer's two line synopsis of the whole story, nothing else; the
-    # sources are on the card. "full": the older long caption (headline, hook, body, trigger, the
-    # close and hashtags) in the languages below. A story without a Nepali synopsis gets "full".
-    caption: synopsis
+    # "short": three Nepali lines under the card, nothing else: what the story changes for the
+    # reader, the one fact the coverage missed, and a question about the reader's own life (left
+    # out when the story has none). The sources are on the card. A story written before these
+    # lines existed uses its two line synopsis. "synopsis": that synopsis only. "full": the older
+    # long caption (headline, hook, body, trigger, the close and hashtags) in the languages below.
+    caption: short
     # A link in the caption costs reach and the card already carries the sources. Off by default.
     include_link: false
     # Languages of the "full" caption, in order. ["ne", "en"] puts the Nepali caption first with

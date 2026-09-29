@@ -288,7 +288,7 @@ def cmd_nepali_trial(args) -> int:
             for p in r[way]["closing_reading"]:
                 print(f"- {p.get('problem', '').strip()} (\"{p.get('passage', '').strip()[:120]}\")")
             print(f"\n{label}, the card headline and the Facebook caption:\n")
-            for line in (piece.get("image_headline", ""), cap.get("synopsis", "")):
+            for line in (piece.get("image_headline", ""), *(cap.get(k, "") for k in ("hook", "angle", "trigger", "synopsis"))):
                 if line.strip():
                     print("> " + line.strip().replace("\n", "\n> ") + "\n>")
     if args.out:
