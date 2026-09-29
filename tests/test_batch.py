@@ -81,7 +81,7 @@ class Clock:
 
 def _lane(batches, clock, **kw):
     client = SimpleNamespace(messages=SimpleNamespace(batches=batches))
-    opts = {"max_wait": 25 * 60, "run_seconds": 180 * 60, "poll": 15, **kw}
+    opts = {"max_wait": 15 * 60, "run_seconds": 150 * 60, "poll": 15, **kw}
     return llmmod.BatchLane(client, sleep=clock.sleep, clock=clock, **opts)
 
 
@@ -97,16 +97,19 @@ def test_an_answered_batch_returns_the_same_request_answered():
     [request] = batches.created[0]
     assert request["params"] == PARAMS  # nothing about the request changes in the lane
     assert request["custom_id"].startswith("writer-") and len(request["custom_id"]) <= 64
-    assert lane.waits == [45] and lane.open()
+    assert lane.waits == [{"role": "writer", "model": "claude-sonnet-5", "searches": 0, "at": 0, "seconds": 45, "outcome": "answered"}]
+    assert lane.open()
 
 
-def test_a_call_that_waits_too_long_is_cancelled_and_the_run_stops_batching():
+def test_a_call_that_waits_too_long_goes_the_normal_way_alone_and_the_lane_stays_open():
     clock = Clock()
-    batches = FakeBatches({"polls": 10_000})
+    batches = FakeBatches({"polls": 10_000}, {"polls": 2})
     lane = _lane(batches, clock, max_wait=60)
     assert lane.send("red_team", PARAMS) is None
     assert batches.cancelled == ["batch_0"]
-    assert not lane.open() and "red_team waited 1 minutes" in lane.off_reason
+    assert lane.open() and lane.off_reason == ""  # one slow call does not shut the queue
+    assert lane.send("defense", PARAMS) is not None  # the next call still rides at half price
+    assert [(w["role"], w["at"], w["seconds"], w["outcome"]) for w in lane.waits] == [("red_team", 0, 75, "timed out"), ("defense", 75, 30, "answered")]
 
 
 def test_a_request_that_finished_before_the_cancel_still_counts():
@@ -114,22 +117,46 @@ def test_a_request_that_finished_before_the_cancel_still_counts():
     batches = FakeBatches({"polls": 10_000, "finished_before_cancel": True})
     lane = _lane(batches, clock, max_wait=60)
     assert lane.send("writer", PARAMS) is not None
+    assert lane.waits[-1]["outcome"] == "answered as it was cancelled" and lane.open()
 
 
 def test_a_failed_request_or_a_failed_api_closes_the_lane_without_raising():
     clock = Clock()
     lane = _lane(FakeBatches({"result": "errored", "error": "web search is not available in batches"}), clock)
     assert lane.send("writer", PARAMS) is None and "not available in batches" in lane.off_reason and not lane.open()
+    assert lane.waits[-1]["outcome"] == "the request failed"
     lane = _lane(FakeBatches({"raise": RuntimeError("503 overloaded")}), clock)
     assert lane.send("writer", PARAMS) is None and "RuntimeError: 503 overloaded" in lane.off_reason
+    assert lane.waits[-1]["outcome"] == "the batch API failed"
 
 
 def test_the_lane_closes_once_the_run_is_old_enough():
     clock = Clock()
-    lane = _lane(FakeBatches(), clock, run_seconds=180 * 60)
+    lane = _lane(FakeBatches(), clock)
     assert lane.open()
-    clock.now = 180 * 60
-    assert not lane.open() and "past 180 minutes" in lane.off_reason
+    clock.now = 150 * 60
+    assert not lane.open() and "past 150 minutes" in lane.off_reason
+
+
+def test_every_wait_records_the_model_and_the_searches_allowed():
+    clock = Clock()
+    lane = _lane(FakeBatches({"polls": 1}), clock)
+    params = {**PARAMS, "model": "claude-opus-5-5", "tools": [{"type": "web_search_20260209", "name": "web_search", "max_uses": 8}]}
+    clock.now = 600  # the call joins the queue ten minutes into the run
+    lane.send("investigator", params)
+    assert lane.waits == [{"role": "investigator", "model": "claude-opus-5-5", "searches": 8, "at": 600, "seconds": 15, "outcome": "answered"}]
+
+
+def test_the_wait_report_names_the_longest_waits():
+    waits = [
+        {"role": "advocate", "seconds": 200, "at": 170, "outcome": "answered"},
+        {"role": "skeptic", "seconds": 1391, "at": 300, "outcome": "answered"},
+        {"role": "investigator", "seconds": 900, "at": 3900, "outcome": "timed out"},
+    ]
+    report = llmmod.wait_report(waits)
+    assert report.startswith("3 calls waited, median 15.0 min; 1 hit the wait limit and went the normal way.")
+    assert "Longest: skeptic 23.2 min (joined 0:05 into the run, answered); investigator 15.0 min (joined 1:05 into the run, timed out); advocate 3.3 min" in report
+    assert llmmod.wait_report([]) == ""
 
 
 def test_usage_cost_halves_batch_tokens_but_not_searches():
@@ -183,6 +210,14 @@ def test_the_live_client_goes_the_normal_way_when_the_lane_fails(live):
     assert client.structured("writer", "Write it.", {"story": "x"}, SCHEMA) == {"headline": "Normal"}
     assert len(asked) == 1 and [r.batch for r in client.meter.records] == [False]
     assert client.structured("writer", "Write it again.", {"story": "y"}, SCHEMA) == {"headline": "Normal"}  # the lane stays shut
+
+
+def test_a_slow_call_goes_the_normal_way_and_the_next_call_still_batches(live):
+    client, asked = live({"polls": 10_000}, {"polls": 2})
+    assert client.structured("red_team", "Attack it.", {"story": "x"}, SCHEMA) == {"headline": "Normal"}
+    assert client.structured("defense", "Defend it.", {"story": "x"}, SCHEMA) == {"headline": "Rain"}
+    assert len(asked) == 1 and [r.batch for r in client.meter.records] == [False, True]
+    assert [w["outcome"] for w in client.batch.waits] == ["timed out", "answered"] and client.batch.open()
 
 
 def test_a_refusal_in_the_lane_is_counted_and_asked_again_with_the_fallback(live):

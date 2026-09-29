@@ -33,7 +33,9 @@ permissions:
 jobs:
   trial:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    # With llm.batch on, each call can wait 15 minutes in the queue until the run is 150 minutes
+    # old; four hours leaves room for the calls after that.
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

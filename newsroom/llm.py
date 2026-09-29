@@ -381,10 +381,11 @@ class BatchLane:
     Each call becomes a batch of one request and waits in Anthropic's queue. The request is the
     same one the normal way sends: same model, prompt, effort and searches, so the answer is
     too. Three valves keep an edition from stalling. A call that waits longer than `max_wait`
-    seconds is cancelled and goes the normal way at full price, and so does the rest of the
-    run, because a slow queue stays slow. Once the run is `run_seconds` old, every new call goes
-    the normal way. If the batch API fails once, the rest of the run skips it. `send` never
-    raises: None means go the normal way.
+    seconds is cancelled and goes the normal way at full price on its own; the calls after it
+    still try the queue. Once the run is `run_seconds` old, every new call goes the normal way.
+    If the batch API fails once, the rest of the run skips it. Every call the lane sends leaves
+    an entry in `waits`, so the run record shows where the queue stalled. `send` never raises:
+    None means go the normal way.
     """
 
     def __init__(self, client, *, max_wait: float, run_seconds: float, poll: float, sleep: Callable[[float], None] = time.sleep, clock: Callable[[], float] = time.monotonic) -> None:
@@ -396,15 +397,17 @@ class BatchLane:
         self.clock = clock
         self.started = clock()
         self.off_reason = ""
-        self.waits: list[float] = []  # seconds each batched call spent in the lane, answered or not
+        # One entry per call sent to the queue: role, model, searches allowed, when it joined
+        # the queue (seconds into the run), how long it waited and what came of it.
+        self.waits: list[dict[str, Any]] = []
         self._lock = threading.Lock()
 
     @classmethod
     def from_settings(cls, client, settings: Settings) -> "BatchLane":
         return cls(
             client,
-            max_wait=60 * float(settings.get("llm.batch.max_wait_minutes", 25)),
-            run_seconds=60 * float(settings.get("llm.batch.run_minutes", 180)),
+            max_wait=60 * float(settings.get("llm.batch.max_wait_minutes", 15)),
+            run_seconds=60 * float(settings.get("llm.batch.run_minutes", 150)),
             poll=float(settings.get("llm.batch.poll_seconds", 15)),
         )
 
@@ -427,44 +430,88 @@ class BatchLane:
         """The finished message, or None when the call should go the normal way."""
         batches = self.client.messages.batches
         begun = self.clock()
+        outcome = "the batch API failed"
         try:
             batch = batches.create(requests=[{"custom_id": batch_custom_id(role), "params": params}])
             while batch.processing_status != "ended":
                 if self.clock() - begun >= self.max_wait:
-                    return self._give_up(batches, batch, role)
+                    msg, outcome = self._give_up(batches, batch, role)
+                    return msg
                 self.sleep(self.poll)
                 batch = batches.retrieve(batch.id)
-            return self._answer(batches, batch, role)
+            msg, outcome = self._answer(batches, batch, role)
+            return msg
         except Exception as exc:  # noqa: BLE001 - any failure here sends the call the normal way
             self.close(f"{role}: the batch API failed ({type(exc).__name__}: {str(exc)[:160]})")
             return None
         finally:
-            with self._lock:
-                self.waits.append(self.clock() - begun)
+            self._note(role, params, begun, outcome)
+
+    def _note(self, role: str, params: dict[str, Any], begun: float, outcome: str) -> None:
+        searches = sum(int(t.get("max_uses", 0) or 0) for t in params.get("tools") or [] if isinstance(t, dict))
+        entry = {
+            "role": role,
+            "model": str(params.get("model", "")),
+            "searches": searches,
+            "at": round(begun - self.started),
+            "seconds": round(self.clock() - begun),
+            "outcome": outcome,
+        }
+        with self._lock:
+            self.waits.append(entry)
+        log.info("batch: %s waited %ds in the queue: %s", role, entry["seconds"], outcome)
 
     def _answer(self, batches, batch, role: str):
+        """The message, or None, and what came of the request."""
         for item in batches.results(batch.id):
             result = item.result
             if result.type == "succeeded":
-                return result.message
+                return result.message, "answered"
             if result.type == "errored":
                 err = getattr(result, "error", None)
                 detail = getattr(getattr(err, "error", None), "message", "") or str(err)[:160]
                 self.close(f"{role}: the batch request failed ({detail[:160]})")
-            return None
-        return None
+                return None, "the request failed"
+            return None, f"no answer ({result.type})"
+        return None, "no answer"
 
     def _give_up(self, batches, batch, role: str):
-        """Cancel a batch that waited too long. A request that finished meanwhile still counts."""
-        self.close(f"{role} waited {self.max_wait / 60:.0f} minutes in the batch queue")
+        """Cancel a batch that waited too long. This call goes the normal way; the lane stays open.
+
+        A request that finished meanwhile still counts.
+        """
+        log.warning("batch: %s waited %.0f minutes in the queue and goes the normal way at full price; the next calls still try the queue", role, self.max_wait / 60)
         batch = batches.cancel(batch.id)
         settle = self.clock()
         while batch.processing_status != "ended" and self.clock() - settle < 2 * self.poll:
             self.sleep(self.poll)
             batch = batches.retrieve(batch.id)
         if batch.processing_status == "ended":
-            return self._answer(batches, batch, role)
-        return None
+            msg, kind = self._answer(batches, batch, role)
+            if msg is not None:
+                return msg, "answered as it was cancelled"
+            if kind == "the request failed":
+                return None, kind
+        return None, "timed out"
+
+
+def wait_report(waits: list[dict[str, Any]], longest: int = 3) -> str:
+    """One line for the run summary: how long this run's calls waited in the batch queue, and where it stalled."""
+    if not waits:
+        return ""
+    secs = sorted(int(w.get("seconds", 0)) for w in waits)
+    timed_out = sum(1 for w in waits if w.get("outcome") == "timed out")
+
+    def mins(seconds: int) -> str:
+        return f"{seconds / 60:.1f} min"
+
+    def into(seconds: int) -> str:
+        return f"{seconds // 3600}:{seconds % 3600 // 60:02d}"
+
+    slow = sorted(waits, key=lambda w: -int(w.get("seconds", 0)))[:longest]
+    worst = "; ".join(f"{w.get('role', '?')} {mins(int(w.get('seconds', 0)))} (joined {into(int(w.get('at', 0)))} into the run, {w.get('outcome', '?')})" for w in slow)
+    gave_up = f"{timed_out} hit the wait limit and went the normal way" if timed_out else "none hit the wait limit"
+    return f"{len(waits)} calls waited, median {mins(secs[len(secs) // 2])}; {gave_up}. Longest: {worst}."
 
 
 # --------------------------------------------------------------------------- live client

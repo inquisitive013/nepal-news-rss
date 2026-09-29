@@ -245,6 +245,9 @@ class RunLog:
     published: list[str] = field(default_factory=list)  # article ids
     rejected: list[dict[str, str]] = field(default_factory=list)  # {article_id|story_id, reason}
     usage: list[UsageRecord] = field(default_factory=list)
+    # Every call sent to the batch queue: role, model, searches allowed, seconds into the run it
+    # joined, seconds it waited and what came of it. Empty when batch mode is off.
+    batch_waits: list[dict[str, Any]] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
 
     def usage_totals(self) -> dict[str, int]:

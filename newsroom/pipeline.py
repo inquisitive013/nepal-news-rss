@@ -12,7 +12,7 @@ from zoneinfo import ZoneInfo
 
 from . import discovery, images, investigation, nepali, publish, ranking, validation, writing
 from .config import Settings
-from .llm import BaseLLM, BudgetExceeded, LLMError, LLMRefusal, UsageMeter, make_llm
+from .llm import BaseLLM, BudgetExceeded, LLMError, LLMRefusal, UsageMeter, make_llm, wait_report
 from .models import (
     Article,
     Candidate,
@@ -237,6 +237,11 @@ def run(settings: Settings, llm: BaseLLM | None = None, now: datetime | None = N
         log.exception("run failed")
     finally:
         run_log.usage = list(meter.records)
+        lane = getattr(llm, "batch", None)
+        if lane is not None:
+            run_log.batch_waits = list(lane.waits)
+            if lane.waits:
+                log.info("batch: %s", wait_report(lane.waits))
         run_log.finished_at = utcnow_iso()
         publish.save_run(settings, run_log)
     return run_log

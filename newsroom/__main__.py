@@ -203,9 +203,10 @@ def cmd_batch_probe(args) -> int:
     def one(round_no: int, shape: str) -> dict:
         lane = BatchLane(client, max_wait=60 * args.max_wait_minutes, run_seconds=float("inf"), poll=10.0)
         msg = lane.send(f"probe-{shape}", shapes[shape])
-        row = {"round": round_no, "shape": shape, "model": shapes[shape]["model"], "seconds": round(lane.waits[-1]) if lane.waits else 0}
+        wait = lane.waits[-1] if lane.waits else {}
+        row = {"round": round_no, "shape": shape, "model": shapes[shape]["model"], "seconds": wait.get("seconds", 0)}
         if msg is None:
-            return {**row, "result": f"no answer: {lane.off_reason or 'unknown'}"}
+            return {**row, "result": f"no answer: {lane.off_reason or wait.get('outcome') or 'unknown'}"}
         usage = msg.usage
         stu = getattr(usage, "server_tool_use", None)
         rec = UsageRecord(
@@ -314,7 +315,7 @@ def cmd_nepali_rejudge(args) -> int:
     settings = _settings(args)
     if not settings.mock:
         scrub_empty_credentials()
-    # A handful of calls: the normal way, not the batch queue, which can hold one call 25 minutes.
+    # A handful of calls: the normal way, not the batch queue, which can hold one call 15 minutes.
     raw = copy.deepcopy(settings.raw)
     raw.setdefault("llm", {}).setdefault("batch", {})["enabled"] = False
     settings = dataclasses.replace(settings, raw=raw)
