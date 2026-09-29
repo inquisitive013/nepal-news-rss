@@ -13,6 +13,7 @@ Reject:
 - Logos, emblems, flags, seals, maps, charts, documents, screenshots, stamps, coins and memes.
 - Blurry, tiny, dark, badly cropped or watermarked pictures, and frames where bystanders or objects compete with the subject.
 - Anything whose documentation places it in a different country from the story.
+- A festive or celebratory frame, such as festival lights, decorations, a party or a ceremony, on a story about deaths, disaster or grief, even when it shows the right subject. On 29 September the Nepal Electricity Authority's head office lit up for Tihar ran under a flood death toll and read as a celebration.
 
 Prefer, in order: the story's main subject over a generic scene; the story's own place over the same subject somewhere else, such as the river at the town in the story rather than a valley a hundred kilometres upstream; an in context shot over a plain portrait; a sharp, well lit frame whose subject sits in the upper two thirds, because the headline covers the lower third of the card; CC0, public domain or CC BY over CC BY-SA when two pictures are equally good.
 
