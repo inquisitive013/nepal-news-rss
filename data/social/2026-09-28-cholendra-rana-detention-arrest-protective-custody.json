@@ -10,7 +10,9 @@
    "url": "https://www.facebook.com/320310335059937_1738964734789637",
    "error": "taken down 2026-09-28T15:40:03+00:00 and replaced by a corrected post",
    "posted_at": "2026-09-28T15:18:42+00:00",
-   "scheduled_for": ""
+   "scheduled_for": "",
+   "edited_at": "",
+   "metrics": {}
   },
   {
    "network": "facebook",
@@ -20,7 +22,21 @@
    "url": "https://www.facebook.com/320310335059937_1738986861454091",
    "error": "",
    "posted_at": "2026-09-28T15:40:08+00:00",
-   "scheduled_for": ""
+   "scheduled_for": "",
+   "edited_at": "",
+   "metrics": {
+    "24h": {
+     "at": "2026-09-29T17:08:53+00:00",
+     "hours": 25.5,
+     "shares": 0,
+     "errors": {
+      "viewers": "no value",
+      "views": "no value",
+      "comments": "code 10",
+      "reactions": "code 10"
+     }
+    }
+   }
   }
  ]
 }

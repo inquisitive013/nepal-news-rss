@@ -10,7 +10,9 @@
    "url": "https://www.facebook.com/1737366791616098",
    "error": "",
    "posted_at": "2026-09-27T04:16:48+00:00",
-   "scheduled_for": "2026-09-27T12:30+05:45"
+   "scheduled_for": "2026-09-27T12:30+05:45",
+   "edited_at": "",
+   "metrics": {}
   },
   {
    "network": "facebook",
@@ -20,7 +22,21 @@
    "url": "https://www.facebook.com/320310335059937_1738000821552695",
    "error": "",
    "posted_at": "2026-09-27T17:27:47+00:00",
-   "scheduled_for": ""
+   "scheduled_for": "",
+   "edited_at": "",
+   "metrics": {
+    "24h": {
+     "at": "2026-09-29T17:08:53+00:00",
+     "hours": 47.7,
+     "shares": 0,
+     "errors": {
+      "viewers": "no value",
+      "views": "no value",
+      "comments": "code 10",
+      "reactions": "code 10"
+     }
+    }
+   }
   }
  ]
 }
