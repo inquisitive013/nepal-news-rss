@@ -37,6 +37,10 @@ on:
         description: "Look again for a licensed real photo for stories that carry an illustration or a cover card, commit and deploy. No new edition, no posts. Up to two model calls per story."
         type: boolean
         default: false
+      photos_article:
+        description: "With find_photos: look again for this one article id only, even when it carries a real photo, e.g. 2026-09-27-some-slug."
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -101,6 +105,7 @@ jobs:
           NEWSROOM_BACKFILL_SCOPE: ${{ inputs.nepali_scope || 'missing' }}
           NEWSROOM_BACKFILL_ARTICLE: ${{ inputs.nepali_article }}
           NEWSROOM_FIND_PHOTOS: ${{ inputs.find_photos == true && '1' || '' }}
+          NEWSROOM_PHOTOS_ARTICLE: ${{ inputs.photos_article }}
           NEWSROOM_STORIES: ${{ inputs.stories }}
         run: |
           export PAGES_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
@@ -122,8 +127,16 @@ jobs:
             exit 0
           fi
           if [ -n "${NEWSROOM_FIND_PHOTOS}" ]; then
-            echo "Photos: looking again for a licensed real photo for stories that carry an illustration or a cover card."
-            python -m newsroom photos || echo "::warning::The photo search stopped short. The log above says why; every story it finished is saved."
+            if [ -n "${NEWSROOM_PHOTOS_ARTICLE}" ]; then
+              case "${NEWSROOM_PHOTOS_ARTICLE}" in
+                *[!a-z0-9-]*) echo "::error::Not an article id: '${NEWSROOM_PHOTOS_ARTICLE}'."; exit 1 ;;
+              esac
+              echo "Photos: looking again for a licensed real photo for ${NEWSROOM_PHOTOS_ARTICLE}."
+              python -m newsroom photos --article "${NEWSROOM_PHOTOS_ARTICLE}" || echo "::warning::The photo search stopped short. The log above says why."
+            else
+              echo "Photos: looking again for a licensed real photo for stories that carry an illustration or a cover card."
+              python -m newsroom photos || echo "::warning::The photo search stopped short. The log above says why; every story it finished is saved."
+            fi
             python -m newsroom build --out site --root-rss
             exit 0
           fi

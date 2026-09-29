@@ -197,7 +197,7 @@ Only licences in `images.allowed_licenses` pass: CC0, public domain, CC BY and C
 
 Each article's review record says what the desk looked for, what each library gave, how many pictures the model saw and why the story carries what it carries (`review.picture`).
 
-`python -m newsroom photos --dry-run` shows what the desk finds for the stories that carry an illustration or a cover card, with no model calls and no changes. CI runs it for every stored story on each push. `python -m newsroom photos` looks again for those stories and swaps in a real photo when one passes, and the *Daily edition* workflow does the same with **find_photos** ticked.
+`python -m newsroom photos --dry-run` shows what the desk finds for the stories that carry an illustration or a cover card, with no model calls and no changes. CI runs it for every stored story on each push. `python -m newsroom photos` looks again for those stories and swaps in a real photo when one passes, and the *Daily edition* workflow does the same with **find_photos** ticked; add an article id in **photos_article** to look again for that one story even when it carries a real photo, after changing its `image_brief.search_queries` if the desk searched the wrong subjects.
 
 ## Decisions to confirm
 

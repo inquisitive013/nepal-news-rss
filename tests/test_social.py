@@ -820,3 +820,29 @@ def test_facebook_gets_the_nepali_card_when_the_site_has_it(tmp_path):
     missing["ne"] = False
     social.post_article(dataclasses.replace(settings, raw=raw), art, env, client, networks=["facebook"], sleep=lambda s: None, again=True)
     assert seen["url"] == f"{SITE}/cards/{art.id}.jpg?v=1"
+
+
+def test_the_source_line_names_the_outlets_the_story_cites_most(tmp_path):
+    from newsroom import outlets
+
+    s = _settings(tmp_path)
+    art = _article(s)
+    art.sources = [
+        {"name": "Nepal Press", "url": "a"},
+        {"name": "Nagarik News", "url": "b"},
+        {"name": "DC Nepal", "url": "c"},
+        {"name": "The Kathmandu Post", "url": "d"},
+        {"name": "OnlineKhabar English", "url": "e"},
+        {"name": "OnlineKhabar", "url": "f"},
+        {"name": "Ratopati", "url": "g"},
+    ]
+    art.body_markdown = (
+        "Officers came at 12:30 am, OnlineKhabar reported. He refused, OnlineKhabar reported. He was held 12 hours, OnlineKhabar reported. "
+        "No warrant was shown, the Kathmandu Post reported. Guards stopped them, the Kathmandu Post reported. "
+        "The court objected, Nepal Press reported. Ratopati reported the silence."
+    )
+    # cited most first, ties in list order, one line per outlet whatever its edition
+    assert outlets.ranked_sources(art) == ["OnlineKhabar English", "The Kathmandu Post", "Nepal Press", "Ratopati", "Nagarik News", "DC Nepal"]
+    assert outlets.source_line_ne(art) == "स्रोत: अनलाइनखबर, काठमाडौं पोस्ट, नेपाल प्रेस, रातोपाटी, नागरिक"
+    from newsroom import graphic
+    assert graphic.source_names(art) == ["OnlineKhabar English", "The Kathmandu Post", "Nepal Press"]

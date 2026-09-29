@@ -116,9 +116,9 @@
   },
   "image_brief": {
     "search_queries": [
-      "Nepal Electricity Authority",
-      "Beni Jomsom Korla Road",
       "Kaligandaki River",
+      "Beni Jomsom Korla Road",
+      "Bhote Koshi River",
       "Baglung District"
     ],
     "generation_prompt": "An editorial illustration of a swollen Himalayan river valley in Nepal after monsoon floods, muddy brown water cutting past a damaged mountain road and toppled power lines, mist over green terraced hills, somber grey and ochre tones, wide angle, no text, no identifiable people, no logos.",
@@ -672,5 +672,5 @@
   ],
   "run_date": "2026-09-29",
   "published_at": "2026-09-29T00:11:13+00:00",
-  "version": 4
+  "version": 5
 }
