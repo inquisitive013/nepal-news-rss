@@ -494,6 +494,33 @@ def cmd_insights(args) -> int:
     return 0
 
 
+def cmd_comments(args) -> int:
+    """Answer readers under the Facebook posts still inside their reply window; list what needs a person."""
+    import copy
+
+    from . import comments, social
+    from .llm import UsageMeter, make_llm, scrub_empty_credentials
+
+    settings = _settings(args)
+    if not all(os.environ.get(k, "").strip() for k in social.ENV_KEYS["facebook"]):
+        print("Facebook is not connected, so there are no comments to read.")
+        return 0
+    if not settings.mock:
+        scrub_empty_credentials()
+    # Replies belong in the first hour: the normal way, never the batch queue.
+    raw = copy.deepcopy(settings.raw)
+    raw.setdefault("llm", {}).setdefault("batch", {})["enabled"] = False
+    settings = dataclasses.replace(settings, raw=raw)
+    llm = make_llm(settings, UsageMeter(int(settings.get("social.facebook.comments.max_calls", 6))))
+    try:
+        result = comments.run_desk(settings, os.environ, llm, dry_run=args.dry_run)
+    except social.SocialError as exc:
+        print(f"::warning::Facebook refused the token, so no comment was read: {str(exc)[:200]}")
+        return 1
+    print("\n".join(comments.summary(result, dry_run=args.dry_run)))
+    return 0
+
+
 def cmd_nepali(args) -> int:
     """Write the Nepali edition of stored stories. By default only the ones without one."""
     from . import nepali
@@ -721,6 +748,10 @@ def main(argv=None) -> int:
     p_ins.add_argument("--days", type=int, default=7, help="how many days of posts the report covers (default 7)")
     p_ins.add_argument("--probe", action="store_true", help="read nothing; say what the token may read: its permissions, and how Meta answers each view metric for the newest post")
     p_ins.set_defaults(func=cmd_insights)
+
+    p_com = sub.add_parser("comments", help="answer readers under Facebook posts still inside their reply window; corrections and legal complaints are left for a person")
+    p_com.add_argument("--dry-run", action="store_true", help="sort the comments and draft the replies, post and save nothing")
+    p_com.set_defaults(func=cmd_comments)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")
     p_socchk.set_defaults(func=cmd_social_check)

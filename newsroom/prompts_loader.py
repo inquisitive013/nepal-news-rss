@@ -10,9 +10,9 @@ from .config import PROMPTS_DIR, Settings
 LANGUAGE_NAMES = {"en": "English", "ne": "Nepali (नेपाली, Devanagari script)"}
 
 # Roles whose output is prose and therefore must follow the house style closely.
-STYLE_ROLES = {"writer", "reviser", "red_team", "defense", "validation_judge", "ranking_judge", "nepali_writer", "nepali_editor"}
-# Roles that write or check the Nepali edition: they also get config/style_ne.md.
-NEPALI_ROLES = {"nepali_writer", "nepali_editor"}
+STYLE_ROLES = {"writer", "reviser", "red_team", "defense", "validation_judge", "ranking_judge", "nepali_writer", "nepali_editor", "comment_desk"}
+# Roles that write or check Nepali: they also get config/style_ne.md.
+NEPALI_ROLES = {"nepali_writer", "nepali_editor", "comment_desk"}
 
 
 @lru_cache(maxsize=None)
