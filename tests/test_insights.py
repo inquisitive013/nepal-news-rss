@@ -55,6 +55,8 @@ def _graph(numbers=None, fail=None, followers=10_300):
             post_id, metric = path[-2], url.params["metric"]
             if metric in fail:
                 return httpx.Response(400, json={"error": {"message": "secret words", "code": fail[metric]}})
+            if url.params.get("period") != "lifetime":  # as Meta does: a lifetime metric asked without its period
+                return httpx.Response(200, json={"data": []})
             return httpx.Response(200, json={"data": [{"name": metric, "period": "lifetime", "values": [{"value": numbers[post_id][metric]}]}]})
         post_id, fields = path[-1], url.params["fields"]
         name = fields.split(".")[0]

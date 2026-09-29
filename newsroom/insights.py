@@ -123,7 +123,8 @@ def read_post(client: httpx.Client, environ: Mapping[str, str], post_id: str, me
     values: dict[str, int] = {}
     errors: dict[str, str] = {}
     for label, metric in metrics.items():
-        resp = client.get(f"{base}/{post_id}/insights", params={"metric": metric, "access_token": fb.token})
+        # Both metrics exist only for the lifetime period; without it Meta answers with empty data.
+        resp = client.get(f"{base}/{post_id}/insights", params={"metric": metric, "period": "lifetime", "access_token": fb.token})
         if resp.status_code >= 400:
             errors[label] = graph_error(resp)
             continue
