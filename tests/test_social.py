@@ -747,3 +747,76 @@ def test_replace_takes_the_old_facebook_post_down_before_posting_the_corrected_o
 
     with pytest.raises(ValueError):
         social.post_articles(settings, env, replace=True, networks=["facebook"], client=client, wait_seconds=0)
+
+
+SYNOPSIS = "सरकारी तथ्यांकअनुसार बिहीबारदेखिको बाढीपहिरोमा देशभर २७ जनाको मृत्यु भएको छ।\nविद्युत् पूर्वाधारमा भएको रु. ७४ अर्बको क्षति भने भदौको भोटेकोशी बाढीले पुर्‍याएको हो।"
+
+
+def _nepali(**caption):
+    return {
+        "headline": "बाढीपहिरोमा २७ जनाको मृत्यु",
+        "body_markdown": "काठमाडौं । देशभर २७ जनाको मृत्यु भएको छ।",
+        "image_headline": "बाढीपहिरोमा २७ जनाको मृत्यु\n७४ अर्बको क्षति भदौको बाढीको",
+        "caption": caption,
+    }
+
+
+def test_the_facebook_caption_is_the_two_line_synopsis_and_a_nepali_source_line(tmp_path):
+    s = _settings(tmp_path)
+    art = _article(s)
+    art.sources = art.sources + [{"name": "OnlineKhabar English", "url": "u"}, {"name": "Ratopati", "url": "r"}, {"name": "ESPNcricinfo", "url": "e"}]
+    art.caption = {"hook": "English hook.", "body": "English body.", "trigger": "English question?"}
+    art.nepali = _nepali(synopsis=SYNOPSIS)
+    assert social.caption_style(s) == "synopsis"
+    fb = social.compose("facebook", art, s)
+    # the whole post: two lines, a blank line, the outlets once each, Nepali names where readers use them
+    assert fb == SYNOPSIS + "\n\nस्रोत: काठमाडौं पोस्ट, अनलाइनखबर, रातोपाटी, ESPNcricinfo"
+    assert "English" not in fb and "#" not in fb and social.RULE not in fb and "फलो" not in fb and "?" not in fb
+    # the link option adds the Nepali page above the sources
+    raw = dict(s.raw)
+    raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, include_link=True))
+    assert f"{SYNOPSIS}\n\nपूरा समाचार: {SITE}/ne/articles/{art.slug}/\n\nस्रोत:" in social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+    # "full" brings back the long bilingual caption; a story without a synopsis gets it too
+    raw = dict(s.raw)
+    raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, caption="full"))
+    art.nepali = _nepali(synopsis=SYNOPSIS, hook="ह", body="श", trigger="ट")
+    full = social.compose("facebook", art, dataclasses.replace(s, raw=raw))
+    assert full.startswith("बाढीपहिरोमा २७ जनाको मृत्यु\n\nह\n\nश\n\nट") and art.headline in full
+    art.nepali = _nepali(hook="ह", body="श", trigger="ट")  # written before the synopsis existed
+    assert social.compose("facebook", art, s).startswith("बाढीपहिरोमा २७ जनाको मृत्यु\n\nह")
+
+
+def test_facebook_gets_the_nepali_card_when_the_site_has_it(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.nepali = _nepali(synopsis=SYNOPSIS)
+    publish.save_article(settings, art)
+    seen, missing = {}, {"ne": False}
+
+    def handler(request):
+        url = str(request.url)
+        if "/cards/ne/" in url and missing["ne"]:
+            return httpx.Response(404, text="not found")
+        if url.startswith(SITE):
+            return httpx.Response(200, text="ok")
+        if "/me?" in url:
+            return httpx.Response(200, json={"id": "111"})
+        if url.endswith("/111/photos"):
+            seen.update(dict(httpx.QueryParams(request.content.decode())))
+            return httpx.Response(200, json={"id": "9", "post_id": "111_1"})
+        return httpx.Response(404, json={"error": "unexpected " + url})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    social.post_article(settings, art, env, client, networks=["facebook"], sleep=lambda s: None)
+    assert seen["url"] == f"{SITE}/cards/ne/{art.id}.jpg?v=1" and seen["caption"].startswith(SYNOPSIS)
+    # a Nepali card the site does not have never reaches Facebook: the English card stands in
+    missing["ne"] = True
+    social.post_article(settings, art, env, client, networks=["facebook"], sleep=lambda s: None, again=True)
+    assert seen["url"] == f"{SITE}/cards/{art.id}.jpg?v=1"
+    # "card: en" keeps the English card
+    raw = dict(settings.raw)
+    raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, card="en"))
+    missing["ne"] = False
+    social.post_article(dataclasses.replace(settings, raw=raw), art, env, client, networks=["facebook"], sleep=lambda s: None, again=True)
+    assert seen["url"] == f"{SITE}/cards/{art.id}.jpg?v=1"

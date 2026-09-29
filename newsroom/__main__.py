@@ -287,8 +287,8 @@ def cmd_nepali_trial(args) -> int:
             print(f"\n**{label}: the closing reading finds {len(r[way]['closing_reading'])}**")
             for p in r[way]["closing_reading"]:
                 print(f"- {p.get('problem', '').strip()} (\"{p.get('passage', '').strip()[:120]}\")")
-            print(f"\n{label}, as it would open the Facebook post:\n")
-            for line in (piece.get("headline", ""), cap.get("hook", ""), cap.get("body", ""), cap.get("trigger", "")):
+            print(f"\n{label}, the card headline and the Facebook caption:\n")
+            for line in (piece.get("image_headline", ""), cap.get("synopsis", "")):
                 if line.strip():
                     print("> " + line.strip().replace("\n", "\n> ") + "\n>")
     if args.out:

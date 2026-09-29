@@ -202,12 +202,19 @@ social:
   # Instagram and Threads fetch the picture from the site, so wait for the page to be live.
   wait_for_site_seconds: 180
   facebook:
-    # "photo": the 1080x1400 card with the engine caption (headline, hook, body, trigger,
-    # "Sources available in graphic."). "link": a short post with the link card instead.
+    # "photo": the 1080x1400 card with the caption. "link": a short post with the link card instead.
     mode: photo
+    # The card's headline language. "ne": the Nepali card, the Nepali editor's checked card
+    # headline in Mukta ExtraBold, falling back to the English card when a story has no Nepali
+    # card headline or the site build cannot shape Devanagari. "en": the English card.
+    card: ne
+    # "synopsis": the Nepali writer's two line synopsis of the whole story and a Nepali source
+    # line, nothing else. "full": the older long caption (headline, hook, body, trigger, the
+    # close and hashtags) in the languages below. A story without a Nepali synopsis gets "full".
+    caption: synopsis
     # A link in the caption costs reach and the card already carries the sources. Off by default.
     include_link: false
-    # Languages in the caption, in order. ["ne", "en"] puts the Nepali caption first with
+    # Languages of the "full" caption, in order. ["ne", "en"] puts the Nepali caption first with
     # the English under it, one post per story. ["en"] posts English only.
     languages: ["ne", "en"]
     # When each day's articles go out, in newsroom local time, best ranked first. "now"

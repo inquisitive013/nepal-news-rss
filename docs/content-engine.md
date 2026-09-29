@@ -177,7 +177,9 @@ Title formulas. Accountability and alarm stories default to the contrast or betr
 
 Continuous prose paragraphs separated by blank lines. No markdown, no bullets, no numbered lists. Ends with exactly "Sources available in graphic." then "Follow Nepal Wire." then hashtags on one line. No sourcing disclaimer inside the body. No link unless `social.facebook.include_link` is switched on. Word counts per tier in Section 4, completeness override applies.
 
-One post per story, two languages. When the story has a checked Nepali version, the caption opens with the Nepali headline, hook, body and friction line, then a rule, then the English. The close carries both: "स्रोतहरू ग्राफिकमा छन्।", "नेपाल वायर फलो गर्नुहोस्।", "Sources available in graphic.", "Follow Nepal Wire.", hashtags. The Nepali caption is written by the Nepali writer as part of the Nepali edition, never translated, and the Nepali editor reads it against the record before it goes out (`social.facebook.languages`).
+One post per story, in Nepali. From 29 September the caption is the whole story in two lines of native Nepali, one sentence each, and under them one source line, "स्रोत:" and every outlet the story cites, in Nepali where Nepali readers know the outlet by a Nepali name. Nothing else: no headline (the card carries it), no question, no English, no hashtags (`social.facebook.caption: synopsis`). The two lines are written by the Nepali writer as part of the Nepali edition, never translated, and the Nepali editor reads them against the record before they go out. A story without a Nepali synopsis falls back to the long form below.
+
+The long form (`social.facebook.caption: full`): when the story has a checked Nepali version, the caption opens with the Nepali headline, hook, body and friction line, then a rule, then the English. The close carries both: "स्रोतहरू ग्राफिकमा छन्।", "नेपाल वायर फलो गर्नुहोस्।", "Sources available in graphic.", "Follow Nepal Wire.", hashtags (`social.facebook.languages`).
 
 ## 13. Virality scoring and calibration
 
@@ -234,6 +236,8 @@ Recurring subjects rotate pictures. Never the same image across recent posts. Pr
 - Bottom stack, measured from the footer upward: the source line clears the footer by 8px; the underline clears the source line by 22px; the headline sits above its underline.
 - No stat cards, no pills, no data rows, no quote strips, no call to action on the card.
 
+The Nepali card, from 29 September the card Facebook and the Nepali pages carry (`social.facebook.card: ne`). The same frame, photo, chip, source line and footer. The headline is the Nepali editor's checked card headline in the writer's two lines, each a phrase a Nepali desk would print, in Mukta ExtraBold, autosized down from 110px to a 64px floor, 1000px max width, centred, line height 1.22. Line one white, line two gold, both over a soft shadow. The bottom gradient starts at 30 percent of the height, curve t to the power 0.6, up to 95 percent opaque. Line two never reads as the thing the story corrects: "बाढीपहिरोमा २७ जनाको मृत्यु" over "७४ अर्बको क्षति भदौको बाढीको". Devanagari is shaped with Raqm; where Raqm is missing the Nepali card is not rendered and the English card stands in. The English card stays on the English pages.
+
 ### 14.7 Frame elements
 
 - Header. CRIMSON strip, 64px. "NEPAL WIRE" bold white 22pt, gold separator dot, the theme in MONO bold 15pt off white, the date in MONO bold gold right aligned.
@@ -244,7 +248,7 @@ Recurring subjects rotate pictures. Never the same image across recent posts. Pr
 
 ### 14.8 Palette and fonts
 
-BLACK (8,8,8). CRIMSON (195,28,28). DARK_RED (140,18,18). DEEP_RED (80,8,8). GOLD (218,182,72). OFF_WHITE (240,232,218). LIGHT_GRAY (195,185,185), credits only. PANEL (22,14,14). DejaVu Sans Bold, DejaVu Sans, DejaVu Sans Mono Bold, DejaVu Sans Mono.
+BLACK (8,8,8). CRIMSON (195,28,28). DARK_RED (140,18,18). DEEP_RED (80,8,8). GOLD (218,182,72). OFF_WHITE (240,232,218). LIGHT_GRAY (195,185,185), credits only. PANEL (22,14,14). DejaVu Sans Bold, DejaVu Sans, DejaVu Sans Mono Bold, DejaVu Sans Mono. Mukta ExtraBold for the Nepali card headline, by Ek Type, under the SIL Open Font License 1.1, shipped with its licence in `newsroom/fonts`.
 
 ### 14.9 Image content discipline
 

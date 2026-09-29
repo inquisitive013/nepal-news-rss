@@ -186,7 +186,7 @@ NEPALI = {
     "body_markdown": "प्रहरीले **१४० घरधुरी** सारे।\n\n## किन महत्त्वपूर्ण छ\n\nनदी छिटो बढ्यो।",
     "image_headline": "१४० घरधुरी रातारात सारियो",
     "social_hook": "१४० घरधुरी एकै रातमा सारिए।",
-    "caption": {"hook": "ह", "body": "श", "trigger": "ट"},
+    "caption": {"synopsis": "प्रहरीका अनुसार १४० घरधुरी रातारात सारिए।\nनदी चेतावनीभन्दा छिटो बढ्यो।"},
     "checked": True,
     "judge": "Faithful and natural.",
     "problems_fixed": 0,
@@ -228,9 +228,12 @@ def test_the_nepali_edition_builds_beside_the_english(tmp_path):
     assert 'class="lang" href="../../../articles/rain-story/"' in ne_page  # the switch leads to the English twin
 
     en_page = (out / "articles" / "rain-story" / "index.html").read_text()
-    # both pages show the card, which carries the source line, with the credit under it
+    # both pages show the card, which carries the source line, with the credit under it: the English
+    # page the English card, the Nepali page the Nepali card
     assert 'class="card-figure"' in en_page and 'src="../../cards/2026-09-26-rain-story.jpg"' in en_page and "File photo:" in en_page
-    assert 'class="card-figure"' in ne_page and 'src="../../../cards/2026-09-26-rain-story.jpg"' in ne_page and "फाइल तस्बिर" in ne_page
+    assert 'class="card-figure"' in ne_page and 'src="../../../cards/ne/2026-09-26-rain-story.jpg"' in ne_page and "फाइल तस्बिर" in ne_page
+    assert (out / "cards" / "2026-09-26-rain-story.jpg").exists() and (out / "cards" / "ne" / "2026-09-26-rain-story.jpg").exists()
+    assert 'cards/ne/2026-09-26-rain-story.jpg' in ne_index and 'cards/ne/' not in (out / "index.html").read_text()
     assert f'hreflang="ne" href="{site_url}/ne/articles/rain-story/"' in en_page and 'hreflang="x-default"' in en_page
     assert 'href="../../ne/articles/rain-story/" lang="ne"' in en_page and "यो समाचार नेपालीमा पढ्नुहोस्" in en_page
     assert 'class="lang" href="../../ne/articles/rain-story/"' in en_page

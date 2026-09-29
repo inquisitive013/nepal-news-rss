@@ -287,13 +287,20 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
             else:
                 log.warning("image missing for %s: %s", article.id, article.image.path)
 
-    # The Facebook card for every recent article with a photo. Rendered here, never stored in git.
+    # The cards for every recent article with a photo: English for the English pages, Nepali for
+    # Facebook and the Nepali pages. Rendered here, never stored in git.
     for article in articles[:CARD_LIMIT]:
         if article.image and (settings.root / article.image.path).exists():
             try:
                 graphic.render_card(settings, article, out_dir / "cards" / graphic.card_name(article))
+                if graphic.wants_nepali_card(settings, article):
+                    graphic.render_card(settings, article, out_dir / "cards" / "ne" / graphic.card_name(article), language="ne")
             except Exception as exc:  # noqa: BLE001 - a card is never worth a failed build
                 log.warning("card failed for %s: %s", article.id, exc)
+
+    def card_rel(a: Article, sub: str = "") -> str:
+        rel = f"cards/{sub}{graphic.card_name(a)}"
+        return rel if (a.image and (out_dir / rel).exists()) else ""
 
     cards = [
         {
@@ -302,16 +309,18 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
             "ne_url": f"ne/articles/{a.slug}/" if a.id in in_nepali else "",
             "nepali": nepali_view(a) if a.id in in_nepali else None,
             "image": _image_rel(a),
-            "card": f"cards/{graphic.card_name(a)}" if (a.image and (out_dir / "cards" / graphic.card_name(a)).exists()) else "",
+            "card": card_rel(a),
+            "card_ne": card_rel(a, "ne/") or card_rel(a),
             "angles": evidenced_angles(a),
         }
         for a in articles
     ]
+    cards_ne = [{**c, "card": c["card_ne"]} for c in cards]  # the Nepali home page shows the Nepali cards
     investigations = [c for c in cards if c["angles"]]
     home = alternates_for("", "ne/")
 
     render("index.html", out_dir / "index.html", root="./", alternates=home, switch="./ne/", cards=cards[:INDEX_LIMIT], total=len(articles), investigations=investigations)
-    render("index_ne.html", out_dir / "ne" / "index.html", root="../", lang="ne", alternates=home, switch="../", cards=cards[:INDEX_LIMIT], total=len(articles))
+    render("index_ne.html", out_dir / "ne" / "index.html", root="../", lang="ne", alternates=home, switch="../", cards=cards_ne[:INDEX_LIMIT], total=len(articles))
     render("archive.html", out_dir / "archive.html", root="./", cards=cards)
     render("investigations.html", out_dir / "investigations.html", root="./", investigations=investigations)
     render("about.html", out_dir / "about.html", root="./", settings_raw=settings.raw, source_names=[s["name"] for s in settings.sources])
@@ -325,7 +334,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
         alts = alternates_for(en_path, ne_path)
         og_image = f"{site['url']}/{_image_rel(a)}" if a.image else ""
         # The card carries the header, the headline, the source line and the credit: the page shows it too.
-        card = f"cards/{graphic.card_name(a)}" if (a.image and (out_dir / "cards" / graphic.card_name(a)).exists()) else ""
+        card = card_rel(a)
         render(
             "article.html",
             out_dir / "articles" / a.slug / "index.html",
@@ -353,7 +362,7 @@ def build_site(settings: Settings, out_dir: Path) -> Path:
                 article=view,
                 english_url=f"{site['url']}/{en_path}",
                 image=_image_rel(a),
-                card=card,
+                card=card_rel(a, "ne/") or card,
                 body_html=render_markdown(view.body_markdown),
                 review=_review_summary(a),
                 canonical=f"{site['url']}/{ne_path}",

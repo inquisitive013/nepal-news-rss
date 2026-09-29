@@ -56,7 +56,7 @@ def test_mock_run_publishes_and_records(tmp_path):
     assert art.image_headline and art.theme == "DISASTER" and art.country == "NEPAL"
     assert art.caption["hook"] and art.caption["body"] and "trigger" in art.caption
     # the Nepali edition rides with the approved article, read by the Nepali editor
-    assert art.nepali["headline"].startswith("बागमती") and art.nepali["approved"] and art.nepali["caption"]["body"]
+    assert art.nepali["headline"].startswith("बागमती") and art.nepali["approved"] and len(art.nepali["caption"]["synopsis"].splitlines()) == 2
     run_file = tmp_path / "data" / "runs" / "2026-09-26.json"
     assert run_file.exists()
     data = json.loads(run_file.read_text())
