@@ -194,3 +194,15 @@ def test_the_judges_reach_forecast_is_kept_and_held_to_the_scale():
 
     verdict = ranking._verdict("ranking_judge_2", {"ranked": [{"story_id": "a", "rank": 1, "score": 80, "reach": 140, "reason": "r"}, {"story_id": "b", "rank": 2, "score": 60, "reason": "no forecast"}]}, {"a", "b"})
     assert verdict.ranked[0]["reach"] == 100 and "reach" not in verdict.ranked[1]
+
+
+def test_an_answer_without_a_number_says_what_shape_it_had():
+    def answer(payload):
+        return httpx.Response(200, json=payload)
+
+    assert insights._metric_value(answer({"data": [{"values": [{"value": 4200}]}]})) == (4200, "")
+    assert insights._metric_value(answer({"data": []})) == (0, "empty")
+    assert insights._metric_value(answer({"data": [{"name": "m"}]})) == (0, "no values")
+    assert insights._metric_value(answer({"data": [{"values": [{"value": {"organic": 3}}]}]})) == (0, "a breakdown, not a number")
+    assert insights._metric_value(answer({"data": [{"values": [{"value": None}]}]})) == (0, "NoneType, not a number")
+    assert insights._metric_value(httpx.Response(200, text="<html>")) == (0, "not JSON")
