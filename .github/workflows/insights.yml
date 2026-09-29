@@ -1,0 +1,60 @@
+name: Read post insights
+
+on:
+  schedule:
+    # Every six hours, so each post's 24 and 72 hour readings fall inside the day they are due.
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "How many days of posts the report covers."
+        type: string
+        default: "7"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: insights
+  cancel-in-progress: false
+
+jobs:
+  insights:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Read what the posts did
+        env:
+          META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          DAYS: ${{ inputs.days || '7' }}
+        run: |
+          case "$DAYS" in ''|*[!0-9]*) echo "::error::days must be a whole number, not '$DAYS'."; exit 1 ;; esac
+          set -o pipefail
+          python -m newsroom insights --days "$DAYS" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Record the readings
+        if: always()
+        run: |
+          git config user.name "nepal-wire-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data/social
+          # The follower log appears with the first count Facebook lets the token read.
+          if [ -d data/insights ]; then git add -A data/insights; fi
+          if git diff --cached --quiet; then
+            echo "No new readings to record."
+          else
+            git commit -m "Post readings $(TZ=Asia/Kathmandu date +%F)"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

@@ -152,6 +152,12 @@ The text comes from the article's caption, take, headline, dek, social hook and 
 
 Meta's Graph API version defaults to `v23.0`; set the repository variable `META_GRAPH_VERSION` to move it.
 
+### Measuring what posts do
+
+*Actions → Read post insights* (`.github/workflows/insights.yml`, `python -m newsroom insights`) runs every six hours. It reads every live Facebook post twice, 24 and 72 hours after it went live, each reading taken within a day of its mark: unique viewers and views from Meta's post insights (`post_total_media_view_unique` and `post_media_view`, the names Meta has used since June 2026, in `social.facebook.insights.metrics`), and shares, comments and reactions from the post. The readings go on the post in `data/social/<article id>.json`. Each run also notes the Page's follower count in `data/insights/followers.json`, and the report in the run summary sets each post of the last week beside the reach score the ranking judges forecast for its story (`reach` in the verdict) and the follower change over its first day. Posts that go live within a day of each other share that follower window, so read the column as a day's change, not one post's.
+
+The token needs two more permissions than posting does: `read_insights` for the post insights and `pages_read_engagement` for the counts and the follower count. Make it as described for `FACEBOOK_PAGE_TOKEN` above with both ticked as well as `pages_manage_posts`, and replace the secret. Until then each run records the Graph error code, stops at the first post, and says what the token lacks. Records carry error codes only, never Meta's messages.
+
 Not covered, and why: LinkedIn company pages need a partner programme approval and personal posting needs a browser login every 60 days; WhatsApp channels have no public posting API; TikTok and YouTube want video. For anything else, the feed at `/rss.xml` works with Zapier, IFTTT, Buffer, dlvr.it and similar tools.
 
 ## When two editions collide

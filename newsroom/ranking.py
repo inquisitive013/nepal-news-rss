@@ -58,6 +58,7 @@ VERDICT_SCHEMA = {
                     "story_id": {"type": "string"},
                     "rank": {"type": "integer"},
                     "score": {"type": "integer"},
+                    "reach": {"type": "integer"},
                     "reason": {"type": "string"},
                 },
             },
@@ -180,6 +181,8 @@ def _verdict(judge: str, data: dict[str, Any], valid_ids: set[str]) -> RankingVe
     for i, r in enumerate(ranked):
         r["rank"] = i + 1
         r["score"] = int(max(0, min(100, r.get("score", 0))))
+        if isinstance(r.get("reach"), (int, float)):  # the forecast the calibration log checks
+            r["reach"] = int(max(0, min(100, r["reach"])))
     rejected = [dict(r) for r in data.get("rejected", []) if r.get("story_id") in valid_ids]
     ranked_ids = {r["story_id"] for r in ranked}
     rejected = [r for r in rejected if r["story_id"] not in ranked_ids]

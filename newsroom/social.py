@@ -73,6 +73,9 @@ class Post:
     posted_at: str = ""
     scheduled_for: str = ""  # local time when the network will release it, empty when posted at once
     edited_at: str = ""  # when the caption was last rewritten in place; `text` is the caption now live
+    # What the post did, read by `python -m newsroom insights`: "24h" and "72h", each a reading
+    # {at, hours, viewers, views, shares, comments, reactions, errors}.
+    metrics: dict[str, dict[str, Any]] = field(default_factory=dict)
 
 
 @dataclass
@@ -853,8 +856,12 @@ def load_record(settings: Settings, article: Article) -> SocialRecord:
     path = record_path(settings, article.id)
     if not path.exists():
         return SocialRecord(article_id=article.id)
+    return read_record(path, article.id)
+
+
+def read_record(path: Path, article_id: str = "") -> SocialRecord:
     data = json.loads(path.read_text(encoding="utf-8"))
-    return SocialRecord(article_id=data.get("article_id", article.id), article_url=data.get("article_url", ""), posts=[Post(**p) for p in data.get("posts", [])])
+    return SocialRecord(article_id=data.get("article_id", article_id or path.stem), article_url=data.get("article_url", ""), posts=[Post(**p) for p in data.get("posts", [])])
 
 
 def save_record(settings: Settings, rec: SocialRecord) -> Path:

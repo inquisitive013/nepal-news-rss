@@ -296,6 +296,8 @@ When a published claim turns out wrong or materially incomplete: within six hour
 
 For every published post record the predicted score against actual reach, shares and comments at 24 and 72 hours, and net new followers per post. Followers are the goal. Engagement is the proxy. Review weekly per Section 13.
 
+From 29 September the newsroom keeps this log itself (README, "Measuring what posts do"). The predicted score is the reach score the final ranking judge gives the story, 0 to 100. Actual reach is Meta's unique viewers of the post, read with its shares, comments and reactions at 24 and 72 hours. Net new followers are the Page's follower change over each post's first day, shared by posts that go live within a day of each other. The two scales differ, so the weekly review compares order: whether the stories forecast highest reached the most people.
+
 ## Core mindset
 
 The card carries the hook. The caption carries the depth. The reader test makes it theirs. The trigger carries the algorithm. The investigation reveals what no one else has connected. The integrity standard makes every post whole. All five work together, and Nepal Wire is fully protected on every word.
