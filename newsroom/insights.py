@@ -99,6 +99,23 @@ def due(post: social.Post, hour: int, now: datetime) -> bool:
     return slot is None or bool(slot.get("errors"))
 
 
+def _metric_value(resp: httpx.Response) -> tuple[int, str]:
+    """The number in an insights answer, or why there is none, by the answer's shape and never its words."""
+    try:
+        rows = (resp.json() or {}).get("data")
+    except (ValueError, AttributeError):
+        return 0, "not JSON"
+    if not rows:
+        return 0, "empty"
+    points = rows[0].get("values") if isinstance(rows[0], dict) else None
+    if not points:
+        return 0, "no values"
+    value = points[-1].get("value") if isinstance(points[-1], dict) else None
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return 0, "a breakdown, not a number" if isinstance(value, dict) else f"{type(value).__name__}, not a number"
+    return int(value), ""
+
+
 def read_post(client: httpx.Client, environ: Mapping[str, str], post_id: str, metrics: Mapping[str, str]) -> tuple[dict[str, int], dict[str, str]]:
     """One reading of one post: the values that came back, and an error code for each that did not."""
     fb = social.facebook_page(client, environ)
@@ -110,10 +127,11 @@ def read_post(client: httpx.Client, environ: Mapping[str, str], post_id: str, me
         if resp.status_code >= 400:
             errors[label] = graph_error(resp)
             continue
-        try:
-            values[label] = int(resp.json()["data"][0]["values"][-1]["value"])
-        except (ValueError, KeyError, IndexError, TypeError):
-            errors[label] = "no value"
+        value, why = _metric_value(resp)
+        if why:
+            errors[label] = f"no value ({why})"
+        else:
+            values[label] = value
     for label, (fields, pick) in COUNTS.items():
         resp = client.get(f"{base}/{post_id}", params={"fields": fields, "access_token": fb.token})
         if resp.status_code >= 400:
