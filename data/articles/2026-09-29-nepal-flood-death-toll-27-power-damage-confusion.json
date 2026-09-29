@@ -1,0 +1,671 @@
+{
+  "id": "2026-09-29-nepal-flood-death-toll-27-power-damage-confusion",
+  "slug": "nepal-flood-death-toll-27-power-damage-confusion",
+  "story_id": "2026-09-29-flood-toll-damage-update",
+  "headline": "Nepal flood toll hits 27, but the Rs 74 billion power damage figure is from August",
+  "dek": "NEA's Rs 74 billion power damage estimate traces to the August 26 Bhote Koshi flood, not the rain that has killed 27 since September 24.",
+  "body_markdown": "Twenty seven people have died and 1,065 families have been hit by floods, landslides, inundation, windstorms and lightning since heavy rain began on Thursday, September 24, the government told Nepal Press. Seven people are injured and four remain missing. The toll comes from 513 separate monsoon incidents recorded across the country in four days.\n\nThe Nepal Electricity Authority, or NEA, the state utility that runs Nepal's grid, said the August 26 Bhote Koshi flood cut 430 megawatts of hydropower generation, Republica reported. NEA has not said how much generation the rain since September 24 has cut. To keep supply steady through the dry winter months, the NEA now plans to import up to 1,154 megawatts of electricity from India between January and May, its managing director Dirghayu Kumar Shrestha told OnlineKhabar English. The plan means households again depend on Indian electricity when Nepali rivers run lowest.\n\nDamage kept surfacing through the weekend. In Baglung, floodwater tore through the main pipeline near Hanumanmaowa in Baglung Municipality-3, cutting water to roughly 4,500 users in the bazaar since Sunday, September 27, Ratopati reported. In Mustang, floods and river cutting damaged 46 sections of the Beni-Jomsom-Korla road, a national pride project linking the region to the Korala trade point on the Tibet border. Project chief Tejaswi Sharma told a district disaster meeting on Monday, September 28, that full reopening will take more than a week, Nepal Press reported. In Myagdi, the same four days of rain left about 200 families displaced and cut roads, phone lines and power to rural areas, delaying an exact damage count, the district administration office told OnlineKhabar.\n\n## What the Rs 74 billion figure covers\n\nThe Rs 74 billion power damage figure is not the cost of this week's rain. Republica's own report on the estimate opens by dating it to \"floods triggered by the Bhote Koshi River on August 26\", a separate flood that hit a full month before the September 24 rains this story covers. Republica's report ties the Rs 74 billion damage to power infrastructure to that August 26 flood on the Bhote Koshi River. The NEA has not published an updated damage estimate covering the newer flooding, and neither the authority nor the government said today what additional cost that flooding has added.\n\nA second mismatch runs through today's reporting. The National Disaster Risk Reduction and Management Authority, or NDRRMA, the federal body that coordinates disaster response, counted 21 deaths in 272 incidents in the 24 hours before Republica's report on Monday, September 28, Republica reported. That is a rolling one day count. Nepal Press's 27 dead figure covers four days, since September 24. The two numbers are not additive, but neither agency said how many of the 21 daily deaths already sit inside the 27 four day total.\n\nRelief is also uneven so far. Gandaki province, which includes Baglung and Myagdi, has approved Rs 100,000, about USD 715, for each family of someone killed in the floods, plus Rs 25,000 for funeral costs, Ratopati reported. Neighbouring Lumbini province recorded 78 disaster incidents, six deaths and 1,280 displaced people over the same four days, Nepal Press reported. No matching relief announcement for Lumbini families had been reported as of today.\n\n## What we still do not know\n\nWhether the NEA will issue a combined damage estimate that includes the September flooding, not just the August 26 Bhote Koshi flood, a question for the NEA and the Ministry of Energy.\n\nWhether Baglung and Myagdi families who lost someone have actually received Gandaki's promised Rs 100,000, a question for the province's Ministry of Internal Affairs and the two district administration offices.\n\nWhether Lumbini and other affected provinces will announce relief to match Gandaki's, a question for their provincial governments.\n\nWhether the Beni-Jomsom-Korla road reopens on schedule within the week the project chief estimated, a question for the Department of Roads.",
+  "language": "en",
+  "key_facts": [
+    {
+      "fact": "27 people have died and 1,065 families have been affected by floods, landslides and related disasters since September 24, according to government data.",
+      "source_url": "https://nepalpress.com/2026/09/28/768521/27-people-killed-1065-families-affected-in-floods-and-landslides/"
+    },
+    {
+      "fact": "NDRRMA counted 21 deaths in 272 disaster incidents in the 24 hours before Republica's Monday, September 28 report, a separate rolling measure from the four day toll.",
+      "source_url": "https://myrepublica.nagariknetwork.com/news/21-people-die-in-272-disasters-across-the-country-in-the-past-24-hours-54-44.html"
+    },
+    {
+      "fact": "NEA's Rs 74 billion power damage estimate, including the 430 megawatt generation cut, is tied by Republica's report to the August 26 Bhote Koshi flood, not the September rains.",
+      "source_url": "https://myrepublica.nagariknetwork.com/news/floods-cause-estimated-rs-74-billion-damage-to-power-infrastructure-17-15.html"
+    },
+    {
+      "fact": "NEA plans to import up to 1,154 megawatts of electricity from India between January and May this winter.",
+      "source_url": "https://english.onlinekhabar.com/nepal-import-electricity-winter.html"
+    },
+    {
+      "fact": "Floodwater washed out the main pipeline near Hanumanmaowa, cutting water to about 4,500 users in Baglung bazaar.",
+      "source_url": "https://www.ratopati.com/story/595669/water-supply-problem-in-baglung-bazaar-as-flood-washes-away-pipeline"
+    },
+    {
+      "fact": "Gandaki province approved Rs 100,000 plus Rs 25,000 in funeral costs for families of flood dead in districts including Baglung and Myagdi.",
+      "source_url": "https://www.ratopati.com/story/595654/rs-1-lakh-relief-to-the-family-of-the-deceased"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Nepal Press",
+      "url": "https://nepalpress.com/2026/09/28/768521/27-people-killed-1065-families-affected-in-floods-and-landslides/",
+      "used_for": "National death toll, injured, missing and families affected since September 24"
+    },
+    {
+      "name": "Republica",
+      "url": "https://myrepublica.nagariknetwork.com/news/21-people-die-in-272-disasters-across-the-country-in-the-past-24-hours-54-44.html",
+      "used_for": "NDRRMA's rolling 24 hour death and incident count"
+    },
+    {
+      "name": "Republica",
+      "url": "https://myrepublica.nagariknetwork.com/news/floods-cause-estimated-rs-74-billion-damage-to-power-infrastructure-17-15.html",
+      "used_for": "Rs 74 billion power damage estimate, 430 MW generation cut, and the estimate's dating to the August 26 Bhote Koshi flood"
+    },
+    {
+      "name": "OnlineKhabar English",
+      "url": "https://english.onlinekhabar.com/nepal-import-electricity-winter.html",
+      "used_for": "NEA's winter import plan of up to 1,154 MW and managing director's comments"
+    },
+    {
+      "name": "Ratopati",
+      "url": "https://www.ratopati.com/story/595669/water-supply-problem-in-baglung-bazaar-as-flood-washes-away-pipeline",
+      "used_for": "Baglung pipeline damage and water supply disruption to 4,500 users"
+    },
+    {
+      "name": "Nepal Press",
+      "url": "https://nepalpress.com/2026/09/28/768534/floods-and-landslides-damage-46-places-on-beni-jomsom-korla-road-will-take-a-week-to-reopen/",
+      "used_for": "Beni-Jomsom-Korla road damage and reopening timeline"
+    },
+    {
+      "name": "OnlineKhabar",
+      "url": "https://www.onlinekhabar.com/2026/09/2028087/200-families-displaced-in-myagdi-due-to-floods-and-landslides",
+      "used_for": "Myagdi displacement figures"
+    },
+    {
+      "name": "Ratopati",
+      "url": "https://www.ratopati.com/story/595654/rs-1-lakh-relief-to-the-family-of-the-deceased",
+      "used_for": "Gandaki province relief announcement for flood dead"
+    },
+    {
+      "name": "Nepal Press",
+      "url": "https://nepalpress.com/2026/09/28/768495/%e0%a4%b2%e0%a5%81%e0%a4%ae%e0%a5%8d%e0%a4%ac%e0%a4%bf%e0%a4%a8%e0%a5%80%e0%a4%ae%e0%a4%be-%e0%a4%9a%e0%a4%be%e0%a4%b0-%e0%a4%a6%e0%a4%bf%e0%a4%a8%e0%a4%ae%e0%a4%be-%e0%a5%ad%e0%a5%ae-%e0%a4%b5/",
+      "used_for": "Lumbini province's own disaster, death and displacement figures for comparison"
+    }
+  ],
+  "tags": [
+    "floods",
+    "landslides",
+    "nepal-electricity-authority",
+    "disaster-relief",
+    "monsoon"
+  ],
+  "social_hook": "If your family lost someone to these floods, Gandaki province has promised Rs 100,000. In Lumbini, with six dead, no payout has been reported yet.",
+  "take": "Nepal's flood death toll has climbed to 27 since September 24, but NEA's Rs 74 billion power damage estimate belongs to a different flood a month earlier. NEA has not said what the new rain actually cost. Two official counts, 27 dead over four days and 21 dead in one day, have not been reconciled. Gandaki has approved Rs 100,000 for each grieving family. Lumbini, with six dead of its own, has no relief announcement reported yet. Until NEA updates its math, the true cost of this week's floods is unknown.",
+  "image_headline": "FLOOD DEATH TOLL HITS 27\nRS 74B LOSS FROM AUGUST",
+  "theme": "DISASTER",
+  "country": "NEPAL",
+  "caption": {
+    "hook": "If your family lost someone to these floods, Gandaki province has promised Rs 100,000. In Lumbini, with six dead, no payout has been reported yet.",
+    "body": "Nepal's floods and landslides have killed 27 people since September 24, Nepal Press reported. They have also hit 1,065 families.\n\nThe Rs 74 billion power damage estimate is not from this week's rain. It comes from a flood a month earlier, Republica reported.\n\nThe Nepal Electricity Authority plans to import up to 1,154 megawatts from India this winter. OnlineKhabar English reported the plan.\n\nBaglung lost piped water for 4,500 users. Myagdi has 200 displaced families. The Beni-Jomsom-Korla road needs more than a week to reopen.\n\nNo Lumbini relief has been reported yet, despite six deaths there. Gandaki has approved Rs 100,000 for each family of the dead, Ratopati reported.",
+    "trigger": "Has your family ever been promised disaster relief? How long did it take to actually arrive?"
+  },
+  "nepali": {
+    "headline": "बाढीमा मृत्यु २७ पुग्यो, रु. ७४ अर्बको विद्युत् क्षति भने अगस्टको",
+    "dek": "नेपाल विद्युत् प्राधिकरणको रु. ७४ अर्ब विद्युत् क्षतिको अनुमान २४ सेप्टेम्बरयताको वर्षाको होइन, २६ अगस्टको भोटेकोशी बाढीको हो।",
+    "take": "२४ सेप्टेम्बरयता बाढीमा मृत्यु हुनेको संख्या २७ पुगेको छ। तर एनईएको रु. ७४ अर्ब विद्युत् क्षतिको अनुमान एक महिनाअघिको अर्कै बाढीको हो। एनईएले नयाँ बाढीको हिसाब अझै दिएको छैन। चार दिनमा २७ जना र एकै दिनमा २१ जनाको मृत्यु भनिएका दुई सरकारी संख्या पनि अझै मिलाइएका छैनन्। गण्डकीले मृतकका हरेक परिवारलाई रु. १ लाख दिने निर्णय गरेको छ, र लुम्बिनीमा पनि ६ जनाको मृत्यु भएको छ, तर त्यहाँ राहत घोषणा भएको खबर अहिलेसम्म आएको छैन। एनईएले आफ्नो हिसाब अद्यावधिक नगरेसम्म यो हप्ताको बाढीले कति क्षति गर्‍यो भन्ने थाहा हुँदैन।",
+    "body_markdown": "काठमाडौं । बिहीबार (२४ सेप्टेम्बर) देखि परेको भारी वर्षापछि बाढी, पहिरो, डुबान, हावाहुरी र चट्याङमा परी देशभर २७ जनाको मृत्यु भएको नेपाल प्रेसले सरकारी तथ्यांक उद्धृत गर्दै जनाएको छ। विपद्बाट १,०६५ परिवार प्रभावित भएको पनि नेपाल प्रेसले बताएको छ। नेपाल प्रेसका अनुसार ७ जना घाइते भएका छन् भने ४ जना बेपत्ता छन्। यो मृत्यु संख्या चार दिनमा देशभर भएका ५१३ वटा छुट्टाछुट्टै मनसुनजन्य घटनाबाट आएको नेपाल प्रेसले लेखेको छ।\n\nरिपब्लिकाका अनुसार राज्यको बिजुली ग्रिड चलाउने नेपाल विद्युत् प्राधिकरण (एनईए) ले २६ अगस्टको भोटेकोशी बाढीले ४३० मेगावाट उत्पादन गुमेको जनाएको छ। तर २४ सेप्टेम्बरयताको वर्षाले कति उत्पादन घट्यो भनेर एनईएले अहिलेसम्म केही भनेको छैन। अनलाइनखबर अंग्रेजीका अनुसार हिउँदमा आपूर्ति नबिग्रियोस् भनेर एनईएले जनवरीदेखि मेसम्म भारतबाट बढीमा १,१५४ मेगावाट बिजुली ल्याउने योजना बनाएको प्राधिकरणका प्रबन्ध निर्देशक दीर्घायुकुमार श्रेष्ठले बताएका छन्। यसको अर्थ नदीमा पानी सबैभन्दा कम हुने याममा नेपाली घरपरिवार फेरि पनि भारतीय विद्युतमा भर पर्नुपर्ने हुन्छ।\n\nबागलुङ नगरपालिका वडा नम्बर ३ स्थित हनुमानमाउवामा बाढीले मुख्य पाइपलाइन बगाइदिँदा आइतबार (२७ सेप्टेम्बर) देखि बजार क्षेत्रका करिब ४,५०० उपभोक्ताको खानेपानी अवरुद्ध भएको रातोपातीले जनाएको छ। मुस्ताङमा बाढी र नदी कटानका कारण तिब्बत सीमाको कोरला व्यापार नाकासँग जोड्ने राष्ट्रिय गौरवको बेनी-जोमसोम-कोरला सडकका ४६ ठाउँ बिग्रिएको नेपाल प्रेसले जनाएको छ। नेपाल प्रेसका अनुसार सोमबार (२८ सेप्टेम्बर) बसेको जिल्ला विपद् व्यवस्थापन समितिको बैठकमा आयोजना प्रमुख तेजस्वी शर्माले सडक पूरै खुल्न एक हप्ताभन्दा बढी लाग्ने बताए। अनलाइनखबरका अनुसार म्याग्दीमा उही चार दिनको वर्षाले करिब २०० परिवार विस्थापित भएको र ग्रामीण क्षेत्रमा सडक, फोन र बिजुली बन्द भएको जिल्ला प्रशासन कार्यालय म्याग्दीले जनाएको छ। यसले गर्दा यकिन क्षति विवरण तयार गर्न ढिलाइ भइरहेको कार्यालयले अनलाइनखबरलाई बताएको छ।\n\n## रु. ७४ अर्बको तथ्यांक केको हो\n\nआज दोहोरिइरहेको रु. ७४ अर्ब क्षतिको तथ्यांक बिहीबार (२४ सेप्टेम्बर) यताको वर्षासँग जोडिएको छैन। रिपब्लिकाको आफ्नै प्रतिवेदनले सुरुमै यो अनुमान \"२६ अगस्टमा भोटेकोशी नदीले ल्याएको बाढी\" को हो भनेको छ। त्यो बाढी २४ सेप्टेम्बरको वर्षाभन्दा एक महिनाअघिको छुट्टै घटना हो। नयाँ बाढीको क्षति समेटेर एनईएले अद्यावधिक अनुमान सार्वजनिक गरेको छैन। नयाँ बाढीले कति थप क्षति गर्‍यो भनेर प्राधिकरण र सरकार दुवैले आज केही भनेनन्।\n\nअर्को नमिलेको हिसाब पनि आजको रिपोर्टिङमा देखिन्छ। रिपब्लिकाका अनुसार विपद् प्रतिकार्यको समन्वय गर्ने संघीय निकाय राष्ट्रिय विपद् जोखिम न्यूनीकरण तथा व्यवस्थापन प्राधिकरण (एनडीआरआरएमए) ले सोमबार (२८ सेप्टेम्बर) को प्रतिवेदनअघिको २४ घण्टामा २७२ घटनामा २१ जनाको मृत्यु भएको जनाएको छ। यो हरेक दिन फेरिने २४ घण्टाको हिसाब हो। नेपाल प्रेसले दिएको २७ जनाको संख्या भने बिहीबार (२४ सेप्टेम्बर) देखिको चार दिनको हो। यी दुई संख्या जोड्न मिल्दैन। तर २१ जनामध्ये कति जना २७ जनाभित्रै परिसकेका छन् भनेर दुईमध्ये कुनै पनि निकायले बताएको छैन।\n\nराहत पनि सबैतिर समान छैन। बागलुङ र म्याग्दी रहेको गण्डकी प्रदेशले बाढीपहिरोमा ज्यान गुमाउनेका हरेक परिवारलाई रु. १ लाख अर्थात् करिब अमेरिकी डलर ७१५ र काजकिरिया खर्चबापत थप रु. २५ हजार दिने निर्णय गरेको रातोपातीले जनाएको छ। उही चार दिनमा छिमेकी लुम्बिनी प्रदेशमा ७८ वटा विपद् घटना भई ६ जनाको मृत्यु र १,२८० जना विस्थापित भएको नेपाल प्रेसले जनाएको छ। तर लुम्बिनीका पीडित परिवारलाई गण्डकीजस्तै राहत दिने घोषणा भएको खबर आजसम्म आएको छैन।\n\nनेपाल प्रेसका अनुसार बेनी-जोमसोम-कोरला सडक राष्ट्रिय गौरवको आयोजना हो। तर मर्मतको लागत कति हो र त्यो रकम कहाँबाट आउँछ भन्ने कुरा नेपाल प्रेस र नागरिक न्युज दुवैको प्रतिवेदनमा उल्लेख छैन।\n\n## अझै थाहा नभएका कुरा\n\nएनईएले सेप्टेम्बरको वर्षासमेत समेटेर एकीकृत क्षति प्रतिवेदन ल्याउने हो कि होइन, यसको जवाफ एनईए र ऊर्जा मन्त्रालयसँग छ।\n\nएनडीआरआरएमएको हरेक दिनको २४ घण्टे हिसाब र नेपाल प्रेसको चार दिनको जम्मा हिसाबमा कति मृत्यु दोहोरिएका छन्, र आजसम्म वास्तवमा कति जनाको मृत्यु भयो, यसको जवाफ एनडीआरआरएमए र गृह मन्त्रालयसँग छ।\n\nबागलुङ र म्याग्दीका पीडित परिवारले गण्डकीले वाचा गरेको रु. १ लाख वास्तवमा पाइसकेका छन् कि छैनन्, यसको जवाफ प्रदेशको आन्तरिक मामिला मन्त्रालय र दुई जिल्ला प्रशासन कार्यालयसँग छ।\n\nगण्डकीले जस्तै लुम्बिनी लगायत अन्य प्रभावित प्रदेशले पनि राहत घोषणा गर्ने हुन् कि होइनन्, यसको जवाफ ती प्रदेश सरकारसँग छ।\n\nएनईएले भारतबाट १,१५४ मेगावाट बिजुली किन्दा कति मूल्य तिर्ने हो, र त्यो मूल्य नेपालको आफ्नै हिउँदे उत्पादन लागत वा वर्षायाममा भारततिरै बेचिने विद्युतको मूल्यसँग कसरी तुलना हुन्छ, यसको जवाफ एनईए र भारततर्फका सम्बद्ध निकायसँग छ।\n\nबेनी-जोमसोम-कोरला सडकका ४६ क्षतिग्रस्त ठाउँ मर्मत गर्न कति खर्च लाग्छ र त्यो बजेट कुन निकायबाट आउँछ, यसको जवाफ सडक विभाग र आयोजना प्रमुख तेजस्वी शर्माको कार्यालयसँग छ।\n\nआयोजना प्रमुखले भनेजस्तै बेनी-जोमसोम-कोरला सडक एक हप्ताभित्र खुल्छ कि खुल्दैन, यसको जवाफ सडक विभागसँग छ।",
+    "image_headline": "बाढीमा २७ जनाको मृत्यु\n७४ अर्ब क्षति अगस्टको",
+    "social_hook": "मृत्यु २७ पुग्यो, तर एनईएको रु. ७४ अर्ब क्षति अगस्टकै भोटेकोशी बाढीको हो, यो हप्ताको वर्षाको होइन।",
+    "caption": {
+      "hook": "तपाईंको परिवारले यी बाढीमा कोही गुमाएको छ भने गण्डकीले रु. १ लाख दिने वाचा गरेको छ। तर ६ जनाको मृत्यु भएको लुम्बिनीमा राहत घोषणा भएको खबर अहिलेसम्म आएको छैन।",
+      "body": "बिहीबार (२४ सेप्टेम्बर) देखिको बाढीपहिरोमा देशभर २७ जनाको मृत्यु भएको नेपाल प्रेसले जनाएको छ। १,०६५ परिवार प्रभावित भएको पनि नेपाल प्रेसले बताएको छ।\n\nरु. ७४ अर्बको विद्युत् क्षति यो हप्ताको वर्षाको होइन। यो अनुमान एक महिनाअघिको बाढीको हो भनेर रिपब्लिकाले लेखेको छ।\n\nनेपाल विद्युत् प्राधिकरणले यो हिउँद भारतबाट बढीमा १,१५४ मेगावाट बिजुली ल्याउने योजना बनाएको अनलाइनखबर अंग्रेजीले जनाएको छ।\n\nबागलुङमा करिब ४,५०० उपभोक्ताको खानेपानी बन्द भएको रातोपातीले जनाएको छ। म्याग्दीमा करिब २०० परिवार विस्थापित भएको अनलाइनखबरले लेखेको छ। बेनी-जोमसोम-कोरला सडक पूरै खुल्न एक हप्ताभन्दा बढी लाग्ने आयोजना प्रमुखले भनेको नेपाल प्रेसले जनाएको छ।\n\nनेपाल प्रेसका अनुसार लुम्बिनीमा ६ जनाको मृत्यु भएको छ। तर त्यहाँ राहत घोषणा भएको खबर अहिलेसम्म आएको छैन। गण्डकीले भने मृतकका हरेक परिवारलाई रु. १ लाख दिने निर्णय गरेको रातोपातीले जनाएको छ।",
+      "trigger": "तपाईंको परिवारले कहिल्यै विपद् राहतको वाचा पाएको छ? पाएको भए, त्यो साँच्चै हातमा आउन कति समय लाग्यो?"
+    },
+    "notes": "Applied all editor fixes: attribution moved into the injured/missing sentence, the NDRRMA/Nepal Press mismatch sentence narrowed to the two named agencies, the section heading corrected to match the English's actual subject, the lede split and reworded to remove the false rain-as-killer list, the calqued घुम्ती/संचयी phrasing rewritten in plain Nepali, the Gandaki attribution reordered to Nepali sentence structure, the Lumbini sentence de-calqued, and the take's Lumbini sentence merged with the preceding one to bring it to six sentences. No fact or source was dropped.",
+    "checked": true,
+    "approved": false,
+    "passes": 2,
+    "problems_fixed": 35,
+    "fixed_in_place": 0,
+    "editor": "The piece is faithful to the record on the Rs 74 billion dating and the relief gap, but one sentence broadens 'neither agency' and another leaves the Nepal Press injured and missing figures without their named source. A mismatched section heading and several calqued or overlong sentences also need fixing before publication."
+  },
+  "image_brief": {
+    "search_queries": [
+      "Nepal Electricity Authority",
+      "Beni Jomsom Korla Road",
+      "Kaligandaki River",
+      "Baglung District"
+    ],
+    "generation_prompt": "An editorial illustration of a swollen Himalayan river valley in Nepal after monsoon floods, muddy brown water cutting past a damaged mountain road and toppled power lines, mist over green terraced hills, somber grey and ochre tones, wide angle, no text, no identifiable people, no logos.",
+    "alt_text": "A flood damaged mountain road and power lines beside a swollen river in rural Nepal after monsoon rains."
+  },
+  "image": {
+    "path": "data/images/2026-09-29-nepal-flood-death-toll-27-power-damage-confusion.jpg",
+    "alt": "The Nepal Electricity Authority head office building decorated with lights during Tihar.",
+    "width": 1600,
+    "height": 1200,
+    "credit": {
+      "kind": "found",
+      "title": "Nepal Electricity Authority Head office tihar",
+      "author": "Nawaraj Ghimire",
+      "author_url": "",
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Nepal_Electricity_Authority_Head_office_tihar.jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "model": "",
+      "note": ""
+    },
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/Nepal_Electricity_Authority_Head_office_tihar.jpg/1920px-Nepal_Electricity_Authority_Head_office_tihar.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "investigation": {
+    "angles": [
+      {
+        "claim": "The Rs 74 billion power-sector damage figure being read today as a consequence of the Asoj 8-11 flooding actually comes from NEA's assessment of the separate, month-old August 26 Bhote Koshi River flood, not the newer event this story otherwise describes.",
+        "kind": "numbers",
+        "why_it_matters": "If Nepal Wire's readers take the Rs 74 billion figure as the cost of this week's flooding, they will badly misjudge how much new damage the Asoj 8-11 rains actually caused versus damage already logged a month earlier; NEA itself may later revise the figure upward, so pairing a stale number with a fresh death toll under one headline risks a correction.",
+        "evidence": [
+          {
+            "url": "https://myrepublica.nagariknetwork.com/news/floods-cause-estimated-rs-74-billion-damage-to-power-infrastructure-17-15.html",
+            "source": "Republica",
+            "fact": "The article's own lead states: \"Floods triggered by the Bhote Koshi River on August 26 have caused an estimated Rs 74 billion\" in preliminary damage, dating the figure to the August 26 event, not Asoj 8-11."
+          },
+          {
+            "url": "https://myrepublica.nagariknetwork.com/news/nea-projects-power-import-of-1154-mw-in-dry-season-to-manage-smooth-supply-35-27.html",
+            "source": "Republica",
+            "fact": "NEA links the winter import plan to hydropower plants damaged by 'recent floods, landslides and rainwater' without distinguishing which flood event caused how much of the shortfall."
+          }
+        ],
+        "confidence": 72
+      },
+      {
+        "claim": "Two government bodies are reporting different death and incident tallies for the same period using different measurement windows, and no outlet has reconciled them: Nepal Press's cumulative count since Asoj 8 (27 dead, 1,065 families, 513 incidents) versus NDRRMA's rolling 24-hour count (21 dead, 272 incidents).",
+        "kind": "numbers",
+        "why_it_matters": "Readers seeing both numbers in the same news cycle could wrongly add them into a higher total, or conclude the toll doubled overnight; without an explicit note on methodology, Nepal Wire risks repeating the same confusion instead of correcting it.",
+        "evidence": [
+          {
+            "url": "https://nepalpress.com/2026/09/28/768521/27-people-killed-1065-families-affected-in-floods-and-landslides/",
+            "source": "Nepal Press",
+            "fact": "Government data cited by Nepal Press: 27 dead, 7 injured, 4 missing, 1,065 families affected and 513 monsoon-related incidents since Asoj 8."
+          },
+          {
+            "url": "https://myrepublica.nagariknetwork.com/news/21-people-die-in-272-disasters-across-the-country-in-the-past-24-hours-54-44.html",
+            "source": "Republica",
+            "fact": "NDRRMA reported 272 disaster-related incidents and 21 deaths specifically 'in the past 24 hours', a separate rolling window from Nepal Press's Asoj-8-onward cumulative figure."
+          }
+        ],
+        "confidence": 68
+      },
+      {
+        "claim": "So far only Gandaki province has announced concrete cash relief for flood/landslide deaths (Rs 100,000 per family plus Rs 25,000 for funeral costs, covering districts including Baglung and Myagdi); none of the coverage says whether other affected provinces, such as Lumbini where deaths were also reported, have matched or plan to match this.",
+        "kind": "missing",
+        "why_it_matters": "With a nationwide toll of at least 21-27 dead spread across multiple provinces, an unexamined gap in provincial relief could mean families of the dead receive very different compensation depending only on which province they lived in, a federalism and equity question none of today's stories raise.",
+        "evidence": [
+          {
+            "url": "https://www.ratopati.com/story/595654/rs-1-lakh-relief-to-the-family-of-the-deceased",
+            "source": "Ratopati",
+            "fact": "Gandaki provincial government decided to give Rs 1 lakh relief and Rs 25,000 for funeral costs to families of those killed by floods/landslides in districts including Baglung and Myagdi."
+          },
+          {
+            "url": "https://nepalpress.com/2026/09/28/768495/%e0%a4%b2%e0%a5%81%e0%a4%ae%e0%a5%8d%e0%a4%ac%e0%a4%bf%e0%a4%a8%e0%a5%80%e0%a4%ae%e0%a4%be-%e0%a4%9a%e0%a4%be%e0%a4%b0-%e0%a4%a6%e0%a4%bf%e0%a4%a8%e0%a4%ae%e0%a4%be-%e0%a5%ad%e0%a5%ae-%e0%a4%b5/",
+            "source": "Nepal Press",
+            "fact": "Lumbini province recorded 78 disaster incidents, 6 deaths and 1,280 displaced people over the same four-day period (Asoj 8-11), a separate province with no relief announcement reported in today's coverage."
+          }
+        ],
+        "confidence": 52
+      },
+      {
+        "claim": "All coverage of the 46-point damage to the Beni-Jomsom-Korla road describes it only as a one-week repair job, without noting that this is an officially designated 'national pride' project and without any figure for repair cost or its source of funding.",
+        "kind": "missing",
+        "why_it_matters": "A strategic north-south highway being reduced to a one-line repair estimate hides the real question for Mustang residents and traders: how much will fixing 46 damage points cost, who pays, and whether the one-week estimate from the project chief is realistic given continuing monsoon risk.",
+        "evidence": [
+          {
+            "url": "https://nepalpress.com/2026/09/28/768534/floods-and-landslides-damage-46-places-on-beni-jomsom-korla-road-will-take-a-week-to-reopen/",
+            "source": "Nepal Press",
+            "fact": "Project chief Tejaswi Sharma told the district disaster management committee meeting that the 'national pride' (rashtriya gaurav) Beni-Jomsom-Korla road has 46 damaged sections and full reopening will take more than a week."
+          },
+          {
+            "url": "https://nagariknews.nagariknetwork.com/social-affairs/landslides-at-46-places-in-korala-roads-will-take-a-week-to-be-fully-operational-40-88.html",
+            "source": "Nagarik News",
+            "fact": "Nagarik News separately confirms the same 46-location damage count and one-week reopening estimate for the road, without any repair-cost or funding-source figure."
+          }
+        ],
+        "confidence": 45
+      }
+    ],
+    "unanswered": [
+      {
+        "question": "Is the Rs 74 billion NEA damage figure specific to the August 26 Bhote Koshi flood only, and has NEA issued any updated, combined estimate that includes the Asoj 8-11 damage described in today's reporting?",
+        "who_could_answer": "Nepal Electricity Authority (NEA) executive director's office and Ministry of Energy, Water Resources and Irrigation"
+      },
+      {
+        "question": "Do the NDRRMA's 24-hour rolling toll and Nepal Press's cumulative since-Asoj-8 toll overlap, and what is a single verified, non-duplicated national death count as of today?",
+        "who_could_answer": "National Disaster Risk Reduction and Management Authority (NDRRMA) and the Ministry of Home Affairs"
+      },
+      {
+        "question": "Has any family in Baglung or Myagdi actually received the Rs 1 lakh/Rs 25,000 Gandaki relief payment yet, and what is the province's disbursement timeline?",
+        "who_could_answer": "Gandaki provincial government's Ministry of Internal Affairs and the district administration offices in Baglung and Myagdi"
+      },
+      {
+        "question": "Will provinces other than Gandaki, including Lumbini where six deaths were reported in the same four-day period, announce comparable relief, and if not, why not?",
+        "who_could_answer": "Lumbini and other affected provincial governments"
+      },
+      {
+        "question": "What price will NEA pay India for the 1,154 MW of winter power imports, and how does that compare to Nepal's own dry-season generation cost or its wet-season export earnings to India?",
+        "who_could_answer": "Nepal Electricity Authority and India's cross-border power trading counterparts (e.g., NVVN/SBI on the Indian side)"
+      },
+      {
+        "question": "What is the estimated repair cost for the 46 damaged sections of the Beni-Jomsom-Korla road, and which agency or budget line will fund it?",
+        "who_could_answer": "Department of Roads and the Korala road project office (project chief Tejaswi Sharma)"
+      }
+    ],
+    "summary": "No outlet covering today's toll has flagged that NEA's headline Rs 74 billion power-damage estimate is, by Republica's own reporting, tied to the month-old August 26 Bhote Koshi flood rather than the Asoj 8-11 rains this story is built around, and none has reconciled the two competing death/incident counts (27 since Asoj 8 vs. 21 in a rolling 24 hours) that are circulating side by side. Nepal Wire can also point out an unexamined equity gap: only Gandaki province has publicly committed cash relief for the dead, while Lumbini's own reported deaths and displacements sit without any matching announcement in today's coverage."
+  },
+  "review": {
+    "ranking": [
+      {
+        "judge": "ranking_judge_1",
+        "rank": 2,
+        "score": 64,
+        "reason": "Our Sept 27 piece reported six dead in the new wave of flooding. Nepal Press now reports 27 dead and 1,065 families affected since Asoj 8, and the NEA plans to import up to 1,154 MW from India this winter, which reaches household supply. Reach is about 59 (hook 6, stakes 7, emotion 6, buried 6, friction 4, share 6), and the weakest dimension is comment friction."
+      },
+      {
+        "judge": "ranking_judge_2",
+        "rank": 2,
+        "score": 64,
+        "reason": "Confirmed. Nepal Press now counts 27 dead and 1,065 families affected since Asoj 8, up from the six dead we reported on Sept 27, and NEA plans to import up to 1,154 MW from India this winter. It runs only if the writer keeps the Rs 74 billion figure tied to the August 26 Bhote Koshi flood. Reach is about 59 (hook 6, stakes 7, emotion 6, buried 6, friction 4, share 6), and the weakest dimension is comment friction."
+      }
+    ],
+    "validation_rounds": [
+      {
+        "round": 1,
+        "red_team": {
+          "findings": [
+            {
+              "id": "F1",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "The rain has also knocked out power. The Nepal Electricity Authority, or NEA, the state utility that runs Nepal's grid, says floods cut 430 megawatts of hydropower generation from the national system, Republica reported.",
+              "problem": "The 430 MW figure comes from the exact same Republica report the article later cites to prove the Rs 74 billion damage estimate belongs to the August 26 Bhote Koshi flood, a month before the September 24 rain this story covers. By writing 'The rain has also knocked out power' and then citing that 430 MW figure, the body attributes to the current September rain the same stale, month old NEA number that the piece's own 'What the coverage missed' section says should not be paired with today's toll. The article commits the exact error it accuses other coverage of making.",
+              "evidence_url": "https://myrepublica.nagariknetwork.com/news/floods-cause-estimated-rs-74-billion-damage-to-power-infrastructure-17-15.html",
+              "suggested_fix": "Attribute the 430 MW figure explicitly to the August 26 Bhote Koshi flood in the same sentence, and say plainly that NEA has not yet given a separate figure for power infrastructure cut by the September 24 to 27 rain, matching what the investigation section already establishes."
+            },
+            {
+              "id": "F2",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "That is one of Nepal's largest planned winter power imports in years, and it means households again depend on Indian electricity when Nepali rivers run lowest.",
+              "problem": "No source in the sources list makes this historical comparison. Republica and OnlineKhabar report the 1,154 MW import figure but neither states it is one of Nepal's largest planned winter imports in years. This is an invented superlative with no named source, which the house style bans outright.",
+              "evidence_url": "https://english.onlinekhabar.com/nepal-import-electricity-winter.html",
+              "suggested_fix": "Cut the superlative claim. If a comparison to past years' import volumes is wanted, source it to NEA's own historical import data or drop the sentence."
+            },
+            {
+              "id": "F3",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "its managing director Dirghayu Kumar Shrestha told OnlineKhabar English",
+              "problem": "Republica and Radio Nepal both identify this official as NEA's Executive Director, not managing director, in coverage of the same week's flooding. The article picks the title from a single outlet without noting or reconciling the discrepancy, risking a wrong title attached to a named public official.",
+              "evidence_url": "https://myrepublica.nagariknetwork.com/news/floods-cause-estimated-rs-74-billion-damage-to-power-infrastructure-17-15.html",
+              "suggested_fix": "Verify NEA's official designation for Shrestha and use the correct title consistently, or note that different outlets used different titles for the same official."
+            },
+            {
+              "id": "F4",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "The National Disaster Risk Reduction and Management Authority, or NDRRMA, the federal body that coordinates disaster response, counted 21 deaths in 272 incidents in the 24 hours to Monday morning, Republica reported.",
+              "problem": "Republica's report describes the count as covering 'the past 24 hours' as of a Monday afternoon publication (16:19), not specifically 'to Monday morning'. Adding a specific time of day that the cited source does not state is an unverified detail dressed up as fact.",
+              "evidence_url": "https://myrepublica.nagariknetwork.com/news/21-people-die-in-272-disasters-across-the-country-in-the-past-24-hours-54-44.html",
+              "suggested_fix": "Say 'in the 24 hours before Republica's Monday report' or confirm NDRRMA's exact reporting window with the agency before specifying morning."
+            },
+            {
+              "id": "F5",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Until NEA updates its math, readers are getting billed for the wrong disaster.",
+              "problem": "No source states that readers pay any literal bill tied to this damage estimate. This line in the take, which leads the Facebook post, reads as a real financial consequence for the reader (a rate hike or a charge) that nothing in the body supports. The house style bars predicting harm to the reader that no source predicts.",
+              "evidence_url": "https://myrepublica.nagariknetwork.com/news/floods-cause-estimated-rs-74-billion-damage-to-power-infrastructure-17-15.html",
+              "suggested_fix": "Replace with a line the record actually supports, for example: 'Until NEA updates its math, the true cost of this week's floods is unknown.'"
+            },
+            {
+              "id": "F6",
+              "dimension": "virality",
+              "severity": "medium",
+              "passage": "Nepal's floods and landslides have killed 27 people and affected 1,065 families since September 24, according to government data reported by Nepal Press.",
+              "problem": "This sentence runs 23 words and the caption also contains a 22 word sentence and a 24 word sentence carrying two numbers (4,500 and 200) at once. House style caps caption sentences at 20 words and asks for one number per sentence.",
+              "evidence_url": "https://nepalpress.com/2026/09/28/768521/27-people-killed-1065-families-affected-in-floods-and-landslides/",
+              "suggested_fix": "Split the long sentences. For example break the Baglung and Myagdi sentence into two, one number each: 'Baglung lost piped water for 4,500 users. Myagdi has 200 displaced families.'"
+            },
+            {
+              "id": "F7",
+              "dimension": "virality",
+              "severity": "low",
+              "passage": "Should flood relief depend on which province you happen to live in, or should Kathmandu set one national rate for every family?",
+              "problem": "Most readers will answer this the same way instantly, relief should not depend on province, so it functions more as a rhetorical prompt than a genuine side picking question. The house style asks for a question where a large share of readers would not converge on one answer.",
+              "evidence_url": "https://www.ratopati.com/story/595654/rs-1-lakh-relief-to-the-family-of-the-deceased",
+              "suggested_fix": "Sharpen the question to surface the real tension, for example whether provincial autonomy on relief spending is itself defensible, so readers with a federalism view have a real side to take."
+            },
+            {
+              "id": "F8",
+              "dimension": "relevance",
+              "severity": "low",
+              "passage": "Whether the NEA will issue a combined damage estimate that includes the September flooding, not just the August 26 Bhote Koshi flood, a question for the NEA and the Ministry of Energy.",
+              "problem": "This open question is useful but the piece never explains, even briefly, what the August 26 Bhote Koshi flood itself was or how severe it was, leaving a reader with no background unable to fully picture the two separate disasters being distinguished, which the zero knowledge test requires.",
+              "evidence_url": "https://en.wikipedia.org/wiki/Upper_Trishuli_3A_Hydropower_Station",
+              "suggested_fix": "Add one sentence early in the piece giving the Bhote Koshi flood's date and basic scale so readers understand it is a distinct, prior event."
+            }
+          ],
+          "scores": {
+            "accuracy": 58,
+            "relevance": 82,
+            "defensibility": 83,
+            "virality": 66
+          },
+          "summary": "The article's central investigative catch, that the Rs 74 billion NEA damage estimate belongs to the August 26 Bhote Koshi flood and not the September rain, checks out against Republica's own report. But the body undercuts its own scoop by reusing the same report's 430 megawatt figure as if it were caused by 'the rain' this story covers, repeating the exact conflation the piece exposes elsewhere, and it adds an unsourced superlative about the winter import plan. The caption breaks the house style's sentence length and one number per sentence rules in three places, and the take's 'billed for the wrong disaster' line implies a financial consequence for readers that no source states. None of this rises to a defamation risk since every named person is a public official quoted from a named outlet, but the accuracy self-contradiction is serious enough to require a rewrite of the power paragraph before publication."
+        },
+        "defense": {
+          "responses": [
+            {
+              "finding_id": "F1",
+              "stance": "accept",
+              "response": "The red team is right. The 430 MW figure is sourced from the same Republica piece that pins the Rs 74 billion estimate to the August 26 Bhote Koshi flood, not the September 24 rain. Pairing it with the sentence 'The rain has also knocked out power' misattributes a month old number to the current event, which is exactly the error the piece's investigation section calls out elsewhere. This is a real internal contradiction and needs to be fixed.",
+              "proposed_edit": "Rewrite the passage to: 'Floods have also knocked out power before. The Nepal Electricity Authority, or NEA, the state utility that runs Nepal's grid, said the August 26 Bhote Koshi flood cut 430 megawatts of hydropower generation, Republica reported. NEA has not yet said how much generation the September 24 to 27 rain has cut.'"
+            },
+            {
+              "finding_id": "F2",
+              "stance": "accept",
+              "response": "Neither cited source, Republica or OnlineKhabar, calls this one of Nepal's largest planned winter imports in years. That is an unsourced superlative added by the writer, which house style explicitly bans without a named source backing it.",
+              "proposed_edit": "Cut 'That is one of Nepal's largest planned winter power imports in years, and' and replace with: 'The plan means households again depend on Indian electricity when Nepali rivers run lowest.'"
+            },
+            {
+              "finding_id": "F3",
+              "stance": "contest",
+              "response": "NEA's top executive position in Nepal is officially titled Managing Director, the title used for past chiefs including Kulman Ghising, and it is the title OnlineKhabar English, the source directly cited for Shrestha's quote, itself uses. If Republica's separate report used a different title, that looks like a translation or house-style variance on Republica's part rather than an error in this article, since the article quotes Shrestha through OnlineKhabar and correctly carries that outlet's own attribution.",
+              "proposed_edit": "No change needed, since the article's title matches the outlet it directly quotes. If we want to be extra careful, add a footnote-style clause: 'Dirghayu Kumar Shrestha, NEA's managing director, as OnlineKhabar English identified him,' to flag the sourcing explicitly."
+            },
+            {
+              "finding_id": "F4",
+              "stance": "accept",
+              "response": "The article adds 'to Monday morning' as a specific time window that is not in the cited Republica report, which frames the count only as 'the past 24 hours' relative to its own publication time. Inventing a specific clock time not in the source is exactly the kind of unverified precision house style warns against.",
+              "proposed_edit": "Change to: 'counted 21 deaths in 272 incidents in the 24 hours before Republica's Monday report, September 28, Republica reported.'"
+            },
+            {
+              "finding_id": "F5",
+              "stance": "accept",
+              "response": "Read literally, 'readers are getting billed for the wrong disaster' suggests a financial charge to the reader that no source states. Even though this line lives in the internal take rather than the published body, house style bars predicting harm to the reader that the record does not carry, and this framing risks bleeding into public copy. Better to state the actual problem plainly.",
+              "proposed_edit": "Replace with: 'Until NEA updates its math, the true cost of this week's floods is unknown.'"
+            },
+            {
+              "finding_id": "F6",
+              "stance": "accept",
+              "response": "Both flagged sentences run over the 20 word cap and the Baglung and Myagdi sentence stacks two numbers, 4,500 and 200, in one sentence. House style is explicit on both limits for captions.",
+              "proposed_edit": "Split into: 'Nepal's floods and landslides have killed 27 people since September 24, Nepal Press reported. They have also affected 1,065 families.' And: 'Baglung lost piped water for 4,500 users. Myagdi has 200 displaced families. The Beni-Jomsom-Korla road needs a week to reopen.'"
+            },
+            {
+              "finding_id": "F7",
+              "stance": "accept",
+              "response": "Almost every reader will instinctively say relief should not depend on province, so this does not function as a genuine side picking question. House style wants a trigger where the answer is not obvious to most readers.",
+              "proposed_edit": "Replace with: 'Is provincial control over disaster relief spending a strength of federalism, or does it leave families exposed depending on where the flood hits?'"
+            },
+            {
+              "finding_id": "F8",
+              "stance": "accept",
+              "response": "The piece repeatedly distinguishes the September 24 rains from the August 26 Bhote Koshi flood but never tells a reader with no background what that earlier flood actually was. The zero knowledge test fails on this point.",
+              "proposed_edit": "Add one sentence in the 'What the coverage missed' section: 'The Bhote Koshi River flooded on August 26, a separate disaster in a different river system that damaged hydropower stations weeks before this month's rain began.'"
+            }
+          ],
+          "summary": "The red team caught one serious, self-defeating error, the 430 MW figure repeats the same stale August 26 attribution the piece criticizes elsewhere, plus an unsourced superlative about the India power import and an invented specific time for the NDRRMA count. Those and the caption's sentence length and number density problems, the weak trigger question, and the missing background on the Bhote Koshi flood are all accepted with minimal fixes. The one finding contested is the managing director title, since the article correctly carries the title used by the outlet it directly quotes for that official's own words, and Nepal's NEA chiefs have historically held that title."
+        },
+        "judge_1": {
+          "decision": "revise",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "High severity. The 430 MW figure comes from the same Republica report that dates the Rs 74 billion estimate to the August 26 Bhote Koshi flood. Placing it under 'The rain has also knocked out power' commits the conflation the piece exposes. The defence's rewrite is accepted with one change: drop 'Floods have also knocked out power before', which is filler."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "High severity. No listed source says this is one of the largest planned winter imports in years. It is an invented superlative and must be cut."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "overruled",
+              "note": "The quote and the title both come from OnlineKhabar English, and the sentence already attributes to that outlet. NEA's chief post is Managing Director. The Republica variance does not make this sentence wrong. The optional attribution clause is not required."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "'To Monday morning' is not in Republica's report. The defence's wording is accepted."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "The take opens the published article page, contrary to the defence's claim that it is internal. 'Billed for the wrong disaster' implies a charge to readers that no source carries. The take also says two agencies count 'the same days', but the body shows a 24 hour window and a four day window. Both need fixing."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Caption sentences break the 20 word cap and the one number per sentence rule. The NEA import sentence also runs 22 words, and 'to cover the shortfall' implies the flood caused the winter import, which no source says."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "The trigger is near unanimous. The 'national rate' side is also a framing no source carries. The defence's federalism replacement rests on no named source's position either. Replace it with a lived experience question the record supports: relief promised but not yet confirmed received."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "Zero knowledge gap is real. The defence's sentence adds 'a different river system' and 'damaged hydropower stations weeks before', which no listed source establishes. Two rivers named Bhote Koshi exist, so the district must not be guessed. Keep the added sentence to what Republica states."
+            }
+          ],
+          "required_edits": [
+            "Headline: replace with 'Nepal flood toll hits 27, but the Rs 74 billion power damage figure is from August' (82 characters). 'A month old' implies the estimate's issue date, which the record does not give. Republica dates the damage to the August 26 flood.",
+            "image_headline: keep line 1 'FLOOD DEATH TOLL HITS 27'. Replace line 2 with 'RS 74B LOSS FROM AUGUST' (23 characters). The current 'DAMAGE BILL IS MONTH OLD' names no subject and reads like a charge to the reader. Source: Republica Rs 74 billion report.",
+            "Body paragraph 2, first two sentences: replace with 'The Nepal Electricity Authority, or NEA, the state utility that runs Nepal's grid, said the August 26 Bhote Koshi flood cut 430 megawatts of hydropower generation, Republica reported. NEA has not said how much generation the rain since September 24 has cut.' Source: Republica Rs 74 billion report.",
+            "Body paragraph 2, last sentence: replace 'That is one of Nepal's largest planned winter power imports in years, and it means households again depend on Indian electricity when Nepali rivers run lowest.' with 'The plan means households again depend on Indian electricity when Nepali rivers run lowest.' Source: OnlineKhabar English.",
+            "Body, 'What the coverage missed' paragraph 1: after the sentence quoting Republica, add 'Republica's report ties the Rs 74 billion damage to power infrastructure to that August 26 flood on the Bhote Koshi River.' Do not name a district or river system. Source: Republica Rs 74 billion report.",
+            "Body, 'What the coverage missed' paragraph 2: change 'in the 24 hours to Monday morning, Republica reported' to 'in the 24 hours before Republica's report on Monday, September 28, Republica reported'.",
+            "take: replace the sentence 'Two agencies are citing different death counts for the same days, unreconciled.' with 'Two official counts, 27 dead over four days and 21 dead in one day, have not been reconciled.'",
+            "take: replace 'Gandaki is paying grieving families Rs 100,000 each. Lumbini, with six dead of its own, has announced nothing yet.' with 'Gandaki has approved Rs 100,000 for each grieving family. Lumbini, with six dead of its own, has no relief announcement reported yet.' Sources: Ratopati relief report and Nepal Press Lumbini report.",
+            "take: replace the final sentence with 'Until NEA updates its math, the true cost of this week's floods is unknown.'",
+            "caption.hook: replace with 'If your family lost someone to these floods, Gandaki province has promised Rs 100,000. In Lumbini, with six dead, no payout has been reported yet.' Sources: Ratopati and Nepal Press Lumbini report. Apply the same wording to social_hook.",
+            "caption.body paragraph 1: replace with 'Nepal's floods and landslides have killed 27 people since September 24, Nepal Press reported. They have also hit 1,065 families.'",
+            "caption.body paragraph 3: replace with 'The Nepal Electricity Authority plans to import up to 1,154 megawatts from India this winter. OnlineKhabar English reported the plan.' Remove 'to cover the shortfall'.",
+            "caption.body paragraph 4: replace with 'Baglung lost piped water for 4,500 users. Myagdi has 200 displaced families. The Beni-Jomsom-Korla road needs more than a week to reopen.' Sources: Ratopati, OnlineKhabar and Nepal Press road report.",
+            "caption.body paragraph 5: replace with 'No Lumbini relief has been reported yet, despite six deaths there. Gandaki has approved Rs 100,000 for each family of the dead, Ratopati reported.'",
+            "caption.trigger: replace with 'Has your family ever been promised disaster relief? How long did it take to actually arrive?' The record supports this: Gandaki has promised relief, and receipt is unconfirmed per the article's open questions."
+          ],
+          "reason": "The central catch holds. Republica itself ties the Rs 74 billion estimate to the August 26 Bhote Koshi flood. But the body repeats that conflation with the 430 MW figure and adds an unsourced import superlative. The take, hook and card also state more than the record carries on relief, agency counts and a reader 'bill'. Every problem is fixable with the precise edits above.",
+          "scores": {
+            "accuracy": 64,
+            "relevance": 82,
+            "defensibility": 74,
+            "virality": 66
+          }
+        },
+        "judge_2": {
+          "decision": "revise",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Fixed. Body paragraph 2 now ties the 430 MW cut to the August 26 Bhote Koshi flood, citing Republica. It also says NEA has given no figure for the rain since September 24."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Fixed. The 'largest in years' claim is gone. The remaining sentence makes no comparison with past years."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "overruled",
+              "note": "The title and the quote both come from OnlineKhabar English, and the sentence credits that outlet. Nothing changed here in the revision."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Fixed. The count now covers 'the 24 hours before Republica's report on Monday, September 28'. It reads a little clumsily but it is accurate."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Fixed. All three ordered take edits were applied word for word. The 'billed' line and the 'same days' wording are both gone."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Mostly fixed. Every caption sentence is now 20 words or fewer with one number each. One slip: paragraph 1 says 'affected 1,065 families' where the order said 'hit'. It is accurate but not the plainer word that was ordered."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "Fixed. The new trigger asks about the reader's own experience of relief. The record supports it because Gandaki's payout is approved but receipt is unconfirmed."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "Fixed. The sentence was added without guessing a district. It largely repeats the sentence before it, but it does no harm."
+            }
+          ],
+          "required_edits": [
+            "Dek: replace 'NEA's widely quoted power damage estimate traces to the August 26 Bhote Koshi flood, not the rain that has killed 27 since September 24.' with 'NEA's Rs 74 billion power damage estimate traces to the August 26 Bhote Koshi flood, not the rain that has killed 27 since September 24.' No listed source shows the estimate being widely quoted. Source for the dating: Republica Rs 74 billion report.",
+            "Body, first sentence under the first subheading: replace 'The Rs 74 billion power damage figure being read today alongside the 27 deaths is not the cost of this week's rain.' with 'The Rs 74 billion power damage figure is not the cost of this week's rain.' No listed source shows any outlet pairing the figure with today's toll.",
+            "Body: rename the subheading '## What the coverage missed' to '## What the Rs 74 billion figure covers'. The article names no outlet that missed the dating, so the heading makes a claim about other coverage that the record does not carry.",
+            "take, first sentence: replace 'but the Rs 74 billion damage figure attached to it belongs to a different flood a month earlier.' with 'but NEA's Rs 74 billion power damage estimate belongs to a different flood a month earlier.' No source shows the figure being attached to the toll. Source: Republica Rs 74 billion report.",
+            "caption.body paragraph 2: replace 'The widely shared Rs 74 billion power damage estimate is not from this week's rain.' with 'The Rs 74 billion power damage estimate is not from this week's rain.' Same reason: no source shows it being widely shared.",
+            "caption.body paragraph 1: change 'They have also affected 1,065 families.' to 'They have also hit 1,065 families.' as judge 1 ordered. Source: Nepal Press."
+          ],
+          "reason": "All 15 of judge 1's edits were made, and 14 of them word for word. Both high severity problems, the 430 MW conflation and the invented import superlative, are gone, and the take, hook and card now match the record. One problem remains, and the revision made it more visible. The dek, take, caption and a subheading all say the Rs 74 billion figure is being 'widely quoted', 'attached' to or 'read alongside' today's toll, but no listed source shows anyone doing that. Deleting those phrases in one pass makes the piece publishable.",
+          "scores": {
+            "accuracy": 86,
+            "relevance": 82,
+            "defensibility": 83,
+            "virality": 63
+          }
+        },
+        "revisions": [
+          {
+            "after": "judge_1",
+            "required_edits": [
+              "Headline: replace with 'Nepal flood toll hits 27, but the Rs 74 billion power damage figure is from August' (82 characters). 'A month old' implies the estimate's issue date, which the record does not give. Republica dates the damage to the August 26 flood.",
+              "image_headline: keep line 1 'FLOOD DEATH TOLL HITS 27'. Replace line 2 with 'RS 74B LOSS FROM AUGUST' (23 characters). The current 'DAMAGE BILL IS MONTH OLD' names no subject and reads like a charge to the reader. Source: Republica Rs 74 billion report.",
+              "Body paragraph 2, first two sentences: replace with 'The Nepal Electricity Authority, or NEA, the state utility that runs Nepal's grid, said the August 26 Bhote Koshi flood cut 430 megawatts of hydropower generation, Republica reported. NEA has not said how much generation the rain since September 24 has cut.' Source: Republica Rs 74 billion report.",
+              "Body paragraph 2, last sentence: replace 'That is one of Nepal's largest planned winter power imports in years, and it means households again depend on Indian electricity when Nepali rivers run lowest.' with 'The plan means households again depend on Indian electricity when Nepali rivers run lowest.' Source: OnlineKhabar English.",
+              "Body, 'What the coverage missed' paragraph 1: after the sentence quoting Republica, add 'Republica's report ties the Rs 74 billion damage to power infrastructure to that August 26 flood on the Bhote Koshi River.' Do not name a district or river system. Source: Republica Rs 74 billion report.",
+              "Body, 'What the coverage missed' paragraph 2: change 'in the 24 hours to Monday morning, Republica reported' to 'in the 24 hours before Republica's report on Monday, September 28, Republica reported'.",
+              "take: replace the sentence 'Two agencies are citing different death counts for the same days, unreconciled.' with 'Two official counts, 27 dead over four days and 21 dead in one day, have not been reconciled.'",
+              "take: replace 'Gandaki is paying grieving families Rs 100,000 each. Lumbini, with six dead of its own, has announced nothing yet.' with 'Gandaki has approved Rs 100,000 for each grieving family. Lumbini, with six dead of its own, has no relief announcement reported yet.' Sources: Ratopati relief report and Nepal Press Lumbini report.",
+              "take: replace the final sentence with 'Until NEA updates its math, the true cost of this week's floods is unknown.'",
+              "caption.hook: replace with 'If your family lost someone to these floods, Gandaki province has promised Rs 100,000. In Lumbini, with six dead, no payout has been reported yet.' Sources: Ratopati and Nepal Press Lumbini report. Apply the same wording to social_hook.",
+              "caption.body paragraph 1: replace with 'Nepal's floods and landslides have killed 27 people since September 24, Nepal Press reported. They have also hit 1,065 families.'",
+              "caption.body paragraph 3: replace with 'The Nepal Electricity Authority plans to import up to 1,154 megawatts from India this winter. OnlineKhabar English reported the plan.' Remove 'to cover the shortfall'.",
+              "caption.body paragraph 4: replace with 'Baglung lost piped water for 4,500 users. Myagdi has 200 displaced families. The Beni-Jomsom-Korla road needs more than a week to reopen.' Sources: Ratopati, OnlineKhabar and Nepal Press road report.",
+              "caption.body paragraph 5: replace with 'No Lumbini relief has been reported yet, despite six deaths there. Gandaki has approved Rs 100,000 for each family of the dead, Ratopati reported.'",
+              "caption.trigger: replace with 'Has your family ever been promised disaster relief? How long did it take to actually arrive?' The record supports this: Gandaki has promised relief, and receipt is unconfirmed per the article's open questions."
+            ],
+            "version": 2
+          },
+          {
+            "after": "judge_2",
+            "required_edits": [
+              "Dek: replace 'NEA's widely quoted power damage estimate traces to the August 26 Bhote Koshi flood, not the rain that has killed 27 since September 24.' with 'NEA's Rs 74 billion power damage estimate traces to the August 26 Bhote Koshi flood, not the rain that has killed 27 since September 24.' No listed source shows the estimate being widely quoted. Source for the dating: Republica Rs 74 billion report.",
+              "Body, first sentence under the first subheading: replace 'The Rs 74 billion power damage figure being read today alongside the 27 deaths is not the cost of this week's rain.' with 'The Rs 74 billion power damage figure is not the cost of this week's rain.' No listed source shows any outlet pairing the figure with today's toll.",
+              "Body: rename the subheading '## What the coverage missed' to '## What the Rs 74 billion figure covers'. The article names no outlet that missed the dating, so the heading makes a claim about other coverage that the record does not carry.",
+              "take, first sentence: replace 'but the Rs 74 billion damage figure attached to it belongs to a different flood a month earlier.' with 'but NEA's Rs 74 billion power damage estimate belongs to a different flood a month earlier.' No source shows the figure being attached to the toll. Source: Republica Rs 74 billion report.",
+              "caption.body paragraph 2: replace 'The widely shared Rs 74 billion power damage estimate is not from this week's rain.' with 'The Rs 74 billion power damage estimate is not from this week's rain.' Same reason: no source shows it being widely shared.",
+              "caption.body paragraph 1: change 'They have also affected 1,065 families.' to 'They have also hit 1,065 families.' as judge 1 ordered. Source: Nepal Press."
+            ],
+            "version": 3
+          }
+        ],
+        "judge_2_recheck": {
+          "decision": "approve",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Fixed and still correct in version 3. Body paragraph 2 ties the 430 MW cut to the August 26 Bhote Koshi flood, citing Republica. It also says NEA has given no figure for the rain since September 24. Nothing in the take or caption links the 430 MW to this week's rain."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Fixed. The 'largest in years' claim is gone. The remaining sentence describes the OnlineKhabar English import plan and compares it with nothing."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "overruled",
+              "note": "The title and the quote both come from OnlineKhabar English, and the sentence credits that outlet. The body does not use the Republica report for Shrestha's title, so it has no conflict to reconcile."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Fixed. The NDRRMA count now covers the 24 hours before Republica's report on Monday, September 28. No clock time is claimed."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Fixed. The take now closes on 'the true cost of this week's floods is unknown'. The body backs this: NEA has published no updated estimate."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Fixed. Caption paragraph 1 now says 'hit 1,065 families' as ordered. Every caption sentence is under 20 words and carries one number."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "Fixed. The trigger asks about the reader's own experience of relief. It rests on the record: Gandaki has approved the payout, and whether families have received it is unconfirmed."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "Addressed. The body dates the Bhote Koshi flood to August 26 and says it is a separate, earlier event. It names no district or river system that no source gives."
+            }
+          ],
+          "required_edits": [],
+          "reason": "Judge 2's six edits were all made word for word. The claims about other coverage are gone from the dek, take, caption and subheading. A full reread found no new name, date or number without a source, and nothing moved under the wrong heading. Some minor style gaps remain but do not block publication: the Rs 74 billion has no USD figure beside it, 'Korla' and 'Korala' are both used, and the road's 'more than a week' does not quite match the open question's 'within the week'. With no revisions left and no high severity finding still open, the piece publishes.",
+          "scores": {
+            "accuracy": 87,
+            "relevance": 82,
+            "defensibility": 87,
+            "virality": 63
+          }
+        }
+      }
+    ],
+    "final_decision": "approved",
+    "final_reason": "Judge 2: Judge 2's six edits were all made word for word. The claims about other coverage are gone from the dek, take, caption and subheading. A full reread found no new name, date or number without a source, and nothing moved under the wrong heading. Some minor style gaps remain but do not block publication: the Rs 74 billion has no USD figure beside it, 'Korla' and 'Korala' are both used, and the road's 'more than a week' does not quite match the open question's 'within the week'. With no revisions left and no high severity finding still open, the piece publishes.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Nepal Electricity Authority",
+          "entity": "Q16257981 Nepal Electricity Authority",
+          "found": {
+            "commons category": 3,
+            "commons search": 2,
+            "openverse": 3
+          }
+        },
+        {
+          "subject": "Beni Jomsom Korla Road",
+          "entity": "",
+          "found": {
+            "commons search": 8
+          }
+        },
+        {
+          "subject": "Kaligandaki River",
+          "entity": "Q849494 Gandaki River",
+          "found": {
+            "wikidata image": 1,
+            "depicts": 7
+          }
+        }
+      ],
+      "requests": 17,
+      "candidates": 24,
+      "shown": 6,
+      "rounds": 1,
+      "decision": "found",
+      "reason": "The Nepal Electricity Authority head office building is directly named in the file title, description and Wikidata depicts line, matching the story's focus on NEA's damage estimate, and is sharp and well-composed compared to the smaller Janakpur branch image.",
+      "chosen": {
+        "page": "https://commons.wikimedia.org/wiki/File:Nepal_Electricity_Authority_Head_office_tihar.jpg",
+        "found_via": "commons category",
+        "subject": "Nepal Electricity Authority",
+        "depicts": "in the Commons category Nepal Electricity Authority, which Wikidata gives for Nepal Electricity Authority, generator and distributor of electric power under the supervision of the government of Nepal (Wikidata Q16257981)"
+      }
+    }
+  },
+  "updates": [],
+  "run_date": "2026-09-29",
+  "published_at": "2026-09-29T00:11:13+00:00",
+  "version": 3
+}
