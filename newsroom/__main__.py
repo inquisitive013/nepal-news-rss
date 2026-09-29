@@ -459,6 +459,15 @@ def cmd_insights(args) -> int:
     if not all(os.environ.get(k, "").strip() for k in social.ENV_KEYS["facebook"]):
         print("Facebook is not connected, so there is nothing to read. Add FACEBOOK_PAGE_ID and FACEBOOK_PAGE_TOKEN (README, \"Social media\").")
         return 0
+    if args.probe:
+        print("## What the Facebook token can read")
+        print()
+        try:
+            print("\n".join(insights.probe(settings, os.environ)))
+        except social.SocialError as exc:
+            print(f"::warning::Facebook refused the token: {str(exc)[:200]}")
+            return 1
+        return 0
     print("## Post readings")
     print()
     try:
@@ -710,6 +719,7 @@ def main(argv=None) -> int:
 
     p_ins = sub.add_parser("insights", help="read what each Facebook post did at 24 and 72 hours, note the Page's followers, print the week against the judges' forecasts")
     p_ins.add_argument("--days", type=int, default=7, help="how many days of posts the report covers (default 7)")
+    p_ins.add_argument("--probe", action="store_true", help="read nothing; say what the token may read: its permissions, and how Meta answers each view metric for the newest post")
     p_ins.set_defaults(func=cmd_insights)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")

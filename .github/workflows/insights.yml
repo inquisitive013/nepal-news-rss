@@ -10,6 +10,10 @@ on:
         description: "How many days of posts the report covers."
         type: string
         default: "7"
+      probe:
+        description: "Read nothing. Say what the token may read: its permissions, and how Meta answers each view metric for the newest post."
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -38,10 +42,13 @@ jobs:
           FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
           FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
           DAYS: ${{ inputs.days || '7' }}
+          PROBE: ${{ inputs.probe == true && '1' || '' }}
         run: |
           case "$DAYS" in ''|*[!0-9]*) echo "::error::days must be a whole number, not '$DAYS'."; exit 1 ;; esac
+          args=(--days "$DAYS")
+          [ -n "$PROBE" ] && args+=(--probe)
           set -o pipefail
-          python -m newsroom insights --days "$DAYS" | tee -a "$GITHUB_STEP_SUMMARY"
+          python -m newsroom insights "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 
       - name: Record the readings
         if: always()

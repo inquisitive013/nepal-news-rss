@@ -208,3 +208,34 @@ def test_an_answer_without_a_number_says_what_shape_it_had():
     assert insights._metric_value(answer({"data": [{"values": [{"value": {"organic": 3}}]}]})) == (0, "a breakdown, not a number")
     assert insights._metric_value(answer({"data": [{"values": [{"value": None}]}]})) == (0, "NoneType, not a number")
     assert insights._metric_value(httpx.Response(200, text="<html>")) == (0, "not JSON")
+
+
+def test_the_probe_names_permissions_and_answer_shapes_never_ids_or_values(tmp_path):
+    settings = _settings(tmp_path)
+    _save(settings, "2026-09-29-old", _post("111_5", 30))
+    _save(settings, "2026-09-30-new", _post("111_7", 3))
+    asked = []
+
+    def handler(request):
+        url = request.url
+        if url.path.endswith("/me"):
+            return httpx.Response(200, json={"id": "111"})
+        if url.path.endswith("/debug_token"):
+            return httpx.Response(200, json={"data": {"type": "PAGE", "is_valid": True, "expires_at": 0, "user_id": "9876543", "profile_id": "111", "scopes": ["read_insights", "pages_show_list"]}})
+        asked.append((url.path.rsplit("/", 2)[-2], url.params["metric"], url.params["period"]))
+        if url.params["metric"] == "post_impressions_unique":
+            return httpx.Response(400, json={"error": {"message": "secret words", "code": 100}})
+        if url.params["metric"] == "post_reactions_by_type_total":
+            return httpx.Response(200, json={"data": [{"values": [{"value": 4242}]}]})
+        return httpx.Response(200, json={"data": []})
+
+    lines = insights.probe(settings, ENV, client=httpx.Client(transport=httpx.MockTransport(handler)))
+    text = "\n".join(lines)
+    assert lines[0] == "- Token: page token, valid, never expires. Permissions: pages_show_list, read_insights"
+    assert "- Newest post, asked on the post, post_media_view: empty" in lines
+    assert "- Newest post, asked on the photo, post_reactions_by_type_total: a number" in lines
+    assert "- Newest post, asked on the post, post_impressions_unique: code 100" in lines
+    assert "- The Page, page_media_view by day: empty" in lines
+    assert ("111_7", "post_media_view", "lifetime") in asked and ("7", "post_media_view", "lifetime") in asked  # the newest post, and its photo
+    assert not any(a[0] in ("111_5", "5") for a in asked)
+    assert "9876543" not in text and "4242" not in text and "secret words" not in text
