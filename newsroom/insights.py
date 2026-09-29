@@ -145,6 +145,62 @@ def read_post(client: httpx.Client, environ: Mapping[str, str], post_id: str, me
     return values, errors
 
 
+# What the probe asks of the newest live post: the two view metrics, an engagement metric that
+# shows whether insights answer at all, and the reach metric Meta retired in June 2026.
+PROBE_METRICS = ("post_total_media_view_unique", "post_media_view", "post_reactions_by_type_total", "post_impressions_unique")
+
+
+def _answer(resp: httpx.Response) -> str:
+    if resp.status_code >= 400:
+        return graph_error(resp)
+    _, why = _metric_value(resp)
+    return why or "a number"
+
+
+def probe(settings: Settings, environ: Mapping[str, str], *, client: httpx.Client | None = None) -> list[str]:
+    """What the token may read, told by permission names, answer shapes and error codes only.
+
+    It names the token's type, whether it expires and its scopes, never the ids debug_token also
+    returns. Then it asks each of PROBE_METRICS of the newest live Facebook post, on the post and
+    on its photo, and asks the Page for one day of views. Values stay out: they are the Page's own.
+    """
+    own = client is None
+    client = client or httpx.Client(timeout=30.0, follow_redirects=True)
+    lines: list[str] = []
+    try:
+        fb = social.facebook_page(client, environ)
+        base = f"{social.META_GRAPH}/{social._graph_version(environ)}"
+        resp = client.get(f"{base}/debug_token", params={"input_token": fb.token, "access_token": fb.token})
+        if resp.status_code >= 400:
+            lines.append(f"- Token: its permissions could not be read ({graph_error(resp)})")
+        else:
+            data = resp.json().get("data") or {}
+            expires = "never expires" if data.get("expires_at") == 0 else "expires"
+            scopes = ", ".join(sorted(str(s) for s in data.get("scopes") or [])) or "none listed"
+            lines.append(f"- Token: {str(data.get('type') or '?').lower()} token, {'valid' if data.get('is_valid') else 'not valid'}, {expires}. Permissions: {scopes}")
+        posts = []
+        for path in sorted((settings.data_dir / "social").glob("*.json")):
+            for post in social.read_record(path).posts:
+                live = went_live(post)
+                if post.network == "facebook" and post.status == "posted" and post.id and live:
+                    posts.append((live, post.id))
+        if not posts:
+            lines.append("- No live Facebook post to ask about.")
+        else:
+            post_id = max(posts)[1]
+            objects = [("post", post_id)] + ([("photo", post_id.split("_", 1)[1])] if "_" in post_id else [])
+            for label, object_id in objects:
+                for metric in PROBE_METRICS:
+                    resp = client.get(f"{base}/{object_id}/insights", params={"metric": metric, "period": "lifetime", "access_token": fb.token})
+                    lines.append(f"- Newest post, asked on the {label}, {metric}: {_answer(resp)}")
+        resp = client.get(f"{base}/{fb.id}/insights", params={"metric": "page_media_view", "period": "day", "access_token": fb.token})
+        lines.append(f"- The Page, page_media_view by day: {_answer(resp)}")
+    finally:
+        if own:
+            client.close()
+    return lines
+
+
 def followers_path(settings: Settings):
     return settings.data_dir / "insights" / "followers.json"
 
