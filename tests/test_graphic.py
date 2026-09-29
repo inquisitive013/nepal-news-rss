@@ -121,3 +121,50 @@ def test_a_break_that_cannot_fit_is_rebalanced_and_one_line_stays_one():
     assert len(lines) >= 2 and all(graphic.text_width(draw, line, fnt) <= graphic.HEADLINE_MAX_WIDTH for line in lines)
     fnt, lines = graphic.headline_lines(draw, "Rain")
     assert lines == ["RAIN"]
+
+
+NE_PIECE = {
+    "headline": "बाढीपहिरोमा २७ जनाको मृत्यु",
+    "body_markdown": "काठमाडौं । देशभर २७ जनाको मृत्यु भएको छ।",
+    "image_headline": "बाढीपहिरोमा २७ जनाको मृत्यु\n७४ अर्बको क्षति भदौको बाढीको",
+    "caption": {"synopsis": "पहिलो वाक्य।\nदोस्रो वाक्य।"},
+}
+
+
+def test_this_machine_can_shape_devanagari():
+    # The Nepali card needs Raqm. If this fails on a runner, the edition falls back to English cards.
+    assert graphic.can_shape_devanagari(), "Pillow has no Raqm here, or newsroom/fonts/Mukta-ExtraBold.ttf is missing"
+
+
+def test_the_nepali_card_carries_the_writers_two_lines_large_with_line_two_in_gold(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings, shade=40)
+    art.nepali = dict(NE_PIECE)
+    assert graphic.wants_nepali_card(settings, art) and graphic.nepali_card_lines(art) == ["बाढीपहिरोमा २७ जनाको मृत्यु", "७४ अर्बको क्षति भदौको बाढीको"]
+    out = graphic.render_card(settings, art, tmp_path / "site" / "cards" / "ne" / "card.jpg", language="ne")
+    im = Image.open(out)
+    assert im.size == (graphic.W, graphic.H)
+    assert _close(im.getpixel((540, 8)), graphic.CRIMSON) and _close(im.getpixel((540, 1392)), graphic.DEEP_RED)  # the same frame
+    draw = ImageDraw.Draw(im)
+    fnt, lines = graphic.headline_lines(draw, NE_PIECE["image_headline"], largest=graphic.NE_LARGEST, smallest=graphic.NE_SMALLEST, kind="ne-bold", upper=False)
+    assert lines == graphic.nepali_card_lines(art) and fnt.size >= 80  # well above the English card's 62
+    # line two is gold: the band just above the underline holds gold letters
+    ul_top = graphic.H - graphic.FOOTER_H - 8 - 19 - 22 - 4
+    band = im.crop((0, ul_top - 30 - int(fnt.size * 1.22), graphic.W, ul_top - 30)).convert("RGB")
+    data = band.tobytes()
+    gold = sum(1 for i in range(0, len(data), 3) if _close(data[i : i + 3], graphic.GOLD, tol=40))
+    assert gold > 2000
+
+
+def test_no_nepali_card_without_a_checked_headline_or_without_shaping(tmp_path, monkeypatch):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    target = tmp_path / "site" / "cards" / "ne" / "card.jpg"
+    assert not graphic.wants_nepali_card(settings, art) and graphic.render_card(settings, art, target, language="ne") is None
+    art.nepali = {**NE_PIECE, "body_markdown": ""}  # not a usable Nepali piece
+    assert graphic.render_card(settings, art, target, language="ne") is None
+    art.nepali = dict(NE_PIECE)
+    monkeypatch.setattr(graphic, "can_shape_devanagari", lambda: False)
+    assert graphic.render_card(settings, art, target, language="ne") is None and not target.exists()
+    # the English card never depends on any of it
+    assert graphic.render_card(settings, art, tmp_path / "site" / "cards" / "card.jpg").exists()

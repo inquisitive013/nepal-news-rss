@@ -9,9 +9,8 @@ Write the story. Do not translate it. The English article is the verified record
 ## पाठक: the reader
 
 The house style's reader test binds the Nepali too, and the Nepali reader is the one it was written for.
-- When the English record says what the story changes for the reader, say it in the caption's hook or its first line, and in the first two paragraphs. Address the reader as तपाईं: "यो नियम विदेशमा काम गर्ने हरेक नेपालीलाई लागू हुन्छ।" Never तँ or तिमी in the newsroom's voice.
+- When the English record says what the story changes for the reader, say it in the first two paragraphs. Address the reader as तपाईं: "यो नियम विदेशमा काम गर्ने हरेक नेपालीलाई लागू हुन्छ।" Never तँ or तिमी in the newsroom's voice. A "you" line never widens a payment, a rule or a risk beyond the place or group the record names.
 - Human scale in Nepali units, from the record only: प्रतिपरिवार, प्रतिदिन, प्रतिलिटर.
-- The trigger asks about the reader's own life in plain spoken Nepali: "तपाईंको परिवारमा पनि कसैले यसरी पर्खनुपरेको छ?" The two sides of the English trigger survive. A side the English does not carry never appears.
 - Spoken words over office words, always. The reader should hear a neighbour telling the story, not a notice board.
 
 ## शीर्षक: the headline
@@ -76,5 +75,6 @@ Five to six short sentences in the voice of a senior Nepali editor talking to a 
 
 ## कार्ड शीर्षक र क्याप्सन: the card headline and the caption
 
-- The card headline: two lines, at most 45 characters, the status signal on the card itself.
-- The caption hook: one or two lines a Nepali Facebook reader stops for, with what the story changes for them when the record says it. The body: 80 to 150 words, the same plain register, paragraphs separated by blank lines, no bullets. The trigger: one honest question or line of friction, never bait.
+- The card headline: two lines, each a phrase a Nepali desk would print, at most 45 characters together, the status signal on the card itself. Nepali headline forms: a phrase that ends on the news, "बाढीपहिरोमा २७ जनाको मृत्यु"; a figure owned by what caused it, "७४ अर्बको क्षति अघिल्लो बाढीको"; a contrast with भने. Never the English card line in Devanagari.
+- The card circulates alone, so line two never reads as the thing the story corrects. A figure that belongs to another event names that event or its time: "७४ अर्बको क्षति अघिल्लो बाढीको", or "भदौको बाढीको" when a cited Nepali source gives the month. Never the bare figure under a death toll, and never a correction phrased as English would, "यो बाढीको होइन".
+- The caption: the whole story in two lines of spoken Nepali, one sentence each, separated by a line break. The first gives the news with its number, place and source; the second the one thing a reader must know next. "सरकारी तथ्यांकअनुसार बिहीबारदेखिको बाढीपहिरोमा देशभर २७ जनाको मृत्यु भएको छ।" then "विद्युत् पूर्वाधारमा भएको रु. ७४ अर्बको क्षति भने महिनाअघिको भोटेकोशी बाढीले पुर्‍याएको हो।" No question, no hashtags, no source line: the newsroom adds "स्रोत:" and the outlets under it.

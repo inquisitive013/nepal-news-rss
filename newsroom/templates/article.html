@@ -40,7 +40,7 @@
   <p class="kicker">{{ article.tags[0] if article.tags else 'news' }} · {{ article.published_at | fmt_date }}</p>
   <h1>{{ article.headline }}</h1>
   <p class="dek">{{ article.dek }}</p>
-  {% for u in article.updates %}
+  {% for u in article.updates if u.text %}
   <aside class="update"><strong>{{ 'Correction' if u.kind == 'correction' else 'Update' }}, {{ u.date | fmt_date('%d %B %Y') }}.</strong> {{ u.text }}{% if u.link %} <a href="{{ root }}{{ u.link }}">Read the follow-up</a>.{% endif %}</aside>
   {% endfor %}
   {% if article.take %}<aside class="take"><strong>{{ site.name }}'s take.</strong> {{ article.take }}</aside>{% endif %}

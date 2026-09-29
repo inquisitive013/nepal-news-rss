@@ -18,6 +18,7 @@ from zoneinfo import ZoneInfo
 from .config import Settings
 from .llm import BaseLLM
 from .models import Article
+from .outlets import fix_spellings
 
 log = logging.getLogger(__name__)
 
@@ -36,7 +37,7 @@ WRITER_SCHEMA = {
         "social_hook": {"type": "string"},
         "caption": {
             "type": "object",
-            "properties": {"hook": {"type": "string"}, "body": {"type": "string"}, "trigger": {"type": "string"}},
+            "properties": {"synopsis": {"type": "string"}},
         },
         "notes": {"type": "string"},
     },
@@ -55,6 +56,8 @@ CHECK_SCHEMA = {
 }
 
 FIELDS = ("headline", "dek", "take", "body_markdown", "image_headline", "social_hook")
+# The Facebook caption: the whole story in two native lines. The newsroom adds the source line.
+CAPTION_KEYS = ("synopsis",)
 
 
 def date_words(settings: Settings, value: str) -> tuple[str, str]:
@@ -76,8 +79,13 @@ def date_words(settings: Settings, value: str) -> tuple[str, str]:
 
 
 def _record(settings: Settings, article: Article) -> dict[str, Any]:
-    """The verified record the writer works from: everything the approved English story carries."""
-    inv = article.investigation or {}
+    """The verified record the writer works from: the approved English story and nothing else.
+
+    The investigator's notes stay out. The English story carries the findings and open questions
+    the judges passed; on 29 September the notes gave the Nepali edition two open questions, a
+    paragraph and an outlet the English never published, and the editor, reading the same notes,
+    passed them. The English caption stays out too: the Nepali caption sums up the story itself.
+    """
     weekday, date_ne = date_words(settings, article.published_at or article.run_date)
     return {
         "id": article.id,
@@ -87,14 +95,6 @@ def _record(settings: Settings, article: Article) -> dict[str, Any]:
         "body_markdown": article.body_markdown,
         "key_facts": article.key_facts,
         "sources": [{"name": s.get("name", ""), "url": s.get("url", ""), "used_for": s.get("used_for", "")} for s in article.sources],
-        "investigation": {
-            "angles": [
-                {"kind": a.get("kind", ""), "claim": a.get("claim", ""), "evidence": [{"source": e.get("source", ""), "url": e.get("url", ""), "fact": e.get("fact", "")} for e in (a.get("evidence") or [])[:3]]}
-                for a in (inv.get("angles") or [])
-            ],
-            "unanswered": inv.get("unanswered") or [],
-        },
-        "caption": article.caption or {},
         "tags": article.tags,
         "run_date": article.run_date,
         "weekday_ne": weekday,
@@ -104,9 +104,9 @@ def _record(settings: Settings, article: Article) -> dict[str, Any]:
 
 
 def _clean(data: dict[str, Any]) -> dict[str, Any]:
-    out: dict[str, Any] = {k: str(data.get(k, "") or "").strip() for k in FIELDS}
+    out: dict[str, Any] = {k: fix_spellings(str(data.get(k, "") or "").strip()) for k in FIELDS}
     cap = data.get("caption") or {}
-    out["caption"] = {k: str(cap.get(k, "") or "").strip() for k in ("hook", "body", "trigger")}
+    out["caption"] = {k: fix_spellings(str(cap.get(k, "") or "").strip()) for k in CAPTION_KEYS}
     out["notes"] = str(data.get("notes", "") or "").strip()
     return out
 
@@ -116,8 +116,8 @@ def _piece(nepali: dict[str, Any]) -> dict[str, Any]:
 
 
 def _slots(piece: dict[str, Any]) -> list[tuple[str, str | None]]:
-    """Every text a reader sees: the top level fields, then the caption's three parts."""
-    return [(k, None) for k in FIELDS] + [("caption", k) for k in ("hook", "body", "trigger")]
+    """Every text a reader sees: the top level fields, then the caption."""
+    return [(k, None) for k in FIELDS] + [("caption", k) for k in CAPTION_KEYS]
 
 
 def apply_fixes(piece: dict[str, Any], problems: list[dict[str, Any]]) -> tuple[dict[str, Any], list[dict[str, Any]]]:
@@ -230,6 +230,7 @@ def nepali_for(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, 
         piece, placed = fix_piece(llm, record, piece, problems, in_place=in_place)
         fixed += len(problems)
         fixed_in_place += placed
+    piece = _clean(piece)  # a fix written in place never passed through the cleaner
     piece["checked"] = True
     piece["approved"] = approved
     piece["passes"] = passes

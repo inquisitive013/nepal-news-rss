@@ -40,7 +40,8 @@ def test_the_record_carries_everything_the_writer_needs(tmp_path):
     settings = _settings(tmp_path)
     record = nepali._record(settings, _article())
     assert record["key_facts"] and record["sources"][0]["used_for"] == "toll"
-    assert record["investigation"]["angles"][0]["evidence"][0]["url"] == "https://example.org/e" and record["investigation"]["unanswered"]
+    # The investigator's notes and the English caption stay out: the Nepali carries what the judged story carries.
+    assert "investigation" not in record and "caption" not in record
     # 2026-09-26 06:30 UTC is a Saturday afternoon in Kathmandu
     assert record["weekday_ne"] == "शनिबार" and record["date_ne"] == "२६ सेप्टेम्बर २०२६"
     assert record["site_name_ne"] == "नेपाल वायर"
@@ -55,7 +56,7 @@ def test_the_editor_approves_a_clean_piece_first_time(tmp_path):
     assert llm.calls == ["nepali_writer", "nepali_editor"]
     assert ne["headline"].startswith("बागमती") and "## किन" in ne["body_markdown"] and ne["body_markdown"].startswith("काठमाडौं ।")
     assert ne["dek"] and ne["take"] and ne["image_headline"] and ne["social_hook"]
-    assert ne["caption"]["hook"] and ne["caption"]["body"] and ne["caption"]["trigger"]
+    assert list(ne["caption"]) == ["synopsis"] and len(ne["caption"]["synopsis"].splitlines()) == 2
     assert ne["checked"] is True and ne["approved"] is True and ne["passes"] == 1 and ne["problems_fixed"] == 0 and ne["editor"]
     assert nepali.usable(ne)
 
@@ -146,7 +147,7 @@ PIECE = {
     "body_markdown": "काठमाडौं । नदी बढ्यो।\n\nचेतावनी प्रणाली असफल भयो।",
     "image_headline": "१४० घरधुरी विस्थापित",
     "social_hook": "१४० घरधुरी एकै रातमा।",
-    "caption": {"hook": "एकै रातमा घर छोड्नुपर्‍यो।", "body": "सरकारले  चेतावनी\nलुकायो।", "trigger": "कसको असफलता?"},
+    "caption": {"synopsis": "एकै रातमा घर छोड्नुपर्‍यो। सरकारले  चेतावनी\nलुकायो।"},
     "notes": "",
 }
 
@@ -159,10 +160,22 @@ def test_a_fix_goes_in_where_its_passage_stands_and_nothing_else_moves():
         {"passage": "कसको असफलता?", "problem": "p", "fix": ""},
     ]
     out, left = nepali.apply_fixes(PIECE, problems)
-    assert out["caption"]["body"] == "प्रहरीका अनुसार चेतावनी ढिलो आयो।"
+    assert out["caption"]["synopsis"] == "एकै रातमा घर छोड्नुपर्‍यो। प्रहरीका अनुसार चेतावनी ढिलो आयो।"
     assert [p["passage"] for p in left] == ["यो वाक्य कतै छैन।", "१४० घरधुरी", "कसको असफलता?"]
     assert {k: v for k, v in out.items() if k != "caption"} == {k: v for k, v in PIECE.items() if k != "caption"}
-    assert PIECE["caption"]["body"] == "सरकारले  चेतावनी\nलुकायो।"  # the original is not touched
+    assert PIECE["caption"]["synopsis"] == "एकै रातमा घर छोड्नुपर्‍यो। सरकारले  चेतावनी\nलुकायो।"  # the original is not touched
+
+
+def test_an_outlet_the_writer_misspells_reaches_no_reader(tmp_path):
+    settings = _settings(tmp_path)
+    llm = ScriptedLLM(
+        {**PIECE, "body_markdown": "काठमाडौं । पानी बन्द भएको रातोपातीले जनाएको छ।", "caption": {"synopsis": "रातोपातीका अनुसार पानी बन्द छ।\nसेतोपातीले पनि लेखेको छ।"}},
+        {"decision": "approve", "problems": [], "reason": "ok"},
+    )
+    ne = nepali.nepali_for(llm, settings, _article())
+    assert "रातोपाटीले जनाएको" in ne["body_markdown"] and ne["caption"]["synopsis"] == "रातोपाटीका अनुसार पानी बन्द छ।\nसेतोपाटीले पनि लेखेको छ।"
+    # the editor never saw the slip either
+    assert "रातोपाती" not in str(llm.calls[1][1]["nepali"])
 
 
 class ScriptedLLM:

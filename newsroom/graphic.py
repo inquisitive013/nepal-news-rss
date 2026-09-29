@@ -3,6 +3,11 @@
 1080x1400, the Nepal Wire frame, built with Pillow. The locked specification lives in
 docs/content-engine.md, section 14. The card is rendered into the site at build time, so
 the repository never stores it; the photo and the headline are the record.
+
+Two cards per story. The English card carries the English headline in capitals. The Nepali
+card carries the Nepali editor's checked card headline in Mukta ExtraBold, larger, with line
+two in gold; it goes to Facebook and the Nepali pages. Devanagari needs Raqm to join its
+letters, so without it the Nepali card is skipped and the English one stands in.
 """
 
 from __future__ import annotations
@@ -12,7 +17,7 @@ from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from PIL import Image, ImageDraw, ImageEnhance, ImageFont, ImageStat
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageStat
 
 from .config import Settings
 from .models import Article
@@ -25,6 +30,9 @@ FOOTER_H = 56
 MARGIN = 40
 HEADLINE_MAX_WIDTH = W - 2 * MARGIN
 GRADIENT_START = 0.38
+# The Nepali card: a darker, earlier fade so the larger headline sits on near black.
+NE_GRADIENT = {"start": 0.30, "curve": 0.6, "peak": 0.95}
+NE_LARGEST, NE_SMALLEST = 110, 64
 
 BLACK = (8, 8, 8)
 CRIMSON = (195, 28, 28)
@@ -51,7 +59,15 @@ _THEME_BY_TAG = [
 
 MARK_FILE = Path(__file__).resolve().parent / "static" / "logo-mark.png"
 FONT_DIRS = [Path(__file__).resolve().parent / "fonts", Path("/usr/share/fonts/truetype/dejavu")]
-FONT_FILES = {"sans-bold": "DejaVuSans-Bold.ttf", "sans": "DejaVuSans.ttf", "mono-bold": "DejaVuSansMono-Bold.ttf", "mono": "DejaVuSansMono.ttf"}
+FONT_FILES = {
+    "sans-bold": "DejaVuSans-Bold.ttf",
+    "sans": "DejaVuSans.ttf",
+    "mono-bold": "DejaVuSansMono-Bold.ttf",
+    "mono": "DejaVuSansMono.ttf",
+    # SIL Open Font License 1.1, Ek Type; the licence ships beside it in newsroom/fonts.
+    "ne-bold": "Mukta-ExtraBold.ttf",
+}
+SHAPED = {"ne-bold"}  # faces whose script needs Raqm to join its letters
 
 
 def brand_mark(height: int) -> Image.Image | None:
@@ -65,11 +81,12 @@ def brand_mark(height: int) -> Image.Image | None:
 
 
 def font(kind: str, size: int):
+    extra = {"layout_engine": ImageFont.Layout.RAQM} if kind in SHAPED else {}
     for folder in FONT_DIRS:
         path = folder / FONT_FILES[kind]
         if path.exists():
             try:
-                return ImageFont.truetype(str(path), size)
+                return ImageFont.truetype(str(path), size, **extra)
             except OSError:
                 continue
     try:
@@ -166,15 +183,15 @@ def treat(img: Image.Image) -> Image.Image:
     return ImageEnhance.Color(img).enhance(0.75)
 
 
-def bottom_gradient(img: Image.Image) -> Image.Image:
+def bottom_gradient(img: Image.Image, start: float = GRADIENT_START, curve: float = 0.7, peak: float = 0.93) -> Image.Image:
     """Black rising from 38 percent of the height, curve t**0.7, up to 93 percent opaque. Nothing over the subject."""
-    y0 = int(img.height * GRADIENT_START)
+    y0 = int(img.height * start)
     mask = Image.new("L", img.size, 0)
     md = ImageDraw.Draw(mask)
     span = max(1, img.height - 1 - y0)
     for y in range(y0, img.height):
         t = (y - y0) / span
-        md.line([(0, y), (img.width, y)], fill=int((t**0.7) * 0.93 * 255))
+        md.line([(0, y), (img.width, y)], fill=int((t**curve) * peak * 255))
     overlay = Image.new("RGBA", img.size, BLACK + (0,))
     overlay.putalpha(mask)
     return Image.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
@@ -214,17 +231,17 @@ def balanced_two_lines(draw: ImageDraw.ImageDraw, text: str, fnt, max_width: int
     return best[1] if best else None
 
 
-def fit_headline(draw: ImageDraw.ImageDraw, text: str, *, max_width: int = HEADLINE_MAX_WIDTH, max_lines: int = 2, largest: int = 72, smallest: int = 52):
+def fit_headline(draw: ImageDraw.ImageDraw, text: str, *, max_width: int = HEADLINE_MAX_WIDTH, max_lines: int = 2, largest: int = 72, smallest: int = 52, kind: str = "sans-bold"):
     """The largest size from 72 down to 52 at which the headline sits in two balanced lines. Three lines at the floor is the last resort."""
     text = " ".join(text.split())  # a line break inside the text would draw as a second line nobody measured
     for size in range(largest, smallest - 1, -2):
-        fnt = font("sans-bold", size)
+        fnt = font(kind, size)
         if text_width(draw, text, fnt) <= max_width:
             return fnt, [text]
         lines = balanced_two_lines(draw, text, fnt, max_width) if max_lines == 2 else wrap(draw, text, fnt, max_width)
         if lines and len(lines) <= max_lines:
             return fnt, lines
-    fnt = font("sans-bold", smallest)
+    fnt = font(kind, smallest)
     lines = wrap(draw, text, fnt, max_width)
     if len(lines) > 3:
         log.warning("image headline too long for the card, cut to three lines: %s", text)
@@ -232,33 +249,81 @@ def fit_headline(draw: ImageDraw.ImageDraw, text: str, *, max_width: int = HEADL
     return fnt, lines
 
 
-def headline_lines(draw: ImageDraw.ImageDraw, text: str, *, largest: int = 72, smallest: int = 52):
+def headline_lines(draw: ImageDraw.ImageDraw, text: str, *, largest: int = 72, smallest: int = 52, kind: str = "sans-bold", upper: bool = True):
     """The card headline in the two lines the writer broke it into, at the largest size where both fit.
 
     The writer breaks the headline where the sense breaks. When that break cannot fit even at
     the floor, or there is no break, the renderer balances the words itself.
     """
-    given = [" ".join(line.split()) for line in (text or "").upper().splitlines() if line.strip()]
+    text = (text or "").upper() if upper else (text or "")
+    given = [" ".join(line.split()) for line in text.splitlines() if line.strip()]
     if len(given) == 2:
         for size in range(largest, smallest - 1, -2):
-            fnt = font("sans-bold", size)
+            fnt = font(kind, size)
             if all(text_width(draw, line, fnt) <= HEADLINE_MAX_WIDTH for line in given):
                 return fnt, given
-    return fit_headline(draw, " ".join(given), largest=largest, smallest=smallest)
+    return fit_headline(draw, " ".join(given), largest=largest, smallest=smallest, kind=kind)
+
+
+def can_shape_devanagari() -> bool:
+    """True when Pillow has Raqm, which joins Devanagari conjuncts and vowel signs, and the Nepali face is on disk."""
+    try:
+        from PIL import features
+
+        if not features.check("raqm"):
+            return False
+    except Exception:  # noqa: BLE001 - no Raqm means no Nepali card, never a failed build
+        return False
+    return any((folder / FONT_FILES["ne-bold"]).exists() for folder in FONT_DIRS)
+
+
+def nepali_card_lines(article: Article) -> list[str]:
+    """The checked Nepali piece's card headline, in the lines the writer broke it into, or [] when there is none."""
+    from .nepali import usable  # nepali never imports this module
+
+    ne = article.nepali or {}
+    if not usable(ne):
+        return []
+    return [" ".join(line.split()) for line in str(ne.get("image_headline") or "").splitlines() if line.strip()]
+
+
+def wants_nepali_card(settings: Settings, article: Article) -> bool:
+    """Whether Facebook and the Nepali pages should carry this story's Nepali card (`social.facebook.card`)."""
+    return str(settings.get("social.facebook.card", "ne") or "ne").lower() == "ne" and bool(nepali_card_lines(article))
+
+
+def shadowed_text(img: Image.Image, xy: tuple[int, int], text: str, fnt, fill) -> Image.Image:
+    """Text over a soft shadow, so a bright patch of photo never eats the letters."""
+    x, y = xy
+    layer = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(layer).text((x + 3, y + 4), text, font=fnt, fill=(0, 0, 0, 170))
+    out = Image.alpha_composite(img.convert("RGBA"), layer.filter(ImageFilter.GaussianBlur(6))).convert("RGB")
+    ImageDraw.Draw(out).text((x, y), text, font=fnt, fill=fill)
+    return out
 
 
 def _rect(draw: ImageDraw.ImageDraw, x1: int, y1: int, x2: int, y2: int, fill) -> None:
     draw.rectangle([min(x1, x2), min(y1, y2), max(x1, x2), max(y1, y2)], fill=fill)
 
 
-def render_card(settings: Settings, article: Article, out_path: Path) -> Path:
-    """Render the 1080x1400 card for one article to out_path (JPEG). Raises when the photo is missing."""
+def render_card(settings: Settings, article: Article, out_path: Path, *, language: str = "en") -> Path | None:
+    """Render the 1080x1400 card for one article to out_path (JPEG). Raises when the photo is missing.
+
+    `language="ne"` renders the Nepali card from the checked Nepali card headline. It returns
+    None and writes nothing when the story has no Nepali card headline or Devanagari cannot be
+    shaped here, so a card with broken letters never reaches a reader.
+    """
     if not article.image:
         raise ValueError(f"{article.id} has no image")
     photo_path = settings.root / article.image.path
     if not photo_path.exists():
         raise FileNotFoundError(str(photo_path))
-    img = bottom_gradient(treat(cover_crop(Image.open(photo_path).convert("RGB"))))
+    ne_lines = nepali_card_lines(article) if language == "ne" else []
+    if language == "ne" and not (ne_lines and can_shape_devanagari()):
+        log.warning("no Nepali card for %s: %s", article.id, "no checked Nepali card headline" if not ne_lines else "Devanagari cannot be shaped here (Pillow without Raqm)")
+        return None
+    photo = treat(cover_crop(Image.open(photo_path).convert("RGB")))
+    img = bottom_gradient(photo, **NE_GRADIENT) if ne_lines else bottom_gradient(photo)
     draw = ImageDraw.Draw(img)
     site_name = settings.site_name
     theme, country = theme_for(article), country_for(article)
@@ -328,12 +393,21 @@ def render_card(settings: Settings, article: Article, out_path: Path) -> Path:
     ul_bottom = src_y - 22
     draw.rectangle([(W - ul_w) // 2, ul_bottom - ul_h, (W + ul_w) // 2, ul_bottom], fill=GOLD)
 
-    # The headline, two lines, line one white, line two off white.
-    f_head, lines = headline_lines(draw, article.image_headline or article.headline)
-    line_h = int(f_head.size * 1.18)
-    y = ul_bottom - ul_h - 26 - line_h * len(lines)
-    for i, line in enumerate(lines):
-        draw.text(((W - text_width(draw, line, f_head)) // 2, y + i * line_h), line, font=f_head, fill=WHITE if i == 0 else OFF_WHITE)
+    if ne_lines:
+        # The Nepali headline, the writer's two lines, as large as they fit: line one white, line two gold.
+        f_head, lines = headline_lines(draw, "\n".join(ne_lines), largest=NE_LARGEST, smallest=NE_SMALLEST, kind="ne-bold", upper=False)
+        line_h = int(f_head.size * 1.22)  # room for the vowel signs above and below
+        y = ul_bottom - ul_h - 30 - line_h * len(lines)
+        for i, line in enumerate(lines):
+            img = shadowed_text(img, ((W - text_width(draw, line, f_head)) // 2, y + i * line_h), line, f_head, WHITE if i == 0 else GOLD)
+        draw = ImageDraw.Draw(img)
+    else:
+        # The headline, two lines, line one white, line two off white.
+        f_head, lines = headline_lines(draw, article.image_headline or article.headline)
+        line_h = int(f_head.size * 1.18)
+        y = ul_bottom - ul_h - 26 - line_h * len(lines)
+        for i, line in enumerate(lines):
+            draw.text(((W - text_width(draw, line, f_head)) // 2, y + i * line_h), line, font=f_head, fill=WHITE if i == 0 else OFF_WHITE)
 
     # Corner brackets, drawn last.
     arm, thick = 40, 5

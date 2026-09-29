@@ -25,9 +25,10 @@ from typing import Any, Callable, Mapping
 
 import httpx
 
-from . import nepali as nepali_edition, publish
+from . import graphic, nepali as nepali_edition, publish
 from .config import Settings
 from .models import Article, utcnow_iso
+from .outlets import source_line_ne
 
 log = logging.getLogger(__name__)
 
@@ -190,6 +191,20 @@ def facebook_mode(settings: Settings) -> str:
     return mode if mode in ("photo", "link") else "photo"
 
 
+def caption_style(settings: Settings) -> str:
+    """'synopsis': the Nepali two line synopsis and a source line. 'full': the long caption in every language listed."""
+    style = str(settings.get("social.facebook.caption", "synopsis") or "synopsis").lower()
+    return style if style in ("synopsis", "full") else "synopsis"
+
+
+def nepali_synopsis(article: Article) -> str:
+    """The checked Nepali piece's two line synopsis, or "" when the story has none."""
+    nepali = article.nepali or {}
+    if not nepali_edition.usable(nepali):
+        return ""
+    return str((nepali.get("caption") or {}).get("synopsis", "") or "").strip()
+
+
 def article_url(settings: Settings, article: Article) -> str:
     return f"{settings.site_url.rstrip('/')}/articles/{article.slug}/"
 
@@ -200,15 +215,31 @@ def image_url(settings: Settings, article: Article) -> str:
     return f"{settings.site_url.rstrip('/')}/images/{Path(article.image.path).name}"
 
 
-def card_url(settings: Settings, article: Article) -> str:
-    """The 1080x1400 card the site build renders for every article with a photo.
+def card_url(settings: Settings, article: Article, language: str = "en") -> str:
+    """The 1080x1400 card the site build renders for every article with a photo, English or Nepali.
 
     The article's version rides on the address, so a corrected card is fetched fresh: neither
     the site's cache nor Facebook's can hand back the card it replaced.
     """
     if not article.image:
         return ""
-    return f"{settings.site_url.rstrip('/')}/cards/{article.id}.jpg?v={max(1, int(article.version or 1))}"
+    sub = "ne/" if language == "ne" else ""
+    return f"{settings.site_url.rstrip('/')}/cards/{sub}{article.id}.jpg?v={max(1, int(article.version or 1))}"
+
+
+def facebook_card_url(settings: Settings, article: Article, client: httpx.Client) -> str:
+    """The card Facebook fetches: the Nepali one when the settings ask for it and the site has it, else the English."""
+    english = card_url(settings, article)
+    if not english or not graphic.wants_nepali_card(settings, article):
+        return english
+    nepali = card_url(settings, article, "ne")
+    try:
+        if client.get(nepali).status_code == 200:
+            return nepali
+    except httpx.HTTPError as exc:
+        log.debug("checking %s: %s", nepali, exc)
+    log.warning("the Nepali card for %s is not on the site; Facebook gets the English card", article.id)
+    return english
 
 
 def nepali_article_url(settings: Settings, article: Article) -> str:
@@ -257,17 +288,24 @@ def paragraphs(body: str, per: int = 2, min_words: int = 60) -> str:
 
 
 def engine_caption(article: Article, settings: Settings, tags: str) -> str:
-    """The Facebook caption to the content engine: headline, hook, body, trigger, the locked close.
+    """The Facebook caption to the content engine.
 
-    One post per story. With a checked Nepali version and ``social.facebook.languages`` listing
-    ``ne`` first, the Nepali caption opens the post and the English follows under a rule, so a
-    reader in either language sees their own before "See more". The close carries both.
+    With ``social.facebook.caption`` on "synopsis" and a checked Nepali piece that has one, the
+    post is the Nepali two line synopsis and a Nepali source line, nothing else. Otherwise the long
+    form: headline, hook, body, trigger and the locked close. With a checked Nepali version and
+    ``social.facebook.languages`` listing ``ne`` first, the Nepali caption opens the post and the
+    English follows under a rule. The close carries both.
     """
     site = (settings.get("site.name") or "Nepal Wire").strip()
     site_ne = str(settings.get("site.name_ne") or "").strip() or site
     link = bool(settings.get("social.facebook.include_link"))
     nepali = article.nepali or {}
     ne_cap = nepali.get("caption") or {}
+    synopsis = nepali_synopsis(article)
+    if caption_style(settings) == "synopsis" and synopsis:
+        # The card carries the headline; the caption is the story in two Nepali lines and its sources.
+        extra = [f"पूरा समाचार: {nepali_article_url(settings, article)}"] if link else []
+        return "\n\n".join(p for p in (synopsis, *extra, source_line_ne(article)) if p)
 
     def english() -> tuple[str, list[str]]:
         cap = article.caption or {}
@@ -314,7 +352,8 @@ def compose(network: str, article: Article, settings: Settings) -> str:
         budget = limit - X_URL_LENGTH - 2 - (len(tags) + 2 if tags else 0)
         return "\n\n".join(p for p in (fit(hook, budget), url, tags) if p)
     if network == "facebook":
-        nepali_caption = ((article.nepali or {}).get("caption") or {}).get("body")
+        ne_cap = (article.nepali or {}).get("caption") or {}
+        nepali_caption = ne_cap.get("synopsis") or ne_cap.get("body")
         if facebook_mode(settings) == "photo" and article.image and ((article.caption or {}).get("body") or nepali_caption):
             # The card carries the hook and the sources; the caption carries the depth, to the engine's format.
             return fit(engine_caption(article, settings, tags), limit)
@@ -881,6 +920,8 @@ def post_article(
     rec.article_url = article_url(settings, article)
     img = image_url(settings, article)
     card = card_url(settings, article) if facebook_mode(settings) == "photo" else ""
+    if card and not dry_run and "facebook" in (networks if networks is not None else configured_networks(settings, environ)):
+        card = facebook_card_url(settings, article, client)
     # `again` posts even where the record says posted; the new post is appended, the old one kept.
     # `replace` takes the last Facebook post down first, then posts the corrected one.
     done = set() if (again or replace) else {p.network for p in rec.posts if p.status == "posted"}
