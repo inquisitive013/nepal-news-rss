@@ -78,7 +78,7 @@ def test_theme_country_credit_and_date(tmp_path):
     art.image.credit.author = "A. Photographer"
     assert graphic.photo_credit(_article(settings, kind="generated"), "Nepal Wire") == "Illustration: AI generated for Nepal Wire. Not a photograph."
     assert graphic.date_label(settings, art) == "SEP 27, 2026"
-    assert graphic.source_names(art) == ["Kathmandu Post", "Ratopati", "OnlineKhabar"]
+    assert graphic.source_names(art) == ["Kathmandu Post", "Ratopati", "OnlineKhabar", "DC Nepal"]  # every outlet, not the first three
 
 
 def test_dark_photos_are_lifted_not_darkened(tmp_path):
@@ -121,6 +121,50 @@ def test_a_break_that_cannot_fit_is_rebalanced_and_one_line_stays_one():
     assert len(lines) >= 2 and all(graphic.text_width(draw, line, fnt) <= graphic.HEADLINE_MAX_WIDTH for line in lines)
     fnt, lines = graphic.headline_lines(draw, "Rain")
     assert lines == ["RAIN"]
+
+
+FLOODS_29_SEP = ["Republica", "Nepal Press", "OnlineKhabar English", "Ratopati"]
+RANA_27_SEP = ["Kathmandu Post", "Ratopati", "OnlineKhabar", "DC Nepal", "Nepal Press", "Khabarhub (English)", "Desh Sanchar (English)", "Nagarik News", "Constitution of Nepal 2015, Article 20(3)"]
+
+
+def test_the_card_names_every_outlet_on_one_line_or_two():
+    """A cap of three cut Ratopati from the 29 September floods card, and the style guide's caption for that story opens on its fact."""
+    draw = ImageDraw.Draw(Image.new("RGB", (graphic.W, graphic.H)))
+    fb, f = graphic.font("mono-bold", 16), graphic.font("mono", 16)
+    room = graphic.W - 2 * graphic.MARGIN
+    lead = graphic.text_width(draw, graphic.SOURCE_LABEL, fb) + graphic.SOURCE_GAP
+
+    assert graphic.source_rows(draw, FLOODS_29_SEP, fb, f) == ["Republica · Nepal Press · OnlineKhabar English · Ratopati"]
+    rows = graphic.source_rows(draw, RANA_27_SEP, fb, f)
+    assert len(rows) == 2 and " · ".join(rows).split(" · ") == RANA_27_SEP  # all nine, most cited first
+    assert lead + graphic.text_width(draw, rows[0], f) <= room and graphic.text_width(draw, rows[1], f) <= room
+    assert graphic.source_rows(draw, [], fb, f) == []
+
+
+def test_only_more_outlets_than_two_lines_hold_lose_any_the_least_cited_first(caplog):
+    draw = ImageDraw.Draw(Image.new("RGB", (graphic.W, graphic.H)))
+    fb, f = graphic.font("mono-bold", 16), graphic.font("mono", 16)
+    many = [f"Outlet number {i} of a very long list" for i in range(20)]
+    with caplog.at_level("WARNING"):
+        rows = graphic.source_rows(draw, many, fb, f)
+    kept = " · ".join(rows).split(" · ")
+    assert len(rows) == 2 and 2 < len(kept) < len(many) and kept == many[: len(kept)]
+    assert "left off" in caplog.text and many[-1] in caplog.text
+
+
+def test_a_second_source_line_lifts_the_underline_and_clears_the_footer(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings, shade=20)
+    art.sources = [{"name": name, "url": f"u{i}"} for i, name in enumerate(RANA_27_SEP)]
+    im = Image.open(graphic.render_card(settings, art, tmp_path / "card.jpg")).convert("RGB")
+    footer_top = graphic.H - graphic.FOOTER_H
+    second = footer_top - 8 - 19
+    first = second - 25
+    xs = range(graphic.MARGIN, graphic.W - graphic.MARGIN)
+    for top in (first, second):  # both lines drawn, off white on the dark fade
+        assert any(min(im.getpixel((x, y))) > 180 for y in range(top, top + 19) for x in xs)
+    assert not any(min(im.getpixel((x, y))) > 180 for y in range(second + 19, footer_top) for x in xs)
+    assert _close(im.getpixel((540, first - 22 - 2)), graphic.GOLD)  # the underline sits 22px above the first line
 
 
 NE_PIECE = {

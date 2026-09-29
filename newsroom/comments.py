@@ -33,6 +33,8 @@ from .llm import BudgetExceeded, LLMError
 log = logging.getLogger(__name__)
 
 REPLY_CATEGORIES = ("answer", "question", "thanks")
+# How the run summary names what the desk replied to.
+REPLIED_TO = {"answer": "an answer", "question": "a question", "thanks": "a thank you"}
 FLAG_CATEGORIES = ("correction", "legal", "private")
 CATEGORIES = (*REPLY_CATEGORIES, *FLAG_CATEGORIES, "politics", "abuse", "unanswered", "other")
 MAX_REPLY_CHARS = 280
@@ -236,7 +238,7 @@ def summary(result: dict[str, Any], *, dry_run: bool = False) -> list[str]:
         lines.append("- No post is inside its reply window.")
         return lines
     for article_id, category, reply in result["replied"]:
-        lines.append(f"- {article_id}: {'would reply' if dry_run else 'replied'} to a {category}: {reply}")
+        lines.append(f"- {article_id}: {'would reply' if dry_run else 'replied'} to {REPLIED_TO.get(category, category)}: {reply}")
     flagged: dict[tuple[str, str], list[str]] = {}
     for article_id, category, url in result["flagged"]:
         flagged.setdefault((article_id, url), []).append(category)

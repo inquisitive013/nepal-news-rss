@@ -93,6 +93,7 @@ def test_the_desk_answers_readers_and_leaves_the_rest_for_a_person(tmp_path):
 
     lines = "\n".join(comments.summary(result))
     assert "replied to a question: प्रहरीका अनुसार" in lines and "1 comment needs a person (correction): https://www.facebook.com/111_1" in lines
+    assert "replied to an answer: " in lines
     for words in (QUESTION, STORY, WRONG, SPAM):  # nor the public run summary
         assert words not in lines
 
