@@ -195,9 +195,26 @@ def facebook_mode(settings: Settings) -> str:
 
 
 def caption_style(settings: Settings) -> str:
-    """'synopsis': the Nepali two line synopsis and a source line. 'full': the long caption in every language listed."""
-    style = str(settings.get("social.facebook.caption", "synopsis") or "synopsis").lower()
-    return style if style in ("synopsis", "full") else "synopsis"
+    """'short': the Nepali hook, the one fact and the question. 'synopsis': the Nepali two line
+    synopsis of 29 September. 'full': the long caption in every language listed."""
+    style = str(settings.get("social.facebook.caption", "short") or "short").lower()
+    return style if style in ("short", "synopsis", "full") else "short"
+
+
+def nepali_short(article: Article) -> str:
+    """The hook and the fact on two lines, the question under them; "" when the piece has no hook.
+
+    A piece from before 29 September carries a long caption with a body; its hook was written to
+    open 80 words, not to stand alone, so it is not used here.
+    """
+    nepali = article.nepali or {}
+    if not nepali_edition.usable(nepali):
+        return ""
+    cap = nepali.get("caption") or {}
+    hook, angle, trigger = (str(cap.get(k, "") or "").strip() for k in ("hook", "angle", "trigger"))
+    if not hook or str(cap.get("body", "") or "").strip():
+        return ""
+    return "\n\n".join(p for p in ("\n".join(p for p in (hook, angle) if p), trigger) if p)
 
 
 def nepali_synopsis(article: Article) -> str:
@@ -293,22 +310,25 @@ def paragraphs(body: str, per: int = 2, min_words: int = 60) -> str:
 def engine_caption(article: Article, settings: Settings, tags: str) -> str:
     """The Facebook caption to the content engine.
 
-    With ``social.facebook.caption`` on "synopsis" and a checked Nepali piece that has one, the
-    post is the Nepali two line synopsis, nothing else: the sources live on the card. Otherwise
-    the long form: headline, hook, body, trigger and the locked close. With a checked Nepali
-    version and ``social.facebook.languages`` listing ``ne`` first, the Nepali caption opens the
-    post and the English follows under a rule. The close carries both.
+    With ``social.facebook.caption`` on "short" and a checked Nepali piece that has them, the post
+    is three Nepali lines: what the story changes for the reader, the one fact the coverage
+    missed, and a question about the reader's own life, nothing else: the sources live on the
+    card. A piece without them falls back to its two line synopsis ("synopsis"), and one without
+    either to the long form: headline, hook, body, trigger and the locked close. With a checked
+    Nepali version and ``social.facebook.languages`` listing ``ne`` first, the Nepali caption opens
+    the post and the English follows under a rule. The close carries both.
     """
     site = (settings.get("site.name") or "Nepal Wire").strip()
     site_ne = str(settings.get("site.name_ne") or "").strip() or site
     link = bool(settings.get("social.facebook.include_link"))
     nepali = article.nepali or {}
     ne_cap = nepali.get("caption") or {}
-    synopsis = nepali_synopsis(article)
-    if caption_style(settings) == "synopsis" and synopsis:
-        # The card carries the headline and the sources; the caption is the story in two Nepali lines.
+    style = caption_style(settings)
+    short = (nepali_short(article) if style == "short" else "") or (nepali_synopsis(article) if style in ("short", "synopsis") else "")
+    if short:
+        # The card carries the headline and the sources; the caption is a few Nepali lines under it.
         extra = [f"पूरा समाचार: {nepali_article_url(settings, article)}"] if link else []
-        return "\n\n".join(p for p in (synopsis, *extra) if p)
+        return "\n\n".join(p for p in (short, *extra) if p)
 
     def english() -> tuple[str, list[str]]:
         cap = article.caption or {}

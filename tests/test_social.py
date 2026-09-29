@@ -827,13 +827,45 @@ def _nepali(**caption):
     }
 
 
+HOOK = "गण्डकीले मृतकका हरेक परिवारलाई रु. १ लाख दिने निर्णय गरेको छ। तर ६ जनाको मृत्यु भएको लुम्बिनीमा राहत घोषणा भएको खबर अहिलेसम्म आएको छैन।"
+ANGLE = "एनईएले नयाँ बाढीको हिसाब अझै दिएको छैन।"
+TRIGGER = "तपाईंको परिवारले कहिल्यै विपद् राहतको वाचा पाएको छ? पाएको भए, त्यो साँच्चै हातमा आउन कति समय लाग्यो?"
+
+
+def test_the_facebook_caption_is_the_hook_the_fact_and_the_question(tmp_path):
+    s = _settings(tmp_path)
+    art = _article(s)
+    art.sources = art.sources + [{"name": "OnlineKhabar English", "url": "u"}]
+    art.caption = {"hook": "English hook.", "body": "English body.", "trigger": "English question?"}
+    art.nepali = _nepali(hook=HOOK, angle=ANGLE, trigger=TRIGGER)
+    assert social.caption_style(s) == "short"
+    fb = social.compose("facebook", art, s)
+    # the hook and the fact on two lines, the question under them, and nothing else
+    assert fb == f"{HOOK}\n{ANGLE}\n\n{TRIGGER}"
+    assert "स्रोत" not in fb and "OnlineKhabar" not in fb and "English" not in fb and "#" not in fb and "फलो" not in fb
+    # a story with no question for the reader ends on the fact
+    art.nepali = _nepali(hook=HOOK, angle=ANGLE, trigger="")
+    assert social.compose("facebook", art, s) == f"{HOOK}\n{ANGLE}"
+    # a story written before the three parts existed keeps its two line synopsis
+    art.nepali = _nepali(synopsis=SYNOPSIS)
+    assert social.compose("facebook", art, s) == SYNOPSIS
+    # and "synopsis" posts the synopsis even when the parts are there
+    raw = dict(s.raw)
+    raw["social"] = dict(raw["social"], facebook=dict(raw["social"].get("facebook") or {}, caption="synopsis"))
+    art.nepali = _nepali(synopsis=SYNOPSIS, hook=HOOK, angle=ANGLE, trigger=TRIGGER)
+    assert social.compose("facebook", art, dataclasses.replace(s, raw=raw)) == SYNOPSIS
+    # an unchecked piece posts nothing Nepali of its own
+    art.nepali = {**_nepali(hook=HOOK, angle=ANGLE, trigger=TRIGGER), "body_markdown": ""}
+    assert HOOK not in social.compose("facebook", art, s)
+
+
 def test_the_facebook_caption_is_the_two_line_synopsis_and_nothing_else(tmp_path):
     s = _settings(tmp_path)
     art = _article(s)
     art.sources = art.sources + [{"name": "OnlineKhabar English", "url": "u"}, {"name": "Ratopati", "url": "r"}, {"name": "ESPNcricinfo", "url": "e"}]
     art.caption = {"hook": "English hook.", "body": "English body.", "trigger": "English question?"}
     art.nepali = _nepali(synopsis=SYNOPSIS)
-    assert social.caption_style(s) == "synopsis"
+    assert social.caption_style(s) == "short"  # a piece without the three parts falls back to its synopsis
     fb = social.compose("facebook", art, s)
     # the whole post is the two lines: the sources are on the card and nowhere else
     assert fb == SYNOPSIS
