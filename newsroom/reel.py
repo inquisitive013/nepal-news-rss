@@ -1,19 +1,22 @@
 """The Facebook Reel: the story's picture moving slowly, its Nepali lines one beat at a time, its sources at the end.
 
-1080x1920 at 30 frames a second, H.264 with a silent AAC track, drawn with Pillow and encoded
-with ffmpeg. A photo post reaches the people Facebook shows the Page to; on 30 September that
+1080x1920 at 30 frames a second, H.264 with AAC, drawn with Pillow and encoded with ffmpeg. The
+sound is the editor's Nepali narration, one clip a beat, over a music bed that ducks under the
+voice; a Reel with neither carries a silent track. A photo post reaches the people Facebook shows the Page to; on 30 September that
 was one or two viewers a post against 10,334 followers. Facebook shows Reels to people who do
 not follow the Page, so the Reel is how a cold Page gets seen at all.
 
 The beats come from a file the editor writes, `data/reels/<article id>.json`, holding only lines
 the verified record carries: the checked card headline, the sourced numbers, the caption's
-question. The end card names every outlet and the picture's credit, as the card does.
+question. Each beat may name its narration clip and the words it says; a beat stretches to fit
+its clip. The end card names every outlet and the picture's credit, as the card does.
 """
 
 from __future__ import annotations
 
 import json
 import logging
+import re
 import shutil
 import subprocess
 from dataclasses import dataclass, field
@@ -39,6 +42,9 @@ TEXT_TOP, TEXT_BOTTOM = 330, 1250
 FADE = 0.3  # seconds each beat takes to appear and to go
 END_SECONDS = 4.5
 ZOOM = 0.10  # the picture grows by a tenth over the whole Reel
+VOICE_LEAD, VOICE_TAIL = 0.2, 0.45  # seconds of quiet before a beat's clip and after it
+BED_VOLUME = 0.22  # the music under the voice, before it ducks
+LOUDNESS = -14  # integrated loudness in LUFS, where phone feeds play
 COLOURS = {"white": g.WHITE, "gold": g.GOLD, "off": g.OFF_WHITE}
 
 
@@ -57,26 +63,80 @@ class Line:
 class Beat:
     lines: list[Line] = field(default_factory=list)
     seconds: float = 4.0
+    say: str = ""  # the narration's words, kept beside the clip so the record shows what the voice says
+    audio: Path | None = None
+
+
+@dataclass
+class Sound:
+    """What the Reel sounds like besides each beat's own clip: the sign off over the end card, and the bed."""
+
+    end: Path | None = None
+    music: Path | None = None
+    music_volume: float = BED_VOLUME
 
 
 def reel_path(settings: Settings, article_id: str) -> Path:
     return settings.data_dir / "reels" / f"{article_id}.json"
 
 
-def load_beats(settings: Settings, article_id: str) -> tuple[list[Beat], str]:
-    """The editor's beats for this story and the Reel's caption. Raises when there is no file."""
+def _raw(settings: Settings, article_id: str) -> tuple[Path, dict[str, Any]]:
     path = reel_path(settings, article_id)
     if not path.exists():
         raise ReelError(f"no beats for {article_id}: write {path.relative_to(settings.root)} first")
-    raw = json.loads(path.read_text(encoding="utf-8"))
+    return path, json.loads(path.read_text(encoding="utf-8"))
+
+
+def _clip(settings: Settings, name: Any, where: str) -> Path | None:
+    """A sound file the beats name, relative to the repository root. A named file that is missing stops the Reel."""
+    if not name:
+        return None
+    path = settings.root / str(name)
+    if not path.exists():
+        raise ReelError(f"{where} names {name}, which is not there")
+    return path
+
+
+def audio_seconds(path: Path) -> float:
+    """How long a sound file plays, read from ffmpeg's report."""
+    report = subprocess.run([_ffmpeg(), "-hide_banner", "-i", str(path)], capture_output=True, text=True).stderr
+    found = re.search(r"Duration: (\d+):(\d+):(\d+(?:\.\d+)?)", report)
+    if not found:
+        raise ReelError(f"cannot read the length of {path.name}")
+    hours, minutes, seconds = found.groups()
+    return int(hours) * 3600 + int(minutes) * 60 + float(seconds)
+
+
+def load_beats(settings: Settings, article_id: str) -> tuple[list[Beat], str]:
+    """The editor's beats for this story and the Reel's caption. Raises when there is no file.
+
+    A beat with a narration clip lasts at least as long as the clip, with a little quiet on
+    either side, so the words never run into the next beat's lines.
+    """
+    path, raw = _raw(settings, article_id)
     beats = []
-    for b in raw.get("beats") or []:
+    for n, b in enumerate(raw.get("beats") or [], start=1):
         lines = [Line(str(t), int(s), str(c)) for t, s, c in b.get("lines") or []]
-        if lines:
-            beats.append(Beat(lines, float(b.get("seconds") or 4.0)))
+        if not lines:
+            continue
+        beat = Beat(lines, float(b.get("seconds") or 4.0), str(b.get("say") or "").strip(), _clip(settings, b.get("audio"), f"{path.name} beat {n}"))
+        if beat.audio is not None:
+            if not beat.say:
+                raise ReelError(f"{path.name} beat {n} has a clip but not the words it says")
+            beat.seconds = max(beat.seconds, round(VOICE_LEAD + audio_seconds(beat.audio) + VOICE_TAIL, 2))
+        beats.append(beat)
     if not beats:
         raise ReelError(f"{path.name} has no beats")
     return beats, str(raw.get("caption") or "").strip()
+
+
+def load_sound(settings: Settings, article_id: str) -> Sound:
+    """The sign off and the music bed the beats file names, if any."""
+    path, raw = _raw(settings, article_id)
+    end = _clip(settings, raw.get("end_audio"), f"{path.name} end card")
+    if end is not None and not str(raw.get("end_say") or "").strip():
+        raise ReelError(f"{path.name} has an end clip but not the words it says")
+    return Sound(end, _clip(settings, raw.get("music"), f"{path.name} music"), float(raw.get("music_volume") or BED_VOLUME))
 
 
 def _shadowed(layer: Image.Image, xy: tuple[int, int], text: str, fnt, fill) -> None:
@@ -205,8 +265,45 @@ def timeline(beats: list[Beat]) -> list[tuple[float, float]]:
     return spans
 
 
-def render_reel(settings: Settings, article: Article, beats: list[Beat], out_path: Path) -> Path:
-    """Draw every frame and encode the Reel to out_path (MP4). Returns the path."""
+def sound_args(beats: list[Beat], spans: list[tuple[float, float]], sound: Sound | None) -> tuple[list[str], list[str]]:
+    """ffmpeg's audio inputs and its mapping: each clip at its beat's start, the bed ducked under the voice.
+
+    The whole mix is brought to one loudness for phones. With no clip and no bed the track is silent.
+    """
+    total = spans[-1][1]
+    clips = [(b.audio, spans[i][0]) for i, b in enumerate(beats) if b.audio is not None]
+    if sound is not None and sound.end is not None:
+        clips.append((sound.end, spans[-1][0]))
+    music = sound.music if sound is not None else None
+    if not clips and music is None:
+        return ["-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=48000"], ["-map", "0:v", "-map", "1:a", "-shortest"]
+    inputs: list[str] = []
+    graph: list[str] = []
+    voices: list[str] = []
+    for n, (path, start) in enumerate(clips, start=1):
+        inputs += ["-i", str(path)]
+        ms = int(round((start + VOICE_LEAD) * 1000))
+        graph.append(f"[{n}:a]aresample=48000,aformat=channel_layouts=stereo,adelay={ms}|{ms}[v{n}]")
+        voices.append(f"[v{n}]")
+    if voices:
+        graph.append(f"{''.join(voices)}amix=inputs={len(voices)}:duration=longest:normalize=0[voice]")
+    last = "[voice]"
+    if music is not None:
+        m = len(clips) + 1
+        inputs += ["-stream_loop", "-1", "-i", str(music)]
+        volume = sound.music_volume if sound is not None else BED_VOLUME
+        graph.append(f"[{m}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=0:{total:.3f},volume={volume},afade=t=in:d=1,afade=t=out:st={max(0.0, total - 2):.3f}:d=2[bed]")
+        if voices:
+            graph += ["[voice]asplit=2[said][key]", "[bed][key]sidechaincompress=threshold=0.02:ratio=6:attack=15:release=350[ducked]", "[ducked][said]amix=inputs=2:duration=longest:normalize=0[mix]"]
+            last = "[mix]"
+        else:
+            last = "[bed]"
+    graph.append(f"{last}apad,atrim=0:{total:.3f},loudnorm=I={LOUDNESS}:TP=-1.5:LRA=11,aresample=48000[aout]")
+    return inputs, ["-filter_complex", ";".join(graph), "-map", "0:v", "-map", "[aout]", "-t", f"{total:.3f}"]
+
+
+def render_reel(settings: Settings, article: Article, beats: list[Beat], out_path: Path, sound: Sound | None = None) -> Path:
+    """Draw every frame and encode the Reel, with its sound, to out_path (MP4). Returns the path."""
     bg = background(settings, article)
     fixed = frame_layer(settings, article)
     layers = [beat_layer(b) for b in beats] + [end_layer(settings, article)]
@@ -215,13 +312,13 @@ def render_reel(settings: Settings, article: Article, beats: list[Beat], out_pat
     frames = int(round(total * FPS))
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    audio_inputs, mapping = sound_args(beats, spans, sound)
     cmd = [
         _ffmpeg(), "-y", "-loglevel", "error",
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
-        "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=48000",
-        "-map", "0:v", "-map", "1:a", "-shortest",
+        *audio_inputs, *mapping,
         "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-profile:v", "high",
-        "-g", str(FPS * 2), "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-movflags", "+faststart",
+        "-g", str(FPS * 2), "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart",
         str(out_path),
     ]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
