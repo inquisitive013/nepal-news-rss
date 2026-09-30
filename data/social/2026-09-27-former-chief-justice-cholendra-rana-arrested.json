@@ -12,7 +12,20 @@
    "posted_at": "2026-09-27T04:16:48+00:00",
    "scheduled_for": "2026-09-27T12:30+05:45",
    "edited_at": "",
-   "metrics": {}
+   "metrics": {
+    "72h": {
+     "at": "2026-09-30T12:43:11+00:00",
+     "hours": 78.0,
+     "viewers": 2,
+     "views": 27,
+     "comments": 0,
+     "errors": {
+      "shares": "code 100",
+      "reactions": "code 100"
+     }
+    }
+   },
+   "comment_desk": []
   },
   {
    "network": "facebook",
@@ -36,7 +49,8 @@
       "reactions": "code 10"
      }
     }
-   }
+   },
+   "comment_desk": []
   }
  ]
 }
