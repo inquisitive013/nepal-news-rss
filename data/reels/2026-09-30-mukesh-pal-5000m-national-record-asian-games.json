@@ -1,7 +1,12 @@
 {
  "article_id": "2026-09-30-mukesh-pal-5000m-national-record-asian-games",
- "why": "Every line from the verified record: the checked Nepali card headline and headline, the times, names and places in the key facts, and the caption's question.",
+ "why": "Every line from the verified record: the checked Nepali card headline and headline, the times, names and places in the key facts, and the caption's question. The narration says the same facts in spoken Nepali, numbers in words.",
  "caption": "मुकेश पालले २२ वर्ष पुरानो ५००० मिटर राष्ट्रिय कीर्तिमान भत्काए\n\nनेपालले कुन खेलमा अन्तर्राष्ट्रिय पदक जितोस् भनेर तपाईं सबैभन्दा लामो समयदेखि पर्खिरहनुभएको छ?",
+ "voice": "Kamala, a Nepali voice in the ElevenLabs library, model eleven_v3. Each clip transcribed back word for word by ElevenLabs Scribe before use.",
+ "music": "data/reels/music/pride-madal-bansuri.mp3",
+ "music_volume": 0.22,
+ "end_say": "नेपाल वायर।",
+ "end_audio": "data/reels/audio/2026-09-30-mukesh-pal-5000m-national-record-asian-games/end.mp3",
  "beats": [
   {
    "seconds": 4.0,
@@ -16,7 +21,9 @@
      100,
      "gold"
     ]
-   ]
+   ],
+   "say": "नेपालका धावक मुकेशबहादुर पालले पाँच हजार मिटर दौडमा बाइस वर्ष पुरानो राष्ट्रिय कीर्तिमान भत्काएका छन्।",
+   "audio": "data/reels/audio/2026-09-30-mukesh-pal-5000m-national-record-asian-games/say1.mp3"
   },
   {
    "seconds": 4.5,
@@ -36,7 +43,9 @@
      60,
      "off"
     ]
-   ]
+   ],
+   "say": "जापानमा भएको बीसौँ एसियाली खेलकुदमा उनले चौध मिनेट तीन दशमलव छ एक सेकेन्डमा दौड पूरा गरे।",
+   "audio": "data/reels/audio/2026-09-30-mukesh-pal-5000m-national-record-asian-games/say2.mp3"
   },
   {
    "seconds": 4.5,
@@ -61,7 +70,9 @@
      60,
      "off"
     ]
-   ]
+   ],
+   "say": "यसअघिको कीर्तिमान राजेन्द्रबहादुर भण्डारीको नाममा थियो। सन् दुई हजार चारको एथेन्स ओलम्पिकमा उनले चौध मिनेट चार दशमलव आठ नौ सेकेन्डमा दौड पूरा गरेका थिए।",
+   "audio": "data/reels/audio/2026-09-30-mukesh-pal-5000m-national-record-asian-games/say3.mp3"
   },
   {
    "seconds": 4.0,
@@ -76,7 +87,9 @@
      110,
      "gold"
     ]
-   ]
+   ],
+   "say": "बाइस वर्षपछि, पालले त्यो कीर्तिमान एक दशमलव दुई आठ सेकेन्डको अन्तरले तोडे।",
+   "audio": "data/reels/audio/2026-09-30-mukesh-pal-5000m-national-record-asian-games/say4.mp3"
   },
   {
    "seconds": 5.0,
@@ -86,7 +99,9 @@
      72,
      "white"
     ]
-   ]
+   ],
+   "say": "नेपालले कुन खेलमा अन्तर्राष्ट्रिय पदक जितोस् भनेर तपाईं सबैभन्दा लामो समयदेखि पर्खिरहनुभएको छ?",
+   "audio": "data/reels/audio/2026-09-30-mukesh-pal-5000m-national-record-asian-games/say5.mp3"
   }
  ]
 }

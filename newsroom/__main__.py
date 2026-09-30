@@ -540,7 +540,8 @@ def cmd_reel(args) -> int:
         return 2
     try:
         beats, caption = reel.load_beats(settings, article.id)
-        out = reel.render_reel(settings, article, beats, Path(args.out) if args.out else settings.root / "out" / "reels" / f"{article.id}.mp4")
+        sound = reel.load_sound(settings, article.id)
+        out = reel.render_reel(settings, article, beats, Path(args.out) if args.out else settings.root / "out" / "reels" / f"{article.id}.mp4", sound=sound)
     except reel.ReelError as exc:
         print(f"::error::{exc}")
         return 1
