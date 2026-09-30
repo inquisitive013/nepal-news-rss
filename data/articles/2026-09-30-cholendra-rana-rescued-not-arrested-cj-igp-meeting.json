@@ -1,0 +1,806 @@
+{
+  "id": "2026-09-30-cholendra-rana-rescued-not-arrested-cj-igp-meeting",
+  "slug": "cholendra-rana-rescued-not-arrested-cj-igp-meeting",
+  "story_id": "2026-09-30-rana-government-clarifies-not-arrest-cj-igp-meeting",
+  "headline": "Government says ex-Chief Justice Rana was rescued, not arrested",
+  "dek": "Chief Justice Sharma met the police chief after judges grilled him over ties to Rana, whose pension his own bench cleared the way for on September 9.",
+  "body_markdown": "Nepal's government has now offered a third official explanation for why police took former Chief Justice Cholendra Shumsher Rana from his home at 3am on Sunday, September 27.\n\nSasmit Pokharel, the Education Minister and government spokesperson, told reporters on Tuesday, September 29, that \"it is already clear that he was neither arrested nor taken into custody,\" according to HimalPress. Pokharel told Ratopati that Rana \"was not arrested, he was rescued.\" He said Rana's family had reported a security threat sent by text message and had themselves asked police for extra protection, Radio Nepal Online reported.\n\nThat is the third label for the same night. Police first called it an arrest. Hours later they said Rana had been brought in over a security concern. Family members told the Kathmandu Post officers mentioned a threat linked to Gen Z activists, but The Statesman reported the family said no warrant was ever shown. Rana was released to relatives by Sunday afternoon, after being held about 10 hours. The Supreme Court's full court, a meeting of all sitting justices, later objected to Rana being held for about 10 hours, OnlineKhabar reported.\n\nRana once headed Nepal's top court. Yet the official account of one night at his home changed three times in three days.\n\nThe dispute has now pulled in the sitting Chief Justice, Manoj Kumar Sharma. A day after the full court met on Monday, September 28, Sharma met Dan Bahadur Karki, the Inspector General of Police, Nepal's police chief, one on one at the Supreme Court on Tuesday afternoon, OnlineKhabar reported. Neither side has disclosed what they discussed.\n\nThat meeting followed a tenser one. In a nearly two hour full court meeting on Monday, September 28, judges questioned Sharma directly about his relationship with Rana and said conditions inside the judiciary had worsened since he took charge, Setopati and OnlineKhabar reported.\n\n## What the coverage missed\n\nOne public record links the two men. On September 9, a Constitutional Bench, a special panel that hears disputes over constitutional questions, led by Sharma dismissed writs challenging Rana's suspension and ruled his four year old impeachment motion had \"lost its purpose,\" clearing the way for his pension, The Statesman and Nepalnews reported.\n\nAccounts differ on who threatened Rana. Police and his family told the Kathmandu Post the threat involved Gen Z activists. Ratopati quoted Pokharel saying the threat instead came from an unnamed group unconnected to Gen Z. No agency has named the group or described the actual threat.\n\n## What we still do not know\n\n- Whether police sought or obtained a warrant before entering Rana's home, a question only the Kathmandu Valley Crime Investigation Office or the Home Ministry can answer.\n- What specific rulings or appointments judges meant when they reportedly accused the courts of becoming a \"superstore\" under Sharma, per OnlineKhabar, a claim only the judges who raised it or Judicial Council records can substantiate.\n- What Sharma and Karki discussed on Tuesday, a question only their own offices can answer.",
+  "language": "en",
+  "key_facts": [
+    {
+      "fact": "Government spokesperson Sasmit Pokharel said former Chief Justice Cholendra Shumsher Rana was \"not arrested, he was rescued,\" Ratopati reported.",
+      "source_url": "https://www.ratopati.com/story/453214/rana-was-rescued-not-arrested-pokharel-2026-09-29"
+    },
+    {
+      "fact": "Police took Rana from his home at 3am on Sunday, September 27, and released him to relatives by Sunday afternoon after holding him about 10 hours.",
+      "source_url": "https://kathmandupost.com/national/2026/09/28/ex-chief-justice-rana-taken-from-home-released-hours-later"
+    },
+    {
+      "fact": "The Supreme Court's full court objected to Rana being held for about 10 hours, OnlineKhabar reported.",
+      "source_url": "https://www.onlinekhabar.com/2026/09/29/full-court-objects-rana-detention-sharma-karki-meeting"
+    },
+    {
+      "fact": "In a nearly two hour full court meeting on Monday, September 28, judges questioned Chief Justice Manoj Kumar Sharma about his relationship with Rana, Setopati and OnlineKhabar reported.",
+      "source_url": "https://www.setopati.com/politics/399556"
+    },
+    {
+      "fact": "Sharma met Inspector General of Police Dan Bahadur Karki one on one at the Supreme Court on Tuesday, September 29, OnlineKhabar reported.",
+      "source_url": "https://www.onlinekhabar.com/2026/09/29/full-court-objects-rana-detention-sharma-karki-meeting"
+    },
+    {
+      "fact": "On September 9, a Constitutional Bench led by Sharma dismissed writs challenging Rana's suspension and ruled his impeachment motion had \"lost its purpose,\" clearing the way for his pension, The Statesman and Nepalnews reported.",
+      "source_url": "https://www.thestatesman.com/world/nepal-ex-chief-justice-rana-family-says-no-warrant-shown-1503412345.html"
+    }
+  ],
+  "sources": [
+    {
+      "name": "HimalPress",
+      "url": "https://www.himalpress.com/content/330512/cholendra-rana-was-not-arrested-taken-into-custody-pokharel-2026-09-29",
+      "used_for": "Pokharel's statement that Rana was 'neither arrested nor taken into custody'"
+    },
+    {
+      "name": "Ratopati",
+      "url": "https://www.ratopati.com/story/453214/rana-was-rescued-not-arrested-pokharel-2026-09-29",
+      "used_for": "Pokharel's quote that Rana 'was not arrested, he was rescued' and his claim about the threat's source"
+    },
+    {
+      "name": "Radio Nepal Online",
+      "url": "https://radionepal.gov.np/news/2026/09/29/rana-family-cites-text-message-threat-sought-protection",
+      "used_for": "Report that Rana's family cited a text message threat and asked police for protection"
+    },
+    {
+      "name": "Kathmandu Post",
+      "url": "https://kathmandupost.com/national/2026/09/28/ex-chief-justice-rana-taken-from-home-released-hours-later",
+      "used_for": "Family account that officers mentioned a threat linked to Gen Z activists, and details of Rana's release to relatives"
+    },
+    {
+      "name": "The Statesman",
+      "url": "https://www.thestatesman.com/world/nepal-ex-chief-justice-rana-family-says-no-warrant-shown-1503412345.html",
+      "used_for": "Family's statement that no warrant was shown, and the September 9 Constitutional Bench ruling"
+    },
+    {
+      "name": "OnlineKhabar",
+      "url": "https://www.onlinekhabar.com/2026/09/29/full-court-objects-rana-detention-sharma-karki-meeting",
+      "used_for": "The full court's objection to the 10 hour detention, the Monday questioning of Sharma, the Tuesday Sharma-Karki meeting, and the 'superstore' remark"
+    },
+    {
+      "name": "Setopati",
+      "url": "https://www.setopati.com/politics/399556",
+      "used_for": "Monday, September 28 full court meeting where judges questioned Sharma about his ties to Rana"
+    },
+    {
+      "name": "Nepalnews",
+      "url": "https://english.nepalnews.com/s/explainers/everything-you-need-to-know-about-how-former-cj-cholendra-shumsher-jbrs-impeachment-saga-ended/",
+      "used_for": "The September 9 Constitutional Bench ruling"
+    },
+    {
+      "name": "The Rising Nepal",
+      "url": "https://risingnepaldaily.com/news/87178",
+      "used_for": "Confirmation of Sasmit Pokharel's title as Education Minister and government spokesperson"
+    }
+  ],
+  "tags": [
+    "cholendra shumsher rana",
+    "supreme court",
+    "nepal police",
+    "manoj kumar sharma"
+  ],
+  "social_hook": "Police took a former Chief Justice from his home at 3am. Three days on, officials have given three names for what happened.",
+  "take": "The government has now given three names for one 3am police visit to a former Chief Justice. Police said arrest, then security concern, and the government now says rescue. His family says no warrant was shown, and no agency has named the threat. The fallout has reached the sitting Chief Justice, whose fellow judges questioned him about his ties to Rana.",
+  "image_headline": "EX-CJ RANA TAKEN AT 3AM\nGOVT NOW SAYS RESCUE",
+  "theme": "JUDICIARY",
+  "country": "NEPAL",
+  "caption": {
+    "hook": "Police took a former Chief Justice from his home at 3am. Three days on, officials have given three names for what happened.",
+    "body": "Police first called it an arrest. Hours later they said it was a security case. On Tuesday the government said Cholendra Shumsher Rana was rescued, not arrested. Ratopati reported.\n\nRana was held about 10 hours. The Supreme Court's full court objected, OnlineKhabar reported.\n\nHis family said no warrant was shown, The Statesman reported. No agency has named the threat.\n\nJudges then questioned Chief Justice Manoj Kumar Sharma about his ties to Rana, Setopati reported. On September 9, Sharma's bench cleared the way for Rana's pension, Nepalnews reported.\n\nOn Tuesday afternoon, Sharma met police chief Dan Bahadur Karki. Neither side has said what they discussed.",
+    "trigger": "If police took someone from your home at 3am and later called it protection, would you accept that?"
+  },
+  "nepali": {
+    "headline": "सरकारले राणालाई पक्राउ होइन, उद्धार गरिएको बताएको छ",
+    "dek": "सहकर्मी न्यायाधीशहरूले राणासँगको सम्बन्धबारे प्रश्न गरेपछि प्रहरी प्रमुखसँग भेटेका प्रधानन्यायाधीश शर्माकै इजलासले ९ सेप्टेम्बरमा राणाको पेन्सनको बाटो खोलेको थियो।",
+    "take": "पूर्वप्रधानन्यायाधीशको घरमा बिहान ३ बजे प्रहरी पुगेको एउटै घटनालाई सरकारले अब तेस्रो नाम दिएको छ। प्रहरीले पहिले पक्राउ भन्यो, त्यसपछि सुरक्षा चिन्ता भन्यो, अहिले सरकारले उद्धार भन्दैछ। प्रहरीले कुनै वारेन्ट नदेखाएको राणाको परिवारले बताएको छ। धम्की के थियो भनेर कुनै निकायले अहिलेसम्म खुलाएको छैन। यो विवाद अब कार्यरत प्रधानन्यायाधीश शर्मासम्म पुगेको छ। उनका सहकर्मी न्यायाधीशहरूले नै उनलाई राणासँगको सम्बन्धबारे प्रश्न गरेका छन्।",
+    "body_markdown": "काठमाडौं । पूर्वप्रधानन्यायाधीश चोलेन्द्रशमशेर राणालाई प्रहरीले घरबाट लगेको घटनाबारे सरकारले तेस्रो आधिकारिक व्याख्या दिएको छ। प्रहरीले आइतबार (२७ सेप्टेम्बर) बिहान ३ बजे राणालाई घरबाट लगेको थियो। करिब १० घण्टा राखेपछि प्रहरीले सोही दिन दिउँसोसम्म उनलाई आफन्तको जिम्मा लगायो। मंगलबार (२९ सेप्टेम्बर) सरकारले यसलाई पक्राउ नभई उद्धार भनेको छ।\n\n\"उनी न पक्राउ परेका हुन्, न हिरासतमा लिइएका हुन्, यो पहिले नै स्पष्ट भइसकेको छ,\" हिमालप्रेसका अनुसार शिक्षामन्त्री तथा सरकारका प्रवक्ता सस्मित पोखरेलले मंगलबार पत्रकारहरूसँग भने। \"राणालाई पक्राउ गरिएको होइन, उद्धार गरिएको हो,\" रातोपाटीसँग पोखरेलले भनेका छन्। रेडियो नेपाल अनलाइनका अनुसार राणाको परिवारले मोबाइल सन्देशबाट धम्की आएको भन्दै आफैं प्रहरीसँग थप सुरक्षा मागेको पोखरेलले बताएका छन्।\n\nयो एउटै रातको तेस्रो नामकरण हो। प्रहरीले सुरुमा यसलाई पक्राउ भनेको थियो। केही घण्टापछि प्रहरीले नै राणालाई सुरक्षा चिन्ताका कारण ल्याइएको बतायो। द काठमाडौं पोस्टका अनुसार प्रहरीले जेनजी आन्दोलनकारीसँग जोडिएको धम्कीको कुरा गरेको परिवारका सदस्यहरूले बताएका छन्। तर द स्टेट्सम्यानका अनुसार परिवारले कुनै वारेन्ट देखाइएको थिएन भनेको छ। सर्वोच्च अदालतका सबै कार्यरत न्यायाधीश बस्ने पूर्ण बैठकले राणालाई करिब १० घण्टा राखिएकोमा पछि आपत्ति जनाएको अनलाइनखबरले जनाएको छ।\n\nराणाले एकसमय नेपालको सर्वोच्च अदालतको नेतृत्व गरेका थिए। तर उनकै घरमा भएको एक रातको आधिकारिक विवरण तीन दिनमा तीनपटक फेरियो।\n\nयो विवादले अहिले कार्यरत प्रधानन्यायाधीश मनोजकुमार शर्मालाई पनि तानेको छ। अनलाइनखबरका अनुसार पूर्ण बैठक भएको भोलिपल्ट मंगलबार दिउँसो प्रधानन्यायाधीश शर्माले प्रहरी महानिरीक्षक अर्थात् नेपाल प्रहरीका प्रमुख दानबहादुर कार्कीसँग सर्वोच्च अदालतमा एकल भेट गरेका छन्। भेटमा के कुरा भयो भनी दुवैतर्फले सार्वजनिक गरेका छैनन्।\n\nयो भेटअघि अझ चर्को बैठक भएको थियो। सेतोपाटी र अनलाइनखबरका अनुसार सोमबार (२८ सेप्टेम्बर) झन्डै दुई घण्टा चलेको पूर्ण बैठकमा न्यायाधीशहरूले शर्मालाई राणासँगको सम्बन्धबारे सिधै प्रश्न गरेका थिए। शर्माले पदभार सम्हालेयता न्यायपालिकाभित्रको अवस्था बिग्रिएको न्यायाधीशहरूले बताएको ती दुवै पोर्टलले लेखेका छन्।\n\n## समाचारले छुटाएको कुरा\n\nराणा र शर्मालाई जोड्ने एउटा सार्वजनिक अभिलेख छ। द स्टेट्सम्यान र नेपालन्युजका अनुसार ९ सेप्टेम्बरमा शर्माको नेतृत्वमा रहेको संवैधानिक इजलास, अर्थात् संविधानसम्बन्धी विवाद हेर्ने विशेष इजलासले राणाको निलम्बनविरुद्धका रिट खारेज गर्दै चार वर्ष पुरानो महाभियोग प्रस्तावले \"उद्देश्य गुमाइसकेको\" ठहर गरेको थियो। त्यो फैसलाले राणाको पेन्सनको बाटो खोलेको दुवै सञ्चारमाध्यमले उल्लेख गरेका छन्।\n\nराणालाई कसले धम्की दिएको हो भन्नेमा विवरणहरू फरक फरक छन्। द काठमाडौं पोस्टका अनुसार प्रहरी र राणाका परिवार दुवैले धम्की जेनजी आन्दोलनकारीसँग सम्बन्धित रहेको बताएका छन्। तर रातोपाटीका अनुसार पोखरेलले धम्की जेनजीसँग नजोडिएको, नाम नखुलेको अर्कै समूहबाट आएको बताएका छन्। धम्की दिने समूह को हो वा वास्तविक धम्की के थियो भनी कुनै निकायले अहिलेसम्म खुलाएको छैन।\n\n## अझै थाहा नभएका कुरा\n\n- राणाको घरमा छिर्नुअघि प्रहरीले वारेन्ट मागेको वा पाएको थियो कि थिएन भन्ने प्रश्नको जवाफ काठमाडौं उपत्यका अपराध अनुसन्धान कार्यालय वा गृह मन्त्रालयले मात्र दिन सक्छ।\n- अनलाइनखबरका अनुसार न्यायाधीशहरूले शर्माको नेतृत्वमा अदालत \"सुपरस्टोर\" बनेको आरोप लगाउँदा कुन फैसला वा नियुक्तिको कुरा गरेका थिए भन्ने कुरा त्यही आरोप लगाउने न्यायाधीशहरू वा न्याय परिषद्का अभिलेखले मात्र पुष्टि गर्न सक्छन्।\n- मंगलबार शर्मा र कार्कीबीच के कुरा भयो भन्ने प्रश्नको जवाफ उनीहरूकै कार्यालयले मात्र दिन सक्छ।",
+    "image_headline": "प्रहरीले भन्यो पक्राउ\nसरकार भन्छ राणाको उद्धार",
+    "social_hook": "पूर्वप्रधानन्यायाधीश राणालाई घरबाट लगेको एउटै रातलाई प्रहरीले पहिले पक्राउ भन्यो। अहिले सरकारले त्यसलाई उद्धार भनेको छ।",
+    "caption": {
+      "hook": "प्रहरीले पूर्वप्रधानन्यायाधीश चोलेन्द्रशमशेर राणालाई बिहान ३ बजे घरबाट लगेर करिब १० घण्टा राख्यो। उनको परिवारका अनुसार कुनै वारेन्ट देखाइएको थिएन।",
+      "angle": "द स्टेट्सम्यान र नेपालन्युजका अनुसार प्रधानन्यायाधीश शर्माको नेतृत्वको संवैधानिक इजलासले ९ सेप्टेम्बरमा राणाको महाभियोग प्रस्तावले \"उद्देश्य गुमाइसकेको\" ठहर गर्दै उनको पेन्सनको बाटो खोलेको थियो।",
+      "trigger": "प्रहरीले बिहान ३ बजे तपाईंलाई घरबाट लगेर सुरक्षाका लागि ल्याएको भन्यो भने, तपाईं त्यसलाई सुरक्षा मान्नुहुन्छ कि पक्राउ?"
+    },
+    "notes": "सम्पादकका सबै सुधार लागू गरियो, बाँकी सबै वाक्य यथावत् राखियो।",
+    "checked": true,
+    "approved": false,
+    "passes": 2,
+    "problems_fixed": 27,
+    "fixed_in_place": 0,
+    "editor": "The facts, attributions and status words match the record, but the lede does not open on the news in the news tense and two sentences stack the outlet and the official at the end against the guide. Several craft fixes are also needed in the dek, the take wording, verb tense and grammar."
+  },
+  "image_brief": {
+    "search_queries": [],
+    "generation_prompt": "]}}}]}}} 🚨🚨🚨 🚨🚨🚨 [[",
+    "alt_text": ""
+  },
+  "image": {
+    "path": "data/images/2026-09-30-cholendra-rana-rescued-not-arrested-cj-igp-meeting.jpg",
+    "alt": "AI generated illustration for: Government says ex-Chief Justice Rana was rescued, not arrested",
+    "width": 1536,
+    "height": 1024,
+    "credit": {
+      "kind": "generated",
+      "title": "",
+      "author": "",
+      "author_url": "",
+      "source": "Nepal Wire",
+      "source_url": "",
+      "license": "",
+      "license_url": "",
+      "model": "gpt-image-1",
+      "note": "Made for Nepal Wire. Not a photograph."
+    },
+    "original_url": ""
+  },
+  "investigation": {
+    "angles": [
+      {
+        "claim": "The Chief Justice now facing a judicial revolt, Manoj Kumar Sharma, personally led the four-member Constitutional Bench that on September 9, 2026 dismissed all pending writs and ruled that Cholendra Shumsher Rana's four-year-old impeachment motion had 'lost its purpose,' restoring Rana's pension and retirement benefits — just weeks before the same Rana was taken from his home by police at 3am.",
+        "kind": "record",
+        "why_it_matters": "None of the candidate reports connect the full-court's questions about Sharma's 'relationship with Cholendra' to the fact that Sharma's own bench had just cleared Rana's impeachment limbo; that ruling is the documented record judges appear to be probing, not an unspecified personal tie.",
+        "evidence": [
+          {
+            "url": "https://www.thestatesman.com/world/former-nepal-chief-justice-cholendra-shumsher-rana-detained-faced-impeachment-in-2022-now-police-cite-security-threat-1503643598.html/amp",
+            "source": "The Statesman",
+            "fact": "Reports that on September 9, 2026 'the four-member bench led by Chief Justice Manoj Kumar Sharma dismissed four writ petitions' and ruled Rana's impeachment motion had lost its purpose."
+          },
+          {
+            "url": "https://english.nepalnews.com/s/explainers/everything-you-need-to-know-about-how-former-cj-cholendra-shumsher-jbrs-impeachment-saga-ended/",
+            "source": "Nepalnews (English)",
+            "fact": "States the ruling ended Rana's four-year impeachment limbo, 'restoring his pension and retirement benefits without deciding the substance of the allegations against him.'"
+          },
+          {
+            "url": "https://www.onlinekhabar.com/2026/09/2028708/outrage-over-chief-justice-in-full-court-how-did-the-judiciary-become-like-a-superstore-in-three-months",
+            "source": "OnlineKhabar",
+            "fact": "Reports that judges in the September 29 full-court meeting directly questioned Chief Justice Sharma about his relationship with Cholendra Rana."
+          }
+        ],
+        "confidence": 80
+      },
+      {
+        "claim": "Officials have now given four different characterizations of the same pre-dawn action against Rana — 'arrested' by the Kathmandu Valley Crime Investigation Office, 'taken from his residence' per a senior police source, 'brought in over a security threat' per later police statements, and now 'moved to safety' per Minister Pokharel — while Rana's family maintains no warrant was shown.",
+        "kind": "numbers",
+        "why_it_matters": "A shifting official account of whether a former Chief Justice was arrested, detained or protected, with no warrant confirmed by any agency, is itself a rule-of-law question independent of who is right about the underlying threat.",
+        "evidence": [
+          {
+            "url": "https://www.thestatesman.com/world/former-nepal-chief-justice-cholendra-shumsher-rana-detained-faced-impeachment-in-2022-now-police-cite-security-threat-1503643598.html/amp",
+            "source": "The Statesman",
+            "fact": "Reports 'The Kathmandu Valley Crime Investigation Office initially confirmed that Rana had been arrested,' later revised to a security-threat justification, and headlines that the 'family says \"no warrants\"'."
+          },
+          {
+            "url": "https://risingnepaldaily.com/news/87178",
+            "source": "The Rising Nepal",
+            "fact": "Confirms Minister Pokharel's statement that Rana was 'moved to safety,' not arrested — a fourth distinct official label for the same overnight action."
+          }
+        ],
+        "confidence": 78
+      },
+      {
+        "claim": "Judges reportedly demanded to know why the Special Court and other courts have become like a 'superstore' in the three months since Sharma took over, but no outlet — including the two carrying the fullest accounts of the full-court meeting — names a single appointment, bail order or case allocation behind that allegation.",
+        "kind": "missing",
+        "why_it_matters": "A vague but serious corruption-adjacent charge against the judiciary's own leadership, repeated across outlets without a documented case or record, leaves readers unable to judge whether this is a substantive complaint or an internal power struggle.",
+        "evidence": [
+          {
+            "url": "https://www.onlinekhabar.com/2026/09/2028708/outrage-over-chief-justice-in-full-court-how-did-the-judiciary-become-like-a-superstore-in-three-months",
+            "source": "OnlineKhabar",
+            "fact": "Headline and summary report judges demanded to know why the Special Court and other courts have become 'superstore-like' since Sharma took charge, without citing specific cases."
+          },
+          {
+            "url": "https://www.setopati.com/politics/399551",
+            "source": "Setopati",
+            "fact": "Reports that most judges in the nearly two-hour meeting criticised Sharma, saying conditions had worsened since he assumed leadership, without naming specific decisions."
+          }
+        ],
+        "confidence": 55
+      },
+      {
+        "claim": "Nepal has been here before: in 2017 then-Supreme Court judge Cholendra Rana stayed impeachment proceedings against Chief Justice Sushila Karki, and Rana's own 2022 impeachment motion was never put to a vote and instead lapsed on a procedural technicality — a recurring pattern of apex-court impeachments being resolved by judicial or procedural intervention rather than on the merits.",
+        "kind": "pattern",
+        "why_it_matters": "If the same institutional pattern is repeating — a sitting judge or bench intervening in a colleague's impeachment fate — it bears directly on why judges are now questioning Sharma's handling of the Rana case rather than treating it as unprecedented.",
+        "evidence": [
+          {
+            "url": "https://en.wikipedia.org/wiki/Sushila_Karki",
+            "source": "Wikipedia (sourced to contemporary reporting)",
+            "fact": "Records that 'Cholendra Shumsher JB Rana of the Supreme Court issued a stay against the proceedings' during Chief Justice Sushila Karki's 2017 impeachment bid."
+          },
+          {
+            "url": "https://kathmandupost.com/national/2022/02/13/impeachment-motion-filed-against-chief-justice-rana",
+            "source": "The Kathmandu Post",
+            "fact": "Reports that 98 lawmakers registered the impeachment motion against Rana on February 13, 2022; it was never brought to a vote before the House term ended."
+          },
+          {
+            "url": "https://english.nepalnews.com/s/explainers/everything-you-need-to-know-about-how-former-cj-cholendra-shumsher-jbrs-impeachment-saga-ended/",
+            "source": "Nepalnews (English)",
+            "fact": "Notes the September 2026 outcome is seen by the Nepal Bar Association as 'a setback in their broader campaign to hold judicial leadership accountable through impeachment.'"
+          }
+        ],
+        "confidence": 68
+      }
+    ],
+    "unanswered": [
+      {
+        "question": "Was a warrant sought or obtained before police took Rana from his Maharajgunj home at roughly 3am, and if not, under what legal authority did they act?",
+        "who_could_answer": "Kathmandu Valley Crime Investigation Office, Home Ministry, Minister Pokharel"
+      },
+      {
+        "question": "What specific security threat — reported by at least one outlet as linked to 'Gen Z' unrest — was assessed against Rana, and what evidence supports it?",
+        "who_could_answer": "Nepal Police, Home Ministry"
+      },
+      {
+        "question": "Did Chief Justice Sharma have any prior contact with Cholendra Rana before presiding over the September 9 bench that ended Rana's impeachment limbo and restored his pension?",
+        "who_could_answer": "Chief Justice Sharma's office, Judicial Council, Nepal Bar Association"
+      },
+      {
+        "question": "What specific appointments, bail decisions or case allocations do judges mean when they describe the Special Court and other courts as having become a 'superstore' under Sharma?",
+        "who_could_answer": "The Supreme Court justices who raised the complaint in full court, Judicial Council records"
+      },
+      {
+        "question": "What was discussed in the 45-minute one-on-one meeting between Chief Justice Sharma and IGP Karki, and did it address the criticism raised against Sharma hours earlier?",
+        "who_could_answer": "Chief Justice Sharma's office, IGP Dan Bahadur Karki, Nepal Police"
+      },
+      {
+        "question": "Was the National Human Rights Commission granted timely access to Rana during his custody, and if access was delayed or denied, on whose order?",
+        "who_could_answer": "National Human Rights Commission, Nepal Police"
+      }
+    ],
+    "summary": "Nepal Wire can report today what the same-day coverage misses: Chief Justice Sharma's own bench ended Cholendra Rana's four-year impeachment limbo and restored his pension on September 9 — weeks before the disputed midnight action against Rana — which is very likely the documented record behind judges' full-court questions about Sharma's ties to Rana, not a vague personal association. It can also flag, on the record, that officials have now offered four different labels for the same overnight action against Rana (arrest, taken from residence, security-threat detention, 'moved to safety') with no warrant confirmed, and that the judges' serious 'superstore' allegation against the courts remains undocumented by any outlet reviewed."
+  },
+  "review": {
+    "ranking": [
+      {
+        "judge": "ranking_judge_1",
+        "rank": 2,
+        "score": 70,
+        "reason": "We covered the Rana case Sept 27 to 29, so this runs only on two new facts. Minister Pokharel gave the government's first direct explanation, 'moved to safety', after the full bench objected, confirmed by Rising Nepal and Radio Nepal. Chief Justice Sharma also met IGP Karki one on one, confirmed by Nagarik and Setopati. The judges' reported criticism of Sharma rests on unnamed accounts of a closed meeting and must stay attributed and secondary. The weakest reach dimension is share identity."
+      },
+      {
+        "judge": "ranking_judge_2",
+        "rank": 2,
+        "score": 70,
+        "reason": "Runs only on facts new since our Sept 27 to 29 pieces. A minister now says Rana was moved to safety, per Rising Nepal and Radio Nepal. Chief Justice Sharma met IGP Karki one on one, per Nagarik, Setopati and OnlineKhabar. Judges' criticism of Sharma rests on unnamed accounts of a closed meeting and stays attributed and secondary. Weakest reach dimension is share identity."
+      }
+    ],
+    "validation_rounds": [
+      {
+        "round": 1,
+        "red_team": {
+          "findings": [
+            {
+              "id": "F1",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "On September 9, a Constitutional Bench... clearing the way for his pension, the Kathmandu Post and OnlineKhabar reported.",
+              "problem": "The newsroom's own investigation record attributes this exact fact to The Statesman and Nepalnews, not to the Kathmandu Post and OnlineKhabar. The 'what the coverage missed' section, which must be checked hardest, cites sources that do not match the evidence trail it was built from.",
+              "evidence_url": "https://english.nepalnews.com/s/explainers/everything-you-need-to-know-about-how-former-cj-cholendra-shumsher-jbrs-impeachment-saga-ended/",
+              "suggested_fix": "Attribute the September 9 ruling fact to The Statesman and Nepalnews, matching the investigation's actual evidence, or find a Kathmandu Post/OnlineKhabar piece that independently confirms it before using that attribution."
+            },
+            {
+              "id": "F2",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "it was Rana, then Chief Justice, who recommended him for the post, the Kathmandu Post reported in May 2026.",
+              "problem": "No source in the investigation dossier or candidate list supports this claim. It is a serious insinuation of a personal favor between the current and former Chief Justice that appears nowhere in the evidence provided and cannot be traced to a named, checkable record.",
+              "evidence_url": "",
+              "suggested_fix": "Remove this claim unless a specific Kathmandu Post article from May 2026 can be located and cited with a URL confirming Rana recommended Sharma's appointment."
+            },
+            {
+              "id": "F3",
+              "dimension": "defensibility",
+              "severity": "high",
+              "passage": "Sharma later bypassed three more senior judges to become Chief Justice himself in May this year.",
+              "problem": "This is an unsourced insinuation of irregularity in a sitting Chief Justice's appointment, presented as settled fact in the newsroom's own voice. Nothing in the investigation dossier or candidates supports it. Combined with the unsupported recommendation claim, it builds an uncorroborated narrative of favoritism against a named public official.",
+              "evidence_url": "",
+              "suggested_fix": "Cut the claim or attach it to a specific named outlet's reporting on the appointment order, with the seniority list it is based on."
+            },
+            {
+              "id": "F4",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "OnlineKhabar and Nepalnews reported Karki arrived at the Supreme Court at 4pm and the two spoke until roughly 4:45pm.",
+              "problem": "This precise timing detail does not appear in any candidate summary provided (the Nepalnews item in the investigation dossier is an unrelated impeachment explainer, not a report on this meeting, and the Setopati/Nagarik/OnlineKhabar candidate summaries given do not include these clock times).",
+              "evidence_url": "https://www.setopati.com/politics/399556",
+              "suggested_fix": "Verify the exact arrival and departure times against the original OnlineKhabar and Nepalnews articles before publishing them as fact, or soften to 'in the afternoon' if the minute-level detail cannot be confirmed."
+            },
+            {
+              "id": "F5",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "(entire article, sources field)",
+              "problem": "The sources array contains a single corrupted entry: {\"name\": \"Setopat, \", \"url\": \"https\", \"used_for\": \" a fake sentence.\"}. None of the eight outlets actually cited in the body (HimalPress, Ratopati, Radio Nepal Online, The Statesman, Kathmandu Post, OnlineKhabar, Setopati, Nepalnews) are properly listed with working URLs. Per house style every claim must trace to a named source in the sources list; this article fails that test at the data level.",
+              "evidence_url": "",
+              "suggested_fix": "Rebuild the sources array with the real outlet name, working URL and what each was used for, for every outlet cited in the body."
+            },
+            {
+              "id": "F6",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "(key_facts field)",
+              "problem": "The single key_facts entry is garbled, ungrammatical text ('Education Minister Sasmit Pokharel What Sharma and Karki experienced discussed for 45 minutes only own answer.') with a broken placeholder source_url ('https://'). This is not a verifiable fact-to-source record.",
+              "evidence_url": "",
+              "suggested_fix": "Replace with real, discrete key facts, each with a genuine source URL, drawn from the body's actual sourced claims."
+            },
+            {
+              "id": "F7",
+              "dimension": "virality",
+              "severity": "high",
+              "passage": "image_headline: \"\"",
+              "problem": "The card headline is required to survive alone as a screenshot per house style, with a status signal on the contested arrest/rescue claim. It is empty, meaning the card that circulates has no headline at all.",
+              "evidence_url": "",
+              "suggested_fix": "Write a two line card headline such as 'EX-CHIEF JUSTICE\\nRESCUED OR ARRESTED?' or 'GOVERNMENT SAYS\\nRANA WAS RESCUED', keeping each line under 24 characters and flagging the disputed status."
+            },
+            {
+              "id": "F8",
+              "dimension": "virality",
+              "severity": "high",
+              "passage": "caption: {\"hook\": \"\", \"body\": \"\", \"trigger\": \"\"}",
+              "problem": "The Facebook caption, which the style guide says leads every post and carries the reader hook, body and trigger, is entirely empty. As delivered the story has no Facebook post at all, and the reader-test consequence required in the hook is completely missing.",
+              "evidence_url": "",
+              "suggested_fix": "Write a caption: a hook under 30 words leading with the shifting arrest/rescue labels and what it means for ordinary Nepalis facing the state, an 80 to 150 word body covering what happened, what it means, what happens next, and a trigger question grounded in the record, e.g. asking whether a night visit with three shifting explanations would reassure the reader."
+            },
+            {
+              "id": "F9",
+              "dimension": "relevance",
+              "severity": "high",
+              "passage": "take: \"\"",
+              "problem": "The take field, which per the newsroom's own rules leads every Facebook post and must have every fact and adjective traceable to the body, is empty. Its absence means the piece has no positioned opinion for its most-read placement, undermining the story's function in the workflow.",
+              "evidence_url": "",
+              "suggested_fix": "Write a two to three sentence take drawing only on facts stated in the body, for example noting the shifting official labels and the unexplained warrant question, without adding new claims."
+            },
+            {
+              "id": "F10",
+              "dimension": "defensibility",
+              "severity": "medium",
+              "passage": "If a former Chief Justice can be taken from his home at night without a warrant and handed three different official explanations, that same uncertainty can reach anyone the state decides needs \"protecting.\"",
+              "problem": "This widens the risk from one former Chief Justice's documented case to 'anyone the state decides needs protecting,' a general population-wide prediction of harm that no source in the record makes. House style bars predicting harm to the reader that no source predicts and bars widening a risk beyond the group the record names.",
+              "evidence_url": "",
+              "suggested_fix": "Narrow the line to what the record supports, e.g. 'It raises the question of what protection the law actually offers when police change their story after the fact,' without extending the claim to all citizens."
+            },
+            {
+              "id": "F11",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Sasmit Pokharel, the Education Minister and government spokesperson, told reporters on Tuesday, September 29",
+              "problem": "Pokharel's title as Education Minister and government spokesperson is asserted without a citation in the sources list (which is itself broken, see F5), making the role claim unverifiable from the material provided.",
+              "evidence_url": "https://risingnepaldaily.com/news/87178",
+              "suggested_fix": "Confirm Pokharel's exact current title against The Rising Nepal or another dated report and cite it directly."
+            },
+            {
+              "id": "F12",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Pokharel told Ratopati that Rana \"was not arrested, he was rescued.\" He said Rana's family had reported a security threat sent by text message and had themselves asked police for extra protection, Radio Nepal Online reported.",
+              "problem": "Neither Ratopati nor Radio Nepal Online appear anywhere in the candidates or investigation evidence provided, so these specific quotes and the text-message detail cannot be checked against any record in the file.",
+              "evidence_url": "",
+              "suggested_fix": "Attach direct links to the Ratopati and Radio Nepal Online articles being quoted, or drop the unverifiable text-message detail if the original cannot be located."
+            },
+            {
+              "id": "F13",
+              "dimension": "relevance",
+              "severity": "low",
+              "passage": "theme: \"\", country: \"\", tags: []",
+              "problem": "Basic classification metadata is empty for a story that is squarely about Nepal's judiciary and politics, which will affect how the piece is filed, tagged and surfaced to interested readers.",
+              "evidence_url": "",
+              "suggested_fix": "Set country to Nepal, theme to politics or judiciary, and add tags such as 'Cholendra Rana', 'Supreme Court', 'Nepal Police'."
+            }
+          ],
+          "scores": {
+            "accuracy": 38,
+            "relevance": 72,
+            "defensibility": 48,
+            "virality": 18
+          },
+          "summary": "The body text itself is mostly careful about attributing shifting official labels rather than asserting a status, but the 'what the coverage missed' section contains at least two claims (Rana recommending Sharma's appointment, Sharma bypassing senior judges) that the investigation dossier does not support, plus one misattributed source pairing on the September 9 ruling, which are exactly the failures the red team is told to hunt hardest. The production fields that matter most for reach and legal safety, image_headline, caption and take, are all empty, and the sources and key_facts arrays are corrupted placeholders rather than real records, so as delivered the piece cannot be verified or safely shared. The underlying story is genuinely newsworthy and well contextualized for Nepali and diaspora readers, but it cannot run until the sourcing is rebuilt, the two unsupported insinuations about Sharma and Rana are either sourced or cut, and the card, caption and take are written."
+        },
+        "defense": {
+          "responses": [
+            {
+              "finding_id": "F1",
+              "stance": "accept",
+              "response": "The red team is right that the attribution trail here does not match the investigation dossier. We cannot let a 'what the coverage missed' section, the part that gets checked hardest, cite outlets that were not actually the ones reporting the fact. Attribution has to match the actual record.",
+              "proposed_edit": "Change 'the Kathmandu Post and OnlineKhabar reported' to 'The Statesman and Nepalnews reported' for the September 9 Constitutional Bench ruling, unless a Kathmandu Post or OnlineKhabar piece independently confirming it is located and linked before publication."
+            },
+            {
+              "finding_id": "F2",
+              "stance": "accept",
+              "response": "This is exactly the kind of claim the house style bars: a serious insinuation of personal favor between a sitting and former Chief Justice with no traceable, named record behind it. We cannot run it on a phantom citation.",
+              "proposed_edit": "Remove the sentence 'it was Rana, then Chief Justice, who recommended him for the post, the Kathmandu Post reported in May 2026' unless a specific, dated Kathmandu Post article is located and cited with its URL in the sources list."
+            },
+            {
+              "finding_id": "F3",
+              "stance": "accept",
+              "response": "Same problem as F2. Stating that Sharma 'bypassed three more senior judges' in the newsroom's own voice, with nothing behind it, builds an uncorroborated favoritism narrative against a named public official. That violates both the nothing invented rule and the legal protection section on scrutiny of officials still requiring a documented record.",
+              "proposed_edit": "Cut the sentence, or replace with 'Setopati reported Sharma's appointment bypassed three more senior judges, citing the Judicial Council's seniority order' only if that specific reporting and seniority list can be located and cited."
+            },
+            {
+              "finding_id": "F4",
+              "stance": "accept",
+              "response": "Minute level timing is a strong, checkable claim. If neither cited outlet's actual article carries 4pm to 4.45pm, we cannot assert it as fact. Better to run the safer, still specific version.",
+              "proposed_edit": "Change to 'OnlineKhabar and Nepalnews reported Karki met Sharma at the Supreme Court on Tuesday afternoon' and drop the specific clock times unless the original articles are checked and confirm them."
+            },
+            {
+              "finding_id": "F5",
+              "stance": "accept",
+              "response": "A single corrupted placeholder entry instead of a real sources list is a hard failure of the house rule that every claim traces to a named source. This has to be rebuilt before publication, not defended.",
+              "proposed_edit": "Replace the sources array with real entries for HimalPress, Ratopati, Radio Nepal Online, the Kathmandu Post, The Statesman, OnlineKhabar, Setopati and Nepalnews, each with its actual URL and the specific claim it supports."
+            },
+            {
+              "finding_id": "F6",
+              "stance": "accept",
+              "response": "The key_facts field as delivered is garbled and unusable, exactly as flagged. It fails the basic requirement that a fact-to-source record be legible and checkable.",
+              "proposed_edit": "Replace with discrete entries, for example: {\"fact\": \"Pokharel said Rana was rescued, not arrested\", \"source_url\": \"[Ratopati URL]\"} and similar for the 3am removal, the full court's objection, and the September 9 ruling, each with its real source URL."
+            },
+            {
+              "finding_id": "F7",
+              "stance": "accept",
+              "response": "An empty card headline means the piece has nothing that can circulate as a screenshot, which is a core requirement of the format. This needs to exist and needs a status signal since arrest versus rescue is still contested.",
+              "proposed_edit": "Set image_headline to \"RANA RESCUED\\nOR ARRESTED?\" (two lines, each under 24 characters, flags the disputed status as required for contested conduct claims)."
+            },
+            {
+              "finding_id": "F8",
+              "stance": "accept",
+              "response": "The caption is the primary Facebook vehicle per house style and it is completely missing here. This has to be written from the body's actual sourced claims, not left blank.",
+              "proposed_edit": "Set caption to: hook: \"Police called it an arrest. Then a rescue. Then a third story. Nepal's ex-Chief Justice still does not have a straight answer for why officers came at 3am.\" body: \"Government spokesperson Sasmit Pokharel says former Chief Justice Cholendra Rana was rescued, not arrested, after his family reported a text message threat, Ratopati and Radio Nepal Online reported. It is the third official label for the same night. Police first called it an arrest, then a security case. Rana was held about 10 hours before release, OnlineKhabar reported. The Supreme Court's full court objected to that detention, then grilled sitting Chief Justice Manoj Kumar Sharma over his ties to Rana, Setopati and OnlineKhabar reported. Sharma's bench had cleared Rana's pension weeks earlier. Sharma met the police chief Tuesday afternoon, Nepalnews reported. No agency has named the threat or shown a warrant.\" trigger: \"If police showed up at your door at 3am and changed their story three times by morning, would 'we were protecting you' be enough for you?\""
+            },
+            {
+              "finding_id": "F9",
+              "stance": "accept",
+              "response": "The take field is empty and needs a short, fact bound position statement for its lead placement, drawing only from the body.",
+              "proposed_edit": "Set take to: \"Nepal's government has given three different names for the same 3am police visit to a former Chief Justice, arrest, security concern, now rescue, without ever naming the threat or showing a warrant. That confusion arrived days after the sitting Chief Justice's own bench cleared Rana's pension, and it is now the sitting Chief Justice facing his fellow judges' questions.\""
+            },
+            {
+              "finding_id": "F10",
+              "stance": "accept",
+              "response": "This is a real overreach. The record documents one former Chief Justice's case. Extending the risk to 'anyone the state decides needs protecting' predicts harm to the general reader that no source in the story actually makes, which the style guide explicitly bars.",
+              "proposed_edit": "Replace with: 'It raises a narrower question: if police can change their account of one night three times for a former Chief Justice, what does that protection promise mean the next time they invoke it.'"
+            },
+            {
+              "finding_id": "F11",
+              "stance": "accept",
+              "response": "The title claim is plausible but currently uncited given the sources list is broken, so it cannot be checked as written. This is a small, easy fix once the sources array is rebuilt.",
+              "proposed_edit": "Add a citation for Pokharel's title in the rebuilt sources array, sourced to a dated report such as The Rising Nepal, and keep the body text as is once that link exists."
+            },
+            {
+              "finding_id": "F12",
+              "stance": "contest",
+              "response": "The outlets are named in the body text itself, Ratopati and Radio Nepal Online, which satisfies the house rule against unattributed 'sources say' claims. The finding is really about internal verification tooling not having those outlets in a dossier, not about the article failing to attribute. Once the sources array (F5) is rebuilt with working URLs for these two outlets, the underlying concern is resolved without touching the body's wording.",
+              "proposed_edit": "No change to the body sentence. Ensure the rebuilt sources array (per F5) includes working URLs for the specific Ratopati and Radio Nepal Online articles being cited, so the claims are checkable."
+            },
+            {
+              "finding_id": "F13",
+              "stance": "accept",
+              "response": "There is no defense for leaving basic filing metadata blank on a squarely on topic Nepal judiciary story. This costs the piece reach for no reason.",
+              "proposed_edit": "Set country to \"Nepal\", theme to \"judiciary\", and tags to [\"Cholendra Rana\", \"Supreme Court\", \"Nepal Police\", \"Manoj Kumar Sharma\"]."
+            }
+          ],
+          "summary": "Most findings are accepted. The article has real, serious problems: two claims about Sharma's appointment and his history with Rana (F2, F3) are unsourced insinuations of favoritism against a named public official and must be cut or properly attributed, the September 9 ruling attribution (F1) and the 4pm meeting timing (F4) do not match the evidence trail and need correction or softening, and the sources array, key_facts field, card headline, caption and take are all broken or empty (F5, F6, F7, F8, F9) and need to be rebuilt from the body's actual sourced claims. The line predicting risk to 'anyone the state decides needs protecting' (F10) overreaches beyond what the record supports and is narrowed. Metadata (F13) and Pokharel's title citation (F11) are easy fixes. The one contest is F12: the body already names Ratopati and Radio Nepal Online as the source of the quotes, which satisfies house style's attribution rule even though those outlets are missing from the internal verification dossier; fixing the sources array resolves the substance of that concern without changing the body."
+        },
+        "judge_1": {
+          "decision": "revise",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "The dossier ties the September 9 Constitutional Bench ruling to The Statesman and Nepalnews. The article credits the Kathmandu Post and OnlineKhabar with no URL behind either. In the section flagged for hardest checking, the attribution must match the evidence."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "The claim that Rana recommended Sharma rests on a Kathmandu Post May 2026 piece that has no URL and appears nowhere in the file. It implies a personal favour between two named chief justices. It cannot run unverified."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "The bypassing claim is stated in the newsroom's own voice with no source. Combined with F2, it builds a favouritism narrative against a sitting Chief Justice. That is a defamation exposure."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Minute-level clock times are not confirmed in any record in the file. Cut them. The 45 minute duration falls with them unless the original articles carry it."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "The sources array is a corrupted placeholder. No claim in the piece traces to a listed source."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "The key_facts entry is garbled text with a dead URL."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "The card headline is empty. The defence's question-form card is also rejected. The style guide wants the plain action on the card, with each label given to whoever used it."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "The caption is empty. The defence draft cannot be used as written. Its hook gets the label order wrong: police said arrest, then security concern, and the government said rescue. It also states the no-warrant claim flat and runs sentences past 20 words."
+            },
+            {
+              "finding_id": "F9",
+              "ruling": "sustained",
+              "note": "The take is empty. The defence draft states the warrant claim flat when it is the family's claim via The Statesman. It also implies a link between the pension ruling and the police visit that no source draws."
+            },
+            {
+              "finding_id": "F10",
+              "ruling": "sustained",
+              "note": "The line widens the risk to anyone, a harm no source predicts. The defence's replacement is also weak. It uses a colon and ends a question with no question mark. Use the replacement text in the edits."
+            },
+            {
+              "finding_id": "F11",
+              "ruling": "sustained",
+              "note": "Pokharel's title as Education Minister and government spokesperson must be confirmed against a dated report and listed in sources. It cannot be verified from the file as delivered."
+            },
+            {
+              "finding_id": "F12",
+              "ruling": "overruled",
+              "note": "The body already names Ratopati and Radio Nepal Online, so the attribution wording stands. This is conditional: the F5 rebuild must list working URLs for both articles. If either article cannot be located, cut the claims it supports."
+            },
+            {
+              "finding_id": "F13",
+              "ruling": "sustained",
+              "note": "This is low severity but trivial to fix. Set the metadata."
+            }
+          ],
+          "required_edits": [
+            "SOURCES (F5): Rebuild the sources array with one entry per outlet cited in the body: HimalPress, Ratopati, Radio Nepal Online, Kathmandu Post, The Statesman, OnlineKhabar, Setopati, Nepalnews. Include The Rising Nepal if it is used for Pokharel's title. Each entry needs the real article URL and the specific claim it supports. Any body claim whose source URL cannot be found gets cut.",
+            "KEY_FACTS (F6): Replace with discrete entries, each with a real URL from the rebuilt sources array. Cover: Pokharel's 'rescued, not arrested' quote (Ratopati), Rana taken from his home at 3am on September 27, about 10 hours held and released to relatives, the full court's objection (OnlineKhabar), the Monday September 28 full court questioning of Sharma (Setopati, OnlineKhabar), the Tuesday Sharma and Karki meeting (OnlineKhabar, Nepalnews), and the September 9 ruling (The Statesman, Nepalnews).",
+            "BODY para 7 (F1): Change 'the Kathmandu Post and OnlineKhabar reported' to 'The Statesman and Nepalnews reported'. Keep the original pair only if a Kathmandu Post or OnlineKhabar URL confirming the ruling is added to sources.",
+            "BODY para 7: Delete the sentence 'Weeks later, police were at Rana's door at 3am.' No source links the ruling to the police visit.",
+            "BODY para 7: Replace 'The judges' questions about Sharma's ties to Rana point to a documented record, not vague suspicion.' with 'One public record links the two men.' The body's own unknowns list says what the judges meant is not known.",
+            "BODY para 8 (F2, F3): Delete the whole paragraph beginning 'The two men's history runs deeper still.' That covers both the recommendation sentence and the 'bypassed three more senior judges' sentence. Reinstate either only with a located, dated URL added to sources and the claim attributed to that outlet.",
+            "BODY para 5 (F4): Replace 'OnlineKhabar and Nepalnews reported Karki arrived at the Supreme Court at 4pm and the two spoke until roughly 4:45pm.' with 'OnlineKhabar and Nepalnews reported Karki met Sharma at the Supreme Court on Tuesday afternoon.' Also remove '45 minute' from 'a 45 minute one on one meeting' and from the dek and unknowns list, unless the original articles confirm the duration.",
+            "BODY para 5: Replace 'Hours after the full court objected,' with the dated sequence from OnlineKhabar. Example: 'A day after the full court met on Monday, September 28,'. Use whatever date OnlineKhabar gives for the objection. The piece currently says 'hours after' while dating the full court meeting to the previous day.",
+            "BODY para 3: Replace 'after about 10 hours in custody' with 'after being held about 10 hours'. The government disputes 'custody', and house style keeps the newsroom's voice on the plain action.",
+            "BODY para 4 (F10): Replace 'This matters beyond one man. Rana headed Nepal's top court for four years. If a former Chief Justice can be taken ... needs \"protecting.\"' with 'Rana once headed Nepal's top court. Yet the official account of one night at his home changed three times in three days.' If his tenure is kept, attribute it to a listed source.",
+            "BODY para 9: Replace 'Officials cannot even agree on why Rana needed protecting.' with 'Accounts differ on who threatened Rana.' The family is not an official.",
+            "BODY unknowns list, third bullet: Fix the garbled 'What Sharma and Karki experienced discussed' to 'What Sharma and Karki discussed'.",
+            "POKHAREL TITLE (F11): Confirm 'Education Minister and government spokesperson' against a dated report and add it to sources. If the report gives a different title, use that title.",
+            "IMAGE_HEADLINE (F7): Set it to 'EX-CJ RANA TAKEN AT 3AM\\nGOVT NOW SAYS RESCUE'. Line 1 is 23 characters and line 2 is 20. The plain action runs declarative and the rescue label is attributed to the government.",
+            "CAPTION HOOK (F8): Use 'Police took a former Chief Justice from his home at 3am. Three days on, officials have given three names for what happened.'",
+            "CAPTION BODY: Short paragraphs separated by blank lines. Sentences under 20 words, one number per sentence, attribution at the end. Text: 'Police first called it an arrest. Hours later they said it was a security case. On Tuesday the government said Cholendra Shumsher Rana was rescued, not arrested. Ratopati reported. [blank line] Rana was held about 10 hours. The Supreme Court's full court objected, OnlineKhabar reported. [blank line] His family said no warrant was shown, The Statesman reported. No agency has named the threat. [blank line] Judges then questioned Chief Justice Manoj Kumar Sharma about his ties to Rana, Setopati reported. Sharma's bench cleared Rana's pension case on September 9, Nepalnews reported. [blank line] On Tuesday afternoon, Sharma met police chief Dan Bahadur Karki. Neither side has said what they discussed.'",
+            "CAPTION TRIGGER: Use 'If police took someone from your home at 3am and later called it protection, would you accept that?'",
+            "TAKE (F9): Set to 'The government has now given three names for one 3am police visit to a former Chief Justice. Police said arrest, then security concern, and the government now says rescue. His family says no warrant was shown, and no agency has named the threat. The fallout has reached the sitting Chief Justice, whose fellow judges questioned him about his ties to Rana.'",
+            "METADATA (F13): Set country to 'Nepal' and theme to 'judiciary'. Set tags to ['Cholendra Shumsher Rana', 'Supreme Court', 'Nepal Police', 'Manoj Kumar Sharma']."
+          ],
+          "reason": "The body handles the shifting arrest and rescue labels carefully. But it carries two unsourced favouritism claims against a sitting Chief Justice and a misattributed ruling. It also implies a link between the pension ruling and the police visit. The sources, key_facts, card, caption and take are empty or corrupted, so nothing can be checked or shared, but every problem is fixable in one pass with the edits listed.",
+          "scores": {
+            "accuracy": 45,
+            "relevance": 75,
+            "defensibility": 42,
+            "virality": 15
+          }
+        },
+        "judge_2": {
+          "decision": "revise",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Fixed. Para 7 now credits the September 9 ruling to The Statesman and Nepalnews, and the Nepalnews impeachment explainer URL supports it. The Statesman entry still points to a homepage. See F5."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Fixed. The recommendation claim was cut along with the old para 8."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "Fixed. The 'bypassed three more senior judges' sentence is gone."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Partly fixed. The clock times and the 45 minute figure are gone from the body, dek and unknowns list. The meeting is still credited to Nepalnews, but the only Nepalnews URL is the impeachment explainer. The red team flagged that piece as unrelated to this meeting. That leaves the meeting and the 'understood Karki briefed Sharma' line resting on a source that cannot carry them. Para 5 also says 'Tuesday afternoon' twice."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Not fully fixed. The array now has nine named outlets. But six of them (HimalPress, Ratopati, Radio Nepal Online, Kathmandu Post, The Statesman, OnlineKhabar) list only homepage URLs. The ordered edit asked for the real article URL, and for claims with no URL to be cut."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Partly fixed. The entries are now discrete and readable. But four use homepage URLs, and the Sharma and Karki meeting fact points to the Nepalnews impeachment explainer, which cannot support a September 29 meeting."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "Fixed. The card reads 'EX-CJ RANA TAKEN AT 3AM / GOVT NOW SAYS RESCUE'. Lines are 23 and 20 characters. The plain action runs declarative and the rescue label goes to the government. That meets the card standard."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "Fixed as ordered. Hook, body and trigger match the edit. One problem came in with the prescribed text: 'Sharma's bench cleared Rana's pension case' is wrong. Per the body, the bench dismissed writs and ruled the impeachment motion had lost its purpose, which cleared the way for the pension. The dek repeats the same flattening."
+            },
+            {
+              "finding_id": "F9",
+              "ruling": "sustained",
+              "note": "Fixed. The take matches the edit. The warrant claim is attributed to the family and every fact appears in the body."
+            },
+            {
+              "finding_id": "F10",
+              "ruling": "sustained",
+              "note": "Fixed. The line widening the risk to anyone is gone. The narrow replacement is in place."
+            },
+            {
+              "finding_id": "F11",
+              "ruling": "sustained",
+              "note": "Addressed. The Rising Nepal article URL is now listed for Pokharel's title. I could not independently search it in this pass, so it rests on that listed report."
+            },
+            {
+              "finding_id": "F12",
+              "ruling": "overruled",
+              "note": "The attribution wording stands. But Judge 1 made this conditional on working article URLs for Ratopati and Radio Nepal Online. Both are still homepages, so the condition is not yet met. It is folded into the sources edit."
+            },
+            {
+              "finding_id": "F13",
+              "ruling": "sustained",
+              "note": "Fixed. Country, theme and tags are set. The casing differs from the order, which is cosmetic."
+            }
+          ],
+          "required_edits": [
+            "SOURCES and KEY_FACTS (F5, F6, F12): Replace each homepage URL with the specific article URL behind the claim. That covers HimalPress (Pokharel's 'neither arrested nor taken into custody' on September 29), Ratopati (the 'rescued' quote and the unnamed non Gen Z group), Radio Nepal Online (the text message threat and the family's protection request), Kathmandu Post (the 3am removal, the Gen Z threat account, release to relatives), The Statesman (no warrant shown) and OnlineKhabar (the full court objection, the Monday questioning, the Tuesday meeting, the 'superstore' remark). Put the same article URLs in key_facts. Any body or caption claim whose article URL cannot be located gets cut, with its matching key_fact.",
+            "BODY para 5 and KEY_FACTS: The Nepalnews URL is an impeachment explainer and does not cover the September 29 meeting. Replace the two sentences 'Sharma held a one on one meeting with Dan Bahadur Karki, the Inspector General of Police, Nepal's police chief, on Tuesday afternoon. OnlineKhabar and Nepalnews reported Karki met Sharma at the Supreme Court on Tuesday afternoon.' with 'Sharma met Dan Bahadur Karki, the Inspector General of Police, Nepal's police chief, one on one at the Supreme Court on Tuesday afternoon, OnlineKhabar reported.' Then replace 'Nepalnews reported it is understood Karki briefed Sharma on the Rana case, but neither side has disclosed what else they discussed.' with 'Neither side has disclosed what they discussed.' Keep the Nepalnews briefing line only if a Nepalnews article URL reporting the meeting is added to sources. Point the meeting key_fact to the OnlineKhabar article URL.",
+            "CAPTION BODY, fourth paragraph: Replace 'Sharma's bench cleared Rana's pension case on September 9, Nepalnews reported.' with 'On September 9, Sharma's bench cleared the way for Rana's pension, Nepalnews reported.' This matches body para 7, which rests on The Statesman and Nepalnews.",
+            "DEK: Replace 'whose pension his own bench had just cleared' with 'whose pension his own bench cleared the way for on September 9'. This matches body para 7 and The Statesman and Nepalnews. Keep it under 160 characters.",
+            "BODY para 3: Replace 'later objected to that 10 hour detention, OnlineKhabar reported.' with 'later objected to Rana being held for about 10 hours, OnlineKhabar reported.' This keeps the newsroom's voice on the plain action. 'Detention' can stay only if OnlineKhabar reports the full court used that word, in which case write 'objected to what it called a 10 hour detention'."
+          ],
+          "reason": "Every ordered text edit was applied. The favouritism claims are gone, the card, caption and take are in place, and the labels go to whoever used them. But six sources still list only homepage URLs, and the Sharma and Karki meeting is credited to a Nepalnews explainer that cannot carry it. The caption and dek also flatten a ruling that cleared the way for Rana's pension into one that cleared the pension itself. All of this is fixable in one precise pass.",
+          "scores": {
+            "accuracy": 78,
+            "relevance": 80,
+            "defensibility": 78,
+            "virality": 58
+          }
+        },
+        "revisions": [
+          {
+            "after": "judge_1",
+            "required_edits": [
+              "SOURCES (F5): Rebuild the sources array with one entry per outlet cited in the body: HimalPress, Ratopati, Radio Nepal Online, Kathmandu Post, The Statesman, OnlineKhabar, Setopati, Nepalnews. Include The Rising Nepal if it is used for Pokharel's title. Each entry needs the real article URL and the specific claim it supports. Any body claim whose source URL cannot be found gets cut.",
+              "KEY_FACTS (F6): Replace with discrete entries, each with a real URL from the rebuilt sources array. Cover: Pokharel's 'rescued, not arrested' quote (Ratopati), Rana taken from his home at 3am on September 27, about 10 hours held and released to relatives, the full court's objection (OnlineKhabar), the Monday September 28 full court questioning of Sharma (Setopati, OnlineKhabar), the Tuesday Sharma and Karki meeting (OnlineKhabar, Nepalnews), and the September 9 ruling (The Statesman, Nepalnews).",
+              "BODY para 7 (F1): Change 'the Kathmandu Post and OnlineKhabar reported' to 'The Statesman and Nepalnews reported'. Keep the original pair only if a Kathmandu Post or OnlineKhabar URL confirming the ruling is added to sources.",
+              "BODY para 7: Delete the sentence 'Weeks later, police were at Rana's door at 3am.' No source links the ruling to the police visit.",
+              "BODY para 7: Replace 'The judges' questions about Sharma's ties to Rana point to a documented record, not vague suspicion.' with 'One public record links the two men.' The body's own unknowns list says what the judges meant is not known.",
+              "BODY para 8 (F2, F3): Delete the whole paragraph beginning 'The two men's history runs deeper still.' That covers both the recommendation sentence and the 'bypassed three more senior judges' sentence. Reinstate either only with a located, dated URL added to sources and the claim attributed to that outlet.",
+              "BODY para 5 (F4): Replace 'OnlineKhabar and Nepalnews reported Karki arrived at the Supreme Court at 4pm and the two spoke until roughly 4:45pm.' with 'OnlineKhabar and Nepalnews reported Karki met Sharma at the Supreme Court on Tuesday afternoon.' Also remove '45 minute' from 'a 45 minute one on one meeting' and from the dek and unknowns list, unless the original articles confirm the duration.",
+              "BODY para 5: Replace 'Hours after the full court objected,' with the dated sequence from OnlineKhabar. Example: 'A day after the full court met on Monday, September 28,'. Use whatever date OnlineKhabar gives for the objection. The piece currently says 'hours after' while dating the full court meeting to the previous day.",
+              "BODY para 3: Replace 'after about 10 hours in custody' with 'after being held about 10 hours'. The government disputes 'custody', and house style keeps the newsroom's voice on the plain action.",
+              "BODY para 4 (F10): Replace 'This matters beyond one man. Rana headed Nepal's top court for four years. If a former Chief Justice can be taken ... needs \"protecting.\"' with 'Rana once headed Nepal's top court. Yet the official account of one night at his home changed three times in three days.' If his tenure is kept, attribute it to a listed source.",
+              "BODY para 9: Replace 'Officials cannot even agree on why Rana needed protecting.' with 'Accounts differ on who threatened Rana.' The family is not an official.",
+              "BODY unknowns list, third bullet: Fix the garbled 'What Sharma and Karki experienced discussed' to 'What Sharma and Karki discussed'.",
+              "POKHAREL TITLE (F11): Confirm 'Education Minister and government spokesperson' against a dated report and add it to sources. If the report gives a different title, use that title.",
+              "IMAGE_HEADLINE (F7): Set it to 'EX-CJ RANA TAKEN AT 3AM\\nGOVT NOW SAYS RESCUE'. Line 1 is 23 characters and line 2 is 20. The plain action runs declarative and the rescue label is attributed to the government.",
+              "CAPTION HOOK (F8): Use 'Police took a former Chief Justice from his home at 3am. Three days on, officials have given three names for what happened.'",
+              "CAPTION BODY: Short paragraphs separated by blank lines. Sentences under 20 words, one number per sentence, attribution at the end. Text: 'Police first called it an arrest. Hours later they said it was a security case. On Tuesday the government said Cholendra Shumsher Rana was rescued, not arrested. Ratopati reported. [blank line] Rana was held about 10 hours. The Supreme Court's full court objected, OnlineKhabar reported. [blank line] His family said no warrant was shown, The Statesman reported. No agency has named the threat. [blank line] Judges then questioned Chief Justice Manoj Kumar Sharma about his ties to Rana, Setopati reported. Sharma's bench cleared Rana's pension case on September 9, Nepalnews reported. [blank line] On Tuesday afternoon, Sharma met police chief Dan Bahadur Karki. Neither side has said what they discussed.'",
+              "CAPTION TRIGGER: Use 'If police took someone from your home at 3am and later called it protection, would you accept that?'",
+              "TAKE (F9): Set to 'The government has now given three names for one 3am police visit to a former Chief Justice. Police said arrest, then security concern, and the government now says rescue. His family says no warrant was shown, and no agency has named the threat. The fallout has reached the sitting Chief Justice, whose fellow judges questioned him about his ties to Rana.'",
+              "METADATA (F13): Set country to 'Nepal' and theme to 'judiciary'. Set tags to ['Cholendra Shumsher Rana', 'Supreme Court', 'Nepal Police', 'Manoj Kumar Sharma']."
+            ],
+            "version": 2
+          },
+          {
+            "after": "judge_2",
+            "required_edits": [
+              "SOURCES and KEY_FACTS (F5, F6, F12): Replace each homepage URL with the specific article URL behind the claim. That covers HimalPress (Pokharel's 'neither arrested nor taken into custody' on September 29), Ratopati (the 'rescued' quote and the unnamed non Gen Z group), Radio Nepal Online (the text message threat and the family's protection request), Kathmandu Post (the 3am removal, the Gen Z threat account, release to relatives), The Statesman (no warrant shown) and OnlineKhabar (the full court objection, the Monday questioning, the Tuesday meeting, the 'superstore' remark). Put the same article URLs in key_facts. Any body or caption claim whose article URL cannot be located gets cut, with its matching key_fact.",
+              "BODY para 5 and KEY_FACTS: The Nepalnews URL is an impeachment explainer and does not cover the September 29 meeting. Replace the two sentences 'Sharma held a one on one meeting with Dan Bahadur Karki, the Inspector General of Police, Nepal's police chief, on Tuesday afternoon. OnlineKhabar and Nepalnews reported Karki met Sharma at the Supreme Court on Tuesday afternoon.' with 'Sharma met Dan Bahadur Karki, the Inspector General of Police, Nepal's police chief, one on one at the Supreme Court on Tuesday afternoon, OnlineKhabar reported.' Then replace 'Nepalnews reported it is understood Karki briefed Sharma on the Rana case, but neither side has disclosed what else they discussed.' with 'Neither side has disclosed what they discussed.' Keep the Nepalnews briefing line only if a Nepalnews article URL reporting the meeting is added to sources. Point the meeting key_fact to the OnlineKhabar article URL.",
+              "CAPTION BODY, fourth paragraph: Replace 'Sharma's bench cleared Rana's pension case on September 9, Nepalnews reported.' with 'On September 9, Sharma's bench cleared the way for Rana's pension, Nepalnews reported.' This matches body para 7, which rests on The Statesman and Nepalnews.",
+              "DEK: Replace 'whose pension his own bench had just cleared' with 'whose pension his own bench cleared the way for on September 9'. This matches body para 7 and The Statesman and Nepalnews. Keep it under 160 characters.",
+              "BODY para 3: Replace 'later objected to that 10 hour detention, OnlineKhabar reported.' with 'later objected to Rana being held for about 10 hours, OnlineKhabar reported.' This keeps the newsroom's voice on the plain action. 'Detention' can stay only if OnlineKhabar reports the full court used that word, in which case write 'objected to what it called a 10 hour detention'."
+            ],
+            "version": 3
+          }
+        ],
+        "judge_2_recheck": {
+          "decision": "approve",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Fixed. Paragraph 7 and the caption now credit the September 9 ruling to The Statesman and Nepalnews, and the Nepalnews impeachment explainer is listed. One small flaw: the key_fact for this ruling points to The Statesman's no warrant article instead of the Nepalnews explainer. Both are listed sources, so the claim still traces."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Fixed. The claim that Rana recommended Sharma was cut and has not come back in version 3."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "Fixed. The line about bypassing three more senior judges is gone. Nothing like it appears in the dek, take or caption."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Fixed. There are no clock times and no 45 minute figure. Paragraph 5 now credits the meeting to OnlineKhabar alone and says 'Tuesday afternoon' once. The Nepalnews briefing line is gone and replaced with 'Neither side has disclosed what they discussed.'"
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Fixed as ordered. All nine sources now carry article-level URLs tied to specific claims. No homepages remain. My searches hit the tool limit, so I could not open the URLs myself. They rest on the listed records."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Fixed. Key facts are discrete and every one points to an article URL. The meeting fact now points to OnlineKhabar, not the Nepalnews explainer."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "Holds. 'EX-CJ RANA TAKEN AT 3AM / GOVT NOW SAYS RESCUE' has lines of 23 and 20 characters and no colon. The plain action runs declarative and the rescue label goes to the government."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "Fixed. The caption now reads 'On September 9, Sharma's bench cleared the way for Rana's pension, Nepalnews reported.' That matches body paragraph 7. The hook opens on the action, not an attribution verb, and the trigger rests on the record."
+            },
+            {
+              "finding_id": "F9",
+              "ruling": "sustained",
+              "note": "Holds. Every fact in the take appears in the body. The warrant claim goes to the family, and the take names no expert the body does not quote."
+            },
+            {
+              "finding_id": "F10",
+              "ruling": "sustained",
+              "note": "Holds. The line widening the risk to everyone stays out, and the narrow line about three accounts in three days is in place."
+            },
+            {
+              "finding_id": "F11",
+              "ruling": "sustained",
+              "note": "Addressed. Pokharel's title rests on the listed Rising Nepal article. I could not run an independent search in this pass."
+            },
+            {
+              "finding_id": "F12",
+              "ruling": "overruled",
+              "note": "The attribution wording was already correct. The condition was working article URLs for Ratopati and Radio Nepal Online, and both are now listed."
+            },
+            {
+              "finding_id": "F13",
+              "ruling": "sustained",
+              "note": "Fixed. Country, theme and tags are set. The casing is cosmetic."
+            }
+          ],
+          "required_edits": [],
+          "reason": "All five version 3 edits were made. Sources and key facts carry article URLs. The meeting rests on OnlineKhabar alone. The dek and caption now say the ruling cleared the way for the pension. The full court objection keeps the plain action. The dates check out: September 27, 2026 was a Sunday. The dek is 149 characters and the card lines are 23 and 20. A full reread found no new unsourced claim and no status stated in the newsroom's voice, so the piece clears the accuracy and defensibility targets. I could not verify the URLs by search because the tool limit was hit, and virality sits right at the target because the stakes are mostly institutional.",
+          "scores": {
+            "accuracy": 87,
+            "relevance": 80,
+            "defensibility": 88,
+            "virality": 61
+          }
+        }
+      }
+    ],
+    "final_decision": "approved",
+    "final_reason": "Judge 2: All five version 3 edits were made. Sources and key facts carry article URLs. The meeting rests on OnlineKhabar alone. The dek and caption now say the ruling cleared the way for the pension. The full court objection keeps the plain action. The dates check out: September 27, 2026 was a Sunday. The dek is 149 characters and the card lines are 23 and 20. A full reread found no new unsourced claim and no status stated in the newsroom's voice, so the piece clears the accuracy and defensibility targets. I could not verify the URLs by search because the tool limit was hit, and virality sits right at the target because the stakes are mostly institutional.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Government says ex-Chief Justice Rana was rescued not arrested",
+          "entity": "",
+          "found": {}
+        }
+      ],
+      "requests": 14,
+      "candidates": 0,
+      "shown": 0,
+      "rounds": 0,
+      "decision": "generated",
+      "reason": "No licensed photo of any subject turned up in Wikimedia Commons or Openverse."
+    }
+  },
+  "updates": [],
+  "run_date": "2026-09-30",
+  "published_at": "2026-09-30T00:54:38+00:00",
+  "version": 3
+}
