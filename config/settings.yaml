@@ -90,7 +90,8 @@ pipeline:
   # story investigator 1, writer 1, picture check 1, red team 1, defence 1, judges 2, reviser 1,
   # Nepali writer 3 and Nepali editor 2. The worst day, every send back the caps allow and a
   # second picture round for each story, is 55.
-  max_llm_calls: 60
+  # 66 from 30 September: the Nepali editor's final reading adds one call a story (53 calls that day).
+  max_llm_calls: 66
 
 llm:
   # Default model and thinking effort for every role. Override a role under `roles`.

@@ -538,6 +538,9 @@ def cmd_reel(args) -> int:
     if article is None:
         print(f"No stored story {args.article}.")
         return 2
+    if (article.nepali or {}).get("held"):
+        print(f"::error::{article.id} is held: the Nepali editor's final reading still found a fact wrong, so it gets no Reel.")
+        return 1
     try:
         beats, caption = reel.load_beats(settings, article.id)
         sound = reel.load_sound(settings, article.id)
@@ -606,7 +609,7 @@ def cmd_nepali(args) -> int:
     print(f"Writing {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'} in Nepali: a writer call, then up to {rounds} editor reading{'s' if rounds != 1 else ''} with a fix after each.")
     # Writer, then editor and fix per round, at most. Stories are written a few at a time.
     workers = int(settings.get("pipeline.concurrency", 1) or 1)
-    llm = make_llm(settings, UsageMeter((1 + 2 * rounds) * len(wanted)))
+    llm = make_llm(settings, UsageMeter((2 + 2 * rounds) * len(wanted)))  # the draft, a reading and a fix a round, the final reading
     results = nepali.backfill(settings, llm, wanted, workers=workers)
     for article_id, status, detail in results:
         print(f"{status:10} {article_id}  {detail}")

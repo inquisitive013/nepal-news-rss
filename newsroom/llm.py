@@ -950,7 +950,7 @@ class MockLLM(BaseLLM):
     def _nepali_editor(self, p, _images):
         if "सच्याइएको" in p["nepali"].get("body_markdown", "") or not self.send_back_nepali:
             return {"decision": "approve", "problems": [], "reason": "Faithful to the record and reads as Nepali writing."}
-        return {"decision": "revise", "problems": [{"passage": "चेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।", "problem": "the record attributes this to the police", "fix": "प्रहरीका अनुसार चेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।"}], "reason": "One attribution lost."}
+        return {"decision": "revise", "problems": [{"passage": "चेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।", "problem": "the record attributes this to the police", "fix": "प्रहरीका अनुसार चेतावनी प्रणालीले सूचना दिनुअघि नै नदी बढिसकेको थियो।", "severity": "fact"}], "reason": "One attribution lost."}
 
     # -- images ------------------------------------------------------------
     def _image_picker(self, p, images):

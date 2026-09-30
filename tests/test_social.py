@@ -944,3 +944,20 @@ def test_the_card_source_line_names_the_outlets_the_story_cites_most(tmp_path):
     assert outlets.ranked_sources(art) == ["OnlineKhabar English", "The Kathmandu Post", "Nepal Press", "Ratopati", "Nagarik News", "DC Nepal"]
     from newsroom import graphic
     assert graphic.source_names(art) == outlets.ranked_sources(art)  # all six on the card, none cut
+
+
+def test_a_held_nepali_piece_keeps_the_story_off_facebook(tmp_path):
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.nepali = {"headline": "शीर्षक", "body_markdown": "बडी", "held": True, "fact_problems": ["a number the record does not carry"]}
+    publish.save_article(settings, art)
+    calls = []
+
+    def handler(request):
+        calls.append(str(request.url))
+        return httpx.Response(200, json={"id": "111", "post_id": "111_1"})
+
+    env = {"FACEBOOK_PAGE_ID": "111", "FACEBOOK_PAGE_TOKEN": "EAABfaketoken_1234567890abcdefghijklmnop"}
+    rec = social.post_article(settings, art, env, httpx.Client(transport=httpx.MockTransport(handler)), networks=["facebook"], sleep=lambda s: None)
+    assert not any("/photos" in c or "/feed" in c for c in calls)
+    assert rec.posts[-1].status == "skipped" and "held" in rec.posts[-1].error
