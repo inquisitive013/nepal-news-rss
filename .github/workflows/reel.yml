@@ -1,0 +1,71 @@
+name: Post a Reel
+
+on:
+  workflow_dispatch:
+    inputs:
+      article_id:
+        description: "The stored story, such as 2026-09-30-mukesh-pal-5000m-national-record-asian-games. Its beats live in data/reels/<id>.json."
+        type: string
+        required: true
+      publish:
+        description: "Put the Reel on the Facebook Page. Off renders it only, to download and watch first."
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: reel
+  cancel-in-progress: false
+
+jobs:
+  reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install
+        run: pip install -r requirements.txt
+
+      - name: Render, and post when asked
+        env:
+          META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+          ARTICLE: ${{ inputs.article_id }}
+          PUBLISH: ${{ inputs.publish == true && '1' || '' }}
+        run: |
+          case "$ARTICLE" in ""|*[!a-z0-9-]*) echo "::error::article_id must be a story id such as 2026-09-30-some-story, not '$ARTICLE'."; exit 1 ;; esac
+          args=(reel --article "$ARTICLE" --out out/reels/reel.mp4)
+          [ -n "$PUBLISH" ] && args+=(--publish)
+          set -o pipefail
+          python -m newsroom "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the video for a look
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel
+          path: out/reels/
+          if-no-files-found: ignore
+
+      - name: Record the Reel
+        if: always()
+        run: |
+          git config user.name "nepal-wire-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A data/social
+          if git diff --cached --quiet; then
+            echo "Nothing new to record."
+          else
+            git commit -m "Reel $(TZ=Asia/Kathmandu date +%F)"
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi

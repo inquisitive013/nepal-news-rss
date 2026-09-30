@@ -6,3 +6,5 @@ PyYAML>=6.0,<7
 Pillow>=10.0
 Markdown>=3.6,<4
 python-dateutil>=2.9
+# ffmpeg for the Facebook Reel, bundled so every runner has the same encoder.
+imageio-ffmpeg>=0.5
