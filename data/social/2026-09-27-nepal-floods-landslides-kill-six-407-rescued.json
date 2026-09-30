@@ -10,7 +10,20 @@
    "url": "https://www.facebook.com/320310335059937_1737366904949420",
    "error": "",
    "posted_at": "2026-09-27T04:16:57+00:00",
-   "scheduled_for": ""
+   "scheduled_for": "",
+   "edited_at": "",
+   "metrics": {
+    "72h": {
+     "at": "2026-09-30T06:43:40+00:00",
+     "hours": 74.4,
+     "viewers": 2,
+     "views": 23,
+     "shares": 0,
+     "comments": 0,
+     "reactions": 0
+    }
+   },
+   "comment_desk": []
   }
  ]
 }
