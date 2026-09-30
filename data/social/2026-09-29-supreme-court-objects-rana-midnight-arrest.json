@@ -11,7 +11,9 @@
    "error": "taken down 2026-09-29T16:36:17+00:00 and replaced by a corrected post",
    "posted_at": "2026-09-29T01:21:22+00:00",
    "scheduled_for": "",
-   "edited_at": ""
+   "edited_at": "",
+   "metrics": {},
+   "comment_desk": []
   },
   {
    "network": "facebook",
@@ -22,7 +24,9 @@
    "error": "",
    "posted_at": "2026-09-29T16:36:24+00:00",
    "scheduled_for": "",
-   "edited_at": "2026-09-29T16:54:14+00:00"
+   "edited_at": "2026-09-29T16:54:14+00:00",
+   "metrics": {},
+   "comment_desk": []
   }
  ]
 }
