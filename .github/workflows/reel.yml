@@ -15,6 +15,10 @@ on:
         description: "With publish: post even though this story already has a Reel on the Page, such as a new cut with sound. The earlier Reel stays up."
         type: boolean
         default: false
+      take_down:
+        description: "Only at the Page owner's request: the id of this story's live Reel to take down. With publish, it comes down after the new one is up."
+        type: string
+        default: ""
 
 permissions:
   contents: write
@@ -46,11 +50,14 @@ jobs:
           ARTICLE: ${{ inputs.article_id }}
           PUBLISH: ${{ inputs.publish == true && '1' || '' }}
           AGAIN: ${{ inputs.again == true && '1' || '' }}
+          TAKE_DOWN: ${{ inputs.take_down }}
         run: |
           case "$ARTICLE" in ""|*[!a-z0-9-]*) echo "::error::article_id must be a story id such as 2026-09-30-some-story, not '$ARTICLE'."; exit 1 ;; esac
           args=(reel --article "$ARTICLE" --out out/reels/reel.mp4)
           [ -n "$PUBLISH" ] && args+=(--publish)
           [ -n "$AGAIN" ] && args+=(--again)
+          case "$TAKE_DOWN" in *[!0-9]*) echo "::error::take_down must be a Reel id, digits only, not '$TAKE_DOWN'."; exit 1 ;; esac
+          [ -n "$TAKE_DOWN" ] && args+=(--take-down "$TAKE_DOWN")
           set -o pipefail
           python -m newsroom "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 
