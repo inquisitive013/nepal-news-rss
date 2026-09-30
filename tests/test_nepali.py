@@ -73,12 +73,13 @@ def test_a_send_back_is_fixed_and_read_again(tmp_path):
     assert settings.web_search_uses("nepali_writer") > 0
 
 
-def test_one_round_means_one_reading_and_the_fix_still_lands(tmp_path):
+def test_one_round_means_one_reading_one_fix_and_a_final_reading(tmp_path):
+    """Until 30 September the last round's fixes went out unread; now the editor reads what publishes."""
     settings = _settings(tmp_path, nepali_rounds=1)
     llm = MockLLM(settings, UsageMeter(10), send_back_nepali=True)
     ne = nepali.nepali_for(llm, settings, _article())
-    assert llm.calls == ["nepali_writer", "nepali_editor", "nepali_writer"]
-    assert "सच्याइएको" in ne["body_markdown"] and ne["passes"] == 1 and ne["approved"] is False and ne["checked"] is True
+    assert llm.calls == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor"]
+    assert "सच्याइएको" in ne["body_markdown"] and ne["passes"] == 2 and ne["approved"] is True and ne["held"] is False
 
 
 def test_usable_needs_a_headline_and_a_body():
@@ -214,9 +215,9 @@ def test_by_default_the_writer_applies_every_fix(tmp_path):
     settings = _settings(tmp_path, nepali_rounds=1)
     assert settings.get("pipeline.nepali_fix", "rewrite") == "rewrite"
     placed = {"passage": "चेतावनी प्रणाली असफल भयो।", "problem": "p", "fix": "f"}
-    llm = ScriptedLLM(PIECE, {"decision": "revise", "problems": [placed], "reason": "r"}, {**PIECE, "take": "लेखकले मिलाएको।"})
+    llm = ScriptedLLM(PIECE, {"decision": "revise", "problems": [placed], "reason": "r"}, {**PIECE, "take": "लेखकले मिलाएको।"}, {"decision": "approve", "problems": [], "reason": "ok"})
     ne = nepali.nepali_for(llm, settings, _article())
-    assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer"] and ne["fixed_in_place"] == 0
+    assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor"] and ne["fixed_in_place"] == 0
     # The fix pass changes what the fixes name and keeps every other sentence, and every source, where it was.
     fix_text = llm.texts[2]
     assert "word for word" in fix_text and "source" in fix_text and "re-read the whole piece" not in fix_text
@@ -316,3 +317,32 @@ def test_the_trial_command_saves_nothing(tmp_path, monkeypatch, capsys):
     [saved] = json.loads((tmp_path / "one" / "nepali-trial.json").read_text(encoding="utf-8"))
     assert "rewrite" in saved and "in_place" not in saved and "records" not in saved["rewrite"]
     assert sorted(p.name for p in (cli.ROOT / "data").rglob("*")) == before
+
+
+WRONG = {"passage": "चेतावनी प्रणाली असफल भयो।", "problem": "the record attributes this to the police", "fix": "प्रहरीका अनुसार चेतावनी ढिलो आयो।", "severity": "fact"}
+CLUMSY = {"passage": "नदी बढ्यो।", "problem": "reads like English word order", "fix": "नदी बढ्यो।", "severity": "language"}
+
+
+def test_a_fact_still_wrong_at_the_final_reading_holds_the_piece(tmp_path):
+    settings = _settings(tmp_path, nepali_rounds=2)
+    revise = {"decision": "revise", "problems": [WRONG, CLUMSY], "reason": "r"}
+    llm = ScriptedLLM(PIECE, revise, PIECE, revise, PIECE, revise)
+    ne = nepali.nepali_for(llm, settings, _article())
+    assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor"]
+    assert ne["held"] is True and ne["approved"] is False and ne["passes"] == 3
+    assert ne["fact_problems"] == ["the record attributes this to the police"] and ne["language_notes"] == 1
+    assert not nepali.usable(ne)  # no Nepali page, card, caption or Reel
+
+
+def test_language_notes_alone_never_hold_a_piece(tmp_path):
+    settings = _settings(tmp_path, nepali_rounds=1)
+    llm = ScriptedLLM(PIECE, {"decision": "revise", "problems": [CLUMSY], "reason": "r"}, PIECE, {"decision": "revise", "problems": [CLUMSY], "reason": "r"})
+    ne = nepali.nepali_for(llm, settings, _article())
+    assert ne["held"] is False and ne["approved"] is True and ne["fact_problems"] == [] and ne["language_notes"] == 1
+    assert nepali.usable(ne)
+
+
+def test_an_unmarked_problem_counts_as_a_fact():
+    assert nepali.facts([{"problem": "x"}]) == [{"problem": "x"}]
+    assert nepali.facts([{"problem": "x", "severity": "language"}]) == []
+    assert nepali.facts([{"problem": "x", "severity": "FACT"}]) == [{"problem": "x", "severity": "FACT"}]

@@ -250,3 +250,15 @@ def test_take_down_touches_only_the_named_reel_after_the_new_one_is_up(tmp_path,
     posts = {p.id: p for p in social.load_record(settings, art).posts}
     assert posts["old1"].status == "removed" and "owner's request, replaced by Reel new1" in posts["old1"].error
     assert posts["new1"].status == "posted" and posts["111_photo1"].status == "posted"
+
+
+def test_a_held_story_gets_no_reel(tmp_path, monkeypatch, capsys):
+    from newsroom import __main__ as cli
+
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    art.nepali = {"headline": "शीर्षक", "body_markdown": "बडी", "held": True}
+    monkeypatch.setattr(cli, "_settings", lambda args: settings)
+    monkeypatch.setattr(cli.publish, "load_articles", lambda s: [art])
+    assert cli.main(["reel", "--article", AID, "--publish"]) == 1
+    assert "is held" in capsys.readouterr().out

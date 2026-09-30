@@ -49,7 +49,16 @@ CHECK_SCHEMA = {
         "decision": {"type": "string", "enum": ["approve", "revise"]},
         "problems": {
             "type": "array",
-            "items": {"type": "object", "properties": {"passage": {"type": "string"}, "problem": {"type": "string"}, "fix": {"type": "string"}}},
+            "items": {
+                "type": "object",
+                "properties": {
+                    "passage": {"type": "string"},
+                    "problem": {"type": "string"},
+                    "fix": {"type": "string"},
+                    # fact: fidelity to the record and the legal standard; language: craft and completeness.
+                    "severity": {"type": "string", "enum": ["fact", "language"]},
+                },
+            },
         },
         "reason": {"type": "string"},
     },
@@ -152,7 +161,13 @@ def apply_fixes(piece: dict[str, Any], problems: list[dict[str, Any]]) -> tuple[
 
 
 def usable(nepali: dict[str, Any] | None) -> bool:
-    return bool(nepali and nepali.get("headline") and nepali.get("body_markdown"))
+    """A piece to publish: written, and not held for a fact the editor's final reading still found wrong."""
+    return bool(nepali and nepali.get("headline") and nepali.get("body_markdown") and not nepali.get("held"))
+
+
+def facts(problems: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """The problems that hold a piece: every one not marked language. An unmarked problem counts as a fact."""
+    return [p for p in problems if str(p.get("severity") or "fact").strip().lower() != "language"]
 
 
 def wanting(settings: Settings, *, only: list[str] | None = None, everything: bool = False, limit: int = 0) -> list[Article]:
@@ -218,22 +233,36 @@ def nepali_for(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, 
     rounds = max(1, int(settings.get("pipeline.nepali_rounds", 2) or 1))
     in_place = settings.get("pipeline.nepali_fix", "rewrite") == "in_place"
     passes = fixed = fixed_in_place = 0
-    approved = False
     reason = ""
+    problems: list[dict[str, Any]] = []
+    unread = False  # a fix went in after the editor's last reading
     for _ in range(rounds):
         check = _read(llm, record, piece)
         passes += 1
         reason = str(check.get("reason", "") or "").strip()
         problems = check["problems"]
-        approved = check.get("decision", "approve") == "approve" or not problems
-        if approved:
+        unread = False
+        if check.get("decision", "approve") == "approve" or not problems:
             break
         piece, placed = fix_piece(llm, record, piece, problems, in_place=in_place)
         fixed += len(problems)
         fixed_in_place += placed
+        unread = True
+    if unread:
+        # The text that publishes is the text the editor last read. Until 30 September the last
+        # round's fixes went out unread, and every piece from 27 September on ended unapproved.
+        check = _read(llm, record, piece)
+        passes += 1
+        reason = str(check.get("reason", "") or "").strip()
+        problems = check["problems"] if check.get("decision", "approve") != "approve" else []
+    left = facts(problems)
     piece = _clean(piece)  # a fix written in place never passed through the cleaner
     piece["checked"] = True
-    piece["approved"] = approved
+    piece["approved"] = not left
+    # A fact still wrong after the final reading holds the piece: no Nepali page, card, caption or Reel.
+    piece["held"] = bool(left)
+    piece["fact_problems"] = [str(p.get("problem") or "").strip()[:300] for p in left][:10]
+    piece["language_notes"] = len(problems) - len(left)
     piece["passes"] = passes
     piece["problems_fixed"] = fixed
     piece["fixed_in_place"] = fixed_in_place

@@ -969,6 +969,11 @@ def post_article(
     for network in networks if networks is not None else configured_networks(settings, environ):
         if network in done or (edit and network != "facebook"):
             continue
+        if network == "facebook" and (article.nepali or {}).get("held"):
+            # Facebook carries the Nepali card and caption; a fact the editor's final reading still
+            # found wrong keeps the story off the Page until a person fixes it.
+            rec.posts.append(Post(network=network, status="skipped", error="held: the Nepali editor's final reading still found a fact wrong", posted_at=utcnow_iso()))
+            continue
         text = compose(network, article, settings)
         if dry_run:
             rec.posts.append(Post(network=network, status="skipped", text=text, error="dry run"))
