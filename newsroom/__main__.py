@@ -526,6 +526,49 @@ def cmd_comments(args) -> int:
     return 0
 
 
+def cmd_reel(args) -> int:
+    """Render a story's Reel from its beats file; with --publish, put it on the Facebook Page and record it."""
+    import httpx
+
+    from . import reel, social
+    from .models import utcnow_iso
+
+    settings = _settings(args)
+    article = next((a for a in publish.load_articles(settings) if a.id == args.article), None)
+    if article is None:
+        print(f"No stored story {args.article}.")
+        return 2
+    try:
+        beats, caption = reel.load_beats(settings, article.id)
+        out = reel.render_reel(settings, article, beats, Path(args.out) if args.out else settings.root / "out" / "reels" / f"{article.id}.mp4")
+    except reel.ReelError as exc:
+        print(f"::error::{exc}")
+        return 1
+    print(f"Reel for {article.id}: {reel.timeline(beats)[-1][1]:.1f} seconds, {out.stat().st_size // 1024} KB.")
+    if not args.publish:
+        print("Rendered only. Run again with --publish to put it on the Page.")
+        return 0
+    if not all(os.environ.get(k, "").strip() for k in social.ENV_KEYS["facebook"]):
+        print("Facebook is not connected, so the Reel was not posted.")
+        return 1
+    rec = social.load_record(settings, article)
+    if any(p.network == "facebook_reel" and p.status == "posted" for p in rec.posts) and not args.again:
+        print("This story's Reel is already on the Page. Add --again to post another.")
+        return 0
+    with httpx.Client(timeout=60) as client:
+        try:
+            video_id, url = reel.publish_reel(client, os.environ, out, caption)
+        except social.SocialError as exc:
+            rec.posts.append(social.Post(network="facebook_reel", status="failed", text=caption, error=str(exc)[:500], posted_at=utcnow_iso()))
+            social.save_record(settings, rec)
+            print(f"::error::The Reel was not posted: {str(exc)[:300]}")
+            return 1
+    rec.posts.append(social.Post(network="facebook_reel", status="posted", text=caption, id=video_id, url=url, posted_at=utcnow_iso()))
+    social.save_record(settings, rec)
+    print(f"Posted the Reel: {url or 'video ' + video_id}")
+    return 0
+
+
 def cmd_nepali(args) -> int:
     """Write the Nepali edition of stored stories. By default only the ones without one."""
     from . import nepali
@@ -758,6 +801,13 @@ def main(argv=None) -> int:
     p_com.add_argument("--dry-run", action="store_true", help="sort the comments and draft the replies, post and save nothing")
     p_com.add_argument("--window-minutes", type=int, default=0, help="with --dry-run: read posts this many minutes old, to test on older posts")
     p_com.set_defaults(func=cmd_comments)
+
+    p_reel = sub.add_parser("reel", help="render a story's Facebook Reel from data/reels/<id>.json; --publish puts it on the Page")
+    p_reel.add_argument("--article", required=True, help="the stored story's id")
+    p_reel.add_argument("--out", default="", help="where to write the MP4 (default out/reels/<id>.mp4)")
+    p_reel.add_argument("--publish", action="store_true", help="post the Reel to the Facebook Page and record it")
+    p_reel.add_argument("--again", action="store_true", help="with --publish: post even though this story already has a Reel on the Page")
+    p_reel.set_defaults(func=cmd_reel)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")
     p_socchk.set_defaults(func=cmd_social_check)
