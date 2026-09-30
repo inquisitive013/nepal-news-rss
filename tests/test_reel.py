@@ -200,3 +200,53 @@ def test_a_clip_needs_its_words_and_a_named_file_must_exist(tmp_path):
     _beats(settings, beats=[{"seconds": 1, "lines": [["क", 80, "white"]], "say": "क", "audio": "data/reels/audio/missing.mp3"}])
     with pytest.raises(reel.ReelError, match="which is not there"):
         reel.load_beats(settings, AID)
+
+
+def test_take_down_touches_only_the_named_reel_after_the_new_one_is_up(tmp_path, monkeypatch, capsys):
+    from newsroom import __main__ as cli
+
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    video = tmp_path / "reel.mp4"
+    video.write_bytes(b"\x00" * 100)
+    monkeypatch.setattr(cli, "_settings", lambda args: settings)
+    monkeypatch.setattr(cli.publish, "load_articles", lambda s: [art])
+    monkeypatch.setattr(reel, "load_beats", lambda s, aid: ([reel.Beat([reel.Line("क")], 4.0)], "कीर्तिमान"))
+    monkeypatch.setattr(reel, "load_sound", lambda s, aid: reel.Sound())
+    monkeypatch.setattr(reel, "render_reel", lambda *a, **k: video)
+    for key, value in ENV.items():
+        monkeypatch.setenv(key, value)
+    social.save_record(settings, social.SocialRecord(article_id=AID, posts=[
+        social.Post(network="facebook", status="posted", id="111_photo1"),
+        social.Post(network="facebook_reel", status="posted", id="old1"),
+    ]))
+    calls = []
+
+    def handler(request):
+        url = request.url
+        if url.path.endswith("/me"):
+            return httpx.Response(200, json={"id": "111"})
+        if url.host == "rupload.facebook.com":
+            calls.append("upload")
+            return httpx.Response(200, json={"success": True})
+        if url.path.endswith("/video_reels"):
+            phase = dict(urllib.parse.parse_qsl(request.content.decode()))["upload_phase"]
+            calls.append(phase)
+            return httpx.Response(200, json={"video_id": "new1"} if phase == "start" else {"success": True})
+        if request.method == "DELETE":
+            calls.append(("delete", url.path.rsplit("/", 1)[-1]))
+            return httpx.Response(200, json={"success": True})
+        return httpx.Response(200, json={})
+
+    real_client = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda *a, **k: real_client(transport=httpx.MockTransport(handler)))
+
+    # a photo post's id is not a Reel of this story: refused before anything is posted
+    assert cli.main(["reel", "--article", AID, "--publish", "--again", "--take-down", "111_photo1"]) == 1
+    assert calls == [] and "not a live Reel of this story" in capsys.readouterr().out
+
+    assert cli.main(["reel", "--article", AID, "--publish", "--again", "--take-down", "old1"]) == 0
+    assert calls == ["start", "upload", "finish", ("delete", "old1")]  # the new cut is up before the old one comes down
+    posts = {p.id: p for p in social.load_record(settings, art).posts}
+    assert posts["old1"].status == "removed" and "owner's request, replaced by Reel new1" in posts["old1"].error
+    assert posts["new1"].status == "posted" and posts["111_photo1"].status == "posted"

@@ -546,27 +546,46 @@ def cmd_reel(args) -> int:
         print(f"::error::{exc}")
         return 1
     print(f"Reel for {article.id}: {reel.timeline(beats)[-1][1]:.1f} seconds, {out.stat().st_size // 1024} KB.")
-    if not args.publish:
+    if not (args.publish or args.take_down):
         print("Rendered only. Run again with --publish to put it on the Page.")
         return 0
     if not all(os.environ.get(k, "").strip() for k in social.ENV_KEYS["facebook"]):
-        print("Facebook is not connected, so the Reel was not posted.")
+        print("Facebook is not connected, so nothing was posted or taken down.")
         return 1
     rec = social.load_record(settings, article)
-    if any(p.network == "facebook_reel" and p.status == "posted" for p in rec.posts) and not args.again:
-        print("This story's Reel is already on the Page. Add --again to post another.")
-        return 0
+    # --take-down names one Reel; only a live Reel of this story, by its id, can be touched.
+    old = next((p for p in rec.posts if p.network == "facebook_reel" and p.status == "posted" and p.id == args.take_down), None) if args.take_down else None
+    if args.take_down and old is None:
+        print(f"::error::{args.take_down} is not a live Reel of this story, so nothing was taken down or posted.")
+        return 1
+    new_id = ""
     with httpx.Client(timeout=60) as client:
-        try:
-            video_id, url = reel.publish_reel(client, os.environ, out, caption)
-        except social.SocialError as exc:
-            rec.posts.append(social.Post(network="facebook_reel", status="failed", text=caption, error=str(exc)[:500], posted_at=utcnow_iso()))
-            social.save_record(settings, rec)
-            print(f"::error::The Reel was not posted: {str(exc)[:300]}")
-            return 1
-    rec.posts.append(social.Post(network="facebook_reel", status="posted", text=caption, id=video_id, url=url, posted_at=utcnow_iso()))
+        if args.publish:
+            if any(p.network == "facebook_reel" and p.status == "posted" for p in rec.posts) and not args.again:
+                print("This story's Reel is already on the Page. Add --again to post another.")
+                return 0
+            try:
+                new_id, url = reel.publish_reel(client, os.environ, out, caption)
+            except social.SocialError as exc:
+                rec.posts.append(social.Post(network="facebook_reel", status="failed", text=caption, error=str(exc)[:500], posted_at=utcnow_iso()))
+                social.save_record(settings, rec)
+                print(f"::error::The Reel was not posted, so nothing was taken down: {str(exc)[:300]}")
+                return 1
+            rec.posts.append(social.Post(network="facebook_reel", status="posted", text=caption, id=new_id, url=url, posted_at=utcnow_iso()))
+            print(f"Posted the Reel: {url or 'video ' + new_id}")
+        if old is not None:
+            # The new cut goes up first, so the story is never missing from the Page.
+            try:
+                social.delete_facebook_post(client, os.environ, old.id)
+            except social.SocialError as exc:
+                old.error = f"could not take it down: {str(exc)[:200]}"
+                social.save_record(settings, rec)
+                print(f"::error::Reel {old.id} is still up: {str(exc)[:300]}")
+                return 1
+            old.status = "removed"
+            old.error = f"taken down {utcnow_iso()} at the owner's request" + (f", replaced by Reel {new_id}" if new_id else "")
+            print(f"Took down Reel {old.id}.")
     social.save_record(settings, rec)
-    print(f"Posted the Reel: {url or 'video ' + video_id}")
     return 0
 
 
@@ -808,6 +827,7 @@ def main(argv=None) -> int:
     p_reel.add_argument("--out", default="", help="where to write the MP4 (default out/reels/<id>.mp4)")
     p_reel.add_argument("--publish", action="store_true", help="post the Reel to the Facebook Page and record it")
     p_reel.add_argument("--again", action="store_true", help="with --publish: post even though this story already has a Reel on the Page")
+    p_reel.add_argument("--take-down", default="", help="take down this story's live Reel with this id, only at the owner's request; with --publish, after the new one is up")
     p_reel.set_defaults(func=cmd_reel)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")
