@@ -113,61 +113,26 @@
     "approved": true,
     "held": false,
     "fact_problems": [],
-    "language_notes": 10,
-    "passes": 5,
+    "language_notes": 3,
+    "passes": 6,
     "problems_fixed": 26,
     "fixed_in_place": 0,
-    "editor": "Every fact, source, number and hedge matches the record, and nothing reads as the newsroom asserting guilt. The headline, card, dek, take and open questions still carry English calques that a Nepali desk would rewrite before publishing.",
+    "editor": "Every number, name, date, attribution and open question matches the record, and no contested claim slips out of its attribution. Three craft fixes remain before publishing: a broken sentence about the Monday toll, a two-sentence dek, and one stiff attribution clause.",
     "language_fixes": [
       {
-        "passage": "हिमलुङ हिमालमा मृत्यु ७ पुग्यो, ९ कामदार अझै बेपत्ता",
-        "problem": "'मृत्यु ७ पुग्यो' is a clipped calque of 'toll rises to seven'. A Nepali desk counts the dead, not the death.",
-        "fix": "हिमलुङ हिमपहिरोमा मृतकको संख्या ७ पुग्यो, ९ कामदार अझै बेपत्ता"
+        "passage": "सोमबार (२८ सेप्टेम्बर) सम्म ४ जनाको मृत्यु भएको र १२ जना बेपत्ता रहेको थियो।",
+        "problem": "The sentence is ungrammatical. It strings two 'भएको/रहेको' clauses onto 'थियो' with no main verb, so the reader cannot follow it.",
+        "fix": "सोमबार (२८ सेप्टेम्बर) सम्म ४ जनाको मृत्यु भइसकेको थियो र १२ जना बेपत्ता थिए।"
       },
       {
-        "passage": "हिमलुङमा मृत्यु ७ पुग्यो",
-        "problem": "The card line has the same calque as the headline.",
-        "fix": "हिमलुङमा मृतक ७ पुगे"
+        "passage": "बुधबार थप तीन शव भेटिए। सञ्चारमाध्यमले यो जानकारी तीन फरक व्यक्तिको नाममा दिएकाले आधिकारिक संख्या कसको हो भन्ने अस्पष्ट छ।",
+        "problem": "The dek runs to two sentences. The style guide asks for one sentence carrying the second most important fact. The first sentence also uses simple past for news that should take the news tense.",
+        "fix": "बुधबार थप तीन शव भेटिएको जानकारी सञ्चारमाध्यमले तीन फरक व्यक्तिको नाममा दिएकाले आधिकारिक संख्या कसको हो भन्ने अस्पष्ट छ।"
       },
       {
-        "passage": "बुधबार थप तीन शव भेटिए, तर सञ्चारमाध्यमले अपडेटको श्रेय तीन फरक व्यक्तिलाई दिँदा आधिकारिक संख्या कसको हो भन्ने अस्पष्ट छ।",
-        "problem": "'अपडेट' and 'श्रेय दिँदा' are English carried into Devanagari. The English says 'and', so the 'तर' adds a contrast the record does not draw.",
-        "fix": "बुधबार थप तीन शव भेटिए। सञ्चारमाध्यमले यो जानकारी तीन फरक व्यक्तिको नाममा दिएकाले आधिकारिक संख्या कसको हो भन्ने अस्पष्ट छ।"
-      },
-      {
-        "passage": "सञ्चारमाध्यमले बुधबारको अपडेटको श्रेय मनाङका प्रमुख जिल्ला अधिकारी, सहायक प्रमुख जिल्ला अधिकारी र पर्वतीय गाइड संघलाई दिएका छन्।",
-        "problem": "'अपडेटको श्रेय दिएका छन्' is English phrasing in both the take and the angle.",
-        "fix": "बुधबारको जानकारी कसैले मनाङका प्रमुख जिल्ला अधिकारीको, कसैले सहायक प्रमुख जिल्ला अधिकारीको र कसैले पर्वतीय गाइड संघको नाममा दिएका छन्।"
-      },
-      {
-        "passage": "बेपत्ता सबै नौ जना नेपाली नागरिक रहेको अधिकारीहरूलाई उद्धृत गर्दै भारतीय समाचार संस्था पीटीआईले जनाएको छ।",
-        "problem": "'उद्धृत गर्दै' is translationese. The guide puts the outlet first and gives the verb to the official.",
-        "fix": "भारतीय समाचार संस्था पीटीआईका अनुसार अधिकारीहरूले बेपत्ता सबै नौ जना नेपाली नागरिक भएको बताएका छन्।"
-      },
-      {
-        "passage": "यो समूह करिब दुई साता अगाडि काठमाडौंबाट मनाङको नार फू क्षेत्रमा रहेको ७,१२६ मिटर अग्लो हिमलुङ हिमालमा डोरी बाँध्न र शरद यामको आरोहणका निम्ति आधार शिविर तयार पार्न पुगेको थियो, ईटीभी भारतले नै जनाएको छ।",
-        "problem": "The sentence runs far past twenty words and carries two ideas. The reporting clause comes after a comma, English style.",
-        "fix": "ईटीभी भारतका अनुसार यो समूह करिब दुई साता अगाडि काठमाडौंबाट मनाङको नार फू क्षेत्रमा रहेको ७,१२६ मिटर अग्लो हिमलुङ हिमाल पुगेको थियो। शरद यामको आरोहणअघि डोरी बाँध्ने र आधार शिविर तयार पार्ने उनीहरूको काम थियो, ईटीभी भारतले लेखेको छ।"
-      },
-      {
-        "passage": "सोही सञ्चारमाध्यमले एनएनएमजिएका अध्यक्ष तुलसिंह गुरुङको भनाइ छुट्टै राखेको छ, \"हामीले आज हिमपहिरोबाट तीनवटा शव निकालेका छौं।\"",
-        "problem": "The quote should come first, with the reporting clause after it, as the guide asks.",
-        "fix": "\"हामीले आज हिमपहिरोबाट तीनवटा शव निकालेका छौं,\" एनएनएमजिएका अध्यक्ष तुलसिंह गुरुङले भनेको नेपालन्युजले छुट्टै उल्लेख गरेको छ।"
-      },
-      {
-        "passage": "बेपत्ता नौ जनाको नाम यस प्रतिवेदनका लागि हेरिएका कुनै पनि रिपोर्टमा अलग अलग उल्लेख भएको छैन।",
-        "problem": "'यस प्रतिवेदनका लागि हेरिएका रिपोर्टमा' is a calque of 'reports reviewed for this story'. It repeats in all three open questions.",
-        "fix": "बेपत्ता नौ जनाको नाम हामीले हेरेका कुनै पनि समाचारमा छुट्टाछुट्टै खुलेको छैन।"
-      },
-      {
-        "passage": "२७ सेप्टेम्बर अघि जारी मौसम चेतावनीले कति कामदार हिमालमै बसे भन्नेमा कुनै असर पार्‍यो कि पारेन भन्ने कुरा यस प्रतिवेदनका लागि हेरिएका रिपोर्टमा उल्लेख छैन।",
-        "problem": "The same calque appears here, inside a chained 'भन्नेमा … भन्ने कुरा' construction.",
-        "fix": "२७ सेप्टेम्बरअघि जारी मौसम चेतावनीका कारण हिमालमा बस्ने कामदारको संख्या फेरियो कि फेरिएन, हामीले हेरेका समाचारमा खुलेको छैन।"
-      },
-      {
-        "passage": "भन्ने कुरा यस प्रतिवेदनका लागि हेरिएको कुनै रिपोर्टमा छैन।",
-        "problem": "The same calque appears in the insurance and payment question.",
-        "fix": "भन्ने हामीले हेरेका कुनै पनि समाचारमा खुलेको छैन।"
+        "passage": "उनीहरू २२ जना कामदारको समूहमा थिए भनी ईटीभी भारतले लेखेको छ।",
+        "problem": "'…थिए भनी … लेखेको छ' is stiff and reads like translation. With 'भनी' the sentence sounds like an office notice, not a reporter.",
+        "fix": "ईटीभी भारतले उनीहरू २२ जना कामदारको समूहमा रहेको लेखेको छ।"
       }
     ]
   },
