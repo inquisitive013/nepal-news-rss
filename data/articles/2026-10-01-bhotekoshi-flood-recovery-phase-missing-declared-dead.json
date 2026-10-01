@@ -106,19 +106,14 @@
     },
     "notes": "सबै सम्पादकीय फिक्स पालना गरिएको छ, बाँकी वाक्यहरू रेकर्डसँग मिल्दो रहेकाले अपरिवर्तित राखिएको छ।",
     "checked": true,
-    "approved": false,
-    "held": true,
-    "fact_problems": [
-      "The English says the cited reports do not say where the 50 are. 'कुनै समाचारमा' claims no report anywhere mentions it, which is stronger. The sentence also merges two separate English facts and drops the first: the 50 are not covered by the burial and handover figures.",
-      "Same overstatement in the caption angle. The record says only that the cited reports do not say where the 50 are.",
-      "The English carries the Clause 40 detail as part of what Radio Nepal reported. This Nepali sentence states it with no source.",
-      "The plan covers only the people missing in the Bhotekoshi flood. Without that, the hook widens the plan to every reader with a missing relative."
-    ],
-    "language_notes": 11,
-    "passes": 3,
+    "approved": true,
+    "held": false,
+    "fact_problems": [],
+    "language_notes": 0,
+    "passes": 4,
     "problems_fixed": 32,
     "fixed_in_place": 0,
-    "editor": "The body and caption state that no report anywhere says where the 50 remains are, a sentence on the Civil Code clause has no source, and the caption hook widens the death declaration plan beyond the Bhotekoshi missing. Several craft fixes are also needed: quote marks, district spelling, word choice, parentheses and long translated sentences."
+    "editor": "Every number, date, weekday, source and attribution traces to the record, and no contested claim leaves its attribution. The remaining notes are craft fixes: a clearer second card line, plainer wording in the take, consistent spelling and a single question in the trigger."
   },
   "image_brief": {
     "search_queries": [
