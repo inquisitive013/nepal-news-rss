@@ -187,6 +187,9 @@ def test_narration_stretches_each_beat_and_plays_over_the_bed(tmp_path, monkeypa
     voiced, between = rms(0.5, 1.0), rms(total - 1.0, 0.3)
     assert voiced > -30  # the words are there
     assert -60 < between < voiced  # the bed plays on under the end card, quieter than the voice
+    # Past the last word to the final frame: until 1 October the bed stopped with the voice.
+    last_word = reel.timeline(beats)[-1][0] + reel.VOICE_LEAD + 0.4
+    assert rms(last_word + 0.05, total - last_word - 0.1) > -60
 
 
 def test_a_clip_needs_its_words_and_a_named_file_must_exist(tmp_path):
@@ -262,3 +265,19 @@ def test_a_held_story_gets_no_reel(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli.publish, "load_articles", lambda s: [art])
     assert cli.main(["reel", "--article", AID, "--publish"]) == 1
     assert "is held" in capsys.readouterr().out
+
+
+def test_a_photo_loses_its_burned_credit_bar_in_the_tall_frame(tmp_path):
+    """1 October: the Bhotekoshi valley photo showed its credit bar cut off along the Reel's bottom edge."""
+    from newsroom import images
+
+    settings = _settings(tmp_path)
+    art = _article(settings, kind="found")
+    img = Image.new("RGB", (1536, 1024), (90, 90, 90))
+    img.paste((255, 0, 0), (0, 1024 - images.credit_bar_height(1024), 1536, 1024))  # where the credit is burned
+    img.save(settings.root / art.image.path)
+    bg = reel.background(settings, art)
+    pixels = list(bg.crop((0, bg.height - 6, bg.width, bg.height)).getdata())
+    red = sum(p[0] for p in pixels) / len(pixels)
+    green = sum(p[1] for p in pixels) / len(pixels)
+    assert red - green < 10

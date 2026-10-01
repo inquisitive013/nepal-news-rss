@@ -25,12 +25,12 @@ on:
         type: boolean
         default: false
       nepali_scope:
-        description: "Which stories the Nepali backfill writes"
+        description: "Which stories the Nepali backfill writes. recheck rewrites nothing: the editor reads each held story as stored, one call a story, and clears the ones it finds no wrong fact in."
         type: choice
-        options: [missing, all]
+        options: [missing, all, recheck]
         default: missing
       nepali_article:
-        description: "Write the Nepali edition for this one article id only, e.g. 2026-09-27-some-slug. Overrides the scope."
+        description: "Write the Nepali edition for this one article id only, e.g. 2026-09-27-some-slug. Overrides missing and all; with recheck the editor reads only this story."
         type: string
         default: ""
       find_photos:
@@ -141,7 +141,12 @@ jobs:
             exit 0
           fi
           if [ -n "${NEWSROOM_BACKFILL}" ]; then
-            if [ -n "${NEWSROOM_BACKFILL_ARTICLE}" ]; then
+            if [ "${NEWSROOM_BACKFILL_SCOPE}" = "recheck" ]; then
+              one=()
+              if [ -n "${NEWSROOM_BACKFILL_ARTICLE}" ]; then one=(--article "${NEWSROOM_BACKFILL_ARTICLE}"); fi
+              echo "Recheck: the Nepali editor reads ${NEWSROOM_BACKFILL_ARTICLE:-every held story} as stored, then rebuilding."
+              python -m newsroom nepali --recheck "${one[@]}" || echo "::warning::A story could not be read again. The log above says why."
+            elif [ -n "${NEWSROOM_BACKFILL_ARTICLE}" ]; then
               echo "Backfill: writing the Nepali edition for ${NEWSROOM_BACKFILL_ARTICLE}, then rebuilding."
               python -m newsroom nepali --article "${NEWSROOM_BACKFILL_ARTICLE}" || echo "::warning::The story could not be written in Nepali. The log above says why."
             else

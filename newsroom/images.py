@@ -865,11 +865,21 @@ def cover_card(headline: str, site_name: str, date_label: str, size: tuple[int, 
 
 # --------------------------------------------------------------------------- finalise
 
+def credit_bar_height(height: int) -> int:
+    """How tall the credit bar is that `_burn_credit` lays along the bottom of a stored picture."""
+    return max(28, int(height * 0.045))
+
+
+def burns_credit(text: str) -> bool:
+    """Whether `_burn_credit` writes this credit line onto the picture."""
+    return bool(text) and _is_latin(text)
+
+
 def _burn_credit(img: Image.Image, text: str) -> Image.Image:
-    if not text or not _is_latin(text):
+    if not burns_credit(text):
         return img
     w, h = img.size
-    bar_h = max(28, int(h * 0.045))
+    bar_h = credit_bar_height(h)
     font = _font(max(14, int(bar_h * 0.55)))
     overlay = Image.new("RGBA", (w, bar_h), (0, 0, 0, 150))
     od = ImageDraw.Draw(overlay)
