@@ -346,3 +346,49 @@ def test_an_unmarked_problem_counts_as_a_fact():
     assert nepali.facts([{"problem": "x"}]) == [{"problem": "x"}]
     assert nepali.facts([{"problem": "x", "severity": "language"}]) == []
     assert nepali.facts([{"problem": "x", "severity": "FACT"}]) == [{"problem": "x", "severity": "FACT"}]
+
+
+HELD = {**PIECE, "checked": True, "approved": False, "held": True, "fact_problems": ["the record attributes this to the police"], "language_notes": 0, "passes": 3, "problems_fixed": 4, "editor": "r"}
+TEXT = ("headline", "dek", "take", "body_markdown", "image_headline", "social_hook", "caption")
+
+
+def test_a_recheck_reads_the_stored_piece_once_and_never_rewrites_it(tmp_path):
+    settings = _settings(tmp_path)
+    llm = ScriptedLLM({"decision": "approve", "problems": [], "reason": "ok"})
+    ne = nepali.recheck(llm, settings, _article(nepali=copy.deepcopy(HELD)))
+    assert [c[0] for c in llm.calls] == ["nepali_editor"]
+    assert llm.calls[0][1]["nepali"]["body_markdown"] == HELD["body_markdown"]  # the editor reads what is stored
+    assert ne["held"] is False and ne["approved"] is True and ne["fact_problems"] == [] and ne["passes"] == 4
+    assert {k: ne[k] for k in TEXT} == {k: HELD[k] for k in TEXT} and ne["problems_fixed"] == 4
+    assert nepali.usable(ne)
+
+
+def test_a_recheck_that_still_finds_a_wrong_fact_keeps_the_piece_held(tmp_path):
+    settings = _settings(tmp_path)
+    llm = ScriptedLLM({"decision": "revise", "problems": [WRONG, CLUMSY], "reason": "still wrong"})
+    ne = nepali.recheck(llm, settings, _article(nepali=copy.deepcopy(HELD)))
+    assert ne["held"] is True and ne["approved"] is False and ne["editor"] == "still wrong"
+    assert ne["fact_problems"] == ["the record attributes this to the police"] and ne["language_notes"] == 1
+    assert {k: ne[k] for k in TEXT} == {k: HELD[k] for k in TEXT}
+    # Language notes alone clear it.
+    ne = nepali.recheck(ScriptedLLM({"decision": "revise", "problems": [CLUMSY], "reason": "r"}), settings, _article(nepali=copy.deepcopy(HELD)))
+    assert ne["held"] is False and ne["language_notes"] == 1
+
+
+def test_the_recheck_command_reads_only_held_stories_and_saves_the_verdict(tmp_path, monkeypatch, capsys):
+    from newsroom import __main__ as cli
+
+    settings = _settings(tmp_path)
+    monkeypatch.setattr(cli, "_settings", lambda args: settings)
+    held = _article(id="2026-10-01-held", slug="held", nepali=copy.deepcopy(HELD))
+    fine = _article(id="2026-10-01-fine", slug="fine", nepali={**copy.deepcopy(HELD), "held": False, "approved": True, "fact_problems": []})
+    for article in (held, fine):
+        publish.save_article(settings, article)
+    assert cli.main(["nepali", "--mock", "--recheck"]) == 0
+    out = capsys.readouterr().out
+    assert "reads 1 story again" in out and "cleared    2026-10-01-held" in out and "2026-10-01-fine" not in out
+    stored = {a.id: a.nepali for a in publish.load_articles(settings)}
+    assert stored["2026-10-01-held"]["held"] is False and stored["2026-10-01-held"]["passes"] == 4
+    assert stored["2026-10-01-fine"]["passes"] == 3  # not read
+    assert cli.main(["nepali", "--mock", "--recheck", "--article", "2026-10-01-nope"]) == 1
+    assert "No stored story with id 2026-10-01-nope." in capsys.readouterr().out

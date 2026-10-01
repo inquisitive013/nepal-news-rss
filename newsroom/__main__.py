@@ -601,6 +601,8 @@ def cmd_nepali(args) -> int:
     if not settings.mock:
         scrub_empty_credentials()
         logging.info("model access via %s", auth_mode())
+    if args.recheck:
+        return _nepali_recheck(settings, args)
     wanted = nepali.wanting(settings, only=[a.strip() for a in (args.article or []) if a.strip()] or None, everything=args.all, limit=args.limit or 0)
     if not wanted:
         print("Nothing to write: every stored story already has a Nepali edition.")
@@ -622,6 +624,48 @@ def cmd_nepali(args) -> int:
     usage = RunLog(run_date="", usage=list(llm.meter.records)).usage_totals()
     print("Model usage: " + ", ".join(f"{k.replace('_', ' ')} {v:,}" for k, v in usage.items()))
     return 1 if failed or skipped else 0
+
+
+def _nepali_recheck(settings, args) -> int:
+    """The editor reads held pieces again as they stand, one call a story. The text is not changed.
+
+    For a held piece fixed by hand from the record: the reading decides whether it publishes.
+    Named stories are read whether held or not; by default every held story is.
+    """
+    import copy
+
+    from . import nepali
+    from .llm import LLMError, LLMRefusal, UsageMeter, make_llm, usage_cost
+
+    only = {a.strip() for a in (args.article or []) if a.strip()}
+    articles = publish.load_articles(settings)
+    for missing in sorted(only - {a.id for a in articles}):
+        print(f"No stored story with id {missing}.")
+    wanted = [a for a in articles if (a.id in only if only else (a.nepali or {}).get("held")) and (a.nepali or {}).get("headline")]
+    if not wanted:
+        print("Nothing to read again: no held Nepali piece." if not only else "Nothing to read again: no Nepali piece for that id.")
+        return 1 if only else 0
+    # A call or two: the normal way, not the batch queue, which can hold one call 15 minutes.
+    raw = copy.deepcopy(settings.raw)
+    raw.setdefault("llm", {}).setdefault("batch", {})["enabled"] = False
+    settings = dataclasses.replace(settings, raw=raw)
+    llm = make_llm(settings, UsageMeter(2 * len(wanted)))  # a reading a story, and room for one retry each
+    print(f"The Nepali editor reads {len(wanted)} stor{'y' if len(wanted) == 1 else 'ies'} again as stored. A fact still wrong keeps a story held.")
+    failed = 0
+    for article in wanted:
+        try:
+            article.nepali = nepali.recheck(llm, settings, article)
+        except (LLMRefusal, LLMError) as exc:
+            failed += 1
+            print(f"failed     {article.id}  {str(exc)[:200]}")
+            continue
+        publish.save_article(settings, article)
+        state = "held" if article.nepali["held"] else "cleared"
+        print(f"{state:10} {article.id}  {article.nepali['language_notes']} language note{'s' if article.nepali['language_notes'] != 1 else ''}")
+        for problem in article.nepali["fact_problems"]:
+            print(f"           fact: {problem}")
+    print(f"\nCost: ${usage_cost(settings, llm.meter.records)[0]:.2f}.")
+    return 1 if failed else 0
 
 
 def _photo_targets(settings, args):
@@ -842,6 +886,7 @@ def main(argv=None) -> int:
     p_ne.add_argument("--all", action="store_true", help="write every stored story again, replacing what it has")
     p_ne.add_argument("--article", action="append", help="write this article id; repeatable")
     p_ne.add_argument("--limit", type=int, help="stop after this many stories")
+    p_ne.add_argument("--recheck", action="store_true", help="have the editor read the stored piece again without rewriting it, one call a story; held stories by default, or the --article ids")
     p_ne.set_defaults(func=cmd_nepali)
 
     p_nt = sub.add_parser("nepali-trial", help="fix stored stories' Nepali one or both ways, rewrite and in place, from one draft and one first reading, and compare; saves nothing")

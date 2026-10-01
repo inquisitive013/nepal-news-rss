@@ -282,6 +282,26 @@ def _read(llm: BaseLLM, record: dict[str, Any], piece: dict[str, Any]) -> dict[s
     return check
 
 
+def recheck(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, Any]:
+    """One editor reading of the stored piece as it stands, for a held piece fixed by hand from the record.
+
+    The text is never changed here. The reading decides the gate the same way the edition's final
+    reading does: a fact still wrong keeps the piece held.
+    """
+    piece = dict(article.nepali or {})
+    check = _read(llm, _record(settings, article), piece)
+    problems = check["problems"] if check.get("decision", "approve") != "approve" else []
+    left = facts(problems)
+    piece["checked"] = True
+    piece["approved"] = not left
+    piece["held"] = bool(left)
+    piece["fact_problems"] = [str(p.get("problem") or "").strip()[:300] for p in left][:10]
+    piece["language_notes"] = len(problems) - len(left)
+    piece["passes"] = int(piece.get("passes") or 0) + 1
+    piece["editor"] = str(check.get("reason", "") or "").strip()
+    return piece
+
+
 def read_again(llm: BaseLLM, settings: Settings, article: Article, piece: dict[str, Any]) -> list[dict[str, Any]]:
     """One more reading of a finished piece, so pieces from different trials meet the same editor."""
     return _read(llm, _record(settings, article), piece)["problems"]
