@@ -165,6 +165,12 @@ def usable(nepali: dict[str, Any] | None) -> bool:
     return bool(nepali and nepali.get("headline") and nepali.get("body_markdown") and not nepali.get("held"))
 
 
+def language_fixes(problems: list[dict[str, Any]]) -> list[dict[str, str]]:
+    """The editor's language notes, kept with their fixes so a person can apply them and have the piece read again."""
+    left = facts(problems)
+    return [{k: str(p.get(k) or "").strip()[:400] for k in ("passage", "problem", "fix")} for p in problems if p not in left][:10]
+
+
 def facts(problems: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """The problems that hold a piece: every one not marked language. An unmarked problem counts as a fact."""
     return [p for p in problems if str(p.get("severity") or "fact").strip().lower() != "language"]
@@ -263,6 +269,7 @@ def nepali_for(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, 
     piece["held"] = bool(left)
     piece["fact_problems"] = [str(p.get("problem") or "").strip()[:300] for p in left][:10]
     piece["language_notes"] = len(problems) - len(left)
+    piece["language_fixes"] = language_fixes(problems)
     piece["passes"] = passes
     piece["problems_fixed"] = fixed
     piece["fixed_in_place"] = fixed_in_place
@@ -297,6 +304,7 @@ def recheck(llm: BaseLLM, settings: Settings, article: Article) -> dict[str, Any
     piece["held"] = bool(left)
     piece["fact_problems"] = [str(p.get("problem") or "").strip()[:300] for p in left][:10]
     piece["language_notes"] = len(problems) - len(left)
+    piece["language_fixes"] = language_fixes(problems)
     piece["passes"] = int(piece.get("passes") or 0) + 1
     piece["editor"] = str(check.get("reason", "") or "").strip()
     return piece

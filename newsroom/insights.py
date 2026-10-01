@@ -2,8 +2,8 @@
 
 Every live Facebook post is read twice, 24 and 72 hours after it went live: unique viewers and
 views from Meta's post insights, and shares, comments and reactions from the post itself. A Reel
-is read at the same hours from its video's insights: plays, unique viewers and the average watch
-time. Each
+is read at the same hours from its video's insights: plays, unique viewers, the average watch
+time and the follows it brought in. Each
 run also notes the Page's follower count, so a post's first day can be set against the follower
 change over the same hours. The report puts every post beside the reach score the ranking
 judges forecast for its story, which is what the weekly review checks.
@@ -36,10 +36,11 @@ log = logging.getLogger(__name__)
 DEFAULT_METRICS = {"viewers": "post_total_media_view_unique", "views": "post_media_view"}
 DEFAULT_HOURS = (24, 72)
 # A Reel's numbers live on its video, at /{video-id}/video_insights, under these names (Meta's Reels
-# insights documentation, found by search on 1 October 2026). With no metric named, Meta answers
-# with a default set; a name missing from it is asked for on its own. The probe lists every name
-# Meta returns, so a renamed metric shows there.
-DEFAULT_REEL_METRICS = {"plays": "blue_reels_play_count", "viewers": "post_impressions_unique", "avg_watch_ms": "post_video_avg_time_watched"}
+# insights documentation, found by search on 1 October 2026; the probe that day found all four as
+# numbers in Meta's default answer). With no metric named, Meta answers with a default set; a name
+# missing from it is asked for on its own. The probe lists every name Meta returns, so a renamed
+# metric shows there. post_video_followers is the follows the Reel brought in, over its lifetime.
+DEFAULT_REEL_METRICS = {"plays": "blue_reels_play_count", "viewers": "post_impressions_unique", "avg_watch_ms": "post_video_avg_time_watched", "follows": "post_video_followers"}
 REEL_NETWORK = "facebook_reel"
 # A reading is taken inside this many hours after its mark, or not at all.
 GRACE_HOURS = 24
@@ -486,12 +487,12 @@ def report(settings: Settings, *, now: datetime | None = None, days: int = 7) ->
         )
     if not rows:
         lines.append(f"| – | no Facebook post went live in the last {days} days | | | | | | | | |")
-    lines += ["", f"| Reel went live ({'Nepal time' if settings.timezone == 'Asia/Kathmandu' else settings.timezone}) | Story | Plays 24h | Viewers 24h | Average watch 24h | Plays 72h | Viewers 72h |", "|---|---|---|---|---|---|---|"]
+    lines += ["", f"| Reel went live ({'Nepal time' if settings.timezone == 'Asia/Kathmandu' else settings.timezone}) | Story | Plays 24h | Viewers 24h | Average watch 24h | Follows 24h | Plays 72h | Viewers 72h | Follows 72h |", "|---|---|---|---|---|---|---|---|---|"]
     for live, article_id, metrics in sorted(reels, key=lambda r: r[0], reverse=True):
         r24, r72 = metrics.get("24h") or {}, metrics.get("72h") or {}
         watch = r24.get("avg_watch_ms")
         watched = f"{watch / 1000:.1f} s" if isinstance(watch, int) else "–"
-        lines.append(f"| {live.astimezone(tz):%Y-%m-%d %H:%M} | {article_id} | {_cell(r24, 'plays')} | {_cell(r24, 'viewers')} | {watched} | {_cell(r72, 'plays')} | {_cell(r72, 'viewers')} |")
+        lines.append(f"| {live.astimezone(tz):%Y-%m-%d %H:%M} | {article_id} | {_cell(r24, 'plays')} | {_cell(r24, 'viewers')} | {watched} | {_cell(r24, 'follows')} | {_cell(r72, 'plays')} | {_cell(r72, 'viewers')} | {_cell(r72, 'follows')} |")
     if not reels:
-        lines.append(f"| – | no Reel went live in the last {days} days | | | | | |")
+        lines.append(f"| – | no Reel went live in the last {days} days | | | | | | | |")
     return lines

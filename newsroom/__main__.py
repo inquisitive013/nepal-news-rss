@@ -664,6 +664,8 @@ def _nepali_recheck(settings, args) -> int:
         print(f"{state:10} {article.id}  {article.nepali['language_notes']} language note{'s' if article.nepali['language_notes'] != 1 else ''}")
         for problem in article.nepali["fact_problems"]:
             print(f"           fact: {problem}")
+        for note in article.nepali["language_fixes"]:
+            print(f"           language: {note['problem']} (\"{note['passage'][:80]}\" → \"{note['fix'][:80]}\")")
     print(f"\nCost: ${usage_cost(settings, llm.meter.records)[0]:.2f}.")
     return 1 if failed else 0
 

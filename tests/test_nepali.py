@@ -331,6 +331,7 @@ def test_a_fact_still_wrong_at_the_final_reading_holds_the_piece(tmp_path):
     assert [c[0] for c in llm.calls] == ["nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor", "nepali_writer", "nepali_editor"]
     assert ne["held"] is True and ne["approved"] is False and ne["passes"] == 3
     assert ne["fact_problems"] == ["the record attributes this to the police"] and ne["language_notes"] == 1
+    assert ne["language_fixes"] == [{"passage": "नदी बढ्यो।", "problem": "reads like English word order", "fix": "नदी बढ्यो।"}]
     assert not nepali.usable(ne)  # no Nepali page, card, caption or Reel
 
 
@@ -369,6 +370,7 @@ def test_a_recheck_that_still_finds_a_wrong_fact_keeps_the_piece_held(tmp_path):
     ne = nepali.recheck(llm, settings, _article(nepali=copy.deepcopy(HELD)))
     assert ne["held"] is True and ne["approved"] is False and ne["editor"] == "still wrong"
     assert ne["fact_problems"] == ["the record attributes this to the police"] and ne["language_notes"] == 1
+    assert [n["problem"] for n in ne["language_fixes"]] == ["reads like English word order"]
     assert {k: ne[k] for k in TEXT} == {k: HELD[k] for k in TEXT}
     # Language notes alone clear it.
     ne = nepali.recheck(ScriptedLLM({"decision": "revise", "problems": [CLUMSY], "reason": "r"}), settings, _article(nepali=copy.deepcopy(HELD)))
