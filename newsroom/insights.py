@@ -1,7 +1,9 @@
 """What each Facebook post did: the calibration loop of content engine sections 13 and 18.2.
 
 Every live Facebook post is read twice, 24 and 72 hours after it went live: unique viewers and
-views from Meta's post insights, and shares, comments and reactions from the post itself. Each
+views from Meta's post insights, and shares, comments and reactions from the post itself. A Reel
+is read at the same hours from its video's insights: plays, unique viewers and the average watch
+time. Each
 run also notes the Page's follower count, so a post's first day can be set against the follower
 change over the same hours. The report puts every post beside the reach score the ranking
 judges forecast for its story, which is what the weekly review checks.
@@ -33,6 +35,12 @@ log = logging.getLogger(__name__)
 # Meta's names since June 2026: unique viewers replaced post_impressions_unique, views replaced post_impressions.
 DEFAULT_METRICS = {"viewers": "post_total_media_view_unique", "views": "post_media_view"}
 DEFAULT_HOURS = (24, 72)
+# A Reel's numbers live on its video, at /{video-id}/video_insights, under these names (Meta's Reels
+# insights documentation, found by search on 1 October 2026). With no metric named, Meta answers
+# with a default set; a name missing from it is asked for on its own. The probe lists every name
+# Meta returns, so a renamed metric shows there.
+DEFAULT_REEL_METRICS = {"plays": "blue_reels_play_count", "viewers": "post_impressions_unique", "avg_watch_ms": "post_video_avg_time_watched"}
+REEL_NETWORK = "facebook_reel"
 # A reading is taken inside this many hours after its mark, or not at all.
 GRACE_HOURS = 24
 
@@ -74,6 +82,11 @@ def insight_settings(settings: Settings) -> tuple[dict[str, str], list[int]]:
     return metrics, hours
 
 
+def reel_metric_names(settings: Settings) -> dict[str, str]:
+    cfg = settings.get("social.facebook.insights") or {}
+    return {str(k): str(v) for k, v in (cfg.get("reel_metrics") or DEFAULT_REEL_METRICS).items()}
+
+
 def went_live(post: social.Post) -> datetime | None:
     """When readers could first see it: the scheduled time for a scheduled post, else the time it was sent."""
     for stamp in (post.scheduled_for, post.posted_at):
@@ -90,7 +103,7 @@ def went_live(post: social.Post) -> datetime | None:
 def due(post: social.Post, hour: int, now: datetime) -> bool:
     """A reading is due from its mark for GRACE_HOURS, unless one already came back whole."""
     live = went_live(post)
-    if live is None or post.network != "facebook" or post.status != "posted" or not post.id:
+    if live is None or post.network not in ("facebook", REEL_NETWORK) or post.status != "posted" or not post.id:
         return False
     age = (now - live).total_seconds() / 3600
     if not hour <= age <= hour + GRACE_HOURS:
@@ -133,8 +146,9 @@ def read_post(client: httpx.Client, environ: Mapping[str, str], post_id: str, me
             errors[label] = f"no value ({why})"
         else:
             values[label] = value
+    story_id = post_id if "_" in post_id else story_of(client, base, post_id, fb.token)
     for label, (fields, pick) in COUNTS.items():
-        resp = client.get(f"{base}/{post_id}", params={"fields": fields, "access_token": fb.token})
+        resp = client.get(f"{base}/{story_id}", params={"fields": fields, "access_token": fb.token})
         if resp.status_code >= 400:
             errors[label] = graph_error(resp)
             continue
@@ -142,6 +156,73 @@ def read_post(client: httpx.Client, environ: Mapping[str, str], post_id: str, me
             values[label] = pick(resp.json())
         except (ValueError, TypeError, AttributeError):
             errors[label] = "no value"
+    return values, errors
+
+
+def story_of(client: httpx.Client, base: str, photo_id: str, token: str) -> str:
+    """The Page post a scheduled photo became, or the photo itself when Meta does not say.
+
+    A scheduled photo is recorded by the photo's id. The photo answers its insights, but its
+    shares and reactions come back as error code 100: they belong to the post.
+    """
+    resp = client.get(f"{base}/{photo_id}", params={"fields": "page_story_id", "access_token": token})
+    if resp.status_code >= 400:
+        return photo_id
+    try:
+        story = (resp.json() or {}).get("page_story_id")
+    except ValueError:
+        return photo_id
+    return str(story) if isinstance(story, str) and re.fullmatch(r"\d+_\d+", story) else photo_id
+
+
+def _rows(resp: httpx.Response) -> dict[str, Any]:
+    """Metric name -> its latest value, from an insights answer."""
+    try:
+        rows = (resp.json() or {}).get("data") or []
+    except (ValueError, AttributeError):
+        return {}
+    found: dict[str, Any] = {}
+    for row in rows:
+        if not isinstance(row, dict) or not row.get("name"):
+            continue
+        points = row.get("values") or []
+        found[str(row["name"])] = points[-1].get("value") if points and isinstance(points[-1], dict) else None
+    return found
+
+
+def _shape(value: Any) -> str:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return "a breakdown, not a number" if isinstance(value, dict) else "no value"
+    return ""
+
+
+def read_reel(client: httpx.Client, environ: Mapping[str, str], video_id: str, metrics: Mapping[str, str]) -> tuple[dict[str, int], dict[str, str]]:
+    """One reading of one Reel from its video's insights: the values that came back, and why each other did not."""
+    fb = social.facebook_page(client, environ)
+    base = f"{social.META_GRAPH}/{social._graph_version(environ)}"
+    resp = client.get(f"{base}/{video_id}/video_insights", params={"access_token": fb.token})
+    if resp.status_code >= 400:
+        error = graph_error(resp)
+        return {}, {label: error for label in metrics}
+    found = _rows(resp)
+    values: dict[str, int] = {}
+    errors: dict[str, str] = {}
+    for label, name in metrics.items():
+        if name not in found:
+            # Not in the default set: asked for on its own.
+            one = client.get(f"{base}/{video_id}/video_insights", params={"metric": name, "access_token": fb.token})
+            if one.status_code >= 400:
+                errors[label] = graph_error(one)
+                continue
+            if name not in (rows := _rows(one)):
+                errors[label] = "not returned"
+                continue
+            found[name] = rows[name]
+        why = _shape(found[name])
+        if why:
+            errors[label] = f"no value ({why})"
+        else:
+            values[label] = int(found[name])
     return values, errors
 
 
@@ -193,6 +274,34 @@ def probe(settings: Settings, environ: Mapping[str, str], *, client: httpx.Clien
                 for metric in PROBE_METRICS:
                     resp = client.get(f"{base}/{object_id}/insights", params={"metric": metric, "period": "lifetime", "access_token": fb.token})
                     lines.append(f"- Newest post, asked on the {label}, {metric}: {_answer(resp)}")
+        photos = [(live, post_id) for live, post_id in posts if "_" not in post_id]
+        if photos:
+            resp = client.get(f"{base}/{max(photos)[1]}", params={"fields": "page_story_id", "access_token": fb.token})
+            story = "" if resp.status_code >= 400 else str((resp.json() or {}).get("page_story_id") or "")
+            answer = graph_error(resp) if resp.status_code >= 400 else ("a post id" if re.fullmatch(r"\d+_\d+", story) else "no post id")
+            lines.append(f"- Newest scheduled photo, page_story_id: {answer}")
+        reels = []
+        for path in sorted((settings.data_dir / "social").glob("*.json")):
+            for post in social.read_record(path).posts:
+                live = went_live(post)
+                if post.network == REEL_NETWORK and post.status == "posted" and post.id and live:
+                    reels.append((live, post.id))
+        if not reels:
+            lines.append("- No live Reel to ask about.")
+        else:
+            resp = client.get(f"{base}/{max(reels)[1]}/video_insights", params={"access_token": fb.token})
+            if resp.status_code >= 400:
+                lines.append(f"- Newest Reel, video_insights: {graph_error(resp)}")
+            else:
+                found = _rows(resp)
+                listed = ", ".join(f"{name} ({_shape(value) or 'a number'})" for name, value in found.items()) or "empty"
+                lines.append(f"- Newest Reel, video_insights by default: {listed}")
+                for label, name in reel_metric_names(settings).items():
+                    if name not in found:
+                        one = client.get(f"{base}/{max(reels)[1]}/video_insights", params={"metric": name, "access_token": fb.token})
+                        got = _rows(one) if one.status_code < 400 else {}
+                        answer = graph_error(one) if one.status_code >= 400 else (_shape(got[name]) or "a number") if name in got else "not returned"
+                        lines.append(f"- Newest Reel, {name} asked on its own: {answer}")
         resp = client.get(f"{base}/{fb.id}/insights", params={"metric": "page_media_view", "period": "day", "access_token": fb.token})
         lines.append(f"- The Page, page_media_view by day: {_answer(resp)}")
     finally:
@@ -240,6 +349,7 @@ def take_readings(settings: Settings, environ: Mapping[str, str], *, client: htt
     "followers": count or None, "followers_error": code, "stopped": why the run stopped early}.
     """
     metrics, hours = insight_settings(settings)
+    reel_metrics = reel_metric_names(settings)
     now = now or datetime.now(timezone.utc)
     out: dict[str, Any] = {"read": [], "failed": [], "followers": None, "followers_error": "", "stopped": ""}
     own = client is None
@@ -253,7 +363,10 @@ def take_readings(settings: Settings, environ: Mapping[str, str], *, client: htt
                 for hour in hours:
                     if not due(post, hour, now):
                         continue
-                    values, errors = read_post(client, environ, post.id, metrics)
+                    if post.network == REEL_NETWORK:
+                        values, errors = read_reel(client, environ, post.id, reel_metrics)
+                    else:
+                        values, errors = read_post(client, environ, post.id, metrics)
                     if not values:
                         out["failed"].append((rec.article_id, hour, errors))
                         codes = {_code(e) for e in errors.values()}
@@ -342,6 +455,7 @@ def report(settings: Settings, *, now: datetime | None = None, days: int = 7) ->
     forecasts = load_forecasts(settings)
     followers = load_followers(settings)
     rows = []
+    reels = []
     for path in sorted((settings.data_dir / "social").glob("*.json")):
         rec = social.read_record(path)
         art_path = settings.data_dir / "articles" / f"{rec.article_id}.json"
@@ -349,12 +463,15 @@ def report(settings: Settings, *, now: datetime | None = None, days: int = 7) ->
         if art_path.exists():
             story_id = str(json.loads(art_path.read_text(encoding="utf-8")).get("story_id") or "")
         for post in rec.posts:
-            if post.network != "facebook" or post.status != "posted":
+            if post.network not in ("facebook", REEL_NETWORK) or post.status != "posted":
                 continue
             live = went_live(post)
             if live is None or now - live > timedelta(days=days):
                 continue
-            rows.append((live, rec.article_id, forecasts.get(story_id, {}), post.metrics, follower_change(followers, live)))
+            if post.network == REEL_NETWORK:
+                reels.append((live, rec.article_id, post.metrics))
+            else:
+                rows.append((live, rec.article_id, forecasts.get(story_id, {}), post.metrics, follower_change(followers, live)))
     try:
         tz = ZoneInfo(settings.timezone)
     except Exception:  # noqa: BLE001 - an unknown zone falls back to UTC
@@ -369,4 +486,12 @@ def report(settings: Settings, *, now: datetime | None = None, days: int = 7) ->
         )
     if not rows:
         lines.append(f"| – | no Facebook post went live in the last {days} days | | | | | | | | |")
+    lines += ["", f"| Reel went live ({'Nepal time' if settings.timezone == 'Asia/Kathmandu' else settings.timezone}) | Story | Plays 24h | Viewers 24h | Average watch 24h | Plays 72h | Viewers 72h |", "|---|---|---|---|---|---|---|"]
+    for live, article_id, metrics in sorted(reels, key=lambda r: r[0], reverse=True):
+        r24, r72 = metrics.get("24h") or {}, metrics.get("72h") or {}
+        watch = r24.get("avg_watch_ms")
+        watched = f"{watch / 1000:.1f} s" if isinstance(watch, int) else "–"
+        lines.append(f"| {live.astimezone(tz):%Y-%m-%d %H:%M} | {article_id} | {_cell(r24, 'plays')} | {_cell(r24, 'viewers')} | {watched} | {_cell(r72, 'plays')} | {_cell(r72, 'viewers')} |")
+    if not reels:
+        lines.append(f"| – | no Reel went live in the last {days} days | | | | | |")
     return lines
