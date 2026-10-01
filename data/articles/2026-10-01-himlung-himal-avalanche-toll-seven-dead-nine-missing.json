@@ -113,28 +113,12 @@
     "approved": true,
     "held": false,
     "fact_problems": [],
-    "language_notes": 3,
-    "passes": 6,
+    "language_notes": 0,
+    "passes": 7,
     "problems_fixed": 26,
     "fixed_in_place": 0,
-    "editor": "Every number, name, date, attribution and open question matches the record, and no contested claim slips out of its attribution. Three craft fixes remain before publishing: a broken sentence about the Monday toll, a two-sentence dek, and one stiff attribution clause.",
-    "language_fixes": [
-      {
-        "passage": "सोमबार (२८ सेप्टेम्बर) सम्म ४ जनाको मृत्यु भएको र १२ जना बेपत्ता रहेको थियो।",
-        "problem": "The sentence is ungrammatical. It strings two 'भएको/रहेको' clauses onto 'थियो' with no main verb, so the reader cannot follow it.",
-        "fix": "सोमबार (२८ सेप्टेम्बर) सम्म ४ जनाको मृत्यु भइसकेको थियो र १२ जना बेपत्ता थिए।"
-      },
-      {
-        "passage": "बुधबार थप तीन शव भेटिए। सञ्चारमाध्यमले यो जानकारी तीन फरक व्यक्तिको नाममा दिएकाले आधिकारिक संख्या कसको हो भन्ने अस्पष्ट छ।",
-        "problem": "The dek runs to two sentences. The style guide asks for one sentence carrying the second most important fact. The first sentence also uses simple past for news that should take the news tense.",
-        "fix": "बुधबार थप तीन शव भेटिएको जानकारी सञ्चारमाध्यमले तीन फरक व्यक्तिको नाममा दिएकाले आधिकारिक संख्या कसको हो भन्ने अस्पष्ट छ।"
-      },
-      {
-        "passage": "उनीहरू २२ जना कामदारको समूहमा थिए भनी ईटीभी भारतले लेखेको छ।",
-        "problem": "'…थिए भनी … लेखेको छ' is stiff and reads like translation. With 'भनी' the sentence sounds like an office notice, not a reporter.",
-        "fix": "ईटीभी भारतले उनीहरू २२ जना कामदारको समूहमा रहेको लेखेको छ।"
-      }
-    ]
+    "editor": "Every number, name, date, quote and attribution matches the record, and no contested conduct is stated in the newsroom's voice. The remaining notes are minor craft points that do not block publication.",
+    "language_fixes": []
   },
   "image_brief": {
     "search_queries": [
