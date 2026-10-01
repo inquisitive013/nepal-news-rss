@@ -3,5 +3,10 @@
   "made": "2026-09-30, ElevenLabs Music v2.5, instrumental, 45 seconds, on the Page owner's ElevenLabs account",
   "prompt": "Uplifting instrumental background for a Nepali sports news reel. Madal hand drum rhythm and a bansuri flute melody over soft strings. Proud and hopeful, steady mid tempo around 100 BPM, even volume from start to end, a simple arrangement that leaves room for a spoken voice over. No vocals.",
   "use": "pride and sport stories"
+ },
+ "lament-sarangi.mp3": {
+  "made": "2026-10-01, ElevenLabs Music v2.5, instrumental, 60 seconds, on the Page owner's ElevenLabs account",
+  "prompt": "Sombre, respectful instrumental background for a Nepali news reel about flood victims and missing people. A slow solo sarangi melody over soft sustained low strings and a quiet drone. Calm and steady, around 60 BPM, even volume from start to end, a sparse arrangement that leaves room for a spoken voice over. No drums, no percussion, no vocals.",
+  "use": "loss, disaster and grief stories"
  }
 }

@@ -1,0 +1,154 @@
+{
+ "article_id": "2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead",
+ "why": "Every line from the verified record and the Nepali piece as fixed from it: the committee's missing count (Nepal Press), the NDRRMA chief's plan (Kathmandu Post interview), the relief amounts (Social Security Guidelines), Clause 40 (Radio Nepal) and the open date. The DNA identification beat was cut to keep the Reel under 50 seconds. The narration says the same facts in spoken Nepali, numbers in words, each fact with its source in its own sentence.",
+ "caption": "भोटेकोशी बाढीमा बेपत्ता भएकालाई कानुनी रूपमा मृत घोषणा गरेर उनीहरूका परिवारलाई राहत दिने सरकारको योजना रहेको एनडीआरआरएमए प्रमुख धर्मराज उप्रेतीले काठमाडौं पोस्टलाई बताएका छन्।\n\nतपाईं वा तपाईंका चिनजानले आफन्तको मृत्यु दर्ता वा राहतका लागि कागज मिलाउन कति समय कुर्नुपरेको थियो?",
+ "voice": "Kamala, a Nepali voice in the ElevenLabs library, model eleven_v3. Each clip transcribed back word for word by ElevenLabs Scribe before use.",
+ "music": "data/reels/music/lament-sarangi.mp3",
+ "music_volume": 0.3,
+ "end_say": "नेपाल वायर।",
+ "end_audio": "data/reels/audio/2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead/end.mp3",
+ "beats": [
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "भोटेकोशी बाढी",
+     80,
+     "white"
+    ],
+    [
+     "५,२८५",
+     200,
+     "gold"
+    ],
+    [
+     "जना अझै बेपत्ता",
+     96,
+     "white"
+    ]
+   ],
+   "say": "नेपाल प्रेसका अनुसार भोटेकोशी बाढीमा अझै पाँच हजार दुई सय पचासी जना बेपत्ता छन्।",
+   "audio": "data/reels/audio/2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead/say1.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "सरकार उनीहरूलाई",
+     84,
+     "white"
+    ],
+    [
+     "मृत घोषणा गर्ने तयारीमा",
+     96,
+     "gold"
+    ],
+    [
+     "विपद् प्राधिकरणका प्रमुख धर्मराज उप्रेती",
+     50,
+     "off"
+    ],
+    [
+     "काठमाडौं पोस्टसँगको अन्तर्वार्तामा",
+     50,
+     "off"
+    ]
+   ],
+   "say": "सरकार उनीहरूलाई कानुनी रूपमा मृत घोषणा गर्ने तयारीमा रहेको विपद् प्राधिकरणका प्रमुखले बताएका छन्।",
+   "audio": "data/reels/audio/2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead/say2.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "किन?",
+     140,
+     "gold"
+    ],
+    [
+     "बेपत्ताका परिवारले पनि",
+     84,
+     "white"
+    ],
+    [
+     "मृत्युसरह राहत पाऊन्",
+     96,
+     "white"
+    ]
+   ],
+   "say": "उद्देश्य हो, बेपत्ताका परिवारले पनि पुष्टि भएका मृत्युसरह राज्यको राहत पाऊन्।",
+   "audio": "data/reels/audio/2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead/say3.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "पहिलो मृत्युमा",
+     80,
+     "white"
+    ],
+    [
+     "रु. २ लाख",
+     170,
+     "gold"
+    ],
+    [
+     "थप हरेक मृत्युमा रु. १ लाख",
+     64,
+     "off"
+    ],
+    [
+     "सामाजिक सुरक्षा निर्देशिका",
+     48,
+     "off"
+    ]
+   ],
+   "say": "हालको सामाजिक सुरक्षा निर्देशिकाअनुसार परिवारमा पहिलो मृत्युमा दुई लाख रुपैयाँ, र थप हरेक मृत्युमा एक लाख रुपैयाँ पाइन्छ।",
+   "audio": "data/reels/audio/2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead/say4.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "अहिलेको कानुनमा",
+     80,
+     "white"
+    ],
+    [
+     "१२ वर्ष",
+     200,
+     "gold"
+    ],
+    [
+     "बेपत्ता भएपछि मात्र मृत घोषणा",
+     60,
+     "off"
+    ],
+    [
+     "मुलुकी देवानी संहिता, दफा ४०",
+     48,
+     "off"
+    ]
+   ],
+   "say": "रेडियो नेपालका अनुसार अहिलेको मुलुकी देवानी संहितामा कसैलाई मृत घोषणा गर्न लगातार बाह्र वर्ष बेपत्ता रहनुपर्छ।",
+   "audio": "data/reels/audio/2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead/say5.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "कानुन कहिले?",
+     120,
+     "white"
+    ],
+    [
+     "मिति तोकिएको छैन",
+     100,
+     "gold"
+    ]
+   ],
+   "say": "यो कानुनी परिवर्तन कहिले हुन्छ, मिति अझै तोकिएको छैन।",
+   "audio": "data/reels/audio/2026-10-01-bhotekoshi-flood-recovery-phase-missing-declared-dead/say6.mp3"
+  }
+ ]
+}

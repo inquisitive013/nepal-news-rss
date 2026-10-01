@@ -28,6 +28,7 @@ import httpx
 from PIL import Image, ImageDraw, ImageFilter
 
 from . import graphic as g
+from . import images
 from .config import Settings
 from .models import Article
 
@@ -238,6 +239,10 @@ def background(settings: Settings, article: Article) -> Image.Image:
         # The illustration model writes its own label along the bottom edge; the card crops it
         # away, the tall Reel frame would show it (30 September, the Mukesh Pal picture).
         img = img.crop((0, 0, img.width, int(img.height * 0.94)))
+    elif settings.get("images.burn_credit", True) and images.burns_credit(article.image.credit.line()):
+        # A stored photo carries its credit burned along the bottom. The tall frame showed the bar
+        # cut off at the edge (1 October, the Bhotekoshi valley), and the Reel prints the credit itself.
+        img = img.crop((0, 0, img.width, img.height - images.credit_bar_height(img.height)))
     img = g.treat(g.cover_crop(img, bw, bh))
     shade = Image.new("RGBA", img.size, (0, 0, 0, 120))
     return Image.alpha_composite(img.convert("RGBA"), shade).convert("RGB")
@@ -294,7 +299,9 @@ def sound_args(beats: list[Beat], spans: list[tuple[float, float]], sound: Sound
         volume = sound.music_volume if sound is not None else BED_VOLUME
         graph.append(f"[{m}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=0:{total:.3f},volume={volume},afade=t=in:d=1,afade=t=out:st={max(0.0, total - 2):.3f}:d=2[bed]")
         if voices:
-            graph += ["[voice]asplit=2[said][key]", "[bed][key]sidechaincompress=threshold=0.02:ratio=6:attack=15:release=350[ducked]", "[ducked][said]amix=inputs=2:duration=longest:normalize=0[mix]"]
+            # The voice is padded to the full length: the ducking stops when its key ends, and until
+            # 1 October the bed stopped with the last word and the end card played in silence.
+            graph += [f"[voice]apad=whole_dur={total:.3f},asplit=2[said][key]", "[bed][key]sidechaincompress=threshold=0.02:ratio=6:attack=15:release=350[ducked]", "[ducked][said]amix=inputs=2:duration=longest:normalize=0[mix]"]
             last = "[mix]"
         else:
             last = "[bed]"
