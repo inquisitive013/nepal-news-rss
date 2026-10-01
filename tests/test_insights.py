@@ -59,6 +59,10 @@ def _graph(numbers=None, fail=None, followers=10_300):
                 return httpx.Response(200, json={"data": []})
             return httpx.Response(200, json={"data": [{"name": metric, "period": "lifetime", "values": [{"value": numbers[post_id][metric]}]}]})
         post_id, fields = path[-1], url.params["fields"]
+        if fields == "page_story_id":
+            if "page_story_id" in fail:
+                return httpx.Response(400, json={"error": {"message": "secret words", "code": fail["page_story_id"]}})
+            return httpx.Response(200, json={"page_story_id": numbers[post_id]["page_story_id"], "id": post_id})
         name = fields.split(".")[0]
         if name in fail:
             return httpx.Response(400, json={"error": {"message": "secret words", "code": fail[name]}})
@@ -175,8 +179,9 @@ def test_the_report_sets_each_post_beside_its_forecast_and_the_follower_change(t
 
     lines = insights.report(settings, now=NOW)
 
-    assert len(lines) == 3  # header, rule, the one post of the last week
+    assert len(lines) == 7  # header, rule, the one post of the last week; then the Reels table with none
     assert "| 2026-09-30-floods | 59 | 4,200 | 6,100 | 3 | 31 | 250 | – | +31 over 26.0h |" in lines[2]
+    assert lines[6].startswith("| – | no Reel went live")
     assert insights.report(settings, now=NOW + timedelta(days=30))[2].startswith("| – | no Facebook post went live")
 
 
@@ -239,3 +244,109 @@ def test_the_probe_names_permissions_and_answer_shapes_never_ids_or_values(tmp_p
     assert ("111_7", "post_media_view", "lifetime") in asked and ("7", "post_media_view", "lifetime") in asked  # the newest post, and its photo
     assert not any(a[0] in ("111_5", "5") for a in asked)
     assert "9876543" not in text and "4242" not in text and "secret words" not in text
+
+
+def test_a_scheduled_photo_reads_its_counts_from_the_post_it_became(tmp_path):
+    """Until 1 October a scheduled photo's shares and reactions came back as code 100: they belong to the post."""
+    settings = _settings(tmp_path)
+    _save(settings, "2026-09-30-rana", _post("555", 25, scheduled_for=(NOW - timedelta(hours=25)).isoformat(timespec="seconds")))
+    numbers = {"555": {**_numbers(40, 90, 0, 0, 0), "page_story_id": "111_777"}, "111_777": _numbers(0, 0, 2, 5, 17)}
+    client, calls = _graph(numbers)
+
+    insights.take_readings(settings, ENV, client=client, now=NOW)
+
+    reading = social.read_record(settings.data_dir / "social" / "2026-09-30-rana.json").posts[0].metrics["24h"]
+    assert reading["viewers"] == 40 and reading["views"] == 90  # insights from the photo
+    assert reading["shares"] == 2 and reading["comments"] == 5 and reading["reactions"] == 17 and "errors" not in reading  # counts from the post
+    assert any(c.endswith("/555?page_story_id") for c in calls) and not any(c.endswith("/555?shares") for c in calls)
+
+    # When Meta will not say which post it became, the photo is read as before.
+    settings2 = _settings(tmp_path / "two")
+    _save(settings2, "2026-09-30-rana", _post("555", 25))
+    client, _ = _graph({"555": _numbers(40, 90, 0, 0, 0)}, fail={"page_story_id": 100})
+    insights.take_readings(settings2, ENV, client=client, now=NOW)
+    assert social.read_record(settings2.data_dir / "social" / "2026-09-30-rana.json").posts[0].metrics["24h"]["viewers"] == 40
+
+
+def _reel(video_id, hours_ago, **kw):
+    at = (NOW - timedelta(hours=hours_ago)).isoformat(timespec="seconds")
+    return social.Post(network="facebook_reel", status=kw.pop("status", "posted"), text="t", id=video_id, posted_at=at, **kw)
+
+
+def _video_graph(default, alone=None, fail=None):
+    """video_insights as Meta answers it: a default set with no metric named, one metric when named."""
+    alone = alone or {}
+    calls = []
+
+    def handler(request):
+        url = request.url
+        if url.path.endswith("/me"):
+            return httpx.Response(200, json={"id": "111"})
+        if url.path.endswith("/111"):
+            return httpx.Response(200, json={"followers_count": 10_300, "id": "111"})
+        metric = url.params.get("metric")
+        calls.append(f"{url.path}?{metric or ''}")
+        if fail is not None:
+            return httpx.Response(400, json={"error": {"message": "secret words", "code": fail}})
+        rows = default if metric is None else {k: v for k, v in alone.items() if k == metric}
+        return httpx.Response(200, json={"data": [{"name": k, "period": "lifetime", "values": [{"value": v}], "title": "t", "id": f"x/{k}"} for k, v in rows.items()]})
+
+    return httpx.Client(transport=httpx.MockTransport(handler)), calls
+
+
+def test_a_reel_is_read_from_its_video_insights_by_name(tmp_path):
+    settings = _settings(tmp_path)
+    _save(settings, "2026-09-30-pal", _reel("999", 25), _reel("998", 30, status="removed"))
+    default = {"blue_reels_play_count": 500, "post_video_avg_time_watched": 6400, "post_video_likes_by_reaction_type": {"like": 3}}
+    client, calls = _video_graph(default, alone={"post_impressions_unique": 300})
+
+    out = insights.take_readings(settings, ENV, client=client, now=NOW)
+
+    reading = social.read_record(settings.data_dir / "social" / "2026-09-30-pal.json").posts[0].metrics["24h"]
+    assert reading == {"at": NOW.isoformat(timespec="seconds"), "hours": 25.0, "plays": 500, "viewers": 300, "avg_watch_ms": 6400}
+    assert [c.split("/", 2)[2] for c in calls] == ["999/video_insights?", "999/video_insights?post_impressions_unique"]  # the removed Reel is not read
+    assert out["read"][0][0] == "2026-09-30-pal"
+    lines = insights.report(settings, now=NOW)
+    assert any(line.endswith("| 2026-09-30-pal | 500 | 300 | 6.4 s | – | – |") for line in lines)
+
+
+def test_a_reel_metric_meta_does_not_return_is_named_and_asked_again_next_run(tmp_path):
+    settings = _settings(tmp_path)
+    _save(settings, "2026-09-30-pal", _reel("999", 25))
+    client, _ = _video_graph({"blue_reels_play_count": 500, "post_video_avg_time_watched": {"a": 1}})
+    insights.take_readings(settings, ENV, client=client, now=NOW)
+    reading = social.read_record(settings.data_dir / "social" / "2026-09-30-pal.json").posts[0].metrics["24h"]
+    assert reading["plays"] == 500
+    assert reading["errors"] == {"viewers": "not returned", "avg_watch_ms": "no value (a breakdown, not a number)"}
+    assert insights.due(social.read_record(settings.data_dir / "social" / "2026-09-30-pal.json").posts[0], 24, NOW + timedelta(hours=6))
+
+    refused, _ = _video_graph({}, fail=10)
+    out = insights.take_readings(_settings(tmp_path / "two"), ENV, client=refused, now=NOW)
+    assert out["read"] == []
+
+
+def test_the_probe_lists_the_names_a_reel_answers_with_never_values(tmp_path):
+    settings = _settings(tmp_path)
+    _save(settings, "2026-09-30-pal", _reel("999", 25), _post("555", 26))
+
+    def handler(request):
+        url = request.url
+        if url.path.endswith("/me"):
+            return httpx.Response(200, json={"id": "111"})
+        if url.path.endswith("/debug_token"):
+            return httpx.Response(200, json={"data": {"type": "PAGE", "is_valid": True, "expires_at": 0, "scopes": ["read_insights"]}})
+        if url.path.endswith("/555") and url.params.get("fields") == "page_story_id":
+            return httpx.Response(200, json={"page_story_id": "111_777", "id": "555"})
+        if url.path.endswith("/999/video_insights"):
+            if url.params.get("metric") == "post_impressions_unique":
+                return httpx.Response(400, json={"error": {"message": "secret words", "code": 100}})
+            return httpx.Response(200, json={"data": [{"name": "blue_reels_play_count", "values": [{"value": 4242}]}, {"name": "post_video_likes_by_reaction_type", "values": [{"value": {"like": 7}}]}]})
+        return httpx.Response(200, json={"data": []})
+
+    lines = insights.probe(settings, ENV, client=httpx.Client(transport=httpx.MockTransport(handler)))
+    text = "\n".join(lines)
+    assert "- Newest scheduled photo, page_story_id: a post id" in lines
+    assert "- Newest Reel, video_insights by default: blue_reels_play_count (a number), post_video_likes_by_reaction_type (a breakdown, not a number)" in lines
+    assert "- Newest Reel, post_impressions_unique asked on its own: code 100" in lines
+    assert "- Newest Reel, post_video_avg_time_watched asked on its own: not returned" in lines
+    assert "4242" not in text and "777" not in text and "secret words" not in text

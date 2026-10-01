@@ -248,3 +248,9 @@ social:
       metrics:
         viewers: post_total_media_view_unique
         views: post_media_view
+      # A Reel's numbers, read at the same hours from its video's insights. The probe
+      # (insights --probe) lists every name Meta returns for the newest Reel.
+      reel_metrics:
+        plays: blue_reels_play_count
+        viewers: post_impressions_unique
+        avg_watch_ms: post_video_avg_time_watched
