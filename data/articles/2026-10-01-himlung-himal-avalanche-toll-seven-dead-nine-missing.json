@@ -110,17 +110,14 @@
     },
     "notes": "",
     "checked": true,
-    "approved": false,
-    "held": true,
-    "fact_problems": [
-      "The record says only that the bodies are scheduled to be flown. It does not name a helicopter, so 'हेलिकप्टरमा' adds a detail the record does not carry.",
-      "The English carries the Tuesday correction inside the ETV Bharat sentence, and the sources list ETV Bharat for the corrected count. The Nepali sentence states it with no source."
-    ],
-    "language_notes": 4,
-    "passes": 3,
+    "approved": true,
+    "held": false,
+    "fact_problems": [],
+    "language_notes": 5,
+    "passes": 4,
     "problems_fixed": 26,
     "fixed_in_place": 0,
-    "editor": "The body adds a helicopter the record does not mention, and it states the Tuesday correction without the ETV Bharat attribution the English carries. A few sentences also read as translated English and need plain Nepali."
+    "editor": "Every number, name, date, quote and attribution matches the record, and no fact or legal problem was found. A few sentences carry broken grammar or English calques that must be fixed before publication."
   },
   "image_brief": {
     "search_queries": [
