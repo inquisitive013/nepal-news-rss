@@ -297,23 +297,23 @@ def _video_graph(default, alone=None, fail=None):
 def test_a_reel_is_read_from_its_video_insights_by_name(tmp_path):
     settings = _settings(tmp_path)
     _save(settings, "2026-09-30-pal", _reel("999", 25), _reel("998", 30, status="removed"))
-    default = {"blue_reels_play_count": 500, "post_video_avg_time_watched": 6400, "post_video_likes_by_reaction_type": {"like": 3}}
+    default = {"blue_reels_play_count": 500, "post_video_avg_time_watched": 6400, "post_video_followers": 12, "post_video_likes_by_reaction_type": {"like": 3}}
     client, calls = _video_graph(default, alone={"post_impressions_unique": 300})
 
     out = insights.take_readings(settings, ENV, client=client, now=NOW)
 
     reading = social.read_record(settings.data_dir / "social" / "2026-09-30-pal.json").posts[0].metrics["24h"]
-    assert reading == {"at": NOW.isoformat(timespec="seconds"), "hours": 25.0, "plays": 500, "viewers": 300, "avg_watch_ms": 6400}
+    assert reading == {"at": NOW.isoformat(timespec="seconds"), "hours": 25.0, "plays": 500, "viewers": 300, "avg_watch_ms": 6400, "follows": 12}
     assert [c.split("/", 2)[2] for c in calls] == ["999/video_insights?", "999/video_insights?post_impressions_unique"]  # the removed Reel is not read
     assert out["read"][0][0] == "2026-09-30-pal"
     lines = insights.report(settings, now=NOW)
-    assert any(line.endswith("| 2026-09-30-pal | 500 | 300 | 6.4 s | – | – |") for line in lines)
+    assert any(line.endswith("| 2026-09-30-pal | 500 | 300 | 6.4 s | 12 | – | – | – |") for line in lines)
 
 
 def test_a_reel_metric_meta_does_not_return_is_named_and_asked_again_next_run(tmp_path):
     settings = _settings(tmp_path)
     _save(settings, "2026-09-30-pal", _reel("999", 25))
-    client, _ = _video_graph({"blue_reels_play_count": 500, "post_video_avg_time_watched": {"a": 1}})
+    client, _ = _video_graph({"blue_reels_play_count": 500, "post_video_avg_time_watched": {"a": 1}, "post_video_followers": 0})
     insights.take_readings(settings, ENV, client=client, now=NOW)
     reading = social.read_record(settings.data_dir / "social" / "2026-09-30-pal.json").posts[0].metrics["24h"]
     assert reading["plays"] == 500
@@ -349,4 +349,5 @@ def test_the_probe_lists_the_names_a_reel_answers_with_never_values(tmp_path):
     assert "- Newest Reel, video_insights by default: blue_reels_play_count (a number), post_video_likes_by_reaction_type (a breakdown, not a number)" in lines
     assert "- Newest Reel, post_impressions_unique asked on its own: code 100" in lines
     assert "- Newest Reel, post_video_avg_time_watched asked on its own: not returned" in lines
+    assert "- Newest Reel, post_video_followers asked on its own: not returned" in lines
     assert "4242" not in text and "777" not in text and "secret words" not in text

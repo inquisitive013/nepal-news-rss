@@ -254,3 +254,4 @@ social:
         plays: blue_reels_play_count
         viewers: post_impressions_unique
         avg_watch_ms: post_video_avg_time_watched
+        follows: post_video_followers
