@@ -1,0 +1,527 @@
+{
+  "id": "2026-10-02-nepali-congress-ward-tally-mismatch",
+  "slug": "nepali-congress-ward-tally-mismatch",
+  "story_id": "2026-10-02-nepali-congress-convention-factional-split",
+  "headline": "Nepali Congress's 'matching' ward count is one camp's number, twice",
+  "dek": "The establishment faction already finished almost double that ward count three weeks earlier, Kathmandu Post reported.",
+  "body_markdown": "Nepali Congress, one of Nepal's oldest parties, ran two rival conventions for the same leadership this week. The faction led by sitting party president Gagan Thapa had scheduled its main 15th general convention to open in Kathmandu on Friday, October 2, Kathmandu Post reported, with preparations underway at Khula Manch, Khabarhub reported. A faction led by former party president Sher Bahadur Deuba held its own separate conventions at the ward level the day before, on Thursday, October 1, completing voting in 3,191 wards nationwide, Ratopati reported.\n\nFor Congress members and voters, this fight decides who controls the party's name, its flag and its ticket for the next election. Two men now both say they lead the same party. Only one outcome can stand once courts or the Election Commission settle it, and neither has ruled yet.\n\nWire reports framed Thursday's ward count as a rare case of two camps reporting matching numbers. That framing does not hold up.\n\n## What the coverage missed\n\nEkantipur's own October 1 report put the Deuba camp's ward count at 3,500, not 3,191, for what it described as the same Thursday process, conventions concluded in the remaining wards set for Friday and Saturday. That is a gap of more than 300 wards inside one outlet's own coverage, left unexplained.\n\nThe 3,191 figure itself is not two rival sides converging on one total. It is one camp's number, counted a second time under a different label. Nagarik News reported the identical Thursday count, also 3,191 wards, as belonging to the \"non-establishment group\", the same Deuba aligned camp, not a separate third faction. DC Nepal and Setopati also used 3,191 for the Deuba faction's count that day, matching Ratopati and Nagarik, with no outlet reconciling the figure against Ekantipur's 3,500.\n\nThe establishment side is also not running even with Deuba's camp, whatever the true count. Congress under Thapa had already completed conventions in 6,132 wards across 73 districts by September 21, Kathmandu Post reported, roughly double Thursday's reported Deuba count under either number.\n\nVoting was also suspended in Sunsari-2 amid the dispute, Ekantipur reported, though the outlet's report does not explain what triggered the suspension there.\n\n## What we still do not know\n\nWhether the Election Commission recognizes the Thapa convention, the Deuba process, both or neither has not been addressed in any report reviewed. The Election Commission itself could answer that.\n\nWhen the Supreme Court will rule on its pending review of the leadership dispute remains unclear. Kathmandu Post reported on September 27 that Deuba's camp plans its own central convention in December while that review is still pending. The court's registrar could say when a ruling is expected.\n\nWhy Ekantipur's own reporting gives two different ward totals for the same Thursday event, 3,191 and 3,500, has not been explained by the outlet or by either camp's election committee.\n\nDeuba's camp says it will finish its remaining ward conventions on Friday and Saturday, October 3 and 4. The establishment convention in Kathmandu continues this week. Neither camp has said what happens if both claim victory.",
+  "language": "en",
+  "key_facts": [
+    {
+      "fact": "The Deuba faction completed ward conventions, with voting finished in 3,191 wards nationwide, on Thursday, October 1.",
+      "source_url": "https://www.ratopati.com/story/596450/nepali-congress-deuba-factions-ward-convention-voting-completed-in-3191-wards"
+    },
+    {
+      "fact": "Ekantipur's own report on the same Thursday process gave a different total, 3,500 wards, for the Deuba faction's conventions.",
+      "source_url": "https://ekantipur.com/politics/2026/10/01/deuba-factions-parallel-convention-completed-in-3500-wards-remaining-to-be-held-on-friday-and-saturday-37-31.html"
+    },
+    {
+      "fact": "Nagarik News reported the identical 3,191-ward Thursday count under the label 'non-establishment group', the same Deuba aligned camp, not a separate faction.",
+      "source_url": "https://nagariknews.nagariknetwork.com/politics/congress-convention-held-in-3-191-wards-of-non-establishment-groups-67-97.html"
+    },
+    {
+      "fact": "The establishment faction led by Gagan Thapa had already completed conventions in over 6,000 wards across 73 districts by September 21.",
+      "source_url": "https://kathmandupost.com/politics/2026/09/21/congress-completes-conventions-in-over-6-000-wards-in-73-districts"
+    },
+    {
+      "fact": "Voting was suspended in constituency Sunsari-2 amid the factional dispute.",
+      "source_url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBybW54M2lsbm52aDVSVkpGWG1la09VRG5oM3BRbGZQelJ6aUhNTWdJNkNIYXpnOUQ5Z3NTZkpwS2F0SHo0MFJrV05oS2FPSE9ocG1LbEszaVYtS0lKT0hqRlNPUU5zUUJFbVN1UUxYbHJYYzNBR3VfcWJtUE1ydw?oc=5"
+    },
+    {
+      "fact": "The Deuba camp plans its own central convention in December, while the Supreme Court's review of the party's leadership dispute remains pending.",
+      "source_url": "https://kathmandupost.com/politics/2026/09/27/deuba-faction-moves-ahead-with-parallel-congress-convention"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Ratopati",
+      "url": "https://www.ratopati.com/story/596450/nepali-congress-deuba-factions-ward-convention-voting-completed-in-3191-wards",
+      "used_for": "3,191 wards figure for Deuba faction's completed ward voting on October 1"
+    },
+    {
+      "name": "Kathmandu Post",
+      "url": "https://kathmandupost.com/politics/2026/08/18/thapa-faction-presses-ahead-with-congress-convention-despite-deuba-camp-s-legal-challenge",
+      "used_for": "Confirms the establishment faction's main convention was scheduled for October 2 to 5 despite the Deuba camp's legal challenge"
+    },
+    {
+      "name": "Ekantipur",
+      "url": "https://ekantipur.com/politics/2026/10/01/deuba-factions-parallel-convention-completed-in-3500-wards-remaining-to-be-held-on-friday-and-saturday-37-31.html",
+      "used_for": "Conflicting 3,500 wards figure reported for the same October 1 Deuba faction event"
+    },
+    {
+      "name": "Nagarik News",
+      "url": "https://nagariknews.nagariknetwork.com/politics/congress-convention-held-in-3-191-wards-of-non-establishment-groups-67-97.html",
+      "used_for": "Confirms the 3,191 figure is attributed to the 'non-establishment group', the same Deuba camp under a different label"
+    },
+    {
+      "name": "DC Nepal",
+      "url": "https://www.dcnepal.com/2026/10/801684/",
+      "used_for": "Confirms 3,191 wards for the Deuba faction's ward conventions on October 1"
+    },
+    {
+      "name": "Setopati",
+      "url": "https://www.setopati.com/politics/399734",
+      "used_for": "Corroborates the 3,191 wards figure for the Deuba camp's October 1 conventions"
+    },
+    {
+      "name": "Kathmandu Post",
+      "url": "https://kathmandupost.com/politics/2026/09/21/congress-completes-conventions-in-over-6-000-wards-in-73-districts",
+      "used_for": "Establishment faction's ward convention count of over 6,000 wards across 73 districts by September 21"
+    },
+    {
+      "name": "Himalpress",
+      "url": "https://en.himalpress.com/nc-holds-conventions-in-more-than-6000-wards/",
+      "used_for": "Confirms the exact figure of 6,132 wards across 73 districts for the establishment faction"
+    },
+    {
+      "name": "Kathmandu Post",
+      "url": "https://kathmandupost.com/politics/2026/09/27/deuba-faction-moves-ahead-with-parallel-congress-convention",
+      "used_for": "Deuba camp's December central convention plan and the pending Supreme Court review of the leadership dispute"
+    },
+    {
+      "name": "Ekantipur",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBybW54M2lsbm52aDVSVkpGWG1la09VRG5oM3BRbGZQelJ6aUhNTWdJNkNIYXpnOUQ5Z3NTZkpwS2F0SHo0MFJrV05oS2FPSE9ocG1LbEszaVYtS0lKT0hqRlNPUU5zUUJFbVN1UUxYbHJYYzNBR3VfcWJtUE1ydw?oc=5",
+      "used_for": "Reports voting suspended in Sunsari-2 amid the factional dispute"
+    },
+    {
+      "name": "Khabarhub",
+      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9oSEZWZHJGY1d2UFdCMHJVVktUR0FsU2VHb29jbEgzc2JrTF84ak5vTUxsRW1ZUWFWS0hoNmZhOVdwaWl0RUloOFZaZEltbkh5OHNqWnl5Z2I?oc=5",
+      "used_for": "Reports preparations underway at Khula Manch, Kathmandu for the establishment faction's main convention"
+    }
+  ],
+  "tags": [
+    "nepali-congress",
+    "sher-bahadur-deuba",
+    "gagan-thapa",
+    "political-split",
+    "general-convention"
+  ],
+  "social_hook": "Nepal's oldest party wants you to believe two rival factions tied on ward conventions this week, but it is one camp's number, published twice.",
+  "take": "Nepali Congress wants its members to believe two factions tied on ward conventions this week. They did not. Ekantipur itself reported two different totals, 3,191 and 3,500 wards, for the same Deuba camp event. The matching 3,191 figure other outlets used was that same camp's number printed under a different label, not a rival tally. The establishment side had already logged roughly double that count by September 21, Kathmandu Post reported. Nobody has said yet whose convention the Election Commission or the Supreme Court will recognize.",
+  "image_headline": "CONGRESS'S WARD COUNT IS\nONE CAMP COUNTED TWICE",
+  "theme": "POLITICS",
+  "country": "NEPAL",
+  "caption": {
+    "hook": "Two men both claim to lead Nepali Congress, and the number meant to prove they are evenly matched is one camp's own count, printed twice.",
+    "body": "Nepali Congress split into two conventions this week. Gagan Thapa's established faction opened its main convention in Kathmandu on Friday. Sher Bahadur Deuba's rival camp ran its own ward conventions a day earlier, reporting 3,191 wards finished, Ratopati reported. But Ekantipur's own count for that same event was 3,500 wards. The 3,191 figure other outlets used was Deuba's camp reported twice under a different name, Nagarik News showed. The establishment side had already finished more than 6,000 wards by September 21, Kathmandu Post reported. Voting was suspended in Sunsari-2 amid the dispute, Ekantipur reported. Whoever wins decides who gets to run Congress candidates in Nepal's next election.",
+    "trigger": "If your party split in two and both halves kept the same name and flag, which one would you believe is the real party?"
+  },
+  "nepali": {},
+  "image_brief": {
+    "search_queries": [
+      "Sher Bahadur Deuba",
+      "Gagan Thapa",
+      "Nepali Congress",
+      "Khula Manch"
+    ],
+    "generation_prompt": "An editorial illustration of a large party convention hall split down the middle by a visible crack, two empty podiums facing each other on either side of the divide, muted grey and red tones, overcast documentary lighting, a tense and solemn mood of institutional division, no readable text, no logos, no identifiable real people.",
+    "alt_text": "An illustration of a convention hall split by a crack between two podiums, symbolizing a political party's internal division."
+  },
+  "image": {
+    "path": "data/images/2026-10-02-nepali-congress-ward-tally-mismatch.jpg",
+    "alt": "A portrait of Sher Bahadur Deuba, wearing a dark jacket and traditional Nepali cap, looking directly at the camera.",
+    "width": 1422,
+    "height": 1823,
+    "credit": {
+      "kind": "found",
+      "title": "SherBahadurDeuba",
+      "author": "Ashishlohorung",
+      "author_url": "",
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:SherBahadurDeuba.jpg",
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0",
+      "model": "",
+      "note": ""
+    },
+    "original_url": "https://upload.wikimedia.org/wikipedia/commons/f/fe/SherBahadurDeuba.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  "investigation": {
+    "angles": [
+      {
+        "claim": "The '3,191 vs 3,191' parallel-convention framing used in wire coverage, including the story brief itself, is internally inconsistent: Ekantipur's own Oct 1 headline reports the Deuba faction concluded ward conventions in 3,500 wards, not 3,191, while three other outlets (Setopati, DC Nepal, Nagarik News) report 3,191 wards for what appears to be the same camp under two different labels ('Deuba faction' and 'non-establishment group'), not two separate rival tallies.",
+        "kind": "numbers",
+        "why_it_matters": "If the 3,191-vs-3,191 'symmetry' that makes this story dramatic is actually one faction's self-reported number counted twice under different names, while the same outlet reporting it (Ekantipur) contradicts itself with a 3,500 figure for the identical event, the entire 'rare matching numbers' hook collapses and readers are being shown a false equivalence between two camps' institutional strength.",
+        "evidence": [
+          {
+            "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQdVF1bm5pNVVmb2J6eUQwSzE4Y1FNeFpzaEZ5QUJvTlQwWjFiY1dacUJKbXotX19UcGRadzFBRlgwN3ctN1ptcjZpTlg4ZjNFZmtyRXA4VTJjUFZOWTRpLWNaSVBrZElUdTFOamZuLXJpUktHM2M1SjN2MGlPb0d2eHIzWkVuWHhSOS1XcDdUNEZWSlVLUzhETE5HM0hEbzlZMlZxcGltSEhHNTk4VTNuSHZZOUxPRnVXRjVoOTJPZ0dIdVhRZ19qMXk3eERoaVh0T1dSeEFhM3U3SmRjeGR4bWxCNlhIVnZaM1hCaWZOMA?oc=5",
+            "source": "Ekantipur",
+            "fact": "Ekantipur's own Oct 1 headline reads: 'Deuba faction's parallel general convention: Conventions concluded in 3,500 wards, to be held in the remaining wards on Friday and Saturday.'"
+          },
+          {
+            "url": "https://www.setopati.com/politics/399734",
+            "source": "Setopati",
+            "fact": "Setopati's Oct 1 headline reads 'देउवा पक्षले गर्‍यो ३ हजार १९१ वडामा अधिवेशन' (Deuba camp held ward conventions in 3,191 wards) for the same Thursday event."
+          },
+          {
+            "url": "https://www.dcnepal.com/2026/10/801684/",
+            "source": "DC Nepal",
+            "fact": "DC Nepal's Oct 1 report states the Deuba faction selected new leadership in 3,191 wards nationwide in a single day (Thursday)."
+          },
+          {
+            "url": "https://nagariknews.nagariknetwork.com/politics/congress-convention-held-in-3-191-wards-of-non-establishment-groups-67-97.html",
+            "source": "Nagarik News",
+            "fact": "Nagarik News attributes the 3,191-ward figure to the 'संस्थापन इतर समूह' (non-establishment group) -- the Deuba/dissident camp, not a separate third rival faction -- for the same Thursday ward conventions."
+          }
+        ],
+        "confidence": 80
+      },
+      {
+        "claim": "The Thapa-led establishment side had already completed ward conventions in over 6,000 wards across 73 districts by September 21, per the Kathmandu Post, and more than 40 leaders defected from the Deuba camp to the Thapa-led party the same month -- context that is absent from Oct 1-2 coverage framing the two sides' ward counts as closely matched.",
+        "kind": "numbers",
+        "why_it_matters": "Presenting Thursday's reported tallies as a head-to-head contest obscures that one side appears to have a substantially larger organizational base weeks earlier, which matters for assessing which camp can credibly claim the party's institutional continuity and resources going into the general convention.",
+        "evidence": [
+          {
+            "url": "https://kathmandupost.com/politics/2026/09/21/congress-completes-conventions-in-over-6-000-wards-in-73-districts",
+            "source": "Kathmandu Post",
+            "fact": "Reports the establishment faction had completed conventions in over 6,000 wards across 73 districts by September 21, roughly double the 3,191 figure reported for the rival camp on October 1."
+          },
+          {
+            "url": "https://kathmandupost.com/politics/2026/09/14/sher-bahadur-deuba-faction-fractures-as-31-leaders-join-thapa-led-congress",
+            "source": "Kathmandu Post",
+            "fact": "Reports more than 40 leaders defected from the Deuba camp to the Thapa-led party in September."
+          }
+        ],
+        "confidence": 58
+      },
+      {
+        "claim": "No candidate report on the Oct 1-2 ward conventions addresses the Election Commission of Nepal's position on which faction's convention process it recognizes, or the status of the Deuba camp's Supreme Court challenge to the special convention that installed the Thapa leadership -- even though the Kathmandu Post reported on August 18 that Thapa's faction proceeded 'despite Deuba camp's legal challenge.'",
+        "kind": "missing",
+        "why_it_matters": "Whichever side the Election Commission and courts ultimately recognize controls the party's name, symbol and legal standing for future elections; without that context, readers cannot judge whether either faction's ward-convention tally has any binding consequence at all.",
+        "evidence": [
+          {
+            "url": "https://kathmandupost.com/politics/2026/08/18/thapa-faction-presses-ahead-with-congress-convention-despite-deuba-camp-s-legal-challenge",
+            "source": "Kathmandu Post",
+            "fact": "Confirms the main 15th General Convention proceeded on its Oct 2-5 schedule despite an active legal challenge from the Deuba camp, and that the convention's legitimacy was contested in court as of mid-August."
+          }
+        ],
+        "confidence": 62
+      },
+      {
+        "claim": "The Sunsari-2 vote suspension reported by Ekantipur on October 1 followed an earlier physical confrontation -- a ballot-box scuffle between rival Congress groups in Sunsari -- suggesting an escalating pattern in that district that single-incident wire reports treat as isolated.",
+        "kind": "pattern",
+        "why_it_matters": "A single administrative 'voting suspended' headline reads very differently from a district where factional disputes have already turned physical; readers assessing how serious the Congress split has become need that continuity, not an isolated snapshot.",
+        "evidence": [
+          {
+            "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBybW54M2lsbm52aDVSVkpGWG1la09VRG5oM3BRbGZQelJ6aUhNTWdJNkNIYXpnOUQ5Z3NTZkpwS2F0SHo0MFJrV05oS2FPSE9ocG1LbEszaVYtS0lKT0hqRlNPUU5zUUJFbVN1UUxYbHJYYzNBR3VfcWJtUE1ydw?oc=5",
+            "source": "Ekantipur",
+            "fact": "Reports voting in Sunsari-2 was suspended amid the factional dispute on October 1."
+          },
+          {
+            "url": "https://nepalkhabar.com/politics/288410-2026-9-30-2-31-6",
+            "source": "Nepal Khabar",
+            "fact": "Reports a physical scuffle and seizure of a ballot box between rival Congress groups in Sunsari in the days prior to the Sunsari-2 suspension."
+          }
+        ],
+        "confidence": 52
+      }
+    ],
+    "unanswered": [
+      {
+        "question": "Does the Election Commission of Nepal currently recognize the Thapa-led establishment's convention, the Deuba-led camp's parallel convention, both, or neither as the party's official leadership process?",
+        "who_could_answer": "Election Commission of Nepal spokesperson or party registration division"
+      },
+      {
+        "question": "What is the current status of the Deuba camp's Supreme Court writ challenging the special convention that installed the Thapa leadership, and is a ruling expected before the scheduled Dec 7-9 parallel central convention?",
+        "who_could_answer": "The Supreme Court registrar's office or the bench hearing the writ petition; lawyers for either Congress faction"
+      },
+      {
+        "question": "Why do Ekantipur's own reports give two different ward totals (3,500 and, per the story brief, 3,191) for the same Deuba-faction event on the same day, and what is the actual, reconciled nationwide ward count for each faction?",
+        "who_could_answer": "Ekantipur's politics desk; the Deuba/non-establishment camp's central election committee, which would hold the underlying district-by-district tally"
+      },
+      {
+        "question": "What specifically triggered the Sunsari-2 suspension, and is it linked to the reported ballot-box scuffle elsewhere in Sunsari days earlier?",
+        "who_could_answer": "The local Election Officer for Sunsari-2 and the District Administration Office, Sunsari"
+      }
+    ],
+    "summary": "Mainstream coverage frames Thursday's ward-convention tallies as a dramatic 3,191-vs-3,191 standoff between two equal camps, but cross-checking the same day's reports shows that framing rests on one faction's figure being reported under two different labels while Ekantipur's own coverage gives a conflicting 3,500 figure for that identical event, and omits that the rival establishment side had already logged more than double that ward count three weeks earlier. No outlet in the set addresses the Election Commission or Supreme Court status that would determine whether either tally carries any legal weight, and the Sunsari-2 suspension is reported in isolation from an earlier ballot-box scuffle in the same district that suggests a broader pattern of escalation."
+  },
+  "review": {
+    "ranking": [
+      {
+        "judge": "ranking_judge_1",
+        "rank": 2,
+        "score": 66,
+        "reason": "The split of Nepal's oldest party has public stakes, and Ekantipur's own report records the suspended vote in Sunsari-2. The advocate's 'both camps claim 3,191' hook looks like one Deuba faction claim, also called the non-establishment faction, reported twice, with Ekantipur giving 3,500, so the desk must reconcile and attribute it rather than run the symmetry. Weakest reach dimension is personal stakes."
+      },
+      {
+        "judge": "ranking_judge_2",
+        "rank": 2,
+        "score": 66,
+        "reason": "Confirmed. The Deuba faction and the non-establishment faction are the same camp, so the matching 3,191 figure is one claim reported twice and must not run as symmetry. If the establishment's general convention opens today as Kathmandu Post scheduled, that is the stronger fresh hook. Weakest dimension is personal stakes."
+      }
+    ],
+    "validation_rounds": [
+      {
+        "round": 1,
+        "red_team": {
+          "findings": [
+            {
+              "id": "f1",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "The establishment faction already finished almost double that ward count three weeks earlier, Kathmandu Post reported.",
+              "problem": "The establishment count is dated September 21 and the Deuba count is dated October 1, a gap of 10 to 11 days, not three weeks. This is a plain arithmetic error sitting in the dek, the most visible line in the piece.",
+              "evidence_url": "https://kathmandupost.com/politics/2026/09/21/congress-completes-conventions-in-over-6-000-wards-in-73-districts",
+              "suggested_fix": "Change to 'ten days earlier' or 'a week and a half earlier' to match the body's own dates of September 21 and October 1."
+            },
+            {
+              "id": "f2",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "That is a gap of more than 300 wards inside one outlet's own coverage, left unexplained.' and 'Why Ekantipur's own reporting gives two different ward totals for the same Thursday event, 3,191 and 3,500, has not been explained by the outlet",
+              "problem": "The sources provided show Ekantipur reported only 3,500 wards for the Deuba camp's Thursday event. The 3,191 figure comes from four other outlets (Ratopati, Nagarik News, DC Nepal, Setopati), not from Ekantipur itself. There is no evidence Ekantipur published both numbers. Calling this a contradiction 'inside one outlet's own coverage' misstates the actual discrepancy, which is between Ekantipur and every other outlet, not within Ekantipur's own reporting. This is the article's central investigative claim and it rests on a misreading of its own sources.",
+              "evidence_url": "https://ekantipur.com/politics/2026/10/01/deuba-factions-parallel-convention-completed-in-3500-wards-remaining-to-be-held-on-friday-and-saturday-37-31.html",
+              "suggested_fix": "Correct to state the discrepancy is between Ekantipur's 3,500 figure and the 3,191 figure reported by Ratopati, Nagarik News, DC Nepal and Setopati, not a contradiction within Ekantipur's own coverage, unless a second Ekantipur report carrying 3,191 can be named."
+            },
+            {
+              "id": "f3",
+              "dimension": "defensibility",
+              "severity": "high",
+              "passage": "The faction led by sitting party president Gagan Thapa",
+              "problem": "The piece itself says the leadership question is unresolved and awaits a Supreme Court ruling and Election Commission recognition, with 'two men now both say they lead the same party. Only one outcome can stand.' Declaring Thapa the 'sitting party president' in the newsroom's own voice prejudges the very dispute the story says is unsettled, while Deuba is demoted to 'former party president.' This is an internal contradiction that effectively takes a side.",
+              "evidence_url": "https://kathmandupost.com/politics/2026/08/18/thapa-faction-presses-ahead-with-congress-convention-despite-deuba-camp-s-legal-challenge",
+              "suggested_fix": "Use neutral, parallel framing for both men, e.g. 'the faction led by Gagan Thapa, who the establishment side recognizes as party president' and 'the faction led by Sher Bahadur Deuba, a former party president contesting that leadership,' and keep both claims attributed rather than stated as settled fact."
+            },
+            {
+              "id": "f4",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Wire reports framed Thursday's ward count as a rare case of two camps reporting matching numbers. That framing does not hold up.",
+              "problem": "No specific outlet is named as having made this 'matching numbers' framing. The sources list contains no wire story explicitly characterized this way. House style bars unattributed 'sources say' claims; this reads as the newsroom knocking down a framing it has not shown any named outlet actually used.",
+              "evidence_url": "https://ekantipur.com/politics/2026/10/01/deuba-factions-parallel-convention-completed-in-3500-wards-remaining-to-be-held-on-friday-and-saturday-37-31.html",
+              "suggested_fix": "Name the specific outlet(s) whose coverage implied parity, or drop the 'wire reports framed' claim and go straight to the sourced numbers."
+            },
+            {
+              "id": "f5",
+              "dimension": "defensibility",
+              "severity": "high",
+              "passage": "Nepali Congress wants its members to believe two factions tied on ward conventions this week. They did not.",
+              "problem": "This attributes a deliberate deceptive intent to the party ('wants its members to believe') without any named source documenting that the party, as an institution, pushed this specific framing. The mismatch traced in the body is a reporting discrepancy among outlets, not a shown act of the party manufacturing a false narrative. This crosses from reporting a record into asserting motive the record does not carry.",
+              "evidence_url": "https://nagariknews.nagariknetwork.com/politics/congress-convention-held-in-3-191-wards-of-non-establishment-groups-67-97.html",
+              "suggested_fix": "Rewrite to describe the discrepancy in the reporting itself: 'Coverage this week made it look like two factions tied on ward conventions. The numbers do not support that.' Remove the claim that the party itself wants members to believe a specific falsehood."
+            },
+            {
+              "id": "f6",
+              "dimension": "accuracy",
+              "severity": "low",
+              "passage": "roughly double Thursday's reported Deuba count under either number",
+              "problem": "6,132 against 3,191 is 1.92 times, close to double. 6,132 against 3,500 is 1.75 times, a noticeably weaker fit for 'double.' Calling both 'roughly double' overstates the comparison for the higher Deuba figure.",
+              "evidence_url": "https://ekantipur.com/politics/2026/10/01/deuba-factions-parallel-convention-completed-in-3500-wards-remaining-to-be-held-on-friday-and-saturday-37-31.html",
+              "suggested_fix": "Say 'nearly double the lower figure and well ahead of the higher one' rather than 'roughly double under either number.'"
+            },
+            {
+              "id": "f7",
+              "dimension": "virality",
+              "severity": "low",
+              "passage": "Two men both claim to lead Nepali Congress, and the number meant to prove they are evenly matched is one camp's own count, printed twice.",
+              "problem": "The caption hook closely echoes the card headline's core phrase, 'one camp... printed/counted twice.' Style guide bars duplicating the card headline sentence in the hook because the card and caption should carry different payloads for a reader scrolling past.",
+              "evidence_url": "",
+              "suggested_fix": "Rewrite the hook to lead with a different angle, for example the consequence for party members and the ticket for the next election, rather than restating the headline's 'counted twice' line."
+            },
+            {
+              "id": "f8",
+              "dimension": "relevance",
+              "severity": "medium",
+              "passage": "Only one outcome can stand once courts or the Election Commission settle it, and neither has ruled yet.",
+              "problem": "The piece is built almost entirely around reconciling ward-count arithmetic across outlets. It never gives the reader a concrete, felt stake beyond abstract party control, no voter, delegate or ordinary member is quoted or described living through this, which weakens the reader test the house style requires by the second paragraph.",
+              "evidence_url": "",
+              "suggested_fix": "Add one sentence naming what an ordinary Congress member or voter loses or gains depending on which convention is recognized, drawn from a named source if one exists, to ground the stakes beyond institutional arithmetic."
+            },
+            {
+              "id": "f9",
+              "dimension": "defensibility",
+              "severity": "low",
+              "passage": "CONGRESS'S WARD COUNT IS\nONE CAMP COUNTED TWICE",
+              "problem": "Style guide calls for two lines of five to six words on the card headline; both lines here run four words each, which is a minor deviation from the house format, though not a factual or legal problem.",
+              "evidence_url": "",
+              "suggested_fix": "Tighten or expand to hit five to six words per line, e.g. 'CONGRESS WARD COUNT CLAIM FALLS APART' split across two lines."
+            }
+          ],
+          "scores": {
+            "accuracy": 45,
+            "relevance": 62,
+            "defensibility": 42,
+            "virality": 52
+          },
+          "summary": "The piece's central investigative claim, that the 3,191 versus 3,500 ward count discrepancy sits inside Ekantipur's own coverage, is not supported by the sources given, since only Ekantipur reported 3,500 while four other outlets reported 3,191, making this an inter-outlet gap the article mislabels as intra-outlet. The dek contains a clear arithmetic error, calling an 10 to 11 day gap 'three weeks,' and the body declares Thapa the 'sitting party president' in the newsroom's own voice while simultaneously saying the leadership question is unresolved. The take's claim that Congress 'wants its members to believe' a falsehood attributes deliberate intent the sources do not establish, and the body's 'wire reports framed' claim lacks a named outlet, both of which need fixing before publication alongside tightening the caption hook and the card headline format."
+        },
+        "defense": {
+          "responses": [
+            {
+              "finding_id": "f1",
+              "stance": "accept",
+              "response": "September 21 to October 1 is ten days, not three weeks. This is a plain date math error and it sits in the dek, the most visible line readers see. Fix it.",
+              "proposed_edit": "Change the dek to: 'The establishment faction already finished almost double that ward count ten days earlier, Kathmandu Post reported.'"
+            },
+            {
+              "finding_id": "f2",
+              "stance": "accept",
+              "response": "The sources list only shows Ekantipur publishing the 3,500 figure. There is no second Ekantipur piece in the sources carrying 3,191. The article's own body text conflates a cross-outlet discrepancy (Ekantipur's 3,500 versus Ratopati, Nagarik, DC Nepal and Setopati's 3,191) with a contradiction inside one outlet's own coverage. That is a misreading of the sourcing and it is the piece's central investigative claim, so it has to be precise.",
+              "proposed_edit": "Replace 'inside one outlet's own coverage' with 'between Ekantipur's count and the figure four other outlets used' in both flagged sentences, e.g. 'That is a gap of more than 300 wards between Ekantipur's count and the figure Ratopati, Nagarik News, DC Nepal and Setopati used, left unexplained,' and 'Why Ekantipur's 3,500 figure does not match the 3,191 reported elsewhere has not been explained by any outlet or either camp's election committee.'"
+            },
+            {
+              "finding_id": "f3",
+              "stance": "contest",
+              "response": "Gagan Thapa is the verified incumbent. He was elected party president at a special convention in January 2026, per Kathmandu Post and Wikipedia's own record, and holds that title today. Calling him 'sitting party president' states a documented fact about who currently holds the office, it does not resolve who will emerge from this week's competing 15th general convention process, which is the actual unresolved dispute the piece describes. Calling Deuba a 'former party president' is equally factual, he previously held the role. Neither label predicts the court or Election Commission outcome. Parallel framing that hides Thapa's current title would itself be less accurate.",
+              "proposed_edit": "No change to 'sitting party president' for Thapa. Optionally add a clarifying clause on first mention for completeness: 'Gagan Thapa, elected party president in January 2026,' so the zero knowledge reader understands the title is not in dispute even as the current convention process is."
+            },
+            {
+              "finding_id": "f4",
+              "stance": "accept",
+              "response": "No outlet is named for the 'matching numbers' framing, and nothing in the sources list documents a wire story making that claim. House style bars unattributed claims the newsroom then knocks down. This reads as a strawman.",
+              "proposed_edit": "Delete 'Wire reports framed Thursday's ward count as a rare case of two camps reporting matching numbers. That framing does not hold up.' and open the next paragraph directly with the sourced ward figures, e.g. start the subheading section with 'Ekantipur's own October 1 report put the Deuba camp's ward count at 3,500...'"
+            },
+            {
+              "finding_id": "f5",
+              "stance": "accept",
+              "response": "Attributing an intent to deceive to the party as an institution is not supported by any named source. The record shows a discrepancy across outlets' reporting, not a documented act of the party pushing a specific false number. This crosses from reporting the record into asserting motive, which the house style's legal protection section forbids for contested conduct.",
+              "proposed_edit": "Change the take's opening to: 'Coverage this week made it look like two Nepali Congress factions tied on ward conventions. The numbers do not support that.' Remove 'Nepali Congress wants its members to believe' entirely."
+            },
+            {
+              "finding_id": "f6",
+              "stance": "accept",
+              "response": "6,132 against 3,191 is 1.92 times, close enough to call roughly double. 6,132 against 3,500 is 1.75 times, a weaker fit. Saying 'roughly double under either number' overstates the comparison for the higher figure.",
+              "proposed_edit": "Change to: 'nearly double Thursday's lower reported Deuba count, and well ahead of the higher one.'"
+            },
+            {
+              "finding_id": "f7",
+              "stance": "accept",
+              "response": "The hook's 'printed twice' line does echo the card headline's 'counted twice' payload too closely. House style wants the caption to carry a different angle than the card.",
+              "proposed_edit": "Rewrite the hook to: 'Two men both claim to lead Nepali Congress, and whoever the courts side with gets the party's name, flag and ticket for the next election.'"
+            },
+            {
+              "finding_id": "f8",
+              "stance": "accept",
+              "response": "The piece is built on outlet-by-outlet ward arithmetic and never gives the reader a person or a felt consequence beyond abstract party control, which weakens the reader test required by the second paragraph. The sources on hand do not include a quoted member or voter, so a fabricated one is not an option, but the existing sourced material on tickets and candidacy can be sharpened to carry more weight.",
+              "proposed_edit": "Expand the second paragraph to: 'For Congress members and voters, this fight decides who controls the party's name, its flag and its ticket for the next election. A member who campaigned for a ward convention this week does not yet know whether that vote will count. Two men now both say they lead the same party.'"
+            },
+            {
+              "finding_id": "f9",
+              "stance": "accept",
+              "response": "Both lines run four words against the house style's five to six word target, a real if minor format miss.",
+              "proposed_edit": "Change the card headline to: 'NEPALI CONGRESS WARD COUNT FALLS APART' split as 'NEPALI CONGRESS WARD COUNT' and 'CLAIM FALLS APART'."
+            }
+          ],
+          "summary": "Accepted seven of nine findings. The dek's date math error (three weeks instead of ten days) and the mischaracterization of the 3,191 versus 3,500 discrepancy as being inside Ekantipur's own coverage, rather than between Ekantipur and four other outlets, are the most serious fixes since they sit in the piece's most visible line and its central investigative claim. Also accepted: the unattributed 'wire reports framed' strawman, the unsupported claim that the party itself wants members to believe a falsehood, the overstated 'roughly double under either number' comparison, the caption hook's duplication of the card headline's payload, the thin felt-stakes for ordinary members, and the card headline's word count. Contested one finding: calling Gagan Thapa the 'sitting party president' is a verified fact, he was elected to that office in January 2026 per Kathmandu Post, and stating it does not prejudge the separate, still open question of which camp's current convention process the courts or Election Commission will recognize."
+        },
+        "judge_1": {
+          "decision": "reject",
+          "rulings": [
+            {
+              "finding_id": "f1",
+              "ruling": "sustained",
+              "note": "September 21 to October 1 is ten days, not three weeks. The error sits in the dek."
+            },
+            {
+              "finding_id": "f2",
+              "ruling": "sustained",
+              "note": "The sources show Ekantipur published only 3,500. Ratopati, Nagarik News, DC Nepal and Setopati carry 3,191. No Ekantipur report with both numbers is named. The 'inside one outlet's own coverage' claim misreads the sources and is a pillar of the piece. The Ekantipur slug also says remaining wards follow Friday and Saturday, so the two figures may measure different scopes. No source reconciles them."
+            },
+            {
+              "finding_id": "f3",
+              "ruling": "sustained",
+              "note": "The body says a Supreme Court review of the leadership dispute is pending and that two men both claim to lead the party. Calling Thapa 'sitting party president' in the newsroom's own voice settles that contested status. The January 2026 election the defence cites is not in the sources list, and its legal standing is what the review contests. Attribute the title."
+            },
+            {
+              "finding_id": "f4",
+              "ruling": "sustained",
+              "note": "No outlet is named for the 'matching numbers' framing. This is fatal, not cosmetic. The headline, card, caption hook, take and social hook all exist to knock down that framing, and the sources never show anyone made it."
+            },
+            {
+              "finding_id": "f5",
+              "ruling": "sustained",
+              "note": "No source shows the party pushed a 'tied' narrative. The take, and the social hook with 'wants you to believe', assign deceptive intent that has no record behind it."
+            },
+            {
+              "finding_id": "f6",
+              "ruling": "sustained",
+              "note": "6,132 is 1.92 times 3,191 but only 1.75 times 3,500. 'Roughly double under either number' overstates the comparison."
+            },
+            {
+              "finding_id": "f7",
+              "ruling": "sustained",
+              "note": "The hook repeats the card's 'counted twice' payload, and both rest on the unsupported thesis."
+            },
+            {
+              "finding_id": "f8",
+              "ruling": "sustained",
+              "note": "The reader stakes are thin. The defence's proposed sentence, 'A member who campaigned... does not yet know whether that vote will count', has no source behind it and must not be used."
+            },
+            {
+              "finding_id": "f9",
+              "ruling": "sustained",
+              "note": "The word count misses the five to six word standard. The larger problem is the claim itself. 'ONE CAMP COUNTED TWICE' reads in a screenshot as an allegation of double counting, and no record supports it. The defence's 'CLAIM FALLS APART' still knocks down an undocumented claim."
+            }
+          ],
+          "required_edits": [],
+          "reason": "The piece's core angle fails on its own sources. No outlet is shown framing the counts as 'matching'. Outlets reporting the same Deuba figure, one of them under the common 'non-establishment' label, is not one camp 'counted twice'. The Ekantipur 'contradiction' is between outlets, not inside one. Every exposed line carries this unsupported thesis: headline, card, hook, take and social hook. The card reads as a double counting allegation, and the body states Thapa's contested title in the newsroom's voice. That is a rebuild around the verified figures, not one editing pass, so this does not publish today.",
+          "scores": {
+            "accuracy": 40,
+            "relevance": 58,
+            "defensibility": 32,
+            "virality": 50
+          }
+        },
+        "judge_2": {},
+        "revisions": [],
+        "judge_2_recheck": {}
+      }
+    ],
+    "final_decision": "rejected",
+    "final_reason": "Judge 1: The piece's core angle fails on its own sources. No outlet is shown framing the counts as 'matching'. Outlets reporting the same Deuba figure, one of them under the common 'non-establishment' label, is not one camp 'counted twice'. The Ekantipur 'contradiction' is between outlets, not inside one. Every exposed line carries this unsupported thesis: headline, card, hook, take and social hook. The card reads as a double counting allegation, and the body states Thapa's contested title in the newsroom's voice. That is a rebuild around the verified figures, not one editing pass, so this does not publish today.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Sher Bahadur Deuba",
+          "entity": "Q470903 Sher Bahadur Deuba",
+          "found": {
+            "depicts": 1,
+            "commons category": 2,
+            "openverse": 2
+          }
+        },
+        {
+          "subject": "Gagan Thapa",
+          "entity": "Q3757183 Gagan Kumar Thapa",
+          "found": {
+            "wikidata image": 2,
+            "commons category": 2,
+            "commons search": 2,
+            "openverse": 2
+          }
+        },
+        {
+          "subject": "Nepali Congress",
+          "entity": "Q216660 Nepali Congress",
+          "found": {
+            "depicts": 1,
+            "commons category": 6,
+            "commons search": 1
+          }
+        },
+        {
+          "subject": "Khula Manch",
+          "entity": "",
+          "found": {}
+        }
+      ],
+      "requests": 23,
+      "candidates": 21,
+      "shown": 6,
+      "rounds": 1,
+      "decision": "found",
+      "reason": "The file's depicts line and category confirm this is Sher Bahadur Deuba, a named subject of the story and leader of the Nepali Congress establishment faction referenced in the headline.",
+      "chosen": {
+        "page": "https://commons.wikimedia.org/wiki/File:SherBahadurDeuba.jpg",
+        "found_via": "depicts",
+        "subject": "Sher Bahadur Deuba",
+        "depicts": "Sher Bahadur Deuba, Prime Minister of Nepal (Wikidata Q470903)"
+      }
+    }
+  },
+  "updates": [],
+  "run_date": "2026-10-02",
+  "published_at": "",
+  "version": 1
+}
