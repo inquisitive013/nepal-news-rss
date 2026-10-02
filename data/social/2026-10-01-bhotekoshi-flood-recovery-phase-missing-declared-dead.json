@@ -25,7 +25,17 @@
    "posted_at": "2026-10-01T05:39:31+00:00",
    "scheduled_for": "",
    "edited_at": "",
-   "metrics": {},
+   "metrics": {
+    "24h": {
+     "at": "2026-10-02T06:43:25+00:00",
+     "hours": 25.1,
+     "viewers": 1,
+     "views": 9,
+     "shares": 0,
+     "comments": 0,
+     "reactions": 0
+    }
+   },
    "comment_desk": []
   }
  ]
