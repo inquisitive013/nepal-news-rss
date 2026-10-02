@@ -47,6 +47,15 @@
      "shares": 0,
      "comments": 0,
      "reactions": 0
+    },
+    "72h": {
+     "at": "2026-10-02T18:33:12+00:00",
+     "hours": 73.9,
+     "viewers": 2,
+     "views": 20,
+     "shares": 0,
+     "comments": 0,
+     "reactions": 0
     }
    },
    "comment_desk": []
