@@ -463,3 +463,82 @@ def test_a_reel_meta_cannot_process_names_metas_reason_never_the_container(tmp_p
         reel.publish_instagram_reel(client, IG, video, "x", fallback_url=lambda: "https://video.example/reel.mp4", sleep=lambda s: None)
     assert str(caught.value) == "Instagram Reel: Meta could not process it: Error: Media download has failed. (2207052)"
 
+
+
+def test_instagram_fetches_the_reel_from_the_sites_address_when_given_one(tmp_path):
+    video = tmp_path / "reel.mp4"
+    video.write_bytes(b"\x00" * 10)
+    client, calls = _instagram()
+
+    media_id, url = reel.publish_instagram_reel(client, IG, video, "x", video_url="https://inquisitive013.github.io/nepal-news-rss/reels/a.mp4", sleep=lambda s: None)
+
+    assert media_id == "m1" and url == "https://www.instagram.com/reel/abc/"
+    opens = [c[1] for c in calls if c[0] == "open"]
+    assert len(opens) == 1 and opens[0]["video_url"] == "https://inquisitive013.github.io/nepal-news-rss/reels/a.mp4" and "upload_type" not in opens[0]
+    assert not any(c[0] == "upload" for c in calls)  # nothing sent to rupload
+    assert calls[-1] == ("publish", "c2")
+
+
+def test_waiting_for_the_site_asks_with_head_and_gives_up_at_the_deadline():
+    answers = [404, 404, 200]
+    methods = []
+
+    def handler(request):
+        methods.append(request.method)
+        return httpx.Response(answers.pop(0) if answers else 404)
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    waits = []
+    assert reel.wait_until_served(client, "https://example.org/r.mp4", timeout_s=60, sleep=waits.append) is True
+    assert methods == ["HEAD", "HEAD", "HEAD"] and waits == [10.0, 10.0]
+    assert reel.wait_until_served(client, "https://example.org/r.mp4", timeout_s=0, sleep=waits.append) is False
+
+
+def test_a_rendered_file_is_posted_as_is_and_instagram_gets_the_sites_address(tmp_path, monkeypatch, capsys):
+    from newsroom import __main__ as cli
+
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    video = tmp_path / "reel.mp4"
+    video.write_bytes(b"\x00" * 100)
+    monkeypatch.setattr(cli, "_settings", lambda args: settings)
+    monkeypatch.setattr(cli.publish, "load_articles", lambda s: [art])
+    monkeypatch.setattr(reel, "load_beats", lambda s, aid: ([reel.Beat([reel.Line("क")], 4.0)], "कीर्तिमान"))
+
+    def no_render(*a, **k):
+        raise AssertionError("the file was rendered again")
+
+    monkeypatch.setattr(reel, "render_reel", no_render)
+    monkeypatch.setattr(reel, "wait_until_served", lambda client, url, *a, **k: url.endswith(f"/reels/{AID}.mp4"))
+    for key, value in {**ENV, **IG}.items():
+        monkeypatch.setenv(key, value)
+    social.save_record(settings, social.SocialRecord(article_id=AID, posts=[social.Post(network="facebook_reel", status="posted", id="v0")]))
+    asked = []
+
+    def handler(request):
+        url = request.url
+        if url.path.endswith("/me"):
+            return httpx.Response(200, json={"id": "111"})
+        if request.method == "POST" and url.path.endswith("/ig1/media"):
+            asked.append(dict(urllib.parse.parse_qsl(request.content.decode())))
+            return httpx.Response(200, json={"id": "c2"})
+        if url.path.endswith("/c2"):
+            return httpx.Response(200, json={"status_code": "FINISHED"})
+        if url.path.endswith("/ig1/media_publish"):
+            return httpx.Response(200, json={"id": "m1"})
+        if url.path.endswith("/m1"):
+            return httpx.Response(200, json={"permalink": "https://www.instagram.com/reel/abc/"})
+        return httpx.Response(404, json={})
+
+    real_client = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda *a, **k: real_client(transport=httpx.MockTransport(handler)))
+
+    address = f"https://inquisitive013.github.io/nepal-news-rss/reels/{AID}.mp4"
+    assert cli.main(["reel", "--article", AID, "--publish", "--video", str(video), "--video-url", address]) == 0
+    assert [a.get("video_url") for a in asked] == [address]
+    assert "already on the Facebook Page" in capsys.readouterr().out
+    posts = {p.network: p for p in social.load_record(settings, art).posts}
+    assert posts["instagram_reel"].status == "posted" and posts["instagram_reel"].url == "https://www.instagram.com/reel/abc/"
+
+    # a named file that is not there stops before anything is posted
+    assert cli.main(["reel", "--article", AID, "--publish", "--video", str(tmp_path / "missing.mp4")]) == 1

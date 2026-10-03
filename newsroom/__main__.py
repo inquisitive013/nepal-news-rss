@@ -547,8 +547,14 @@ def cmd_reel(args) -> int:
         return 1
     try:
         beats, caption = reel.load_beats(settings, article.id)
-        sound = reel.load_sound(settings, article.id)
-        out = reel.render_reel(settings, article, beats, Path(args.out) if args.out else settings.root / "out" / "reels" / f"{article.id}.mp4", sound=sound)
+        if args.video:
+            # Rendered earlier in the same run, so the file the site serves is the one posted.
+            out = Path(args.video)
+            if not out.is_file():
+                raise reel.ReelError(f"--video names {args.video}, which is not there")
+        else:
+            sound = reel.load_sound(settings, article.id)
+            out = reel.render_reel(settings, article, beats, Path(args.out) if args.out else settings.root / "out" / "reels" / f"{article.id}.mp4", sound=sound)
     except reel.ReelError as exc:
         print(f"::error::{exc}")
         return 1
@@ -569,7 +575,7 @@ def cmd_reel(args) -> int:
     failed: list[str] = []
     with httpx.Client(timeout=60) as client:
         if args.publish:
-            failed, new_id = _post_reel_everywhere(settings, article, rec, out, caption, client, again=args.again)
+            failed, new_id = _post_reel_everywhere(settings, article, rec, out, caption, client, again=args.again, video_url=args.video_url)
             if old is not None and not new_id:
                 # The new cut goes up first or nothing comes down, so the story is never missing from the Page.
                 social.save_record(settings, rec)
@@ -595,12 +601,13 @@ def cmd_reel(args) -> int:
 REEL_PLACES = {"facebook_reel": "the Facebook Page", "instagram_reel": "Instagram", "youtube_short": "YouTube"}
 
 
-def _post_reel_everywhere(settings, article, rec, video, caption, client, *, again: bool) -> tuple[list[str], str]:
+def _post_reel_everywhere(settings, article, rec, video, caption, client, *, again: bool, video_url: str = "") -> tuple[list[str], str]:
     """The Reel on the Page, then on Instagram and YouTube when their secrets are set.
 
     A place that already has this story's Reel is skipped unless `again`. A place that fails is
-    recorded as failed and the others still get the Reel. Returns the places that failed and the
-    new Facebook Reel's id.
+    recorded as failed and the others still get the Reel. `video_url` is where the site serves this
+    same file; Instagram fetches it from there. Returns the places that failed and the new
+    Facebook Reel's id.
     """
     import httpx
 
@@ -628,9 +635,11 @@ def _post_reel_everywhere(settings, article, rec, video, caption, client, *, aga
                 post_id, url = reel.publish_reel(client, env, video, caption)
                 new_id = page_reel = post_id
             elif network == "instagram_reel":
+                if video_url and not reel.wait_until_served(client, video_url):
+                    print(f"::warning::The site is not serving {video_url} yet; Instagram may not find it.")
                 source = page_reel
                 fallback = (lambda: reel.facebook_video_file(client, env, source)) if source else None
-                post_id, url = reel.publish_instagram_reel(client, env, video, caption, fallback_url=fallback)
+                post_id, url = reel.publish_instagram_reel(client, env, video, caption, video_url=video_url, fallback_url=fallback)
             else:
                 post_id, url, privacy = youtube.upload_short(
                     client, env, video,
@@ -938,6 +947,8 @@ def main(argv=None) -> int:
     p_reel.add_argument("--publish", action="store_true", help="post the Reel to the Facebook Page and record it")
     p_reel.add_argument("--again", action="store_true", help="with --publish: post even though this story already has a Reel on the Page")
     p_reel.add_argument("--take-down", default="", help="take down this story's live Reel with this id, only at the owner's request; with --publish, after the new one is up")
+    p_reel.add_argument("--video", default="", help="post this already rendered MP4 instead of rendering again")
+    p_reel.add_argument("--video-url", default="", help="the public address where the site serves that same file; Instagram fetches the Reel from there")
     p_reel.set_defaults(func=cmd_reel)
 
     p_socchk = sub.add_parser("social-check", help="verify every connected social account without posting")

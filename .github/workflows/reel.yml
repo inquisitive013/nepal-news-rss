@@ -22,6 +22,9 @@ on:
 
 permissions:
   contents: write
+  # Instagram fetches the Reel from the site, so the job puts the file there first.
+  pages: write
+  id-token: write
 
 concurrency:
   group: reel
@@ -30,7 +33,26 @@ concurrency:
 jobs:
   reel:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    # One deploy to the site at a time, whichever workflow makes it.
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+    env:
+      META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
+      FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+      FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
+      INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+      INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+      YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+      YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+      YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+      ARTICLE: ${{ inputs.article_id }}
+      PUBLISH: ${{ inputs.publish == true && '1' || '' }}
+      AGAIN: ${{ inputs.again == true && '1' || '' }}
+      TAKE_DOWN: ${{ inputs.take_down }}
     steps:
       - uses: actions/checkout@v4
 
@@ -42,27 +64,46 @@ jobs:
       - name: Install
         run: pip install -r requirements.txt
 
-      - name: Render, and post when asked
-        env:
-          META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
-          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
-          FACEBOOK_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_TOKEN }}
-          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
-          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          ARTICLE: ${{ inputs.article_id }}
-          PUBLISH: ${{ inputs.publish == true && '1' || '' }}
-          AGAIN: ${{ inputs.again == true && '1' || '' }}
-          TAKE_DOWN: ${{ inputs.take_down }}
+      - name: Render the Reel
         run: |
           case "$ARTICLE" in ""|*[!a-z0-9-]*) echo "::error::article_id must be a story id such as 2026-09-30-some-story, not '$ARTICLE'."; exit 1 ;; esac
-          args=(reel --article "$ARTICLE" --out out/reels/reel.mp4)
+          case "$TAKE_DOWN" in *[!0-9]*) echo "::error::take_down must be a Reel id, digits only, not '$TAKE_DOWN'."; exit 1 ;; esac
+          python -m newsroom reel --article "$ARTICLE" --out out/reels/reel.mp4
+
+      # Meta's documented way to give Instagram a video is an address it can fetch. The site
+      # serves this run's file until the next deploy replaces the site.
+      - name: Put the Reel on the site
+        if: ${{ inputs.publish == true && env.INSTAGRAM_ACCESS_TOKEN != '' }}
+        run: |
+          python -m newsroom build --out site
+          mkdir -p site/reels
+          cp out/reels/reel.mp4 "site/reels/${ARTICLE}.mp4"
+
+      - name: Configure Pages
+        if: ${{ inputs.publish == true && env.INSTAGRAM_ACCESS_TOKEN != '' }}
+        uses: actions/configure-pages@v5
+
+      - name: Upload the site
+        if: ${{ inputs.publish == true && env.INSTAGRAM_ACCESS_TOKEN != '' }}
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy the site
+        id: deploy
+        if: ${{ inputs.publish == true && env.INSTAGRAM_ACCESS_TOKEN != '' }}
+        uses: actions/deploy-pages@v4
+
+      - name: Post the Reel
+        if: ${{ inputs.publish == true || inputs.take_down != '' }}
+        env:
+          VIDEO_URL: ${{ steps.deploy.outputs.page_url && format('{0}reels/{1}.mp4', steps.deploy.outputs.page_url, inputs.article_id) || '' }}
+        run: |
+          args=(reel --article "$ARTICLE" --video out/reels/reel.mp4)
           [ -n "$PUBLISH" ] && args+=(--publish)
           [ -n "$AGAIN" ] && args+=(--again)
-          case "$TAKE_DOWN" in *[!0-9]*) echo "::error::take_down must be a Reel id, digits only, not '$TAKE_DOWN'."; exit 1 ;; esac
           [ -n "$TAKE_DOWN" ] && args+=(--take-down "$TAKE_DOWN")
+          [ -n "$VIDEO_URL" ] && args+=(--video-url "$VIDEO_URL")
           set -o pipefail
           python -m newsroom "${args[@]}" | tee -a "$GITHUB_STEP_SUMMARY"
 
