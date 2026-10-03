@@ -5,8 +5,9 @@ views from Meta's post insights, and shares, comments and reactions from the pos
 is read at the same hours from its video's insights: plays, unique viewers, the average watch
 time and the follows it brought in. Each
 run also notes the Page's follower count, so a post's first day can be set against the follower
-change over the same hours. The report puts every post beside the reach score the ranking
-judges forecast for its story, which is what the weekly review checks.
+change over the same hours, and the Page's own totals for each of the last days: views, viewers,
+follows and unfollows across everything it has ever posted. The report puts every post beside the
+reach score the ranking judges forecast for its story, which is what the weekly review checks.
 
 Meta serves post insights only to a Page token with read_insights, and the counts only with
 pages_read_engagement. A reading records Graph error codes, never Meta's messages. A reading
@@ -291,7 +292,7 @@ def probe(settings: Settings, environ: Mapping[str, str], *, client: httpx.Clien
 
     It names the token's type, whether it expires and its scopes, never the ids debug_token also
     returns. Then it asks each of PROBE_METRICS of the newest live Facebook post, on the post and
-    on its photo, and asks the Page for one day of views. Values stay out: they are the Page's own.
+    on its photo, and asks the Page for each of its day metrics. Values stay out: they are the Page's own.
     """
     own = client is None
     client = client or httpx.Client(timeout=30.0, follow_redirects=True)
@@ -350,8 +351,9 @@ def probe(settings: Settings, environ: Mapping[str, str], *, client: httpx.Clien
                         got = _rows(one) if one.status_code < 400 else {}
                         answer = graph_error(one) if one.status_code >= 400 else (_shape(got[name]) or "a number") if name in got else "not returned"
                         lines.append(f"- Newest Reel, {name} asked on its own: {answer}")
-        resp = client.get(f"{base}/{fb.id}/insights", params={"metric": "page_media_view", "period": "day", "access_token": fb.token})
-        lines.append(f"- The Page, page_media_view by day: {_answer(resp)}")
+        for name in page_metric_names(settings).values():
+            resp = client.get(f"{base}/{fb.id}/insights", params={"metric": name, "period": "day", "access_token": fb.token})
+            lines.append(f"- The Page, {name} by day: {_answer(resp)}")
         stories = [(live, post_id) for live, post_id in posts if "_" in post_id]
         objects = {"The Page": fb.id, "Newest post": max(stories)[1] if stories else "", "Newest Reel": max(reels)[1] if reels else ""}
         lines += visibility(client, base, fb.token, objects)
@@ -393,16 +395,103 @@ def note_followers(settings: Settings, client: httpx.Client, environ: Mapping[st
     return count, ""
 
 
+# The Page's own totals by day, as Business Suite shows them: every post, Reel and old upload
+# together. Business Suite counted 173 viewers for the 28 days to 2 October while each post read
+# one or two, so the Page total is the number to watch. Meta gives each day by the time it ends and
+# settles the newest days late, so every run asks for the last PAGE_DAYS days and keeps the latest
+# answer for each. page_media_view by day answered with a number in the probes of 29 September and
+# 1 October; the other three names come from field lists that quote Meta's Page insights reference,
+# found by search on 3 October 2026. The probe asks each one, so a retired name shows by its code.
+DEFAULT_PAGE_METRICS = {"views": "page_media_view", "viewers": "page_total_media_view_unique", "follows": "page_daily_follows_unique", "unfollows": "page_daily_unfollows_unique"}
+PAGE_DAYS = 8
+
+
+def page_metric_names(settings: Settings) -> dict[str, str]:
+    cfg = settings.get("social.facebook.insights") or {}
+    return {str(k): str(v) for k, v in (cfg.get("page_metrics") or DEFAULT_PAGE_METRICS).items()}
+
+
+def page_path(settings: Settings):
+    return settings.data_dir / "insights" / "page.json"
+
+
+def load_page(settings: Settings) -> dict[str, Any]:
+    path = page_path(settings)
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _day_values(resp: httpx.Response) -> tuple[dict[str, int], str]:
+    """When each day ended (UTC) -> its number, from a Page insights answer by day; or why there is none."""
+    try:
+        rows = (resp.json() or {}).get("data")
+    except (ValueError, AttributeError):
+        return {}, "not JSON"
+    if not rows or not isinstance(rows[0], dict):
+        return {}, "empty"
+    found: dict[str, int] = {}
+    shapes: set[str] = set()
+    for point in rows[0].get("values") or []:
+        if not isinstance(point, dict):
+            continue
+        try:
+            ended = datetime.fromisoformat(str(point.get("end_time"))).astimezone(timezone.utc)
+        except ValueError:
+            continue
+        why = _shape(point.get("value"))
+        if why:
+            shapes.add(why)
+            continue
+        found[ended.isoformat(timespec="seconds")] = int(point["value"])
+    if found:
+        return found, ""
+    return {}, ", ".join(sorted(shapes)) or "no values"
+
+
+def note_page(settings: Settings, client: httpx.Client, environ: Mapping[str, str], now: datetime) -> tuple[int, dict[str, str]]:
+    """The Page's totals for each of the last PAGE_DAYS days, asked once an hour at most.
+
+    Returns how many days came back and an error code for each metric that did not.
+    """
+    record = load_page(settings)
+    if record.get("read_at") and now - datetime.fromisoformat(record["read_at"]) < timedelta(hours=1):
+        return 0, {}
+    fb = social.facebook_page(client, environ)
+    base = f"{social.META_GRAPH}/{social._graph_version(environ)}"
+    window = {"period": "day", "since": int((now - timedelta(days=PAGE_DAYS)).timestamp()), "until": int(now.timestamp())}
+    days: dict[str, dict[str, int]] = record.get("days") or {}
+    errors: dict[str, str] = {}
+    read: set[str] = set()
+    for label, name in page_metric_names(settings).items():
+        resp = client.get(f"{base}/{fb.id}/insights", params={"metric": name, **window, "access_token": fb.token})
+        if resp.status_code >= 400:
+            errors[label] = graph_error(resp)
+            continue
+        values, why = _day_values(resp)
+        if why:
+            errors[label] = f"no value ({why})"
+            continue
+        for ended, value in values.items():
+            days.setdefault(ended, {})[label] = value
+            read.add(ended)
+    path = page_path(settings)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({"read_at": now.isoformat(timespec="seconds"), "days": dict(sorted(days.items()))}, indent=1), encoding="utf-8")
+    return len(read), errors
+
+
 def take_readings(settings: Settings, environ: Mapping[str, str], *, client: httpx.Client | None = None, now: datetime | None = None) -> dict[str, Any]:
-    """Read every post that is due and note the followers. Saves each record it changes.
+    """Read every post that is due, note the followers and the Page's days. Saves each record it changes.
 
     Returns {"read": [(article_id, hour, values, errors)], "failed": [(article_id, hour, errors)],
-    "followers": count or None, "followers_error": code, "stopped": why the run stopped early}.
+    "followers": count or None, "followers_error": code, "page_days": days read,
+    "page_errors": {metric: code}, "stopped": why the run stopped early}.
     """
     metrics, hours = insight_settings(settings)
     reel_metrics = reel_metric_names(settings)
     now = now or datetime.now(timezone.utc)
-    out: dict[str, Any] = {"read": [], "failed": [], "followers": None, "followers_error": "", "stopped": ""}
+    out: dict[str, Any] = {"read": [], "failed": [], "followers": None, "followers_error": "", "page_days": 0, "page_errors": {}, "stopped": ""}
     own = client is None
     client = client or httpx.Client(timeout=30.0, follow_redirects=True)
     try:
@@ -440,6 +529,7 @@ def take_readings(settings: Settings, environ: Mapping[str, str], *, client: htt
                 social.save_record(settings, rec)
             if out["stopped"]:
                 break
+        out["page_days"], out["page_errors"] = note_page(settings, client, environ, now)
     finally:
         if own:
             client.close()
@@ -527,7 +617,8 @@ def report(settings: Settings, *, now: datetime | None = None, days: int = 7) ->
         tz = ZoneInfo(settings.timezone)
     except Exception:  # noqa: BLE001 - an unknown zone falls back to UTC
         tz = timezone.utc
-    lines = [f"| Went live ({'Nepal time' if settings.timezone == 'Asia/Kathmandu' else settings.timezone}) | Story | Forecast reach | Viewers 24h | Views 24h | Shares 24h | Comments 24h | Reactions 24h | Viewers 72h | Followers, first day |", "|---|---|---|---|---|---|---|---|---|---|"]
+    zone = "Nepal time" if settings.timezone == "Asia/Kathmandu" else settings.timezone
+    lines = [f"| Went live ({zone}) | Story | Forecast reach | Viewers 24h | Views 24h | Shares 24h | Comments 24h | Reactions 24h | Viewers 72h | Followers, first day |", "|---|---|---|---|---|---|---|---|---|---|"]
     for live, article_id, forecast, metrics, change in sorted(rows, key=lambda r: r[0], reverse=True):
         r24, r72 = metrics.get("24h") or {}, metrics.get("72h") or {}
         moved = "–" if change is None else f"{change[0]:+,} over {change[1]}h"
@@ -537,7 +628,7 @@ def report(settings: Settings, *, now: datetime | None = None, days: int = 7) ->
         )
     if not rows:
         lines.append(f"| – | no Facebook post went live in the last {days} days | | | | | | | | |")
-    lines += ["", f"| Reel went live ({'Nepal time' if settings.timezone == 'Asia/Kathmandu' else settings.timezone}) | Story | Plays 24h | Viewers 24h | Average watch 24h | Follows 24h | Plays 72h | Viewers 72h | Follows 72h |", "|---|---|---|---|---|---|---|---|---|"]
+    lines += ["", f"| Reel went live ({zone}) | Story | Plays 24h | Viewers 24h | Average watch 24h | Follows 24h | Plays 72h | Viewers 72h | Follows 72h |", "|---|---|---|---|---|---|---|---|---|"]
     for live, article_id, metrics in sorted(reels, key=lambda r: r[0], reverse=True):
         r24, r72 = metrics.get("24h") or {}, metrics.get("72h") or {}
         watch = r24.get("avg_watch_ms")
@@ -545,4 +636,12 @@ def report(settings: Settings, *, now: datetime | None = None, days: int = 7) ->
         lines.append(f"| {live.astimezone(tz):%Y-%m-%d %H:%M} | {article_id} | {_cell(r24, 'plays')} | {_cell(r24, 'viewers')} | {watched} | {_cell(r24, 'follows')} | {_cell(r72, 'plays')} | {_cell(r72, 'viewers')} | {_cell(r72, 'follows')} |")
     if not reels:
         lines.append(f"| – | no Reel went live in the last {days} days | | | | | | | |")
+    labels = list(page_metric_names(settings))
+    page_days = [(datetime.fromisoformat(ended), values) for ended, values in (load_page(settings).get("days") or {}).items()]
+    page_days = sorted(((ended, values) for ended, values in page_days if now - ended <= timedelta(days=days)), key=lambda d: d[0], reverse=True)
+    lines += ["", f"| The Page, day ending ({zone}) | {' | '.join(label.capitalize() for label in labels)} |", "|---|" + "---|" * len(labels)]
+    for ended, values in page_days:
+        lines.append(f"| {ended.astimezone(tz):%Y-%m-%d %H:%M} | {' | '.join(_cell(values, label) for label in labels)} |")
+    if not page_days:
+        lines.append(f"| – | no Page totals read for the last {days} days |" + " |" * (len(labels) - 1))
     return lines

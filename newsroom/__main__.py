@@ -487,6 +487,9 @@ def cmd_insights(args) -> int:
         print(f"- Page followers: {result['followers']:,}")
     elif result["followers_error"]:
         print(f"- Page followers not read ({result['followers_error']})")
+    if result["page_days"] or result["page_errors"]:
+        missing = f"; not read: {', '.join(f'{k} ({v})' for k, v in result['page_errors'].items())}" if result["page_errors"] else ""
+        print(f"- The Page's own totals: {result['page_days']} day(s) came back{missing}")
     if result["stopped"]:
         print(f"\n::warning::Stopped early: {result['stopped']}. Replace FACEBOOK_PAGE_TOKEN with a Page token that also grants read_insights and pages_read_engagement (README, \"Measuring what posts do\").")
     print(f"\n## The last {args.days} days\n")

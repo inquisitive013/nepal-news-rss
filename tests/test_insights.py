@@ -179,7 +179,7 @@ def test_the_report_sets_each_post_beside_its_forecast_and_the_follower_change(t
 
     lines = insights.report(settings, now=NOW)
 
-    assert len(lines) == 7  # header, rule, the one post of the last week; then the Reels table with none
+    assert len(lines) == 11  # header, rule, the one post of the last week; then the Reels and the Page's days, none of either
     assert "| 2026-09-30-floods | 59 | 4,200 | 6,100 | 3 | 31 | 250 | – | +31 over 26.0h |" in lines[2]
     assert lines[6].startswith("| – | no Reel went live")
     assert insights.report(settings, now=NOW + timedelta(days=30))[2].startswith("| – | no Facebook post went live")
@@ -247,7 +247,8 @@ def test_the_probe_names_permissions_and_answer_shapes_never_ids_or_values(tmp_p
     assert "- Newest post, asked on the post, post_media_view: empty" in lines
     assert "- Newest post, asked on the photo, post_reactions_by_type_total: a number" in lines
     assert "- Newest post, asked on the post, post_impressions_unique: code 100" in lines
-    assert "- The Page, page_media_view by day: empty" in lines
+    assert "- The Page, page_media_view by day: empty" in lines and "- The Page, page_daily_unfollows_unique by day: empty" in lines
+    assert [a[1] for a in asked if a[0] == "111"] == ["page_media_view", "page_total_media_view_unique", "page_daily_follows_unique", "page_daily_unfollows_unique"]
     # Who can see it: the flags as Meta gives them, a field Meta does not know by its code, no ids.
     assert "- The Page, is_published: no" in lines and "- The Page, verification_status: not_verified" in lines
     assert "- Newest post, privacy: value EVERYONE" in lines and "- Newest post, timeline_visibility: code 100" in lines
@@ -295,6 +296,8 @@ def _video_graph(default, alone=None, fail=None):
             return httpx.Response(200, json={"id": "111"})
         if url.path.endswith("/111"):
             return httpx.Response(200, json={"followers_count": 10_300, "id": "111"})
+        if url.path.endswith("/111/insights"):  # the Page's own days, asked on every run
+            return httpx.Response(200, json={"data": []})
         metric = url.params.get("metric")
         calls.append(f"{url.path}?{metric or ''}")
         if fail is not None:
@@ -372,3 +375,61 @@ def test_a_visibility_answer_shows_flags_and_short_settings_never_ids():
     status = {"video_status": "ready", "publishing_phase": {"status": "complete", "publish_status": "published"}}
     assert insights._setting(status) == "video_status ready, publish_status published"
     assert insights._setting(None) == "not returned" and insights._setting(7) == "int"
+
+
+def _page_graph(series, fail=None):
+    """The Page's insights by day as Meta answers them: each metric's numbers with the time its day ended."""
+    fail = fail or {}
+    asked = []
+
+    def handler(request):
+        url = request.url
+        if url.path.endswith("/me"):
+            return httpx.Response(200, json={"id": "111"})
+        if url.path.endswith("/111"):
+            return httpx.Response(200, json={"followers_count": 10_300, "id": "111"})
+        metric = url.params["metric"]
+        asked.append((metric, url.params["period"], url.params["since"], url.params["until"]))
+        if metric in fail:
+            return httpx.Response(400, json={"error": {"message": "secret words", "code": fail[metric]}})
+        values = [{"value": value, "end_time": ended} for ended, value in series.get(metric, {}).items()]
+        return httpx.Response(200, json={"data": [{"name": metric, "period": "day", "values": values, "title": "t", "id": f"111/insights/{metric}/day"}]})
+
+    return httpx.Client(transport=httpx.MockTransport(handler)), asked
+
+
+def test_the_pages_own_days_are_kept_and_meta_s_revised_number_replaces_the_old(tmp_path):
+    settings = _settings(tmp_path)
+    day1, day2 = "2026-09-30T07:00:00+0000", "2026-10-01T07:00:00+0000"
+    client, asked = _page_graph({"page_media_view": {day1: 212, day2: 69}, "page_total_media_view_unique": {day2: 40},
+                                 "page_daily_follows_unique": {day2: 0}, "page_daily_unfollows_unique": {day2: {"a": 1}}})
+
+    out = insights.take_readings(settings, ENV, client=client, now=NOW)
+
+    assert out["page_days"] == 2 and out["page_errors"] == {"unfollows": "no value (a breakdown, not a number)"}
+    since, until = str(int((NOW - timedelta(days=8)).timestamp())), str(int(NOW.timestamp()))
+    assert {a[1:] for a in asked} == {("day", since, until)} and len(asked) == 4
+    page = json.loads((settings.data_dir / "insights" / "page.json").read_text())
+    assert page["days"] == {"2026-09-30T07:00:00+00:00": {"views": 212}, "2026-10-01T07:00:00+00:00": {"views": 69, "viewers": 40, "follows": 0}}
+
+    # within the hour nothing is asked again
+    asked.clear()
+    insights.take_readings(settings, ENV, client=client, now=NOW + timedelta(minutes=30))
+    assert asked == []
+
+    # six hours later Meta's settled number replaces the old one; a refused metric keeps what it had
+    revised, _ = _page_graph({"page_media_view": {day2: 75}}, fail={"page_total_media_view_unique": 100})
+    out = insights.take_readings(settings, ENV, client=revised, now=NOW + timedelta(hours=6))
+    assert out["page_errors"]["viewers"] == "code 100"
+    page = json.loads((settings.data_dir / "insights" / "page.json").read_text())
+    assert page["days"]["2026-10-01T07:00:00+00:00"] == {"views": 75, "viewers": 40, "follows": 0}
+    assert "secret words" not in json.dumps(page)
+
+    lines = insights.report(settings, now=NOW + timedelta(hours=6))
+    i = lines.index("| The Page, day ending (Nepal time) | Views | Viewers | Follows | Unfollows |")
+    assert lines[i + 2 : i + 4] == ["| 2026-10-01 12:45 | 75 | 40 | 0 | – |", "| 2026-09-30 12:45 | 212 | – | – | – |"]
+
+
+def test_the_report_says_so_when_no_page_day_was_read(tmp_path):
+    lines = insights.report(_settings(tmp_path), now=NOW)
+    assert lines[-1] == "| – | no Page totals read for the last 7 days | | | |"
