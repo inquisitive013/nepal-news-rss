@@ -1,0 +1,139 @@
+{
+ "article_id": "2026-10-03-bhotekoshi-flood-orphans-933-still-missing",
+ "why": "Every line from the verified record and the Nepali piece the editor cleared on 3 October: Republica on the five children and their one family, Daily Excelsior and The Sun on the Malaysian home after 37 days, Malay Mail on the 54 still missing, Nepal Press on the Tikapur cremation (the man is not named in the Reel), Kathmandu Post on NDRRMA's 31 August count of 933, and the newsroom's own finding that no later update turned up in the coverage reviewed. Each fact keeps its source in its own sentence, numbers in words.",
+ "caption": "भोटेकोशी बाढीपछि ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए। टिकापुरका एक परिवारले भने शव नपाएपछि कुशबाट दाहसंस्कार गरे। एनडीआरआरएमएले ३१ अगस्टमा गनेका जलविद्युतसम्बद्ध ९३३ बेपत्ताबारे भने शुक्रबारका खबर मौन छन्।\n\nतपाईंको परिवारले कहिल्यै बेपत्ता आफन्तको खबर पर्खनुपरेको छ? त्यतिबेला सरकारी निकायले जवाफ दियो कि दिएन?",
+ "voice": "Kamala, a Nepali voice in the ElevenLabs library, model eleven_v3. Each clip transcribed back word for word by ElevenLabs Scribe before use.",
+ "music": "data/reels/music/lament-sarangi.mp3",
+ "music_volume": 0.3,
+ "end_say": "नेपाल वायर।",
+ "end_audio": "data/reels/audio/2026-10-03-bhotekoshi-flood-orphans-933-still-missing/end.mp3",
+ "beats": [
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "५ बालबालिका",
+     150,
+     "gold"
+    ],
+    [
+     "१८ वर्षसम्म",
+     110,
+     "white"
+    ],
+    [
+     "पढाइ र पालनपोषण सरकारले",
+     64,
+     "off"
+    ]
+   ],
+   "say": "रिपब्लिकाका अनुसार भोटेकोशी बाढीमा बाबु बेपत्ता भएका पाँच बालबालिकाको पढाइ र पालनपोषण, उनीहरू अठार वर्ष नपुग्दासम्म सरकारले बेहोर्नेछ।",
+   "audio": "data/reels/audio/2026-10-03-bhotekoshi-flood-orphans-933-still-missing/say1.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "पाँचै जना",
+     110,
+     "white"
+    ],
+    [
+     "एउटै परिवारका",
+     110,
+     "gold"
+    ]
+   ],
+   "say": "रिपब्लिकाका अनुसार यी पाँचै जना एउटै परिवारका हुन्।",
+   "audio": "data/reels/audio/2026-10-03-bhotekoshi-flood-orphans-933-still-missing/say2.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "३७ दिनपछि घर",
+     110,
+     "gold"
+    ],
+    [
+     "एक मलेसियाली नागरिक",
+     72,
+     "white"
+    ],
+    [
+     "५४ जना अझै बेपत्ता",
+     72,
+     "off"
+    ]
+   ],
+   "say": "डेली एक्सेल्सियर र द सनका अनुसार बाढीमा बेपत्ता भएका एक मलेसियाली नागरिक सैँतीस दिनपछि सुरक्षित घर फर्किएका छन्। मलय मेलका अनुसार अझै चौवन्न मलेसियाली बेपत्ता छन्।",
+   "audio": "data/reels/audio/2026-10-03-bhotekoshi-flood-orphans-933-still-missing/say3.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "टिकापुर",
+     110,
+     "white"
+    ],
+    [
+     "शव नभेटिएपछि",
+     96,
+     "gold"
+    ],
+    [
+     "कुश राखेर दाहसंस्कार",
+     72,
+     "off"
+    ]
+   ],
+   "say": "नेपाल प्रेसका अनुसार टिकापुरका एक परिवारले शव नभेटिएपछि कुश राखेर दाहसंस्कार गरेको छ।",
+   "audio": "data/reels/audio/2026-10-03-bhotekoshi-flood-orphans-933-still-missing/say4.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "३१ अगस्ट",
+     110,
+     "white"
+    ],
+    [
+     "९३३",
+     200,
+     "gold"
+    ],
+    [
+     "जलविद्युतसँग जोडिएका बेपत्ता",
+     64,
+     "off"
+    ]
+   ],
+   "say": "काठमाडौं पोस्टका अनुसार विपद् प्राधिकरणले एकतीस अगस्टमा जलविद्युत आयोजनासँग जोडिएका नौ सय तेत्तीस जनालाई बेपत्ता गनेको थियो।",
+   "audio": "data/reels/audio/2026-10-03-bhotekoshi-flood-orphans-933-still-missing/say5.mp3"
+  },
+  {
+   "seconds": 4.0,
+   "lines": [
+    [
+     "त्यसपछि",
+     110,
+     "white"
+    ],
+    [
+     "अद्यावधिक भेटिएन",
+     100,
+     "gold"
+    ],
+    [
+     "नेपाल वायरले हेरेका समाचारमा",
+     56,
+     "off"
+    ]
+   ],
+   "say": "नेपाल वायरले हेरेका समाचारमा त्यसपछिको विवरण भेटिएन।",
+   "audio": "data/reels/audio/2026-10-03-bhotekoshi-flood-orphans-933-still-missing/say6.mp3"
+  }
+ ]
+}
