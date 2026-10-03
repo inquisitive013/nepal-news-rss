@@ -452,6 +452,55 @@ def _graph_version(environ: Mapping[str, str]) -> str:
     return environ.get("META_GRAPH_VERSION", "").strip() or "v23.0"
 
 
+def instagram_link(environ: Mapping[str, str], client: httpx.Client) -> tuple[str, str]:
+    """The Instagram professional account linked to the Facebook Page, by INSTAGRAM_ACCESS_TOKEN: its id, or why there is none.
+
+    The id never reaches a log: callers keep it in the environment they pass on.
+    """
+    token = environ.get("INSTAGRAM_ACCESS_TOKEN", "").strip()
+    page = environ.get("FACEBOOK_PAGE_ID", "").strip()
+    if not token or not page:
+        return "", "needs INSTAGRAM_ACCESS_TOKEN and FACEBOOK_PAGE_ID to find the account"
+    try:
+        resp = client.get(f"{META_GRAPH}/{_graph_version(environ)}/{page}", params={"fields": "instagram_business_account", "access_token": token})
+    except httpx.HTTPError as exc:
+        return "", f"could not reach Meta to find the account ({type(exc).__name__})"
+    if resp.status_code >= 400:
+        try:
+            code = (resp.json().get("error") or {}).get("code")
+        except ValueError:
+            code = None
+        return "", f"Meta would not say which account is linked (code {code})" if code is not None else f"Meta would not say which account is linked (HTTP {resp.status_code})"
+    try:
+        found = str(((resp.json() or {}).get("instagram_business_account") or {}).get("id") or "")
+    except (ValueError, AttributeError):
+        found = ""
+    if not found:
+        return "", "the Page has no linked Instagram professional account yet"
+    return found, ""
+
+
+def with_instagram(environ: Mapping[str, str], client: httpx.Client | None = None) -> Mapping[str, str]:
+    """The environment with INSTAGRAM_USER_ID filled in from the Page when only INSTAGRAM_ACCESS_TOKEN is set.
+
+    The account the token may post to is the one linked to the Page, so nobody has to look the
+    id up by hand. Without a link the environment comes back as it was and Instagram stays off.
+    """
+    if environ.get("INSTAGRAM_USER_ID", "").strip() or not environ.get("INSTAGRAM_ACCESS_TOKEN", "").strip():
+        return environ
+    own = client is None
+    client = client or httpx.Client(timeout=30.0, follow_redirects=True)
+    try:
+        found, why = instagram_link(environ, client)
+    finally:
+        if own:
+            client.close()
+    if not found:
+        log.warning("Instagram stays off: %s", why)
+        return environ
+    return {**environ, "INSTAGRAM_USER_ID": found}
+
+
 def _raise_for(resp: httpx.Response, what: str) -> dict[str, Any]:
     try:
         data = resp.json()
@@ -1090,9 +1139,15 @@ def check_networks(settings: Settings, environ: Mapping[str, str], client: httpx
     client = client or httpx.Client(timeout=30.0, follow_redirects=True)
     rows = []
     try:
+        given = environ
+        environ = with_instagram(environ, client)
         for network in settings.get("social.networks") or list(NETWORKS):
             keys = ENV_KEYS.get(network, [])
             missing = [k for k in keys if not environ.get(k, "").strip()]
+            if network == "instagram" and missing == ["INSTAGRAM_USER_ID"]:
+                # The token is there; the account behind it is what is missing.
+                rows.append({"network": network, "configured": "yes", "ok": "no", "account": "", "note": instagram_link(given, client)[1]})
+                continue
             if missing:
                 rows.append({"network": network, "configured": "no", "ok": "", "account": "", "note": "missing " + ", ".join(missing)})
                 continue

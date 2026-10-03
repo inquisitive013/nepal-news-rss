@@ -357,6 +357,15 @@ def probe(settings: Settings, environ: Mapping[str, str], *, client: httpx.Clien
         stories = [(live, post_id) for live, post_id in posts if "_" in post_id]
         objects = {"The Page": fb.id, "Newest post": max(stories)[1] if stories else "", "Newest Reel": max(reels)[1] if reels else ""}
         lines += visibility(client, base, fb.token, objects)
+        resp = client.get(f"{base}/{fb.id}", params={"fields": "instagram_business_account", "access_token": fb.token})
+        if resp.status_code >= 400:
+            linked = graph_error(resp)
+        else:
+            try:
+                linked = "yes" if ((resp.json() or {}).get("instagram_business_account") or {}).get("id") else "none yet"
+            except (ValueError, AttributeError):
+                linked = "not JSON"
+        lines.append(f"- The Page, linked Instagram professional account: {linked}")
     finally:
         if own:
             client.close()
