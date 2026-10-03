@@ -255,3 +255,10 @@ social:
         viewers: post_impressions_unique
         avg_watch_ms: post_video_avg_time_watched
         follows: post_video_followers
+      # The Page's own totals by day, across everything it has posted: the numbers Business
+      # Suite shows. Each run keeps the last eight days in data/insights/page.json.
+      page_metrics:
+        views: page_media_view
+        viewers: page_total_media_view_unique
+        follows: page_daily_follows_unique
+        unfollows: page_daily_unfollows_unique
