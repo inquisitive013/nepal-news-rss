@@ -1,0 +1,764 @@
+{
+  "id": "2026-10-03-bhotekoshi-flood-orphans-933-still-missing",
+  "slug": "bhotekoshi-flood-orphans-933-still-missing",
+  "story_id": "2026-10-03-bhotekoshi-flood-aftermath-updates",
+  "headline": "Nepal to back five flood children as 933 hydropower missing from August go unmentioned",
+  "dek": "A Malaysian missing 37 days came home safe, while Friday's reports skip the 933 hydropower linked missing NDRRMA counted on August 31.",
+  "body_markdown": "Nepal's government will pay for school, upbringing and other basic needs for five children whose fathers went missing in the Bhotekoshi flood, until each turns 18, Republica reported on Friday, October 2. Republica described them as orphaned. The same day, a Malaysian national who vanished in the same flood walked back into his family's life, safe, after 37 days missing, according to Daily Excelsior and Malaysia's The Sun.\n\nFor families still waiting on word of a missing relative, these are the two outcomes Friday's coverage reported. One shows the state stepping in to support five children. The other shows a foreign government pushing hard for its own citizens. Neither story mentions the largest group NDRRMA broke out in its August 31 missing count. Nepal's own disaster authority counted 933 people tied to hydropower projects as missing on August 31.\n\nRepublica named the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan for Children Affected by Floods Who Require Special Protection as the program covering the five children, but did not name the children themselves or say how the support will be funded. The five children in Republica's report belong to one family, cited as an example case under the ministry's Long-Term Care Plan, not a stated national total.\n\nIn Malaysia, the rescued citizen is one of 55 who went missing after the flood struck on August 26, Daily Excelsior and The Sun reported. He returned home safe, a Malaysian government spokesperson confirmed, Malay Mail reported. Malay Mail reported 54 Malaysians still missing as of October 2. Prime Minister Anwar Ibrahim has secured a fast track process to search for them, Malay Mail reported, after a call with Nepali officials.\n\nIn Tikapur, in western Nepal, a family stopped waiting. Nepal Press reported the cremation of Bir Bahadur Chaudhary, 35, of Samitipur in Tikapur Municipality-1, whose body was never recovered despite a long search after the flood. The family performed the rites using kush, a ritual grass Hindu families use when a body cannot be found, Nepal Press reported.\n\n## What the coverage missed\n\nNone of Friday's reports mention the 933 people tied to hydropower projects whom Nepal's disaster authority, NDRRMA, counted as missing on August 31, alongside 592 foreign nationals and 127 Nepalis who had been accompanying foreign tourists, Kathmandu Post reported. Nepal Wire found no later NDRRMA breakdown of that figure in the coverage it reviewed. Families of hydropower workers trapped in flooded tunnels were demanding answers, and opposition lawmakers accused the government of hesitating to accept foreign rescue help, Nepal News reported on September 1.\n\nThe official toll has moved, and none of the reports reviewed explain the gap. NDRRMA counted 903 dead and 4,247 missing on August 31, Kathmandu Post reported. Four days later, Nepal Police put the toll at 1,290 dead and 4,798 missing, The Himalayan Times reported, a missing count that rose rather than fell as search teams kept working. By October 2, Malaysian outlet FMT reported the flood had killed more than 1,450 people, without naming which Nepali agency supplied that number.\n\nOf the 592 foreign nationals NDRRMA counted missing in August, only the 55 Malaysians drew sustained coverage and a prime minister's direct push in the reports Nepal Wire reviewed.\n\n## What we still do not know\n\nWhether the ministry has released a nationwide count of flood orphaned children is a separate question for the Ministry of Women, Children and Senior Citizens.\n\nWhether any of the 933 hydropower linked missing have been found, and whether the government brought in the foreign rescue expertise opposition lawmakers wanted, is a question for NDRRMA and the Ministry of Energy.\n\nWhat Nepal's current, dated death toll and missing count actually are, five weeks on, is a question for NDRRMA or Nepal Police headquarters.",
+  "language": "en",
+  "key_facts": [
+    {
+      "fact": "Nepal's government will cover education and upbringing for five children whose fathers went missing in the Bhotekoshi flood, until each turns 18; Republica described them as orphaned.",
+      "source_url": "https://myrepublica.nagariknetwork.com/news/state-to-support-five-children-orphaned-by-floods-until-age-18-22-54.html"
+    },
+    {
+      "fact": "One of 55 Malaysians reported missing after the August 26 flood was found safe and returned home after 37 days.",
+      "source_url": "https://www.dailyexcelsior.com/malaysian-national-missing-after-nepal-floods-found-safe-returns-after-37-days"
+    },
+    {
+      "fact": "54 Malaysians remain missing, and Prime Minister Anwar Ibrahim has secured a fast track process to search for them.",
+      "source_url": "https://www.malaymail.com/news/malaysia/2026/10/02/anwar-secures-fast-track-process-for-missing-malaysians-in-nepal/237409"
+    },
+    {
+      "fact": "Bir Bahadur Chaudhary, 35, of Samitipur in Tikapur Municipality-1, was cremated using ritual kush grass after his body was never recovered.",
+      "source_url": "https://nepalpress.com/2026/10/02/769977/bir-bahadur-did-not-return-home-cremation-from-kush/"
+    },
+    {
+      "fact": "Nepal's disaster authority, NDRRMA, counted 933 people tied to hydropower projects as missing on August 31, a figure absent from the October 2 follow-up coverage.",
+      "source_url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903"
+    },
+    {
+      "fact": "The missing count rose from 4,247 on August 31, per NDRRMA, to 4,798 by September 4, per Nepal Police, even as the confirmed death toll climbed to 1,290.",
+      "source_url": "https://thehimalayantimes.com/nepal/bhotekoshi-flood-1290-dead-8197-rescued-4800-missing-so-far"
+    }
+  ],
+  "sources": [
+    {
+      "name": "Republica",
+      "url": "https://myrepublica.nagariknetwork.com/news/state-to-support-five-children-orphaned-by-floods-until-age-18-22-54.html",
+      "used_for": "Government support for five children whose fathers went missing, including ministry program name"
+    },
+    {
+      "name": "Daily Excelsior",
+      "url": "https://www.dailyexcelsior.com/malaysian-national-missing-after-nepal-floods-found-safe-returns-after-37-days",
+      "used_for": "Malaysian national found safe after 37 days"
+    },
+    {
+      "name": "Malay Mail",
+      "url": "https://www.malaymail.com/news/malaysia/2026/10/02/safe-return-of-solo-malaysian-after-37-days-in-nepal-floods-offers-hope-to-54-still-missing/237390",
+      "used_for": "Confirmation of rescue and count of 54 still missing"
+    },
+    {
+      "name": "Malay Mail",
+      "url": "https://www.malaymail.com/news/malaysia/2026/10/02/anwar-secures-fast-track-process-for-missing-malaysians-in-nepal/237409",
+      "used_for": "Anwar Ibrahim securing a fast track search process"
+    },
+    {
+      "name": "The Sun (Malaysia)",
+      "url": "https://thesun.my/news/one-of-55-malaysians-missing-in-nepal-floods-confirmed-safe-returns-home/",
+      "used_for": "Corroboration of Malaysian rescue"
+    },
+    {
+      "name": "Free Malaysia Today",
+      "url": "https://www.freemalaysiatoday.com/category/nation/2026/10/02/1-of-55-malaysians-missing-in-nepal-found-safe",
+      "used_for": "55 missing figure and reported death toll above 1,450"
+    },
+    {
+      "name": "Nepal Press",
+      "url": "https://nepalpress.com/2026/10/02/769977/bir-bahadur-did-not-return-home-cremation-from-kush/",
+      "used_for": "Cremation of Bir Bahadur Chaudhary of Tikapur, original Nepali report"
+    },
+    {
+      "name": "Kathmandu Post",
+      "url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+      "used_for": "NDRRMA figures on hydropower, foreign nationals and tourists missing August 31"
+    },
+    {
+      "name": "The Himalayan Times",
+      "url": "https://thehimalayantimes.com/nepal/bhotekoshi-flood-1290-dead-8197-rescued-4800-missing-so-far",
+      "used_for": "Nepal Police toll and missing count September 4"
+    },
+    {
+      "name": "Nepal News",
+      "url": "https://english.nepalnews.com/s/explainers/bhote-koshi-flood-day-seven-what-we-know-so-far-as-the-death-toll-tops-1050/",
+      "used_for": "Hydropower workers' families demanding answers, opposition criticism, dated September 1"
+    }
+  ],
+  "tags": [
+    "bhotekoshi-flood",
+    "nepal-disaster",
+    "malaysia",
+    "orphans",
+    "missing-persons",
+    "ndrrma"
+  ],
+  "social_hook": "Nepal will support five flood children until they turn 18. Friday's reports skip the 933 people tied to hydropower projects that NDRRMA counted missing on August 31.",
+  "take": "One flood, four threads in Friday's news. The state will support five children until they turn 18. Their fathers went missing in the flood, Republica reports. A Malaysian is home after 37 days missing, Malay Mail reports, with 54 still out there. None of Friday's follow-up stories ask about the 933 people NDRRMA tied to hydropower projects on August 31. A Tikapur family has already stopped waiting for a body. Nepal owes the rest an answer too.",
+  "image_headline": "STATE BACKS 5 FLOOD KIDS\n933 HYDRO MISSING AUG 31",
+  "theme": "DISASTER",
+  "country": "NEPAL",
+  "caption": {
+    "hook": "Nepal will support five flood children until they turn 18. None of Friday's reports mention the 933 people tied to hydropower projects that NDRRMA counted missing.",
+    "body": "The government will pay for school and upbringing for five children, Republica reported. Their fathers went missing in the August 26 Bhotekoshi flood.\n\nOne of 55 missing Malaysians returned home safe after 37 days, Malay Mail reported. Fifty four Malaysians are still missing. Malaysia's prime minister secured a fast track search process for them, Malay Mail reported.\n\nIn Tikapur, a family cremated Bir Bahadur Chaudhary using ritual grass after his body was never found, Nepal Press reported.\n\nNone of this touches the 933 people tied to hydropower projects. Nepal's disaster authority counted them missing on August 31, Kathmandu Post reported. Nepal's total missing count rose to 4,798 by September 4, The Himalayan Times reported, citing Nepal Police.",
+    "trigger": "NDRRMA counted 933 hydropower linked missing on August 31. Nepal Wire could not find a more recent update. If that were your relative, how long would you wait before demanding one?"
+  },
+  "nepali": {
+    "headline": "बाढीपीडित ५ बालबालिकालाई सहयोग, अगस्टका ९३३ बेपत्ता खबरबाट छुटे",
+    "dek": "३७ दिन बेपत्ता रहेका एक मलेसियाली सुरक्षित फर्किए, तर एनडीआरआरएमएले ३१ अगस्टमा गनेका जलविद्युत आयोजनासँग सम्बद्ध ९३३ बेपत्ताको शुक्रबारका समाचारमा जिक्र भएन।",
+    "take": "एउटै बाढी, शुक्रबारको खबरमा चार धारा। राज्यले पाँच बालबालिकालाई १८ वर्ष नपुग्दासम्म सहयोग गर्ने भएको छ। उनीहरूका बाबु बाढीमा बेपत्ता भएको रिपब्लिकाले लेखेको छ। एक मलेसियाली ३७ दिनपछि घर फर्किएको र अझै ५४ जना बेपत्ता रहेको मलय मेलले लेखेको छ। शुक्रबारको कुनै पछिल्लो खबरले एनडीआरआरएमएले ३१ अगस्टमा जलविद्युतसँग जोडेका ९३३ जनाबारे सोध्दैन। टिकापुरको एक परिवारले त शव पर्खन छाडिसकेको छ। बाँकीलाई पनि नेपालले जवाफ दिनुपर्छ।",
+    "body_markdown": "काठमाडौं । भोटेकोशी बाढीमा बाबु बेपत्ता भएका पाँच बालबालिकाको शिक्षा, स्याहारसुसार र अन्य आधारभूत आवश्यकता उनीहरू १८ वर्ष नपुग्दासम्म सरकारले बेहोर्ने भएको रिपब्लिकाले शुक्रबार (२ अक्टोबर) जनाएको छ। रिपब्लिकाले यी बालबालिकालाई अनाथ भनेको छ।\n\nडेली एक्सेल्सियर र मलेसियाको द सनका अनुसार उही बाढीमा बेपत्ता भएका एक मलेसियाली नागरिक त्यही दिन ३७ दिनपछि सुरक्षित परिवारसँग फर्किएका छन्।\n\nशुक्रबारका समाचारले बेपत्ता आफन्तको खबर पर्खिरहेका परिवारसामु यी दुई नतिजा ल्याएका छन्। एउटा खबरमा राज्य पाँच बालबालिकाको सहयोगमा उत्रेको छ। अर्कोमा एक विदेशी सरकारले आफ्ना नागरिकको खोजीमा जोडदार पहल गरेको छ। तर एनडीआरआरएमए अर्थात् राष्ट्रिय विपद् जोखिम न्यूनीकरण तथा व्यवस्थापन प्राधिकरणले ३१ अगस्टको बेपत्ता गणनामा छुट्टै देखाएको सबैभन्दा ठूलो समूहको जिक्र दुवै समाचारमा छैन। एनडीआरआरएमएले ३१ अगस्टमा जलविद्युत आयोजनासँग सम्बद्ध ९३३ जनालाई बेपत्ता भनेर गणना गरेको थियो।\n\nरिपब्लिकाका अनुसार यी पाँच बालबालिकालाई महिला, बालबालिका तथा ज्येष्ठ नागरिक मन्त्रालयको बाढीबाट प्रभावित भई विशेष संरक्षण चाहिने बालबालिकाका लागि दीर्घकालीन स्याहार योजनाअन्तर्गत सहयोग पुग्छ। रिपब्लिकाले यी बालबालिकाको नाम र सहयोगको रकम कसरी जुट्छ भन्ने कुरा खुलाएको छैन। रिपब्लिकाले उल्लेख गरेका यी पाँच बालबालिका एउटै परिवारका हुन्। रिपब्लिकाले यिनलाई मन्त्रालयको योजनाअन्तर्गतको उदाहरणका रूपमा उल्लेख गरेको छ। रिपब्लिकाले यसलाई राष्ट्रिय जम्मा संख्याका रूपमा उल्लेख गरेको छैन।\n\nडेली एक्सेल्सियर र द सनका अनुसार उद्धार भएका ती मलेसियाली नागरिक २६ अगस्टको बाढीपछि बेपत्ता भएका ५५ जनामध्ये एक हुन्। उनी सुरक्षित घर फर्किएको मलेसिया सरकारका प्रवक्ताले पुष्टि गरेको मलय मेलले जनाएको छ। मलय मेलका अनुसार २ अक्टोबरसम्म ५४ मलेसियाली अझै बेपत्ता छन्। नेपाली अधिकारीहरूसँगको वार्तापछि मलेसियाका प्रधानमन्त्री अनवर इब्राहिमले बाँकी बेपत्ताहरूको खोजीका लागि द्रुत प्रक्रिया सुनिश्चित गराएको मलय मेलले जनाएको छ।\n\nपश्चिम नेपालको टिकापुरमा एक परिवारले पर्खाइ अन्त्य गरेको छ। बाढीपछि लामो खोजी गर्दा पनि शव नभेटिएका टिकापुर नगरपालिका-१, समितिपुरका ३५ वर्षीय बीर बहादुर चौधरीको दाहसंस्कार भएको नेपाल प्रेसले जनाएको छ। शव नभेटिँदा हिन्दू परिवारले प्रयोग गर्ने धार्मिक घाँस कुशबाट परिवारले विधि पूरा गरेको नेपाल प्रेसले लेखेको छ।\n\n## समाचारले छुटाएको कुरा\n\nशुक्रबारका कुनै पनि समाचारमा जलविद्युत आयोजनासँग सम्बद्ध ९३३ बेपत्ताको जिक्र छैन। एनडीआरआरएमएले ३१ अगस्टमा यी ९३३ जनालाई बेपत्ता गनेको काठमाडौं पोस्टले जनाएको थियो। एनडीआरआरएमएले त्यही दिन ५९२ विदेशी नागरिक र विदेशी पर्यटकसँगै रहेका १२७ नेपालीलाई पनि बेपत्ता भनेको थियो, काठमाडौं पोस्टले जनाएको छ। नेपाल वायरले हेरेका समाचारमा त्यसपछि एनडीआरआरएमएले यी ९३३ जनाको अद्यावधिक विवरण दिएको फेला परेन। नेपाल न्युजले १ सेप्टेम्बरमा लेखेअनुसार बाढीले डुबाएका टनेलमा फसेका जलविद्युतकर्मीका परिवारले जवाफ मागिरहेका थिए। सरकारले विदेशी उद्धार सहयोग लिन हिचकिचाएको आरोप प्रतिपक्षी सांसदहरूले लगाएको पनि नेपाल न्युजले उल्लेख गरेको थियो।\n\nआधिकारिक मृत्यु र बेपत्ताको संख्या फेरिएको छ। तर नेपाल वायरले हेरेका कुनै पनि समाचारले यो फरकको कारण खुलाएका छैनन्। काठमाडौं पोस्टका अनुसार एनडीआरआरएमएले ३१ अगस्टमा ९०३ जनाको मृत्यु र ४,२४७ जना बेपत्ता रहेको जनाएको थियो। द हिमालयन टाइम्सका अनुसार चार दिनपछि नेपाल प्रहरीले १,२९० जनाको मृत्यु र ४,७९८ जना बेपत्ता रहेको जनाएको थियो। खोजी टोली खटिरहँदा पनि बेपत्ताको संख्या घटेन, बढ्यो। मलेसियाली सञ्चारमाध्यम फ्री मलेसिया टुडेले शुक्रबार (२ अक्टोबर) बाढीले १,४५० भन्दा बढीको ज्यान लिएको लेखेको छ, तर यो तथ्यांक नेपालको कुन निकायबाट लिएको हो भनेर खुलाएको छैन।\n\nएनडीआरआरएमएले अगस्टमा बेपत्ता भनेका ५९२ विदेशी नागरिकमध्ये नेपाल वायरले हेरेका समाचारमा निरन्तर कभरेज र प्रधानमन्त्रीको प्रत्यक्ष पहल पाएका ५५ मलेसियाली मात्र हुन्।\n\n## अझै थाहा नभएका कुरा\n\nबाढीले टुहुरो बनाएका बालबालिकाको राष्ट्रिय संख्या मन्त्रालयले सार्वजनिक गरेको छ वा छैन, यो महिला, बालबालिका तथा ज्येष्ठ नागरिक मन्त्रालयसँग सोध्नुपर्ने अलग्गै प्रश्न हो।\n\nजलविद्युतसँग सम्बद्ध ती ९३३ बेपत्तामध्ये कोही भेटिए वा भेटिएनन्, र प्रतिपक्षी सांसदहरूले खोजेको विदेशी उद्धार विज्ञता सरकारले भित्र्यायो वा भित्र्याएन, यो एनडीआरआरएमए र ऊर्जा मन्त्रालयसँग सोध्नुपर्ने प्रश्न हो।\n\nबाढी आएको पाँच हप्तापछि नेपालको हालको, मितिसहितको मृत्यु र बेपत्ता संख्या वास्तवमा कति हो, यो एनडीआरआरएमए वा नेपाल प्रहरी प्रधान कार्यालयसँग सोध्नुपर्ने प्रश्न हो।",
+    "image_headline": "५ बालबालिकालाई सहयोग\nखबरमा ९३३ बेपत्ता छुटे",
+    "social_hook": "५ बालबालिकालाई सहयोग, मलेसियाली फर्किए, तर जलविद्युत आयोजनासँग सम्बद्ध ९३३ बेपत्ताबारे शुक्रबारको कुनै खबरले सोधेन।",
+    "caption": {
+      "hook": "भोटेकोशी बाढीपछि ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए, टिकापुरका एक परिवारले शव नपाएर कुशबाट दाहसंस्कार गरे। एनडीआरआरएमएले ३१ अगस्टमा गनेका जलविद्युतसम्बद्ध ९३३ बेपत्ताबारे भने शुक्रबारका खबर मौन छन्।",
+      "angle": "नेपाल वायरले हेरेका समाचारमा ३१ अगस्टपछि एनडीआरआरएमएले जलविद्युत आयोजनासँग सम्बद्ध ती ९३३ जनाको अद्यावधिक विवरण दिएको फेला परेन।",
+      "trigger": "भोटेकोशी बाढीमा बेपत्ता भएका आफन्तको खबर तपाईंको चिनजानमा कसैले अझै पर्खिरहेको छ?"
+    },
+    "notes": "",
+    "checked": true,
+    "approved": false,
+    "held": true,
+    "fact_problems": [
+      "The headline drops the record's 'hydropower' qualifier. A bare '९३३ बेपत्ता' can read as the flood's whole missing count, which the record puts at 4,247 and then 4,798.",
+      "Card line two drops 'hydropower'. Read alone, '९३३ बेपत्ता' looks like the total missing toll, which the story itself shows is far higher.",
+      "The record says 'after a call with Nepali officials'. Plain 'वार्ता' can read as in-person talks, so the act is stronger and less exact than the record.",
+      "In the English this clause sits inside the sentence attributed to The Himalayan Times. As its own Nepali sentence it carries the fact with no source."
+    ],
+    "language_notes": 4,
+    "language_fixes": [
+      {
+        "passage": "रिपब्लिकाले उल्लेख गरेका यी पाँच बालबालिका एउटै परिवारका हुन्। रिपब्लिकाले यिनलाई मन्त्रालयको योजनाअन्तर्गतको उदाहरणका रूपमा उल्लेख गरेको छ। रिपब्लिकाले यसलाई राष्ट्रिय जम्मा संख्याका रूपमा उल्लेख गरेको छैन।",
+        "problem": "The same attribution and verb repeat three times in a row. The English carries this as one idea, so it can sit under one attribution.",
+        "fix": "रिपब्लिकाका अनुसार यी पाँच बालबालिका एउटै परिवारका हुन्, र पत्रिकाले उनीहरूलाई मन्त्रालयको योजनाअन्तर्गत राष्ट्रिय जम्मा संख्याका रूपमा नभई एउटा उदाहरणका रूपमा लेखेको छ।"
+      },
+      {
+        "passage": "एनडीआरआरएमएले त्यही दिन ५९२ विदेशी नागरिक र विदेशी पर्यटकसँगै रहेका १२७ नेपालीलाई पनि बेपत्ता भनेको थियो, काठमाडौं पोस्टले जनाएको छ।",
+        "problem": "The attribution is tacked on after a comma in English order, and its tense does not match the sentence before it.",
+        "fix": "काठमाडौं पोस्टका अनुसार एनडीआरआरएमएले त्यही दिन ५९२ विदेशी नागरिक र विदेशी पर्यटकसँगै रहेका १२७ नेपालीलाई पनि बेपत्ता गनेको थियो।"
+      },
+      {
+        "passage": "एनडीआरआरएमएले अगस्टमा बेपत्ता भनेका ५९२ विदेशी नागरिकमध्ये नेपाल वायरले हेरेका समाचारमा निरन्तर कभरेज र प्रधानमन्त्रीको प्रत्यक्ष पहल पाएका ५५ मलेसियाली मात्र हुन्।",
+        "problem": "'प्रधानमन्त्रीको' is ambiguous and can be read as Nepal's prime minister. 'कभरेज' is also an English loan where a plain word exists.",
+        "fix": "एनडीआरआरएमएले अगस्टमा बेपत्ता भनेका ५९२ विदेशी नागरिकमध्ये नेपाल वायरले हेरेका समाचारमा निरन्तर चर्चा र आफ्नै प्रधानमन्त्रीको प्रत्यक्ष पहल पाउने ५५ मलेसियाली मात्र हुन्।"
+      },
+      {
+        "passage": "५ बालबालिकालाई सहयोग, मलेसियाली फर्किए, तर जलविद्युत आयोजनासँग सम्बद्ध ९३३ बेपत्ताबारे शुक्रबारको कुनै खबरले सोधेन।",
+        "problem": "'मलेसियाली फर्किए' can read as several Malaysians returning. The record has one.",
+        "fix": "५ बालबालिकालाई सहयोग, एक मलेसियाली फर्किए, तर जलविद्युत आयोजनासँग सम्बद्ध ९३३ बेपत्ताबारे शुक्रबारको कुनै खबरले सोधेन।"
+      }
+    ],
+    "passes": 3,
+    "problems_fixed": 29,
+    "fixed_in_place": 0,
+    "editor": "The headline and card drop the hydropower qualifier, so 933 reads as the flood's total missing, and Anwar's call becomes talks. One sourced clause also stands without its source, and several lines need Nepali craft fixes before publication."
+  },
+  "image_brief": {
+    "search_queries": [
+      "Anwar Ibrahim",
+      "Bhote Koshi River",
+      "Tikapur"
+    ],
+    "generation_prompt": "A wide, somber editorial illustration of a Himalayan river valley in Nepal after a flood. Muted greys and blues, debris scattered along the banks, a single small oil lamp glowing on a stone riverside ghat at dusk to suggest a ritual farewell for the missing. No visible people or faces, no text, no logos. A faint warm light breaks through grey clouds, suggesting hope amid unresolved loss.",
+    "alt_text": "An illustration of a flood damaged Nepali river valley at dusk with a lone ritual lamp on the riverbank, evoking mourning and uncertain recovery."
+  },
+  "image": {
+    "path": "data/images/2026-10-03-bhotekoshi-flood-orphans-933-still-missing.jpg",
+    "alt": "A hydropower project with concrete spillways sits beside the Bhotekoshi River, flanked by steep mountain slopes in Sindhupalchok District, Nepal.",
+    "width": 1600,
+    "height": 1200,
+    "credit": {
+      "kind": "found",
+      "title": "A hydropower project on the Bhotekoshi River in Sindhupalchok District.",
+      "author": "Saddam19",
+      "author_url": "",
+      "source": "Wikimedia Commons",
+      "source_url": "https://commons.wikimedia.org/wiki/File:A_hydropower_project_on_the_Bhotekoshi_River_in_Sindhupalchok_District..jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "model": "",
+      "note": ""
+    },
+    "original_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/A_hydropower_project_on_the_Bhotekoshi_River_in_Sindhupalchok_District..jpg/1920px-A_hydropower_project_on_the_Bhotekoshi_River_in_Sindhupalchok_District..jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail"
+  },
+  "investigation": {
+    "angles": [
+      {
+        "claim": "Kathmandu Post's NDRRMA-sourced update on Aug 31 counted 933 people linked to hydropower projects as missing, alongside reports that families of trapped hydropower workers were demanding answers and opposition parties accused the government of hesitating on foreign rescue expertise -- yet none of today's follow-up stories (orphan welfare, Malaysian rescue, Tikapur cremation) mention this group at all.",
+        "kind": "missing",
+        "why_it_matters": "933 missing hydropower-linked workers is a far larger, and arguably more politically charged, unresolved case than either the five orphaned children or the 54 still-missing Malaysians that dominate today's coverage. If this group has simply dropped out of the news cycle without resolution, readers -- including the families of those workers -- have no way to know their status.",
+        "evidence": [
+          {
+            "url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+            "source": "Kathmandu Post, citing NDRRMA",
+            "fact": "\"933 people associated with a hydropower project, 592 foreign nationals, and 127 Nepalis accompanying foreign tourists remain missing\""
+          },
+          {
+            "url": "https://english.nepalnews.com/s/explainers/bhote-koshi-flood-day-seven-what-we-know-so-far-as-the-death-toll-tops-1050/",
+            "source": "Nepal News explainer, day seven of flood",
+            "fact": "\"Families of hydropower workers trapped in flooded tunnels are demanding answers, opposition parties are accusing the government of hesitating on foreign expertise\""
+          }
+        ],
+        "confidence": 70
+      },
+      {
+        "claim": "Government disaster figures for the Bhotekoshi flood have been inconsistent across agencies and over time -- NDRRMA reported 4,247 missing on Aug 31 with 903 confirmed dead, while Nepal Police reported 4,798 missing (a rise, not a fall) alongside 1,290 dead just four days later on Sept 4 -- yet none of today's five source articles cite a current, dated, agency-attributed toll to reconcile with the figures circulating in Malaysian press.",
+        "kind": "numbers",
+        "why_it_matters": "Readers following today's 'good news' updates (one Malaysian found, orphans getting state care) have no way to check the overall scale of the disaster against an authoritative, current count, nor to understand why a month-old missing count rose rather than fell as recovery operations continued.",
+        "evidence": [
+          {
+            "url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+            "source": "Kathmandu Post, citing NDRRMA situation update, Aug 31",
+            "fact": "\"903 bodies, including human remains, have been recovered\" and \"4,247 people remain unaccounted for\""
+          },
+          {
+            "url": "https://thehimalayantimes.com/nepal/bhotekoshi-flood-1290-dead-8197-rescued-4800-missing-so-far",
+            "source": "The Himalayan Times, citing Nepal Police, Sept 4",
+            "fact": "\"The death toll ... has reached 1,290, with 4,798 people still missing, according to Nepal Police\""
+          }
+        ],
+        "confidence": 65
+      },
+      {
+        "claim": "NDRRMA's own Aug 31 update put the number of missing foreign nationals at 592, but today's coverage of the Malaysian search narrows the international-victims story to just the 55 Malaysians; no outlet in this story set addresses what happened to the roughly 500+ other foreign nationals who were reported missing.",
+        "kind": "missing",
+        "why_it_matters": "The diplomatic weight behind the Malaysian search (a PM-to-PM push for a 'fast-track process') highlights a gap in attention for other foreign victims whose home governments may have less leverage, raising a fairness question about which nationalities get followed up in the Nepali and international press.",
+        "evidence": [
+          {
+            "url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+            "source": "Kathmandu Post, citing NDRRMA",
+            "fact": "\"592 foreign nationals ... remain missing\""
+          }
+        ],
+        "confidence": 55
+      },
+      {
+        "claim": "Republica's story states the government will support exactly 'five children who lost their parents' but gives no explanation of how that number was determined, by which agency, or whether it represents the full count of children orphaned nationwide by a flood that killed well over 1,000 people including at least 32 children outright, per Nepal Police's Sept 4 breakdown.",
+        "kind": "missing",
+        "why_it_matters": "Given the disaster's scale, readers cannot tell from the coverage whether five is the complete universe of double-orphaned children or an initial, partial cohort -- a distinction that matters for families elsewhere in flood-hit districts who may not know whether they qualify for the same state support.",
+        "evidence": [
+          {
+            "url": "https://myrepublica.nagariknetwork.com/news/state-to-support-five-children-orphaned-by-floods-until-age-18-22-54.html",
+            "source": "Republica",
+            "fact": "The government will provide long-term care and support to five children who lost their parents in the Bhotekoshi flood, including education and upbringing until age 18"
+          },
+          {
+            "url": "https://thehimalayantimes.com/nepal/bhotekoshi-flood-1290-dead-8197-rescued-4800-missing-so-far",
+            "source": "The Himalayan Times, citing Nepal Police",
+            "fact": "Of 1,290 confirmed dead by Sept 4, \"32 were children, 250 women and 427 men\""
+          }
+        ],
+        "confidence": 58
+      }
+    ],
+    "unanswered": [
+      {
+        "question": "What criteria or process identified exactly five children as orphaned by the flood, and which ministry or agency verified them -- is this the total nationwide count or an initial cohort with more cases pending?",
+        "who_could_answer": "Nepal's Ministry of Women, Children and Senior Citizens or the National Child Rights Council"
+      },
+      {
+        "question": "What is the current status of the roughly 933 people associated with hydropower projects who NDRRMA listed as missing in late August -- have any been found, and did the government bring in the foreign rescue expertise that opposition parties said it was hesitating on?",
+        "who_could_answer": "NDRRMA, the Ministry of Energy, the hydropower companies named in NDRRMA's records, and the opposition lawmakers who raised the issue"
+      },
+      {
+        "question": "What is the current, officially confirmed death toll and missing count from NDRRMA or Nepal Police as of early October, and how does it reconcile with the 'more than 1,450' figure being cited in Malaysian press coverage?",
+        "who_could_answer": "NDRRMA spokesperson or Nepal Police Headquarters spokesperson"
+      },
+      {
+        "question": "Of the roughly 592 foreign nationals NDRRMA reported missing in late August, how many nationalities besides Malaysian remain unresolved, and what diplomatic follow-up, if any, has occurred for them?",
+        "who_could_answer": "NDRRMA, Nepal's Ministry of Foreign Affairs, and the respective embassies in Kathmandu"
+      },
+      {
+        "question": "How many other Nepali families are in the same position as Bir Bahadur Chaudhary's -- a body never recovered despite a long search -- and does the state offer any formal support or acknowledgment to those families comparable to what is being offered the five orphaned children?",
+        "who_could_answer": "Nepal Police, NDRRMA, or the Ministry of Home Affairs"
+      }
+    ],
+    "summary": "Every outlet in today's coverage follows the three threads the government and Malaysian authorities put in front of them; none measures those threads against NDRRMA and Nepal Police's own flood data from late August and early September, which shows roughly 933 hydropower-linked workers and over 500 other foreign nationals still listed missing -- figures that dwarf the five orphaned children and 54 remaining Malaysians getting today's attention. Nepal Wire can say today that the official record itself, not just the press release, raises questions about scope, consistency and which victims get followed up that none of the five source articles address."
+  },
+  "review": {
+    "ranking": [
+      {
+        "judge": "ranking_judge_1",
+        "rank": 1,
+        "score": 72,
+        "reason": "This is a real development since our October 1 recovery-phase piece. Republica reports state care until age 18 for five orphaned children, and Malay Mail, FMT and The Sun confirm a Malaysian was found safe after 37 days with 54 still missing. Lead with those two strands, attribute every toll figure to its source, and drop the unverified NPR 578.5 million figure and the weak Malaysia-China Insight link. Weakest dimension: comment friction."
+      },
+      {
+        "judge": "ranking_judge_2",
+        "rank": 1,
+        "score": 72,
+        "reason": "Confirmed. This is a real development since our October 1 piece: Malay Mail, FMT and The Sun confirm a Malaysian found safe after 37 days with 54 still missing, and Republica reports state care until age 18 for five orphaned children. The orphan strand is attributed to Republica as its only source. Weakest dimension: comment friction."
+      }
+    ],
+    "validation_rounds": [
+      {
+        "round": 1,
+        "red_team": {
+          "findings": [
+            {
+              "id": "F1",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "Republica's report did not name the five children, the ministry running the program, or say how it will be paid for.",
+              "problem": "This is false. Republica's own article names the ministry: 'The Ministry of Women, Children and Senior Citizens included all five children in its Long-Term Care Plan for Children Affected by Floods Who Require Special Protection.' The newsroom's investigative claim misrepresents the source it cites, in a section (What the coverage missed) that is supposed to be checked hardest.",
+              "evidence_url": "https://myrepublica.nagariknetwork.com/news/state-to-support-five-children-orphaned-by-floods-until-age-18-22-54.html",
+              "suggested_fix": "Correct the sentence to say Republica named the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan, and narrow the unnamed-information claim to only what is actually missing: the children's names and the funding mechanism."
+            },
+            {
+              "id": "F2",
+              "dimension": "accuracy",
+              "severity": "high",
+              "passage": "Nepal to fund five Bhotekoshi flood orphans as 933 linked to hydropower stay missing",
+              "problem": "The headline states as a current fact that 933 people 'stay missing', but the article's own 'What we still do not know' section admits this is unverified: 'Whether any of the 933 hydropower linked missing have been found... is a question for NDRRMA.' The headline asserts a continuing status the article itself says it cannot confirm. The only hard data point is an NDRRMA count from five weeks ago, not a current status.",
+              "evidence_url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+              "suggested_fix": "Rewrite the headline to attribute the 933 figure to its date, e.g. 'Nepal to fund five flood orphans as 933 hydropower missing from August 31 remain unaccounted for', or add a status signal like 'STATUS UNKNOWN' rather than the declarative 'stay missing'."
+            },
+            {
+              "id": "F3",
+              "dimension": "defensibility",
+              "severity": "high",
+              "passage": "STATE BACKS FIVE ORPHANS\nAS 933 STAY MISSING",
+              "problem": "The card headline circulates alone as a screenshot. It states an unresolved status ('STAY MISSING') in flat declarative voice. Per house style, an unproven or unverified status needs a signal (UNCLEAR, STATUS UNKNOWN) rather than being run as a settled fact, especially since the body explicitly says the current status is unknown.",
+              "evidence_url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+              "suggested_fix": "Change to something like 'STATE BACKS FIVE ORPHANS / 933 STATUS UNKNOWN' or 'AS AUG 31 TOLL GOES UNUPDATED' to avoid asserting a current fact the record does not support."
+            },
+            {
+              "id": "F4",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Nepal's own disaster authority counted 933 people tied to a single hydropower project as missing five weeks ago.",
+              "problem": "Kathmandu Post's source phrase is '933 people associated with a hydropower project,' which is generic, not necessarily one project. Other public reporting on the same disaster describes the hydropower-linked missing as spread across roughly 11 different hydropower project sites, including Trishuli 3A and 3B. Calling it 'a single hydropower project' adds a specificity the Kathmandu Post source does not support and other evidence contradicts.",
+              "evidence_url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+              "suggested_fix": "Drop 'single'; write '933 people tied to hydropower projects' to match the source and the wider record."
+            },
+            {
+              "id": "F5",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Which agency verified that five is the total number of children orphaned nationwide, rather than an initial count, is a question for Nepal's Ministry of Women, Children and Senior Citizens.",
+              "problem": "Republica's own article, which the newsroom cites, makes clear the five children are one family's case (nephews and nieces of Sonam Gole, whose two brothers went missing in the flood), highlighted as an example of the ministry's ongoing Long-Term Care Plan, not a claimed national total. Framing this as an open mystery, while omitting that over 500 children are reported in shelters with parents missing or dead nationwide per other outlets, makes the five-child figure seem more consequential and more uncertain than the record supports.",
+              "evidence_url": "https://www.aljazeera.com/news/2026/9/22/orphaned-by-floods-more-than-500-nepali-children-face-uncertain-future",
+              "suggested_fix": "State plainly that the five children are one family's case cited as an example of the ministry's program, and note separately, with attribution, that other reporting counts over 500 children affected nationwide, rather than posing the scope as an unresolved question."
+            },
+            {
+              "id": "F6",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Nepal's government will pay for school, upbringing and other basic needs for five children orphaned by the Bhotekoshi flood until each turns 18",
+              "problem": "Republica's own account says the two fathers 'went missing following the flood,' not that they were confirmed dead. Nepali law requires 12 years of a person being missing before a legal death declaration, per reporting on the same disaster's child welfare cases. Calling the children definitively 'orphaned' and saying the parents are a settled fact overstates their legal status, which the record itself leaves open.",
+              "evidence_url": "https://myrepublica.nagariknetwork.com/news/state-to-support-five-children-orphaned-by-floods-until-age-18-22-54.html",
+              "suggested_fix": "Specify that the children's fathers are missing and presumed lost in the flood rather than confirmed dead, matching Republica's own wording, and note the ministry's program covers children 'affected by floods who require special protection,' a broader category than confirmed orphans."
+            },
+            {
+              "id": "F7",
+              "dimension": "defensibility",
+              "severity": "medium",
+              "passage": "If NDRRMA counted your relative among 933 missing hydropower workers five weeks ago and gave no update since, would you call that an active search or silence?",
+              "problem": "The trigger states as settled fact that NDRRMA 'gave no update since' August 31, a claim the article's own unanswered section admits it cannot confirm. This loads the question with an unverified premise rather than resting on a documented fact, and it nudges the reader toward one answer (silence), which the record does not establish either way.",
+              "evidence_url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+              "suggested_fix": "Rephrase to rest only on what is confirmed: 'NDRRMA counted 933 hydropower linked missing on August 31. Nepal Wire could not find a more recent update. If that were your relative, how long would you wait before demanding one?'"
+            },
+            {
+              "id": "F8",
+              "dimension": "accuracy",
+              "severity": "medium",
+              "passage": "Nobody is asking about the 933 people NDRRMA tied to a hydropower project back in August.",
+              "problem": "This take overclaims what the newsroom actually verified, which is that five specific follow-up articles published today do not mention the figure. It does not establish that nobody anywhere, including families, lawmakers, hydropower companies or other outlets, is asking about it. The take states a sweeping absolute the body's reporting only supports in a narrow sense.",
+              "evidence_url": "https://english.nepalnews.com/s/explainers/bhote-koshi-flood-day-seven-what-we-know-so-far-as-the-death-toll-tops-1050/",
+              "suggested_fix": "Narrow the claim to what was checked: 'None of today's follow-up stories ask about the 933 people NDRRMA tied to a hydropower project back in August.'"
+            },
+            {
+              "id": "F9",
+              "dimension": "relevance",
+              "severity": "low",
+              "passage": "By October 2, Malaysian outlet FMT reported the flood had reportedly killed more than 1,450 people, without naming which Nepali agency supplied that number.",
+              "problem": "Including an unsourced, agency-unattributed death toll from a foreign outlet, flagged by the newsroom itself as unexplained, adds confusion rather than clarity for a Nepali reader trying to understand the current toll. If the newsroom cannot verify which agency supplied it, its inclusion mainly amplifies an unverifiable number rather than informing the reader.",
+              "evidence_url": "https://www.freemalaysiatoday.com/category/nation/2026/10/02/1-of-55-malaysians-missing-in-nepal-found-safe",
+              "suggested_fix": "Either drop the FMT figure or clearly label it as unverified and explain why it is included despite lacking a named source."
+            },
+            {
+              "id": "F10",
+              "dimension": "virality",
+              "severity": "low",
+              "passage": "Nobody is tracking the 933 people a hydropower project reported missing in the same disaster.",
+              "problem": "This caption hook repeats the same unverifiable present tense claim as the headline and card, asserting current neglect as fact when the newsroom only confirmed that today's specific follow ups omit the figure. It is a strong hook, but it oversells certainty the record does not carry, and if a reader checks and finds any tracking effort by NDRRMA, families or lawmakers, it undercuts the newsroom's credibility.",
+              "evidence_url": "https://kathmandupost.com/national/2026/08/31/death-toll-from-bhotekoshi-flood-reaches-903",
+              "suggested_fix": "Change to 'None of today's follow-up reports mention the 933 people a hydropower project reported missing in the same disaster' to keep the hook sharp without overclaiming."
+            }
+          ],
+          "scores": {
+            "accuracy": 38,
+            "relevance": 62,
+            "defensibility": 42,
+            "virality": 58
+          },
+          "summary": "The piece builds a real and worthwhile accountability angle around the 933 hydropower linked missing, but its own investigative section makes a factual error, claiming Republica did not name the ministry when it did, and repeatedly asserts the 933 figure's current status as 'stay missing' in the headline, card and caption even though the body admits that status is unverified. The orphan framing glosses over the fact that the children's fathers are reported missing, not confirmed dead, and the piece treats the scope of the five child figure as a deeper mystery than the cited source and other public reporting actually support. These are fixable with more careful attribution and softer, better hedged present tense claims, but as written the article overclaims on the exact point it is criticizing other outlets for underreporting."
+        },
+        "defense": {
+          "responses": [
+            {
+              "finding_id": "F1",
+              "stance": "accept",
+              "response": "Red team is right. Republica's piece names the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan for Children Affected by Floods Who Require Special Protection. Saying the outlet did not name the ministry is a factual error in a section meant to hold the highest bar. The only genuinely missing details are the children's names and the funding mechanism.",
+              "proposed_edit": "Republica's report named the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan for Children Affected by Floods Who Require Special Protection as the program covering the five children, but did not name the children themselves or say how the support will be funded."
+            },
+            {
+              "finding_id": "F2",
+              "stance": "accept",
+              "response": "The headline's present tense claims a current status the article's own unanswered-questions section admits it cannot confirm. That is an internal contradiction and the fix is cheap: anchor the number to its date instead of asserting an ongoing state.",
+              "proposed_edit": "Nepal to fund five flood orphans as 933 hydropower missing from August 31 remain unaccounted for"
+            },
+            {
+              "finding_id": "F3",
+              "stance": "accept",
+              "response": "Same problem as the headline, and the card is the piece most likely to circulate without context. A declarative 'STAY MISSING' needs a status signal per house style since the body itself says the current status is unknown.",
+              "proposed_edit": "STATE BACKS FIVE ORPHANS\n933 STATUS UNKNOWN"
+            },
+            {
+              "finding_id": "F4",
+              "stance": "accept",
+              "response": "Kathmandu Post's own phrasing is generic, 'associated with a hydropower project,' not one named site, and other reporting describes multiple project sites. Adding 'single' is a specificity the source does not carry.",
+              "proposed_edit": "Nepal's own disaster authority counted 933 people tied to hydropower projects as missing five weeks ago."
+            },
+            {
+              "finding_id": "F5",
+              "stance": "accept",
+              "response": "Republica's own report frames the five children as one family's case, cited as an example of the ministry's broader Long-Term Care Plan, not a national total. Posing the national scope as an open mystery misrepresents what the source actually says. We will not add the 500 figure from a source we have not independently verified in this piece, but we will fix the mischaracterization of Republica's framing.",
+              "proposed_edit": "The five children named in Republica's report belong to one family, cited as an example case under the ministry's Long-Term Care Plan for Children Affected by Floods Who Require Special Protection, not a stated national total. Whether the ministry has released a nationwide count of flood orphaned children is a separate question for the Ministry of Women, Children and Senior Citizens."
+            },
+            {
+              "finding_id": "F6",
+              "stance": "accept",
+              "response": "Republica says the fathers went missing in the flood, not that they were confirmed dead. Nepali law treats a missing person as legally alive for years before a death declaration. Calling the children definitively orphaned overstates a legal status the record leaves open.",
+              "proposed_edit": "Nepal's government will pay for school, upbringing and other basic needs for five children whose fathers went missing in the Bhotekoshi flood, until each child turns 18, Republica reported."
+            },
+            {
+              "finding_id": "F7",
+              "stance": "accept",
+              "response": "The trigger asserts as fact that NDRRMA 'gave no update since' August 31, which is exactly the thing the article says it could not confirm. A documented absence of a Nepal Wire find is different from a documented silence by NDRRMA, and the question should rest only on what is confirmed.",
+              "proposed_edit": "NDRRMA counted 933 hydropower linked missing on August 31. Nepal Wire could not find a more recent update. If that were your relative, how long would you wait before demanding one?"
+            },
+            {
+              "finding_id": "F8",
+              "stance": "accept",
+              "response": "The take asserts a sweeping absolute, 'nobody is asking,' when the newsroom only verified that today's follow up stories do not mention the figure. That is an overclaim beyond what was checked.",
+              "proposed_edit": "None of today's follow-up stories ask about the 933 people NDRRMA tied to a hydropower project back in August."
+            },
+            {
+              "finding_id": "F9",
+              "stance": "contest",
+              "response": "The sentence already does the job house style asks for: it reports the FMT figure, flags that it is unattributed to any named Nepali agency, and leaves the discrepancy visible rather than smoothing it over. Dropping it would hide a real disagreement between outlets on the toll, which the style guide says to report, not bury. The label is already there in the text itself.",
+              "proposed_edit": "No change needed. The existing sentence already flags the figure as unattributed: \"without naming which Nepali agency supplied that number.\""
+            },
+            {
+              "finding_id": "F10",
+              "stance": "accept",
+              "response": "Same overclaim as F8, carried into the caption hook. It should rest on what the newsroom verified, that today's coverage omits the figure, not a claim that no one anywhere is tracking it.",
+              "proposed_edit": "None of today's follow-up reports mention the 933 people a hydropower project reported missing in the same disaster."
+            }
+          ],
+          "summary": "Six of ten findings point to real problems and are accepted: a factual misstatement about what Republica's own article names (F1), a headline and card that assert an unconfirmed current status as settled fact (F2, F3), an overspecified 'single hydropower project' the source does not support (F4), a framing that misreads Republica's five-child case as an open question about a national total (F5), and an overstatement of the children's legal status as confirmed orphans when the record says their fathers are missing (F6). The trigger and the take also overclaim present tense certainty about who is or is not tracking the 933 figure, so F7, F8 and F10 are accepted with narrower wording that rests only on what was actually verified. F9 is contested: the sentence about the FMT toll already flags its lack of named-agency attribution in the text itself, which is the transparency the style guide asks for, and removing it would hide a real disagreement between outlets rather than report it."
+        },
+        "judge_1": {
+          "decision": "revise",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Republica names the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan. Saying it did not is a factual error about our own cited source."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "The only record is an NDRRMA count dated August 31, so 'stay missing' asserts a current status the body admits it cannot confirm. The defence's replacement runs about 96 characters and still asserts a present status, so a different headline is ordered."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "The card must survive alone and must not assert an unverified status. The defence's fix drops the subject, 933 who, and its second line is three words, so a dated factual line is ordered instead."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Kathmandu Post's phrasing does not support 'single'. The caption also misattributes the count to 'a hydropower project' when NDRRMA counted them."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Republica presents the five as one family's case under the ministry's plan, not a national total. The defence rightly declines to add the unverified 500 figure."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Republica says the fathers went missing. Paragraph 2's 'children who lost both parents' has no source behind it and must go, as must flat 'orphaned' claims in the newsroom's voice."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "'Gave no update since' is an unverified premise. The defence's rewrite is acceptable only if the body states the same limit of Nepal Wire's search."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "'Nobody is asking' is unsupported, and the body itself cites families and lawmakers asking. Narrow it to today's coverage."
+            },
+            {
+              "finding_id": "F9",
+              "ruling": "overruled",
+              "note": "The sentence already flags that the figure has no named agency, and reporting the disagreement between outlets is house style. Only the double hedge 'reported... reportedly' needs trimming."
+            },
+            {
+              "finding_id": "F10",
+              "ruling": "sustained",
+              "note": "'Nobody is tracking' overclaims in the most read line. Narrow it to today's coverage and correct who counted the 933."
+            }
+          ],
+          "required_edits": [
+            "Headline: replace with 'Nepal to back five flood children as 933 hydropower missing from August go unmentioned' (86 characters). Sources: Republica, Kathmandu Post.",
+            "image_headline: replace with 'STATE BACKS 5 FLOOD KIDS\\n933 MISSING AS OF AUG 31'. Both lines are 24 characters or fewer. It states only the dated NDRRMA count from Kathmandu Post.",
+            "Dek: replace 'while NDRRMA's hydropower missing count sits unexplained since August 31' with 'while today's coverage skips the 933 hydropower linked missing NDRRMA counted on August 31'. Source: Kathmandu Post.",
+            "Body paragraph 1: replace 'five children orphaned by the Bhotekoshi flood' with 'five children whose fathers went missing in the Bhotekoshi flood', and add 'Republica described them as orphaned.' Source: Republica.",
+            "Body paragraph 2: replace 'these are the only two confirmed outcomes from the past five weeks' with 'these are the two outcomes today's coverage reported'. Delete 'for children who lost both parents', which has no source. Replace 'Neither story mentions the largest number to come out of the disaster.' with 'Neither story mentions the largest single group in the official missing count.' Replace 'a single hydropower project' with 'hydropower projects' (F4). Source: Kathmandu Post.",
+            "Body paragraph 3: replace the first sentence with the defence's F1 text, that Republica named the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan for Children Affected by Floods Who Require Special Protection but did not name the children or say how the support will be funded. Insert the defence's F5 sentence that the five belong to one family cited as an example case, not a national total. Delete 'No other outlet has independently confirmed the figure of five or the scope of the support' unless it is checked. Source: Republica.",
+            "Body Malaysia paragraph: replace the unattributed 'That process has not yet produced a result for any of the remaining 54' with 'Malay Mail reported 54 Malaysians still missing as of October 2.' Source: Malay Mail.",
+            "Body 'What the coverage missed', first paragraph: after the Kathmandu Post figures add 'Nepal Wire found no later NDRRMA breakdown of that figure in the coverage it reviewed.' This supports the new trigger. Give the Nepal News report its calendar date from the source timestamp.",
+            "Body toll paragraph: replace 'The official toll has also moved in ways no outlet explains' with 'The official toll has moved, and none of the reports reviewed explain the gap'. Change 'reported the flood had reportedly killed' to 'reported the flood had killed' (F9). Sources: Kathmandu Post, The Himalayan Times, FMT.",
+            "Body paragraph beginning 'Of the 592 foreign nationals': replace with 'Of the 592 foreign nationals NDRRMA counted missing in August, only the 55 Malaysians drew sustained coverage and a prime minister's direct push in the reports Nepal Wire reviewed.' Delete 'What happened to the rest has not been reported' or narrow it the same way.",
+            "Body 'What we still do not know': replace the first item with the defence's F5 second sentence, on whether the ministry has released a nationwide count of flood orphaned children.",
+            "Take: replace 'Three threads from one flood, and only two get a follow up' with 'One flood, four threads in today's news.' Replace 'The state will raise five orphaned children through school' with 'The state will support five children whose fathers went missing until they turn 18'. Replace the 'Nobody is asking' sentence with the defence's F8 text. Sources: Republica, Kathmandu Post.",
+            "Caption hook: replace with 'Nepal will support five flood children until they turn 18. None of today's reports mention the 933 people tied to hydropower projects that NDRRMA counted missing.' Sources: Republica, Kathmandu Post.",
+            "Caption body: replace 'five children orphaned by the August 26 Bhotekoshi flood' with 'five children whose fathers went missing in the August 26 Bhotekoshi flood'. Replace 'tied to a hydropower project' with 'tied to hydropower projects'. Replace 'The missing count later rose to 4,798' with 'Nepal's total missing count rose to 4,798 by September 4, The Himalayan Times reported, citing Nepal Police.' As written, the 4,798 reads as the hydropower count.",
+            "Caption trigger: replace with the defence's F7 text, 'NDRRMA counted 933 hydropower linked missing on August 31. Nepal Wire could not find a more recent update. If that were your relative, how long would you wait before demanding one?'"
+          ],
+          "reason": "The 933 hydropower angle is a real and well chosen accountability story, but the piece misstates its own Republica source and asserts the current status of the 933 on the card, headline and hook when the record is five weeks old. It also overstates the children's status, and the caption's 4,798 reads as a hydropower figure. All of it is fixable in one precise pass, so this is a revise.",
+          "scores": {
+            "accuracy": 60,
+            "relevance": 72,
+            "defensibility": 55,
+            "virality": 58
+          }
+        },
+        "judge_2": {
+          "decision": "revise",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Fixed. Paragraph 3 now says Republica named the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan. The added sentence that follows, 'The five children named in Republica's report', contradicts the line before it, which says Republica did not name them."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Fixed. The new headline is 86 characters and says only that the August count goes unmentioned. It makes no claim about the 933's current status."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "The dated card line has replaced 'STAY MISSING'. But '933 MISSING AS OF AUG 31' seen alone reads as the flood's total missing. NDRRMA's total on August 31 was 4,247, so the card needs the hydropower qualifier."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Fixed in the body and caption. The take still says 'a hydropower project'. The social_hook, which was never revised, still says 'one hydropower project'."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Fixed. The one-family example sentence and the nationwide-count question are both in. The unverified 500 figure was rightly left out."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Fixed in the body, take and caption. 'Children who lost both parents' is gone. The unrevised social_hook still calls the children 'flood orphans' in our own voice."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "Fixed. The trigger rests on what Nepal Wire could and could not find, and the body now states that same search limit."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "Fixed by narrowing the claim to the coverage reviewed. But 'today's' is wrong on the date. The coverage is dated Friday, October 2, and run_date is October 3."
+            },
+            {
+              "finding_id": "F9",
+              "ruling": "overruled",
+              "note": "The FMT figure stays, flagged as having no named agency. The double hedge was trimmed as ordered."
+            },
+            {
+              "finding_id": "F10",
+              "ruling": "sustained",
+              "note": "Fixed in the caption hook. The social_hook still says the 933 'are still missing and unmentioned today', which repeats the overclaim."
+            }
+          ],
+          "required_edits": [
+            "social_hook: this field was never revised and still carries the F2, F4, F6 and F10 errors. Replace the whole thing with 'Nepal will support five flood children until they turn 18. Friday's reports skip the 933 people tied to hydropower projects that NDRRMA counted missing on August 31.' Sources: Republica, Kathmandu Post.",
+            "image_headline: change line 2 from '933 MISSING AS OF AUG 31' to '933 HYDRO MISSING AUG 31'. That is 24 characters. Seen alone, the current line reads as the flood's total missing, which NDRRMA put at 4,247 on August 31. Source: Kathmandu Post.",
+            "Dates, everywhere: run_date is October 3 and the coverage reviewed is dated Friday, October 2. In the body, replace 'today's coverage reported' with 'Friday's coverage reported' (paragraph 2) and 'None of today's reports mention' with 'None of Friday's reports mention' (What the coverage missed). In the take, replace 'today's news' with 'Friday's news' and 'today's follow-up stories' with 'Friday's follow-up stories'. In the caption hook, replace 'None of today's reports' with 'None of Friday's reports'. In key_facts item 5, replace 'today's follow-up coverage' with 'the October 2 follow-up coverage'.",
+            "Dek: it is 162 characters, over the 160 limit. Replace it with 'A Malaysian missing 37 days came home safe, while Friday's reports skip the 933 hydropower linked missing NDRRMA counted on August 31.' That is 134 characters. Sources: Malay Mail, Kathmandu Post.",
+            "Body paragraph 3: change 'The five children named in Republica's report belong to one family' to 'The five children in Republica's report belong to one family'. The sentence before it says Republica did not name them.",
+            "Body paragraph 2: replace 'counted 933 people tied to hydropower projects as missing five weeks ago' with 'counted 933 people tied to hydropower projects as missing on August 31'. Use the calendar date, because August 31 to October 3 is 33 days. Also replace 'the largest single group in the official missing count' with 'the largest group NDRRMA broke out in its August 31 missing count'. That keeps the claim to the breakdown Kathmandu Post reported: 933, 592 and 127.",
+            "Take: replace 'The state will support five children whose fathers went missing until they turn 18, Republica reports.' with 'The state will support five children until they turn 18. Their fathers went missing in the flood, Republica reports.' The current wording can be read as the fathers going missing until 18. In the same take, change 'tied to a hydropower project back in August' to 'tied to hydropower projects on August 31' (F4). Sources: Republica, Kathmandu Post.",
+            "Caption body: two sentences run 23 words each, over the 20-word limit. Replace the first paragraph with 'The government will pay for school and upbringing for five children, Republica reported. Their fathers went missing in the August 26 Bhotekoshi flood.' Replace 'None of this touches the 933 people tied to hydropower projects that Nepal's disaster authority counted missing on August 31, Kathmandu Post reported.' with 'None of this touches the 933 people tied to hydropower projects. Nepal's disaster authority counted them missing on August 31, Kathmandu Post reported.' Sources: Republica, Kathmandu Post."
+          ],
+          "reason": "Every edit judge 1 ordered was made. But the social_hook was never touched and still calls the children orphans, ties the 933 to one hydropower project and says they are still missing. The new card line reads as the flood's total missing count. The revision also added a self-contradiction in paragraph 3 and labels October 2 coverage as today's on an October 3 run. Each of these is a precise one-line fix, so with one revision left this is a revise.",
+          "scores": {
+            "accuracy": 80,
+            "relevance": 74,
+            "defensibility": 76,
+            "virality": 61
+          }
+        },
+        "revisions": [
+          {
+            "after": "judge_1",
+            "required_edits": [
+              "Headline: replace with 'Nepal to back five flood children as 933 hydropower missing from August go unmentioned' (86 characters). Sources: Republica, Kathmandu Post.",
+              "image_headline: replace with 'STATE BACKS 5 FLOOD KIDS\\n933 MISSING AS OF AUG 31'. Both lines are 24 characters or fewer. It states only the dated NDRRMA count from Kathmandu Post.",
+              "Dek: replace 'while NDRRMA's hydropower missing count sits unexplained since August 31' with 'while today's coverage skips the 933 hydropower linked missing NDRRMA counted on August 31'. Source: Kathmandu Post.",
+              "Body paragraph 1: replace 'five children orphaned by the Bhotekoshi flood' with 'five children whose fathers went missing in the Bhotekoshi flood', and add 'Republica described them as orphaned.' Source: Republica.",
+              "Body paragraph 2: replace 'these are the only two confirmed outcomes from the past five weeks' with 'these are the two outcomes today's coverage reported'. Delete 'for children who lost both parents', which has no source. Replace 'Neither story mentions the largest number to come out of the disaster.' with 'Neither story mentions the largest single group in the official missing count.' Replace 'a single hydropower project' with 'hydropower projects' (F4). Source: Kathmandu Post.",
+              "Body paragraph 3: replace the first sentence with the defence's F1 text, that Republica named the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan for Children Affected by Floods Who Require Special Protection but did not name the children or say how the support will be funded. Insert the defence's F5 sentence that the five belong to one family cited as an example case, not a national total. Delete 'No other outlet has independently confirmed the figure of five or the scope of the support' unless it is checked. Source: Republica.",
+              "Body Malaysia paragraph: replace the unattributed 'That process has not yet produced a result for any of the remaining 54' with 'Malay Mail reported 54 Malaysians still missing as of October 2.' Source: Malay Mail.",
+              "Body 'What the coverage missed', first paragraph: after the Kathmandu Post figures add 'Nepal Wire found no later NDRRMA breakdown of that figure in the coverage it reviewed.' This supports the new trigger. Give the Nepal News report its calendar date from the source timestamp.",
+              "Body toll paragraph: replace 'The official toll has also moved in ways no outlet explains' with 'The official toll has moved, and none of the reports reviewed explain the gap'. Change 'reported the flood had reportedly killed' to 'reported the flood had killed' (F9). Sources: Kathmandu Post, The Himalayan Times, FMT.",
+              "Body paragraph beginning 'Of the 592 foreign nationals': replace with 'Of the 592 foreign nationals NDRRMA counted missing in August, only the 55 Malaysians drew sustained coverage and a prime minister's direct push in the reports Nepal Wire reviewed.' Delete 'What happened to the rest has not been reported' or narrow it the same way.",
+              "Body 'What we still do not know': replace the first item with the defence's F5 second sentence, on whether the ministry has released a nationwide count of flood orphaned children.",
+              "Take: replace 'Three threads from one flood, and only two get a follow up' with 'One flood, four threads in today's news.' Replace 'The state will raise five orphaned children through school' with 'The state will support five children whose fathers went missing until they turn 18'. Replace the 'Nobody is asking' sentence with the defence's F8 text. Sources: Republica, Kathmandu Post.",
+              "Caption hook: replace with 'Nepal will support five flood children until they turn 18. None of today's reports mention the 933 people tied to hydropower projects that NDRRMA counted missing.' Sources: Republica, Kathmandu Post.",
+              "Caption body: replace 'five children orphaned by the August 26 Bhotekoshi flood' with 'five children whose fathers went missing in the August 26 Bhotekoshi flood'. Replace 'tied to a hydropower project' with 'tied to hydropower projects'. Replace 'The missing count later rose to 4,798' with 'Nepal's total missing count rose to 4,798 by September 4, The Himalayan Times reported, citing Nepal Police.' As written, the 4,798 reads as the hydropower count.",
+              "Caption trigger: replace with the defence's F7 text, 'NDRRMA counted 933 hydropower linked missing on August 31. Nepal Wire could not find a more recent update. If that were your relative, how long would you wait before demanding one?'"
+            ],
+            "version": 2
+          },
+          {
+            "after": "judge_2",
+            "required_edits": [
+              "social_hook: this field was never revised and still carries the F2, F4, F6 and F10 errors. Replace the whole thing with 'Nepal will support five flood children until they turn 18. Friday's reports skip the 933 people tied to hydropower projects that NDRRMA counted missing on August 31.' Sources: Republica, Kathmandu Post.",
+              "image_headline: change line 2 from '933 MISSING AS OF AUG 31' to '933 HYDRO MISSING AUG 31'. That is 24 characters. Seen alone, the current line reads as the flood's total missing, which NDRRMA put at 4,247 on August 31. Source: Kathmandu Post.",
+              "Dates, everywhere: run_date is October 3 and the coverage reviewed is dated Friday, October 2. In the body, replace 'today's coverage reported' with 'Friday's coverage reported' (paragraph 2) and 'None of today's reports mention' with 'None of Friday's reports mention' (What the coverage missed). In the take, replace 'today's news' with 'Friday's news' and 'today's follow-up stories' with 'Friday's follow-up stories'. In the caption hook, replace 'None of today's reports' with 'None of Friday's reports'. In key_facts item 5, replace 'today's follow-up coverage' with 'the October 2 follow-up coverage'.",
+              "Dek: it is 162 characters, over the 160 limit. Replace it with 'A Malaysian missing 37 days came home safe, while Friday's reports skip the 933 hydropower linked missing NDRRMA counted on August 31.' That is 134 characters. Sources: Malay Mail, Kathmandu Post.",
+              "Body paragraph 3: change 'The five children named in Republica's report belong to one family' to 'The five children in Republica's report belong to one family'. The sentence before it says Republica did not name them.",
+              "Body paragraph 2: replace 'counted 933 people tied to hydropower projects as missing five weeks ago' with 'counted 933 people tied to hydropower projects as missing on August 31'. Use the calendar date, because August 31 to October 3 is 33 days. Also replace 'the largest single group in the official missing count' with 'the largest group NDRRMA broke out in its August 31 missing count'. That keeps the claim to the breakdown Kathmandu Post reported: 933, 592 and 127.",
+              "Take: replace 'The state will support five children whose fathers went missing until they turn 18, Republica reports.' with 'The state will support five children until they turn 18. Their fathers went missing in the flood, Republica reports.' The current wording can be read as the fathers going missing until 18. In the same take, change 'tied to a hydropower project back in August' to 'tied to hydropower projects on August 31' (F4). Sources: Republica, Kathmandu Post.",
+              "Caption body: two sentences run 23 words each, over the 20-word limit. Replace the first paragraph with 'The government will pay for school and upbringing for five children, Republica reported. Their fathers went missing in the August 26 Bhotekoshi flood.' Replace 'None of this touches the 933 people tied to hydropower projects that Nepal's disaster authority counted missing on August 31, Kathmandu Post reported.' with 'None of this touches the 933 people tied to hydropower projects. Nepal's disaster authority counted them missing on August 31, Kathmandu Post reported.' Sources: Republica, Kathmandu Post."
+            ],
+            "version": 3
+          }
+        ],
+        "judge_2_recheck": {
+          "decision": "approve",
+          "rulings": [
+            {
+              "finding_id": "F1",
+              "ruling": "sustained",
+              "note": "Fixed. Paragraph 3 says Republica named the Ministry of Women, Children and Senior Citizens and its Long-Term Care Plan. It also says Republica did not name the children or the funding. The contradiction is gone because the next sentence now reads 'The five children in Republica's report'."
+            },
+            {
+              "finding_id": "F2",
+              "ruling": "sustained",
+              "note": "Fixed. The headline is 86 characters. It says the 933 counted in August go unmentioned and claims nothing about their status now."
+            },
+            {
+              "finding_id": "F3",
+              "ruling": "sustained",
+              "note": "Fixed. The card reads 'STATE BACKS 5 FLOOD KIDS / 933 HYDRO MISSING AUG 31'. Each line is 24 characters, there is no colon, and the card states only the dated NDRRMA hydropower count that Kathmandu Post reported. It can no longer be read as the total missing of 4,247."
+            },
+            {
+              "finding_id": "F4",
+              "ruling": "sustained",
+              "note": "Fixed everywhere. The body, take, caption and social_hook all say 'hydropower projects'. 'Single' and 'one project' are gone."
+            },
+            {
+              "finding_id": "F5",
+              "ruling": "sustained",
+              "note": "Fixed. The body says the five are one family cited as an example case, not a national total. The nationwide count is left as a question for the ministry. The unverified figure of 500 was rightly left out."
+            },
+            {
+              "finding_id": "F6",
+              "ruling": "sustained",
+              "note": "Fixed. Our own voice now says the children's fathers went missing. 'Orphaned' appears only as Republica's word. The take now splits this into two sentences, which removes the 'fathers went missing until 18' misreading. The social_hook no longer says 'orphans'."
+            },
+            {
+              "finding_id": "F7",
+              "ruling": "sustained",
+              "note": "Fixed. The trigger rests on what Nepal Wire could and could not find. The body states the same search limit."
+            },
+            {
+              "finding_id": "F8",
+              "ruling": "sustained",
+              "note": "Fixed. The take now says 'None of Friday's follow-up stories'. October 2, 2026 is a Friday, which matches the date in the body and the source timestamps."
+            },
+            {
+              "finding_id": "F9",
+              "ruling": "overruled",
+              "note": "The FMT figure stays, flagged as having no named Nepali agency behind it. That keeps the disagreement between outlets on the toll in view, as the style guide asks. The double hedge is gone."
+            },
+            {
+              "finding_id": "F10",
+              "ruling": "sustained",
+              "note": "Fixed. The caption hook and the social_hook now say only that Friday's reports skip the 933 counted on August 31. Neither says the 933 are still missing."
+            }
+          ],
+          "required_edits": [],
+          "reason": "All eight edits judge 2 ordered were made: the social_hook, the card line 2, Friday dating throughout, the 134-character dek, the paragraph 3 contradiction, the August 31 calendar date with the narrowed 'largest group NDRRMA broke out' claim, the split sentences in the take, and the shorter caption sentences. A full reread found no new unsourced claim, no moved fact and no broken date or number. Every card and headline claim rests on the dated Kathmandu Post and Republica records. Small style points remain: 'walked back into his family's life' is a flourish, and 'separate question' in the unknowns section has lost the sentence it pointed back to. Neither affects accuracy or defensibility, so the piece publishes.",
+          "scores": {
+            "accuracy": 88,
+            "relevance": 76,
+            "defensibility": 87,
+            "virality": 63
+          }
+        }
+      }
+    ],
+    "final_decision": "approved",
+    "final_reason": "Judge 2: All eight edits judge 2 ordered were made: the social_hook, the card line 2, Friday dating throughout, the 134-character dek, the paragraph 3 contradiction, the August 31 calendar date with the narrowed 'largest group NDRRMA broke out' claim, the split sentences in the take, and the shorter caption sentences. A full reread found no new unsourced claim, no moved fact and no broken date or number. Every card and headline claim rests on the dated Kathmandu Post and Republica records. Small style points remain: 'walked back into his family's life' is a flourish, and 'separate question' in the unknowns section has lost the sentence it pointed back to. Neither affects accuracy or defensibility, so the piece publishes.",
+    "picture": {
+      "searched": [
+        {
+          "subject": "Anwar Ibrahim",
+          "entity": "Q299574 Anwar Ibrahim",
+          "found": {
+            "wikidata image": 1,
+            "depicts": 6,
+            "commons category": 1
+          }
+        },
+        {
+          "subject": "Bhote Koshi River",
+          "entity": "Q3695389 Bhote Koshi",
+          "found": {
+            "wikidata image": 1,
+            "commons category": 7
+          }
+        },
+        {
+          "subject": "Tikapur",
+          "entity": "Q1659926 Tikapur",
+          "found": {
+            "wikidata image": 1,
+            "depicts": 1,
+            "commons category": 4,
+            "commons search": 1
+          }
+        }
+      ],
+      "requests": 18,
+      "candidates": 23,
+      "shown": 6,
+      "rounds": 1,
+      "decision": "found",
+      "reason": "The photo is documented as a hydropower project on the Bhotekoshi River in Sindhupalchok District, directly matching the story's subject of hydropower workers missing along the Bhote Koshi after the flood, while the Anwar Ibrahim images show Malaysia's PM (not the missing Malaysian national) and the Tikapur park images are unrelated to this flood/hydropower story.",
+      "chosen": {
+        "page": "https://commons.wikimedia.org/wiki/File:A_hydropower_project_on_the_Bhotekoshi_River_in_Sindhupalchok_District..jpg",
+        "found_via": "commons category",
+        "subject": "Bhote Koshi River",
+        "depicts": "in the Commons category Bhote Kosi, which Wikidata gives for Bhote Koshi, river in Sindhupalchowk, Nepal, and Tibet, China (Wikidata Q3695389), matched on the shorter name \"Bhote Koshi\" while looking for \"Bhote Koshi River\""
+      }
+    }
+  },
+  "updates": [],
+  "run_date": "2026-10-03",
+  "published_at": "2026-10-02T23:49:24+00:00",
+  "version": 3
+}
