@@ -110,54 +110,36 @@
     },
     "notes": "",
     "checked": true,
-    "approved": false,
-    "held": true,
-    "fact_problems": [
-      "The record says Deuba's supporters wanted the process postponed. रोक्न means stop, which is a different and stronger demand than postponing, and माग गरेको is firmer than 'wanted'.",
-      "The record says these leaders are 'moving toward' Thapa's committee. समितिमा गइरहेको reads as joining the committee, which is stronger than the record."
-    ],
-    "language_notes": 7,
+    "approved": true,
+    "held": false,
+    "fact_problems": [],
+    "language_notes": 4,
     "language_fixes": [
       {
-        "passage": "नेपाली कांग्रेस ५ अक्टोबरमा मनोनयन गर्दै छ, तर पार्टी दुई पक्षमा बाँडिएको छ।",
-        "problem": "मनोनयन गर्दै छ reads as the party appointing people, but the news is that candidates register their nominations. The line also repeats the card's first line, '५ अक्टोबरमा मनोनयन'.",
-        "fix": "नेपाली कांग्रेस अहिले दुई पक्षमा बाँडिएको छ, र दुई महिनाको फरकमा दुईवटा महाधिवेशन हुँदै छन्।"
+        "passage": "अदालतले अगस्टमा आफ्नै फैसला पुनरावलोकन गर्ने सहमति जनाएको काठमाडौं पोस्टले ७ अगस्टमा जनाएको छ।",
+        "problem": "The sentence uses जनाएको twice, once for the court's agreement and once for the paper's report. It reads clumsily.",
+        "fix": "अदालतले अगस्टमा आफ्नै फैसला पुनरावलोकन गर्ने सहमति जनाएको काठमाडौं पोस्टले ७ अगस्टमा लेखेको छ।"
       },
       {
-        "passage": "सर्वोच्च अदालतले अप्रिलमा पार्टी सभापति गगन थापाको पक्षमा गरेको फैसला अगस्टमा पुनरावलोकन गर्ने सहमति जनाएको काठमाडौं पोस्टले जनाएको छ।",
-        "problem": "The same verb, जनाएको, appears twice in one sentence, so the line reads clumsily.",
-        "fix": "सर्वोच्च अदालतले अप्रिलमा पार्टी सभापति गगन थापाको पक्षमा गरेको फैसला अगस्टमा पुनरावलोकन गर्ने सहमति जनाएको काठमाडौं पोस्टले उल्लेख गरेको छ।"
+        "passage": "अदालतले थापाको समितिलाई समर्थन गर्ने अप्रिलको फैसला अगस्टमा पुनरावलोकन गर्ने सहमति जनाएको काठमाडौं पोस्टले ७ अगस्टमा जनाएको छ।",
+        "problem": "The same doubled जनाएको appears again in the section on what the coverage missed.",
+        "fix": "अदालतले थापाको समितिलाई समर्थन गर्ने अप्रिलको फैसला अगस्टमा पुनरावलोकन गर्ने सहमति जनाएको काठमाडौं पोस्टले ७ अगस्टमा उल्लेख गरेको छ।"
       },
       {
-        "passage": "बहुमत नेताबिना अघि बढ्दा पार्टी कमजोर हुने चेतावनी पनि उनले दिएको देश सञ्चारले जनाएको छ। देउवाको आफ्नै समूहले मंसिर २१ देखि २३ सम्म, अर्थात् करिब ७ देखि ९ डिसेम्बरसम्म छुट्टै साधारण महाधिवेशन तय गरेको देश सञ्चारले जनाएको छ।",
-        "problem": "Desh Sanchar's attribution uses the same verb, जनाएको छ, in sentence after sentence. The verb needs varying, with the source kept in each sentence.",
-        "fix": "बहुमत नेताबिना अघि बढ्दा पार्टी कमजोर हुने चेतावनी पनि उनले दिएको देश सञ्चारले लेखेको छ। देश सञ्चारका अनुसार देउवाको आफ्नै समूहले मंसिर २१ देखि २३ सम्म, अर्थात् करिब ७ देखि ९ डिसेम्बरसम्म छुट्टै साधारण महाधिवेशन तय गरेको छ।"
+        "passage": "खुलामञ्चको महाधिवेशनस्थलमा कांग्रेस उपाध्यक्ष विश्वप्रकाश शर्माले अनलाइनखबरलाई यस पटक प्यानल प्रणाली नहुने बताए।",
+        "problem": "A recent statement takes the news tense, not the simple past. Nepali order also puts the subject before the place.",
+        "fix": "कांग्रेस उपाध्यक्ष विश्वप्रकाश शर्माले खुलामञ्चको महाधिवेशनस्थलमा अनलाइनखबरलाई यस पटक प्यानल प्रणाली नहुने बताएका छन्।"
       },
       {
-        "passage": "प्रतिनिधिले गुटको सूचीलाई होइन, आफूले रोजेका उम्मेदवारलाई भोट दिने उनले बताए।",
-        "problem": "बताए is repeated from the sentence before. A recent statement also takes the present perfect, not the simple past.",
-        "fix": "प्रतिनिधिले गुटको सूचीलाई होइन, आफूले रोजेका उम्मेदवारलाई भोट दिने उनले भनेका छन्।"
-      },
-      {
-        "passage": "स्थापित पक्षले १५औं साधारण महाधिवेशन २ देखि ५ अक्टोबरसम्म तय गरेको काठमाडौं पोस्टले जनाएको छ।",
-        "problem": "Nepali news writes 'establishment faction' as संस्थापन पक्ष. स्थापित पक्ष is a calque of the English.",
-        "fix": "संस्थापन पक्षले १५औं साधारण महाधिवेशन २ देखि ५ अक्टोबरसम्म तय गरेको काठमाडौं पोस्टले जनाएको छ।"
-      },
-      {
-        "passage": "उही समयमा देउवाका आफ्नै पंक्ति पातलिंदै गएका छन्।",
-        "problem": "This carries the English 'ranks are thinning' word for word under Devanagari. No Nepali reporter writes it this way.",
-        "fix": "यसबीच देउवा पक्षमा नेताहरू घट्दै गएका छन्।"
-      },
-      {
-        "passage": "५ अक्टोबरको मनोनयन मितिबारे आजका कुनै पनि रिपोर्टले करिब ७,५०० प्रतिनिधिमा देउवा पक्ष समावेश छ कि छैन भन्ने उल्लेख गरेका छैनन्।",
-        "problem": "The verb does not agree with its subject: कुनै पनि रिपोर्टले takes the singular, not the plural गरेका छैनन्.",
-        "fix": "५ अक्टोबरको मनोनयन मितिबारे आजको कुनै पनि रिपोर्टले करिब ७,५०० प्रतिनिधिमा देउवा पक्ष समावेश छ कि छैन भन्ने उल्लेख गरेको छैन।"
+        "passage": "डीसी नेपाल, इकान्तिपुर, सेतोपाटी र अनलाइनखबरले मनोनयन मितिको खबर दिंदा यो विषय उठाएनन्।",
+        "problem": "दिंदा is misspelled. Nepali outlets write दिँदा with chandrabindu.",
+        "fix": "डीसी नेपाल, इकान्तिपुर, सेतोपाटी र अनलाइनखबरले मनोनयन मितिको खबर दिँदा यो विषय उठाएनन्।"
       }
     ],
-    "passes": 3,
+    "passes": 4,
     "problems_fixed": 24,
     "fixed_in_place": 0,
-    "editor": "Two lines are stronger than the record: 'postpone' became रोक्न, and 'moving toward' Thapa's committee became समितिमा गइरहेको. The caption hook also misuses मनोनयन and repeats the card, and several sentences need craft fixes."
+    "editor": "Every fact, source, date and status word traces to the record, and contested positions stay attributed. Only craft fixes remain: a doubled verb in two places, the tense of one lede-area sentence, and one spelling."
   },
   "image_brief": {
     "search_queries": [

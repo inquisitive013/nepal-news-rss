@@ -119,38 +119,36 @@
     "approved": false,
     "held": true,
     "fact_problems": [
-      "The headline drops the record's 'hydropower' qualifier. A bare '९३३ बेपत्ता' can read as the flood's whole missing count, which the record puts at 4,247 and then 4,798.",
-      "Card line two drops 'hydropower'. Read alone, '९३३ बेपत्ता' looks like the total missing toll, which the story itself shows is far higher.",
-      "The record says 'after a call with Nepali officials'. Plain 'वार्ता' can read as in-person talks, so the act is stronger and less exact than the record.",
-      "In the English this clause sits inside the sentence attributed to The Himalayan Times. As its own Nepali sentence it carries the fact with no source."
+      "The card circulates alone, and line two gives the 933 figure with no time. It reads as a current count of people still missing. The record has it only as NDRRMA's 31 August count and lists whether any have been found as an open question. The line also drops the story's point that the coverage left t",
+      "The 933 figure appears without its date or its counter. It reads as a current missing count. The record has it as the count NDRRMA made on 31 August."
     ],
     "language_notes": 4,
     "language_fixes": [
       {
-        "passage": "रिपब्लिकाले उल्लेख गरेका यी पाँच बालबालिका एउटै परिवारका हुन्। रिपब्लिकाले यिनलाई मन्त्रालयको योजनाअन्तर्गतको उदाहरणका रूपमा उल्लेख गरेको छ। रिपब्लिकाले यसलाई राष्ट्रिय जम्मा संख्याका रूपमा उल्लेख गरेको छैन।",
-        "problem": "The same attribution and verb repeat three times in a row. The English carries this as one idea, so it can sit under one attribution.",
-        "fix": "रिपब्लिकाका अनुसार यी पाँच बालबालिका एउटै परिवारका हुन्, र पत्रिकाले उनीहरूलाई मन्त्रालयको योजनाअन्तर्गत राष्ट्रिय जम्मा संख्याका रूपमा नभई एउटा उदाहरणका रूपमा लेखेको छ।"
+        "passage": "नेपाली अधिकारीहरूसँग कलमा कुरा गरेपछि मलेसियाका प्रधानमन्त्री अनवर इब्राहिमले बाँकी बेपत्ताहरूको खोजीका लागि द्रुत प्रक्रिया सुनिश्चित गराएको मलय मेलले जनाएको छ।",
+        "problem": "'कलमा कुरा' carries the English word 'call' straight into Nepali. The sentence is long and keeps the English word order.",
+        "fix": "मलय मेलका अनुसार मलेसियाका प्रधानमन्त्री अनवर इब्राहिमले नेपाली अधिकारीसँग फोनमा कुरा गरेका थिए। त्यसपछि उनले बाँकी बेपत्ताको खोजी छिटो गर्ने प्रक्रिया मिलाएको मलय मेलले लेखेको छ।"
       },
       {
-        "passage": "एनडीआरआरएमएले त्यही दिन ५९२ विदेशी नागरिक र विदेशी पर्यटकसँगै रहेका १२७ नेपालीलाई पनि बेपत्ता भनेको थियो, काठमाडौं पोस्टले जनाएको छ।",
-        "problem": "The attribution is tacked on after a comma in English order, and its tense does not match the sentence before it.",
-        "fix": "काठमाडौं पोस्टका अनुसार एनडीआरआरएमएले त्यही दिन ५९२ विदेशी नागरिक र विदेशी पर्यटकसँगै रहेका १२७ नेपालीलाई पनि बेपत्ता गनेको थियो।"
+        "passage": "द हिमालयन टाइम्सका अनुसार चार दिनपछि नेपाल प्रहरीले १,२९० जनाको मृत्यु र ४,७९८ जना बेपत्ता रहेको जनाएको थियो, अर्थात् खोजी टोली खटिरहँदा पनि बेपत्ताको संख्या घट्नुको सट्टा बढेको थियो।",
+        "problem": "Two ideas sit in one long sentence joined by 'अर्थात्', which reads like English. The sentence should be split, and the second sentence keeps its source.",
+        "fix": "द हिमालयन टाइम्सका अनुसार चार दिनपछि नेपाल प्रहरीले १,२९० जनाको मृत्यु र ४,७९८ जना बेपत्ता रहेको जनाएको थियो। खोजी टोली खटिरहँदा पनि बेपत्ताको संख्या घट्नुको सट्टा बढेको द हिमालयन टाइम्सको तथ्यांकले देखाउँछ।"
       },
       {
-        "passage": "एनडीआरआरएमएले अगस्टमा बेपत्ता भनेका ५९२ विदेशी नागरिकमध्ये नेपाल वायरले हेरेका समाचारमा निरन्तर कभरेज र प्रधानमन्त्रीको प्रत्यक्ष पहल पाएका ५५ मलेसियाली मात्र हुन्।",
-        "problem": "'प्रधानमन्त्रीको' is ambiguous and can be read as Nepal's prime minister. 'कभरेज' is also an English loan where a plain word exists.",
-        "fix": "एनडीआरआरएमएले अगस्टमा बेपत्ता भनेका ५९२ विदेशी नागरिकमध्ये नेपाल वायरले हेरेका समाचारमा निरन्तर चर्चा र आफ्नै प्रधानमन्त्रीको प्रत्यक्ष पहल पाउने ५५ मलेसियाली मात्र हुन्।"
+        "passage": "भोटेकोशी बाढीपछि ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए, टिकापुरका एक परिवारले शव नपाएर कुशबाट दाहसंस्कार गरे।",
+        "problem": "Two separate facts are joined with a comma. Nepali writing gives each idea its own sentence.",
+        "fix": "भोटेकोशी बाढीपछि ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए। टिकापुरका एक परिवारले भने शव नपाएपछि कुशबाट दाहसंस्कार गरे।"
       },
       {
-        "passage": "५ बालबालिकालाई सहयोग, मलेसियाली फर्किए, तर जलविद्युत आयोजनासँग सम्बद्ध ९३३ बेपत्ताबारे शुक्रबारको कुनै खबरले सोधेन।",
-        "problem": "'मलेसियाली फर्किए' can read as several Malaysians returning. The record has one.",
-        "fix": "५ बालबालिकालाई सहयोग, एक मलेसियाली फर्किए, तर जलविद्युत आयोजनासँग सम्बद्ध ९३३ बेपत्ताबारे शुक्रबारको कुनै खबरले सोधेन।"
+        "passage": "भोटेकोशी बाढीमा बेपत्ता भएका आफन्तको खबर तपाईंको चिनजानमा कसैले अझै पर्खिरहेको छ?",
+        "problem": "The word order is awkward. Most readers would answer no at once, so the question does not reach the reader's own experience.",
+        "fix": "तपाईंको परिवारले कहिल्यै बेपत्ता आफन्तको खबर पर्खनुपरेको छ? त्यतिबेला सरकारी निकायले जवाफ दियो कि दिएन?"
       }
     ],
-    "passes": 3,
+    "passes": 4,
     "problems_fixed": 29,
     "fixed_in_place": 0,
-    "editor": "The headline and card drop the hydropower qualifier, so 933 reads as the flood's total missing, and Anwar's call becomes talks. One sourced clause also stands without its source, and several lines need Nepali craft fixes before publication."
+    "editor": "The card's second line and the social hook give the 933 figure without its 31 August date or its counter, so it reads as a current missing count the record does not carry. The body is faithful to the record, but a few sentences need Nepali craft fixes."
   },
   "image_brief": {
     "search_queries": [
