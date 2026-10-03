@@ -1,0 +1,3038 @@
+{
+  "run_date": "2026-10-03",
+  "started_at": "2026-10-02T23:33:30+00:00",
+  "finished_at": "2026-10-03T01:10:08+00:00",
+  "status": "ok",
+  "mode": "live",
+  "feed_health": [
+    {
+      "source": "Kantipur (eKantipur)",
+      "url": "https://ekantipur.com/rss",
+      "kind": "rss",
+      "ok": false,
+      "entries": 0,
+      "in_window": 0,
+      "error": "HTTPStatusError: Client error '403 Forbidden' for url 'https://ekantipur.com/rss'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+    },
+    {
+      "source": "Kantipur (eKantipur)",
+      "url": "https://news.google.com/rss/search?q=site%3Aekantipur.com+when%3A1d&hl=ne&gl=NP&ceid=NP:ne",
+      "kind": "google_news_fallback",
+      "ok": true,
+      "entries": 40,
+      "in_window": 40,
+      "error": ""
+    },
+    {
+      "source": "OnlineKhabar",
+      "url": "https://www.onlinekhabar.com/feed",
+      "kind": "rss",
+      "ok": true,
+      "entries": 55,
+      "in_window": 55,
+      "error": ""
+    },
+    {
+      "source": "Setopati",
+      "url": "https://www.setopati.com/feed",
+      "kind": "rss",
+      "ok": true,
+      "entries": 5,
+      "in_window": 5,
+      "error": ""
+    },
+    {
+      "source": "Ratopati",
+      "url": "https://ratopati.com/feed",
+      "kind": "rss",
+      "ok": false,
+      "entries": 0,
+      "in_window": 0,
+      "error": "HTTPStatusError: Client error '403 Forbidden' for url 'https://ratopati.com/feed'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+    },
+    {
+      "source": "Ratopati",
+      "url": "https://news.google.com/rss/search?q=site%3Aratopati.com+when%3A1d&hl=ne&gl=NP&ceid=NP:ne",
+      "kind": "google_news_fallback",
+      "ok": true,
+      "entries": 100,
+      "in_window": 100,
+      "error": ""
+    },
+    {
+      "source": "Himal Khabar",
+      "url": "https://www.himalkhabar.com/feed",
+      "kind": "rss",
+      "ok": true,
+      "entries": 5,
+      "in_window": 1,
+      "error": ""
+    },
+    {
+      "source": "BBC Nepali",
+      "url": "https://feeds.bbci.co.uk/nepali/rss.xml",
+      "kind": "rss",
+      "ok": true,
+      "entries": 20,
+      "in_window": 7,
+      "error": ""
+    },
+    {
+      "source": "DC Nepal",
+      "url": "https://www.dcnepal.com/feed/",
+      "kind": "rss",
+      "ok": true,
+      "entries": 30,
+      "in_window": 30,
+      "error": ""
+    },
+    {
+      "source": "Nepal Press",
+      "url": "https://nepalpress.com/feed/",
+      "kind": "rss",
+      "ok": true,
+      "entries": 35,
+      "in_window": 35,
+      "error": ""
+    },
+    {
+      "source": "Annapurna Post",
+      "url": "https://annapurnapost.com/rss",
+      "kind": "rss",
+      "ok": true,
+      "entries": 20,
+      "in_window": 20,
+      "error": ""
+    },
+    {
+      "source": "Nagarik News",
+      "url": "https://nagariknews.nagariknetwork.com/feed",
+      "kind": "rss",
+      "ok": true,
+      "entries": 20,
+      "in_window": 20,
+      "error": ""
+    },
+    {
+      "source": "The Kathmandu Post",
+      "url": "https://kathmandupost.com/rss",
+      "kind": "rss",
+      "ok": true,
+      "entries": 40,
+      "in_window": 40,
+      "error": ""
+    },
+    {
+      "source": "OnlineKhabar English",
+      "url": "https://english.onlinekhabar.com/feed",
+      "kind": "rss",
+      "ok": true,
+      "entries": 20,
+      "in_window": 20,
+      "error": ""
+    },
+    {
+      "source": "The Himalayan Times",
+      "url": "https://thehimalayantimes.com/feed",
+      "kind": "rss",
+      "ok": false,
+      "entries": 0,
+      "in_window": 0,
+      "error": "HTTPStatusError: Client error '404 Not Found' for url 'https://thehimalayantimes.com/feed'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+    },
+    {
+      "source": "The Himalayan Times",
+      "url": "https://news.google.com/rss/search?q=site%3Athehimalayantimes.com+when%3A1d&hl=en-NP&gl=NP&ceid=NP:en",
+      "kind": "google_news_fallback",
+      "ok": true,
+      "entries": 5,
+      "in_window": 5,
+      "error": ""
+    },
+    {
+      "source": "Republica",
+      "url": "https://myrepublica.nagariknetwork.com/feeds",
+      "kind": "rss",
+      "ok": true,
+      "entries": 30,
+      "in_window": 30,
+      "error": ""
+    },
+    {
+      "source": "Setopati English",
+      "url": "https://en.setopati.com/feed",
+      "kind": "rss",
+      "ok": false,
+      "entries": 0,
+      "in_window": 0,
+      "error": "HTTPStatusError: Server error '500 Internal Server Error' for url 'https://en.setopati.com/feed'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+    },
+    {
+      "source": "Setopati English",
+      "url": "https://news.google.com/rss/search?q=site%3Aen.setopati.com+when%3A1d&hl=en-NP&gl=NP&ceid=NP:en",
+      "kind": "google_news_fallback",
+      "ok": true,
+      "entries": 5,
+      "in_window": 5,
+      "error": ""
+    },
+    {
+      "source": "The Rising Nepal",
+      "url": "https://risingnepaldaily.com/rss",
+      "kind": "rss",
+      "ok": true,
+      "entries": 10,
+      "in_window": 10,
+      "error": ""
+    },
+    {
+      "source": "Nepali Times",
+      "url": "https://nepalitimes.com/feed",
+      "kind": "rss",
+      "ok": true,
+      "entries": 30,
+      "in_window": 2,
+      "error": ""
+    },
+    {
+      "source": "Google News: Nepal when:1d",
+      "url": "https://news.google.com/rss/search?q=Nepal+when%3A1d&hl=en-NP&gl=NP&ceid=NP:en",
+      "kind": "google_news",
+      "ok": true,
+      "entries": 100,
+      "in_window": 100,
+      "error": ""
+    },
+    {
+      "source": "Google News: नेपाल when:1d",
+      "url": "https://news.google.com/rss/search?q=%E0%A4%A8%E0%A5%87%E0%A4%AA%E0%A4%BE%E0%A4%B2+when%3A1d&hl=ne&gl=NP&ceid=NP:ne",
+      "kind": "google_news",
+      "ok": true,
+      "entries": 77,
+      "in_window": 77,
+      "error": ""
+    }
+  ],
+  "candidates": [
+    {
+      "id": "c_489b415eee",
+      "title": "Buried, numbered, waiting to be named: Nepal’s grim DNA search after the floods",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNcWhSV19wbm1uTXd3WDZOVXZucENKUzFVSHNXb254d1c0alhSVHhHLVpKUkI3ZjZVTVNCQXQybVJPOGhfUFpmSk15UEZmbHBKcWcyQ3RrandjcnFmWlNiYXF4WjJqYnk2c0xRQ2pKMXhsaFBqQ2hXRW1iajU1NlUwX25vMnAwR2hZR1Vsdk9nbkZHQXRPQ2tqN3p6MnNmc3V6amR5ci1JRExLZE1RTEI0MVJvUzY4MjV1YThER1lxR05LVTFwOWlIeGhR0gHPAUFVX3lxTFBqMHI0MkY0UmxvMTJGbGlybmZCdjJjeTY5dHRQdXZvbHpvQlJLTnZRVWUza1FHQWpCSUdEY182Sm44aGpmUmFYeDdHak9lZ2c0MmsxZFRjMzZTTUZ1VXExM0JKTFc3SldhYktSTU1uUlotdEFRMWs3TjMzZDNIOWEzNGU3eEpnMWdxeF9kOTZrS2dkWmpTdXR1NnZ6V1JsN1JWUUNLSEp5aUpMV2pKaTFSeS1VYy13QU1VbVpFSTgyWjROam9hdWlnMThGQlJhbw?oc=5",
+      "source": "Malay Mail",
+      "source_domain": "malaymail.com",
+      "published": "2026-10-02T23:02:49+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_3b88c02400",
+      "title": "Malaysian national missing after Nepal floods found safe, returns after 37 days",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOOTVnTUZrUWZOdEs4R1VIakFrQkJzRHBxU0JtblU0ak1KU0l5c1NfLUFsY2ZEZWVKRFprWmY3bnpYZjd3eDNvR1pwRGRJQWlRNC1aNExXc1VocGlVLThpdXhreWNEYUo0RlFxd2twVDd1c09JMUtjbzFVMVQ2TWdZaThGUkFNSzk2WUVlM0tmd3E1MV9ESS1BaC05TmJIbHI4eWo3bXh4NWxfUUVybHpv0gGzAUFVX3lxTFB5ZUNHMExzcU1mMmFWaWZxYk51NGxLeFFfeU9NTlRlMVdCQlNBSHpzcU9PVDladzFndWR0bVp1YWdrOXpxRlAxaEFrUEhNZTgtbnNIdlltWWVDSEc3SkFmVnVNOVFYallIMjJleFprVk9uOUdya1hzdHYtUmJRVFZ4VkgtbURLMklMM3VjZWhRVEJ6NVNLckhyV1FRQkdCRkY5VDM0NGRLbVRWTlZjNG1QeDhz?oc=5",
+      "source": "Daily Excelsior",
+      "source_domain": "dailyexcelsior.com",
+      "published": "2026-10-02T22:58:28+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_d996c7a9ff",
+      "title": "Supporting Recovery from Nepal’s Floods and Colombia’s Earthquake, and More",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQb3c4YXV1dHc2UjY1NW1pS0RFSkpnN21taWx3dTBKQmNTaWhBdmZWbVFPcTdIanVFVmNmbDFrWW5hX1BRMXFyN19NTU1HTGJ3V1ZUVzdrbktaa0E2ZUhLT2VUZWJXWVB2QVpEMUZSeVNFM200Q0RTNWZhUFp6S2ZNWi1ES1pSMnpBSF9QeFZST0loVXV6b0ExTExkXy1OMFdDekJqMF8xNkRNUm1ldHBr?oc=5",
+      "source": "Direct Relief",
+      "source_domain": "directrelief.org",
+      "published": "2026-10-02T22:55:35+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_305f5fa3f6",
+      "title": "Belgium Defeats Turkey 3-0 in Nations League",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNdk9GQWd4elVEcUhSMDhzRElsOG1iTDlIYXVaVlctQVhrWE94cDNoVmJhS2txUGc4c3V3UngtbV90M2xpOU53aE1rel92N2FyMGRhSXQwY3NJQ0c4U1ZVc2NXaTBFZ1dEQ1RDZUhERlZ3UVhMLWFuRWd0RDdtSHlGUmRTNGhmb0dEQWJIa0NBRDZjVjBZR3k0NlI2bHBrZzRMc1lCVQ?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T22:39:02+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_917eeaf1da",
+      "title": "LA Archdiocese Plans Special Collections for Nepal Flood Victims",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQY1BCMGJsRVFWYmc2bVFWb1l2UjRHQV9KOG8yNi1xUjY4NWFzek5Gc0Vob2ZvUVNhemVUTVFzTmZkdmFEaWZOQTdtNXg0VzZUcWdRRGlRVDMtd2h5NklYdlh0VGFHNC1ybEgyZ1NLY1FMTjlpUVFxWGhOSnJYc004bVo4TVI4QTBzdThKQm45aE5md19oNmNJZ2xaX2tyWGF0ak5tMGZ3?oc=5",
+      "source": "MyNewsLA.com",
+      "source_domain": "mynewsla.com",
+      "published": "2026-10-02T21:44:00+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_e1ed58f08e",
+      "title": "Nepal plans to drain four dangerous glacial lakes after deadly flash flood",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNTVNNZmJrZVpFZXZvMXpwcTctcjVMUXJKYjFmTVhCQUpWNjJBbnpWME9iOG9lSFMySnhfa2RveDU1SnNuWFZ1QVlmZDJxTU5HWkdsVVBSLVBkSzIzbjR4aWlXTU1XNXJFeE1oYnZiVk5IZkVZUFYtY25oT2tmTTRjRGtfNUQ1bUtNNml0N3d2UHNTVVRsdXhqTjJiUzZCUlUyRXNLTE9xRlQwaXZ0OVduT0VR?oc=5",
+      "source": "3FM Isle of Man",
+      "source_domain": "three.fm",
+      "published": "2026-10-02T20:59:00+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_de9b2f3ac9",
+      "title": "Nepal plans to drain four glacial lakes in high-stakes mission after deadly flash floods",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQVUNyZWVtWTBScGJNWlQxOEFwOF9paHJWUEcwNkU0Um1rX2lwelNQV1Y0eHFwR0VBbE1DRi1XLVIwdHRtMFlCSjMwXzY0YjNUdWY5MVA1MDczMmRqc0tZb3NHZlpDSW1PeWFxUHc4NDZNQnljLUI4QXRDbHZXd24yRnplWW1oakwwdHNWczg1MDc0MmZPQkNyUVlHSVh1NFE?oc=5",
+      "source": "The Independent",
+      "source_domain": "independent.co.uk",
+      "published": "2026-10-02T20:47:00+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_4749ebef2c",
+      "title": "Australia Job Vacancies Decline for Second Consecutive Quarter",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOZDRkY0VZZGJjeWtnSUJ6MW9YemRXcTZacG9mLVBtSjY0R2QyYUhHclZDYWFwOWRTSFRtRDgzQzhJZVI1THRtWEFSbkNKRk1vUlhHTWc1NVF6RFhDbnR1ejRSV2w3UkRBSWsxcmxXUXlGOS1EeUpJclh2andPZVFna2twcw?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T20:08:30+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_999a4cd0ca",
+      "title": "US Pledges $31 Million For Nepal Flood Relief, Recovery",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPWlgyaDZ2NU90OFFGWU8xNzFuQ1E2MUtwdWpka1ZadHlFQVpqaHJmTE9RYV9XazFfVkdBWTF2UWdveC1VUFJTaDRNVGJ6R0w3TFNncks4LVh1QXRuOG51dVowR0laYlVMcEVKdWVqckFQQXdYRXNxN0tIWUM2NGJtbG1lcy1JZjVUNENLN0dRLVdkWDZnT3c?oc=5",
+      "source": "Austin South Asian",
+      "source_domain": "austinsouthasian.com",
+      "published": "2026-10-02T20:04:08+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_cdcb9cb884",
+      "title": "Beyond Local: How one Alberta business is raising funds for Nepal flood relief",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPZy1oNUdsN3hRRVBFeGtBYzd3c1RINi1fWE1UVm5KQUJCa0FScE90VlJyMFVnRWFHbEpWdWdwc1JkbVVsTzdjeUM0eE9XVm5LbjRxcm9Vb3F1UE9RQVBSUHdCWnFveVNDb0RxRTh2Y2M4N1RuZlF0b1lYSGpLenkwVkxqczFaUTRiXzFTLS1MYVNUdzF6SDVQeU9nQmFUUTRHeEhrc05odzNtWDk0czVWOHdHMnNQQQ?oc=5",
+      "source": "LakelandToday.ca",
+      "source_domain": "lakelandtoday.ca",
+      "published": "2026-10-02T20:03:00+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_65697e2468",
+      "title": "Tag: Jenji Movement | Ratopati | No.1 Nepali News Portal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5GYTVTX0s1S3VIZTlzODQ3cFQ5dWtTdU1NWWJaRUtRUXI3S2EtM3NzZU9kZ1Z2Q3c3U2xUUDdqVTBQLUc1WEx2VFcwazdiVG8?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T19:29:27+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_26c6144c94",
+      "title": "Tag: Procurement Scandal | Ratopati | No.1 Nepali News Portal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE54NU8wbUdoYmFKS0dFOWtyVHJfSFp2T1g3cDRpNWlOSWFJNmtJZUR6WXdWX2lfNThHWUNuRGdlQ0ZaX1ZkOGFDQkY4QmstN1k?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T19:29:13+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_c63daadda0",
+      "title": "Tag: mine accident | Ratopati | No.1 Nepali News Portal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1fQzVZdU5VOWhOOXBiV2l0TlY4MWNzNGJZbWJ1YjlwRnBuMzFQdkxIYnpKZFU0LU9ydHhKQUhPZnc2THphV2V5Q0FrbURSb3c?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T19:27:18+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_17d095c861",
+      "title": "Singapore EV Sales to Reach 34,940 Units by 2026, 54.6% of Total Sales",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNa2h3dW02RF9tS0ViREt0X0kxVkRQOGJSLTNabXQyS3lkVFhKR2kyT2hpaHNyUklFVW5aZmZ0N25XUHcyUGFNRGJzbVg3Q3pzeE1ncWtHRWJzQ0lFTG0wSk4yTVNXbVNudElGYWluSG50a0p6cVY4dXJyYnp5a0Y5czFtS1dDU096LV9Hb3dkQy1pcDg5SFdpaFU1dWtuUVplVGt5VUhWdkJTLVZWYThSN2E3cnh1Y0Q0bFF5ZjBIaFZEMWVOUWZ0UVItdw?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T19:23:30+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_298cb8e90b",
+      "title": "Demand for climate justice rises in Nepal; commemoration continues for flood victims",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPaU8xYVhpc2Mwb0xwRldOM0FoSjRhc2xEOGdqVjhmcUtDaktRNnJJMm5kOThOQVhzREp4bl9taHJGZGp0N3pyR2t6bGZUdFMxakFseGNrT3pUcDkxXzdSN1ZVaVJXY2FtS2o1ak12eFJOMktPbTRVWGZUeTU1U0RiRUIyYmJIU1ZjbVlBNjcyeUl2QXhTNC1pcXpMdExYSUxvUERicEdudTNyQ3VQcFlKcEVNN09iZC1JQ1RyaDFlTGI1eGoyZkHSAcYBQVVfeXFMT2lPMWFYaXNjMG9McEZXTjNBaEo0YXNsRDhnalY4ZnFLQ2pLUTZySTJuZDk4TkFYc0RKeG5fbWhyRmRqdDd6ckdremxmVHRTMWpBbHhja096VHA5MV83UjdWVWlSV2NhbUtqNWpNdnhSTjJLT200VVhmVHk1NVNEYkVCMmJiSFNWY21ZQTY3MnlJdkF4UzQtaXF6THRMWElMb1BEYnBHbnUzckN1UHBZSnBFTTdPYmQtSUNUcmgxZUxiNXhqMmZB?oc=5",
+      "source": "tribuneindia.com",
+      "source_domain": "tribuneindia.com",
+      "published": "2026-10-02T19:22:13+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_d2879323ba",
+      "title": "प्रेटोरियसले तोडे क्रिस गेलको टी-२० रेकर्ड, ७९ बलमै बनाए १८८ रन",
+      "summary": "१७ असोज, काठमाडौं । दक्षिण अफ्रिकाका ब्याटर लुआन–ड्रे प्रेटोरियसले पुरुष टी–२० क्रिकेटमा सर्वाधिक व्यक्तिगत स्कोरको क्रिस गेलको लामो समयदेखिको कीर्तिमान तोडेका छन् । सीएसए टी–२० च्यालेन्जमा टाइटन्सबाट खेलेका २० वर्षीय प्रेटोरियसले नाइट्सविरुद्ध अविजित १८८ रन बनाए । उनले ७९ बलमा १५ चौका र १३ छक्का प्रहार गरे । यससँगै प्रेटोरियसले गेलको नाममा रहेको १७५ रनको […]",
+      "url": "https://www.onlinekhabar.com/2026/10/2031140/pretorius-breaks-chris-gayles-t20-record-scores-188-runs-in-79-balls",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T19:04:20+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_8d0b0830d9",
+      "title": "Honda pledges support for Nepal flash flood relief",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE4tdGhzaG5IT2o5dHJIRmh6SkpQV0RPYTI1ZWxfeENjYjlmOFdsMDF1OS1fQkVUMUF3cVZXS1ZLYWVzTVFsaENOcmdDc2o5YTM3Q1ZRWkkzQWwwTVpYT2RYeQ?oc=5",
+      "source": "Technology Khabar",
+      "source_domain": "technologykhabar.com",
+      "published": "2026-10-02T18:47:56+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_9e89caeaeb",
+      "title": "NSA holds Nepali Fest to help flood victims in Nepal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPckY2TC15OWFZU19TS1JwSnZNcE05SW0ycm9ZaDIwS0RIMXRNajZta3pWQlg0aVQwWTk5UllHOFJ5YmVuNG1DQnF3TXdEZUVUNURGdmdYTnphTFg5cl9RWmRTNV90bWtKeU1FNW94ME1rUUpmWUQ5RjVoUURMWXROZmMzT0kwSVFHSDFhdmJtYW9YbmlBNXE0MmpYUmF0eUNSTVE?oc=5",
+      "source": "Troy University",
+      "source_domain": "today.troy.edu",
+      "published": "2026-10-02T18:20:43+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_7f214f3c9d",
+      "title": "Tag: Cycle Journey | Ratopati | No.1 Nepali News Portal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1QTUlycGpJQnpLbnZPQzRnRHV4aUFWUGxUMlNOY3E5bWJTcG5vTVhRN0lmWEE5QTV0ejRoTGxoeUw2WFpOa0E5SWMzOWRfM0U?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T17:57:58+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_1c2061c517",
+      "title": "Tag: Education Summit | Ratopati | No.1 Nepali News Portal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBNREZMdENJdnJrd3V2RldfU1VLZGUzQWpULWVaaGpleVR6QjRoSVNjSWtqWXpJZ3hlbkotZ2pmN0RfRWR3SUZuRjRXVktnQlU?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T17:57:55+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_7fc0b64f2f",
+      "title": "MP Khagendra Sunar Vows to Risk Life for Truth in Million-Dollar Uniform Scam",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiqAJBVV95cUxNSndrMGlBeUNkd1liaWdBeEx6WVZlR09FQ2RrWFdHaGd3TlAzRWJsT0NGV2JsblBLc1h0XzRMU2ZJQ01kRVZkYXUwNGlhRlZST1JicFJRQ0FJeGp1TU9rLVlhTFJhSXc2d0tuWGlmUHNuZ3lGSzd0aXctTFZrSnE3UVJIYkxBSmFwMDgyWF9kRjFWZGpMdmJGUnVTaGxyZFNjbFBjTlVMaDVhNnRITUIwS3JwX3RydUFFTVQ1cHlkeF85d1FWSXhLZndEVEFqbEtuY2UxeGhhcEVJbWM1ajk3VzRHNDJJdTBZT2R5ZjVtUGxPSldSWVBoZVBrUVpmZG5EVzhXYUY1TmItYmZRbnJtSk5zVTZJRVZfOXdHdUFuWXUyMDB3S3RCaQ?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T17:30:30+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_f9449c2908",
+      "title": "Nepal plans $50M project to drain four glacial lakes | Tap to know more | Inshorts",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQNUg0T1BSSms4TGdFaW92bjNCeXk1YWhxUWlSSE1EdHB3dnI1LTE0ell1WE5aXzFiLWl2SkxBNGQzUEtJdGlmYzlmOUd1S2drekduV2thOTMwR1BVRm85anFhaFlvd0JBS1RVTlc4Vi0yWTFMdnpFM01ET3BBZEZlVGhndm5IV3owc2paZnloejdVRUd2bDlRQjBkN2FjNlgz0gGgAUFVX3lxTFA1SDRPUFJKazhMZ0Vpb3ZuM0J5eTVhaHFRaVJITUR0cHd2cjUtMTR6WXVYTlpfMWItaXZKTEE0ZDNQS0l0aWZjOWY5R3VLZ2t6R25Xa2E5MzBHUFVGbzlqcWFoWW93QkFLVFVOVzhWLTJZMUx2ekUzTURPcEFkRmVUaGd2bkhXejBzalpmeWh6N1VFR3ZsOVFCMGQ3YWM2WDM?oc=5",
+      "source": "Inshorts",
+      "source_domain": "inshorts.com",
+      "published": "2026-10-02T17:13:27+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_e988ace799",
+      "title": "6 Workers Die in Two Separate Turkish Mine Accidents",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPZDlvZnBHOU03MXRMZUsyOU1NZHJLeEZ2TDhTcGdYQkRmZnBoWFNjWEZTQ0NjSjJiejFnbEpMRkV1Ry1leDRYRDZhSGNpRzdrUE16ZUMtclJlanlBV3YtS1Fkeks1ZW5scFJkWmV4WjU2eUhhZVlPQnFvYmh5ZkZpY1JIeHU?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T17:12:05+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_6b1b90f4ad",
+      "title": "अठार वर्ष कैद सजाय तोकिएका फरार कैदी पक्राउ",
+      "summary": "काठमाडौं। नेपाल प्रहरीले जबरजस्ती करणी मुद्दामा १८ वर्ष कैद सजाय ठहर भएका फरार कैदीलाई पक्राउ गरेको छ। प्रहरीको केन्द्रीय अनुसन्धान व्यूरोको टोलीले जबरजस्ती करणी मुद्दामा १८ वर्ष जेल सजाया भएका धादिङ सिद्धलेक गाउँपालिका–३ का ३८ वर्षीय गणेश श्रेष्ठलाई आज पक्राउ गरेको हो। व्यूरोका प्रवक्ता, प्रहरी वरिष्ठ उपरीक्षक अनुपमशमशेर जवराले जेनजी आन्दोलनको मौका छोपेर केन्द्रीय कारागारबाट […]",
+      "url": "https://www.dcnepal.com/2026/10/802016/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T16:58:34+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_77bc28a5ad",
+      "title": "मुग्लिन–नारायणगढ सडकको नाम्सी पुलमा पहिरो",
+      "summary": "चितवन । मुग्लिन–नारायणगढ सडकखण्डअन्तर्गत इच्छाकामना गाउँपालिकास्थित नाम्सी पुलनजिकै माथिबाट ढुंगा खसेपछि सडक एकतर्फी अवरुद्ध भएको छ। सडक डिभिजन कार्यालय भरतपुरका अनुसार शुक्रबार बेलुकी ९:१५ बजेदेखि निरन्तर ढुंगा खस्न थालेपछि यातायात सेवा प्रभावित बनेको हो। सुक्खा पहिरोका कारण ढुंगा खस्ने क्रम नरोकिएकाले पन्छाउने काममा कठिनाइ भइरहेको छ। रातको समयमा सो सडकखण्ड भएर यात्रा गर्ने यात्रु तथा […]",
+      "url": "https://www.dcnepal.com/2026/10/802013/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T16:46:20+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_d52494f67d",
+      "title": "Three Ministers in Unison: Emphasis on Legal Reforms to Protect Investors and Promote Economic Growth",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE1HUGVkU0htLVpxSjFxZG4xaGRqb1pIb3V5U1Z5NVMzQWNORlhVRVRGTFRucnBGUEZUa3JmQkF6VWpORXlSMHhmdFJpYnRFTHo0aksyaE1obGdyeFY0QWJDbi1DWUFxN3FOaHhDOUtCM0NRWUtoM0E?oc=5",
+      "source": "Ekantipur",
+      "source_domain": "ekantipur.com",
+      "published": "2026-10-02T16:45:52+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_2b6e1652f3",
+      "title": "Former executive director of Security Printing Center Bikal Paudel convicted of corruption",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNNEFzRmRfdy1TU185aTEySXB6ZmcxTVVpQ084aFJvT1BIMmd0anBJbGVpM2lXbkZYcXo3dmJNdHZLb1BKMXRPeE90R3J5eC1wTnJOX1Q4cXR4dXJBejVabzBwQ282aEJFOHBlODNaWU1Ta3dIZG5WVHdpdWtlUjllemZKUjdGUjVYU0FIcFo1S1FZSDV5dWU4cWF3azBmZ21uZDZpdTMwZjB6bGhwcDRsMkFBOUQ2djRETUJJM1M1Tl9tVHJIMktiOHc1QWtqdEU?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T16:45:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_62dcef2be7",
+      "title": "Traffic reduced to one-way along Narayangadh-Muglin road section",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOX2lUb3RJbjlJNXlFbE9uUDYya3RxNmIzdnBIS0pLSzl6SmZfVldXOWxQSS02YmpnYzVzdE5uNTlzTlJJbG0xNXVNR0pLWmFWZWEtdExYdlNFZ0VvODlMVDVVRzREbEZ2cXlaSEhiM2lLVXJjQXhVVTRTcmp1UjAzNFRmZlR6cEJ5N2Q5dmdyNExiUDVoS2F3bGFWbUk5NHJja0JhRXdoVQ?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T16:45:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_ace47471f2",
+      "title": "Vehicles have begun operating along Nuwakot’s Betravati cliff; a Bailey bridge will be installed over the Phalakhhu River within a week.",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxNMG4yRVA4UkVCdkQtcE5QcG9fbkpmeHcyR0xsa2RJcThKa21EM2c3aDJkQmJUbGNDYWJXUTJDV21MRVNXaDAzN2lNODdFckNzNGxfaEt2NVA1MmR0Xzl3SDRfWDlDNmN2Qm5yWHlET19PNXExRlo5ZU9RM0MyVl9IZ1JkN1Q0eDhDTDMwTy1YOTA0bUNHR1BEQU5UNWV1bmNubzV1X09qQkJVVVFPNUx4Tk1EbWRWUlhQcXFqb3FRODhsM1JpYXprS2ZtX2VrUmdlNHRDa1M4SXdEUGxKMHAxc0xQeWUxOEFldWcyVkE1VWI?oc=5",
+      "source": "Ekantipur",
+      "source_domain": "ekantipur.com",
+      "published": "2026-10-02T16:44:33+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_2ad3417748",
+      "title": "Payments via Apple Pay and Google Pay Now Possible in Nepal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQMXpkSmd0RjlKY2JadUxqc2xhM1VjRGJiUlBtZXltckg1VENWR0x5WFViNkRGazdUVzRwMUdnNkw5UGduQXRKZVJwTjlNU0RXMkpWNVlHcnFfMVBCSlM5SkJHMnExNEZyTlVaY2pjMnQyZ1VOZTJDTW9BLXQ0S3YzYnA4WDhJakdUTTE0VkpHU0FkV3VuRVRiWGg1MkFIWkJwNkpCVWNqdE1LcExuWUhUVHc2S053dw?oc=5",
+      "source": "Ekantipur",
+      "source_domain": "ekantipur.com",
+      "published": "2026-10-02T16:43:53+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_8f069f2f89",
+      "title": "Excise stickers seized near border put tax system under scrutiny",
+      "summary": "The seizure of 120,000 Nepal government excise stickers being smuggled from India has raised questions about the security of the country’s tax administration and the potential for revenue leakage.",
+      "url": "https://myrepublica.nagariknetwork.com/news/excise-stickers-seized-near-border-put-tax-system-under-scrutiny-77-10.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T16:40:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_07b79b2792",
+      "title": "Third National Summit on Education 2083 to be Held in Janakpurdham",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNb1kxeG83Wm1WMF81QlJiWTc5WmQyYkdJQ1ZSQ1BuUmlPNkdGMkJON2ZMZGhsMUpzdDZFX2NmcmFEYVpOanVpaUZXOG5XdnZxbHQ3bXNmMUdLb3BJMFVQRVctZmsyUUVWQ0FXcFRuM1otLXphNkNhMkVkSXh1NXFPZWdzU2pRLVZVZVUwem5VcVpLMk1JR2hWOXhVenNDVmVLeFRDVQ?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T16:34:35+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_2aa53d7482",
+      "title": "Teenager Drowns in Khutiya River, Kailali",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOclNuOEpfdTVFcnJlTUZ3aUphMEcyUENXOTRlUEh3cFBITlB0N0NsSThXYW1pRnY0Yzl6bGd6MTY4ZFN4UkY2TUNKOXJ6NlhMYnlZUElPZVg1NnpFWDI5RDd6c3VqOWVCTFJWZWFXZlVFVkFzMTJjZVhheUJ5YlVwWk1tWTBEOHdxSXhIa2ZUQ1NQdVNOR1U5S3hKemxUb1EtZ1E?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T16:33:53+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_7278634ae8",
+      "title": "Nepal News Evening Briefing | Friday, October 2, 2026",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOUnZnamJfeEczSS1hLTNvUzE1T0xCTkhWZmxRUzJRVTJqMUpRQ1NMYmJPeXpGMHRRUHVLTVJhd1g1VTBtYUdhc2NQeXRPb081N2gzUG1RWERGR1g1VG40ODRpQ2VybWVoNloxS2pmWTR4RnpkTkduNzZBS2I4bkFwN2x4dmJKdDZHd3NLOEYtRGlINTJnQmtN?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T16:30:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_ebe616e721",
+      "title": "Ideological rift prompts poets to decline Nepal Academy recitation invitations",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPV21MZGtwRDlGNFJKdloxdUMwNDNlSW92SURKXzlnc1I0Vmp2MlNrVXV4dWdIclY3d0h4dEdZcF9TV29lemxualBoc3kwbVp3eDJ2c3NTS2pSYnRQR1hPUm5SOE91OTgxSkFBOVRoOGtDbGY5YzlTVkExODR4ZzBDYlBWSFNJZ3YwTkJHN2xtQzV3WFJSRTY2bDdVaUdsUWtpUkhwRDhNX2xTRnViU0MwdDZPUEI2Zk1pZlE?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T16:30:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_45a2ad5b2d",
+      "title": "Nepal Handicraft Federation Honors 22 Women Entrepreneurs",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNbmItS2ZCdnJFMlVIazNlenlKSHo3TVZfaWlyc3FqdThMNW9scHQ0MXM4UHRFbXdpYmxHMlRIOXB4OE1qaXc4dWRXOGZONDdEd1YzVUFGMURCSzJ1QUZkQ3hZdXJicXFEekc5RXJLcVlIMm5YaEc3Ym9XcXVwTGY1d1UyN205OEdDd2pFWlVqZS1ZVGZRRllFaUN2R3lXbnJBdS00MUZvNkRteG1aMS1WOUlVQUx5OGs?oc=5",
+      "source": "Hamro Patro",
+      "source_domain": "hamropatro.com",
+      "published": "2026-10-02T16:28:01+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_201f267314",
+      "title": "धान भित्र्याउने बेला बगर बन्यो खेत",
+      "summary": "दसैंको मुखमा धान भित्र्याउने तयारीमा रहेका बागलुङको गलकोट नगरपालिकाका किसान दरमखोलामा आएको बाढीले खेत बगाएपछि चिन्तामा छन्।...",
+      "url": "https://nagariknews.nagariknetwork.com/social-affairs/fields-in-galkot-turned-into-a-swamp-during-rice-import-ward-chairman-s-crop-washed-away-farmers-get-rs-4-000-relief-per-planting-98-17.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T16:27:05+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_67971785c3",
+      "title": "From UN address to digital governance: PM Shah shares 1.5-month achievements",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQUEt6LU9temlDa2dlajNFWFlGbmcxZTB2Zm5GSWI4dS1wbmNrTHV2MHlJSzlOaE9zblZxUTlTSERnTDdlai1kTHdpbUJtTHZsNTRnRVhuUHVFb3BjVFhvbTYtdkZLcTVVVHFjVmlvSDRCOFA1OU1Jd0pPamRBWlk4U05UT01pT0stVFlkbDRRVGJrQzNuOU5vdGNOTnVBRVFSWDZhNFlrN0Q4TllDSlp5dmVHUlZvbFBa?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T16:25:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_f7028f8ee0",
+      "title": "Parliament has not become weak: Speaker Aryal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNOFliMUp2MElTdjF2NWttZy01NUR2NkVYWEZnQ3J4enBmcE1Sb1oydEdtVzRNWThONVVPTGdXWllZdmpObFJVUnJwMkY5bm5rSlUwdDMxeGl3RmhqQzRGTEJrOGlKSWhrb21xcXFiSUxfcU5DOUdsU0lRVk9LWC1QaXltX04yR2lpUjdtNkZIVQ?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T16:25:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_afa565b13a",
+      "title": "धान भित्र्याउने बेलामा बाढीले खेतै लग्यो",
+      "summary": "गण्डकी। फाँटमा धान झुलेर पहेँलो हुँदै थियो। किसान दसैँको अघिपछि धान भित्र्याउने सुरसारमा थिए। तर, केही दिनअघि दरमखोलामा आएको बाढीले दुःखजिलो गरेर उब्जाएको धानबालीमात्र लगेन खेत बगाइदियो। बागलुङको गलकोट नगरपालिका-९ का किसान यतिबेला प्रकृतिको प्रहार सहन बाध्य छन्। लहलह धान फल्ने खेत बगरमा परिणत हुँदा किसान गहिरो चिन्तामा छन्। फापरखेतका पुरुषोत्तम गौतमले झेतुङमा रहेको आफ्नो […]",
+      "url": "https://www.dcnepal.com/2026/10/802010/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T16:16:24+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_e81527d160",
+      "title": "जेन-जी आन्दोलनमा जेल तोडेर भागेका ३७४२ कैदी अझै सम्पर्कमा आएनन् (नामसहित)",
+      "summary": "गत वर्ष भएको जेन-जी आन्दोलनका क्रममा कारागार तोडेर भागेकामध्ये १ हजार १९४ जना कैदीबन्दी अझै सम्पर्कमा आएका छैनन्।...",
+      "url": "https://nagariknews.nagariknetwork.com/social-affairs/1194-prisoners-who-escaped-from-prison-during-the-gen-g-movement-have-not-yet-been-contacted-with-names-34-30.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T16:12:35+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_1c31d66eff",
+      "title": "NIC ASIA Brings Apple Pay, Google Pay Payment Acceptance to Nepal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOTWdKU2ZLNzNIcVJDaDFOREhKZS1rQlktN1Z0WVFtZk1MUzhUbDhTc01QVkJ4OG1Ea0ZweEVBSU9oX3NEcGVYbHp6ZS1kSVNUcDZDd1lqT0drbENvUTNDbExSZ0tzS2J0X2VraFA0QzFndk0tWWQwWFJtT3ZtdVZiY0JieERoTmxEbHdTTmNaUjFnZzNDRHBzVGNzNE1iMXdkaEpCb04zSFZXOUU?oc=5",
+      "source": "NepaliTelecom",
+      "source_domain": "nepalitelecom.com",
+      "published": "2026-10-02T16:12:04+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_72ece8dfdb",
+      "title": "निम्न आय भएका परिवारको ‘आवास ग्यारेन्टी’ गर्ने विधेयक संसद्‌मा दर्ता",
+      "summary": "नागरिकले सहुलियतपूर्ण ऋणमार्फत घर प्राप्त गर्न सक्ने व्यवस्था पनि प्रस्ताव समेत गरिएको छ। प्रारम्भिक रूपमा पाँच लाख रुपैयाँ अग्रिम भुक्तानी गरी १५ वर्षसम्म मासिक ११ हजार रुपैयाँ किस्ता तिर्ने विकल्प राखिएको छ।...",
+      "url": "https://nagariknews.nagariknetwork.com/social-affairs/bill-to-provide-housing-guarantee-to-low-income-families-registered-in-parliament-73-73.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T16:10:52+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_ab53bade2b",
+      "title": "Germany Returns Over 800 Historic Nepali Documents Dating Back to 13th Century",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQdl9FTGhzX2tST05kM1ZkT2tsRVg3ellYMFZaazYtUWRPUDN0U0hxNFRESVFTNFlHSTJUQTZ1MXhzWjhKeHc2WnlqODlVTURqdk1IU05GaENzVHljRnpoZFFzM1dObjFzaUhOYUZxdkU4eVYzMEdzbjg5a2tETVBtcm1idzhVX2l4Vzgxc0NIdjN3aFVkRkZfbmdtQVlhM3FJaGZCTFpQRDlMblk?oc=5",
+      "source": "indianewengland.com",
+      "source_domain": "indianewengland.com",
+      "published": "2026-10-02T16:06:52+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_8977f7da90",
+      "title": "बर्खे अधिवेशनको अन्तिम बैठक : सांसदहरूले हात मिलाए, तस्वीर खिचाए",
+      "summary": "चालु अधिवेशनको अन्तिम बैठक सकिएसँगै सभामा उपस्थित भएका सांसदहरूले हात मिलाए । सँगै फोटोसेसन गराए ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030877/last-meeting-of-the-barkhe-session-mps-shaking-hands-taking-pictures-photo-feature",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:05:22+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_3c8cc1a7b7",
+      "title": "सरकारकै कारण चिनी अभाव",
+      "summary": "खुद्रा पसलमा १ सय १० रुपैयाँ किलोमै चिनी पाइन्छ भनेर सूचना टाँसे पनि भित्र चिनी छैन । कतै पाइहाले उपभोक्ताले १ सय ५० रुपैयाँ तिर्नुपरेको छ । तर, सरकार मुकदर्शक बनेको छ ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030959/sugar-shortage-due-to-government",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:04:27+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_9d41969e2b",
+      "title": "कांग्रेसका लागि नयाँ अध्याय : सङ्क्रमणको घडीमा केही मन्थन",
+      "summary": "यति धेरै बदलिएको देशमा एउटा राजनीतिक परम्पराले आफ्नो सान्दर्भिकता कसरी नवीकरण गर्न सक्छ ? भन्ने नै कांग्रेसका सामु खडा भएको अझ महत्त्वपूर्ण प्रश्न हो।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030232/a-new-chapter-for-the-congress-some-brainstorming-in-a-time-of-transition",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:03:15+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_01cdd85c08",
+      "title": "पोखरा विश्वविद्यालयको एक अर्ब ७५ करोड ८० लाखको बजेट पारित",
+      "summary": "पोखरा विश्वविद्यालयको २६औँ साधारणसभाले चालु आर्थिक वर्षका लागि एक अर्ब ७५ करोड ८० लाखको बजेट तथा नीति तथा कार्यक्रम सर्वसम्मत पारित गरेको छ ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2031138/pokhara-universitys-budget-of-rs-1-758-billion-approved",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:03:08+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_a568325145",
+      "title": "जताततै एनजीओ, कतैकतै सरकार",
+      "summary": "प्रत्येक होल्डिङ सेन्टरको मूल ढोकामा अनेक राष्ट्रिय र अन्तर्राष्ट्रिय गैरसरकारी संस्थाहरूको ब्यानर झुन्डिएको छ। भित्र संस्थाकै टिसर्ट र जर्सीमा युवाहरू खटिरहेको भेटिन्छ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2031035/ngos-everywhere-government-here-and-there",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:02:28+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_249eb7a57f",
+      "title": "एक चालक जसलाई ट्राफिक प्रहरीले ६ वर्षमा ७२९ पटक चिट काट्यो",
+      "summary": "चालक रामबहादुर पछिल्लो ६ वर्षमा ७२९ पटक ट्राफिक कारबाहीमा परेका छन् । यसअनुसार उनलाई प्रत्येक वर्ष १२२ पटक चिट काटिएको छ । अर्थात्, सरदर ३ दिनमा १ पटक उनी ट्राफिक कारबाहीमा परेको देखिन्छ ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030668/a-driver-who-was-ticketed-729-times-by-the-traffic-police-in-6-years",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:02:03+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_1bda998aa0",
+      "title": "पुनःविवाह गर्ने विधवाको अंश खोस्ने कानूनी व्यवस्था सुरुदेखि नै अमान्य : सर्वोच्च अदालत",
+      "summary": "अदालतको निष्कर्ष छ । यो फैसलालाई नेपालको लैङ्गिक न्याय र महिला अधिकारको आन्दोलनमा एक कोसेढुङ्गा मान्न सकिने यश क्षेत्रका व्यक्तिहरुले बताएका छन् ।",
+      "url": "https://nepalpress.com/2026/10/02/770000/legal-system-that-deprives-widows-of-their-share-in-remarriage-is-invalid-from-the-beginning-supreme-court/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T16:01:55+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_f25bf3001f",
+      "title": "कांग्रेसको सैद्धान्तिक धार र पुनर्जीवनको आधार",
+      "summary": "नयाँ कांग्रेस भनेको सिद्धान्त, नीति र एजेन्डाका दृष्टिले नयाँ हो, सांगठनिक दृष्टिले नयाँ हो र पुस्ताका दृष्टिले नयाँ हो । यसैगरी पार्टी सञ्चालन प्रणाली, संस्कार र कार्यशैलीको दृष्टिले नयाँ हो । आजको आवश्यकता पनि यही हो र एजेन्डा पनि यिनै हुन् ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030688/the-ideological-basis-of-the-congress-and-its-revival",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:01:07+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_3b4fc5bdcf",
+      "title": "कांग्रेस महाधिवेशन : सहमहामन्त्रीका ११ पदमा कतिको दाबी ?",
+      "summary": "कांग्रेस सहमहामन्त्री पदका लागि उम्मेदवारी घोषणा गर्ने क्रम शुरु भएको छ । सहमहामन्त्री दाबी गर्नेमा बहालवाला सहमहामन्त्रीहरू, केन्द्रीय सदस्यदेखि वर्तमान केन्द्रीय कार्यसमितिमा नरहेका नेताहरू समेत छन् ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030950/congress-general-convention-how-many-people-are-claiming-the-11-posts-of-joint-general-secretary",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:00:32+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_a9bd238c45",
+      "title": "डेली सेवा : दैनिक आवश्यकताका सम्पूर्ण सेवा एउटै डिजिटल प्लेटफर्ममा",
+      "summary": "मानिसका सम्पूर्ण दैनिक आवश्यकताको सारथी बन्ने उद्देश्यले ‘डेली सेवा’ नामक स्वचालित डिजिटल सर्भिस मार्केट-प्लेस सञ्चालनमा ल्याइएको छ। ...",
+      "url": "https://nagariknews.nagariknetwork.com/Corporate/daily-services-all-daily-needs-services-on-one-digital-platform-87-82.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T16:00:12+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_0f7de5ae6a",
+      "title": "सीमा जोगाउने दोधारा चाँदनीको झोलुङ्गे पुल कहिले होला मर्मत ?",
+      "summary": "एक प्रकारले दोधारा चाँदनीवासीका लागि मेरुदण्ड जस्तै थियो झोलुङ्गे पुल । त्यो पुल यही असोज १४ गतेको महाकाली बाढीले चुँडियो ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030524/when-will-the-dodhara-chandni-suspension-bridge-that-protects-the-border-be-repaired",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T16:00:02+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_78c2781ea6",
+      "title": "द्रुतमार्गको सुस्त गति : १० वर्षमा आधा काम, म्याद थपियो ३ वर्ष",
+      "summary": "यो आयोजना चैत २०८३ मा सम्पन्न हुनुपर्ने थियो । उक्त अवधिमा सम्पन्न हुने निश्चित नभएपछि २० साउनमा बसेको मन्त्रिपरिषद् बैठकले द्रुतमार्गको म्याद थप गरी चैत २०८६ पुर्‍याएको हो ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2031088/slow-progress-of-expressway-half-of-the-work-done-in-10-years-deadline-extended-by-3-years",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T15:58:59+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_369d318ae8",
+      "title": "त्रिविमा अध्ययन बिदा दुरुपयोग : उठ्नुपर्ने २ अर्ब, उठ्यो १६ करोड मात्र",
+      "summary": "त्रिविमा अध्ययन बिदा दुरुपयोग गर्नेबाट रकम असुल हुनुलाई सरकारले आफ्नो उपलब्धि मानेको छ । तर, दुरुपयोग गर्ने १७ प्रतिशत प्राध्यापकबाट मात्रै रकम असुल गरेको छ ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2030940/study-leave-misuse-at-tu-only-rs-160-million-was-raised-2-billion-to-be-raised",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T15:58:56+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_b9d673ea08",
+      "title": "देउवा समूहको वडा अधिवेशनको दृश्य- ओमकार झण्डा र स्वस्तिवाचन",
+      "summary": "अधिवेशनको उद्घाटनमा सनातन हिन्दु धर्मको प्रतिक ओमकार झण्डा राखेर बटुकहरूबाट स्वस्तिवाचन गरिएको थियो ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2031135/scenes-from-deuba-factions-ward-convention-omkar-flag-and-swasti-chanting",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T15:58:06+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_09ea04d0ef",
+      "title": "फिफाले एन्फालाई निलम्बन गरेको सय दिन पुग्यो, छैन फुकुवाको संकेत",
+      "summary": "फिफाको सर्त मान्दा भारत र पाकिस्तानमाथि निलम्बन छोटो समयमै फुकुवा भएको छ, फिफाको सर्त पालना नगरी नेपालको निलम्बन फुकुवा सम्भव छ ?",
+      "url": "https://www.onlinekhabar.com/2026/10/2031052/its-been-100-days-since-fifa-suspended-anfa-with-no-sign-of-lifting-it",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T15:56:21+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_58f34b4433",
+      "title": "भोटेकोशीमा ‘सर्च एन्ड रेस्क्यु’ होइन, अब ‘सर्च एन्ड रिकभरी’",
+      "summary": "लामो समयसम्मको खोजीपछि जीवितै उद्धार गर्न सकिने सम्भावना न्यून हुँदै गएपछि सरकारले अब खोजीलाई पुन: प्राप्ति र पुनरुत्थानसँग जोडेर अघि बढाउने निर्णय गरेको हो ।",
+      "url": "https://www.onlinekhabar.com/2026/10/2031043/no-more-search-and-rescue-in-bhotekoshi-now-search-and-recovery",
+      "source": "OnlineKhabar",
+      "source_domain": "onlinekhabar.com",
+      "published": "2026-10-02T15:54:34+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_445d01600a",
+      "title": "उड्डयन सेवालाई सुरक्षित, स्तरीय, भरपर्दो र सर्वसुलभ बनाउन दुई विधेयक संसदमा दर्ता",
+      "summary": "काठमाडौँ । नेपाल नागरिक उड्डयन प्राधिकरणलाई नियमनकारी र सेवाप्रदायक गरी छुट्टाछुट्टै संस्थामा विभाजन गर्ने उद्देश्यसहित दुई विधेयक प्रतिनिधिसभामा दर्ता भएका छन् । संस्कृति, पर्यटन तथा नागरिक उड्डयनमन्त्री खड्गराज पौडेल (गनेस)ले आज नेपाल हवाई सेवा प्राधिकरण विधेयक, २०८३ र नेपाल नागरिक उड्डयन प्राधिकरण विधेयक, २०८३ प्रतिनिधिसभामा दर्ता गराएका हुन् । विधेयक पारित भएपछि हालको नागरिक उड्डयन […]",
+      "url": "https://nepalpress.com/2026/10/02/769997/two-bills-registered-in-parliament-to-make-aviation-services-safe-quality-reliable-and-accessible/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T15:54:15+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_b963337726",
+      "title": "नाम्सी पुलमा ढुंगा खस्दा मुग्लिन-नारायणगढ सडक एकतर्फी अवरुद्ध",
+      "summary": "मुग्लिन–नारायणगढ सडकखण्डअन्तर्गत नाम्सी पुलमा माथिबाट ढुंगा खस्दा यातायात आवागमन एकतर्फी रूपमा अवरुद्ध भएको छ।...",
+      "url": "https://nagariknews.nagariknetwork.com/social-affairs/muglin-narayangadh-road-blocked-in-one-direction-due-to-rock-fall-on-namsi-bridge-42-51.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:52:47+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_96f51a76b4",
+      "title": "Nepal's nightmare and the case for climate accountability",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOUnBWZUNfV3I4dVRac1ZOdmFxOVNpYTFFNjFlbHhtZHhFUldHRWM3Q3NqQ1JtV25WbHBMZmhDZFBwb2xPbzdxSXRpSHhmUzYxUm5FU0U5SWh5VFVGWHoySC1rMzNhTGF2SG5HYlhiRGJfLXZsNHctM1M4bmlOSG1hdkZGWkpyaEpmODlFTDhrS1VEcmVmcmk4VkU4SW1vQVI5bTlBT2Nyc3hhUQ?oc=5",
+      "source": "NST Online",
+      "source_domain": "nst.com.my",
+      "published": "2026-10-02T15:50:58+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_9f26f7b8c0",
+      "title": "Economic diplomacy must be tied to national prosperity: FM Khanal",
+      "summary": "Khanal said economic diplomacy should be an integral part of Nepal’s broader development strategy, with foreign policy focused not only on strengthening political and diplomatic ties but also on supporting economic transformation, boosting production and expanding access to international markets.",
+      "url": "https://myrepublica.nagariknetwork.com/news/economic-diplomacy-must-be-tied-to-national-prosperity-fm-khanal-43-11.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T15:50:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_1797bc1a0a",
+      "title": "नागरिक उड्डयन प्राधिकरण टुक्राउने दुई विधेयक संसद्‍मा दर्ता",
+      "summary": "काठमाडौं । नेपाल नागरिक उड्डयन प्राधिकरण (क्यान) लाई विभाजन गरी नियामक र सेवाप्रदायक कार्यहरू अलग-अलग संस्थाबाट सञ्चालन गर्ने उद्देश्यसहित दुई नयाँ विधेयक प्रतिनिधिसभामा दर्ता भएका छन्। संस्कृति, पर्यटन तथा नागरिक उड्डयनमन्त्री खडकराज पौडेलले ‘नेपाल हवाई सेवा प्राधिकरण विधेयक, २०८३’ र ‘नेपाल नागरिक उड्डयन प्राधिकरण विधेयक, २०८३’ संसद्मा दर्ता गराउनुभएको हो। यी विधेयक संसद्बाट पारित भई […]",
+      "url": "https://www.dcnepal.com/2026/10/802007/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T15:48:43+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_66a741d23c",
+      "title": "लगानी र विकासका जटिलता हटाउन कानुन सुधार आवश्यक : मन्त्री गौतम",
+      "summary": "निजी क्षेत्र, विज्ञ तथा सम्बन्धित निकायका अनुभव र सुझाव समेटेर लगानीमैत्री, सरल, स्पष्ट र कार्यान्वयनयोग्य कानुनी वातावरण निर्माण गर्न कार्यशाला महत्त्वपूर्ण हुने उनको विश्वास छ।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/law-reform-necessary-to-remove-complexities-in-investment-and-development-minister-gautam-56-43.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:46:35+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_366239765d",
+      "title": "प्रधानमन्त्री कार्यालयले भन्यो- चाडपर्वमा कालोबजारी र मूल्यवृद्धि नियन्त्रण गर्छौं",
+      "summary": "काठमाडौं। नजिकिँदै गरेका चाडपर्व र मनसुनलाई ध्यानमा राख्दै सरकारले सडक यातायात अवरुद्ध हुन नदिने तथा अत्यावश्यक सार्वजनिक सेवा नियमित सञ्चालन गर्ने गरी सम्बन्धित निकायलाई तयारी अवस्थामा राख्ने निर्णय गरेको छ। प्रधानमन्त्री तथा मन्त्रिपरिषद्को कार्यालयले चाडपर्वका समयमा नागरिकलाई सेवा प्रवाहमा समस्या नहोस् र आवतजावत सहज रहोस् भन्ने उद्देश्यले आवश्यक पूर्वतयारी गर्न सम्बन्धित निकायलाई निर्देशन दिएको शुक्रबारको […]",
+      "url": "https://www.dcnepal.com/2026/10/802005/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T15:44:53+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_023a28333a",
+      "title": "One month on, Red Cross brings hope amidst the mud in Nepal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPblJ5blBtTk5La2dEVUJic0hVOFp0cTB4QU9vYmJDZDEyMEJLNkpqZEVSbUJ1dzhpUS0yWTlQUklKTlZua2lzaDJ4MzZFMVBrc2NuakRpMkVhVnZ5T2lVbXh3UVN1MFlSN2VBUFVwU3NnbXJiSmMzNDZIek1CQU9XZVpndVZRdkRuUkRLLTZBLVFYcDdMMWtvcU5ESEdMZUpQd0dmVEh3?oc=5",
+      "source": "New Zealand Red Cross",
+      "source_domain": "redcross.org.nz",
+      "published": "2026-10-02T15:41:50+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_61b32c409b",
+      "title": "Anwar Secures Fast-track Process For Missing Malaysians in Nepal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQNjFpVE1naUVNWWRCbHdvWGpiVWRZM1F2aFZmODYwSF9icDhBLUxlSHctWHZ0T3IzU0puVF9HM1ZtYjl3b3IyY1pyWkRwaHNQOENOQ2hrT21IM3dWUk92eldTckpsczF5MGdDVjU4VG93OXhzbDRwMkdKbmZWeUxjajVvRVM3MXEzdDA3cDJYYzJkTmFRYkp3WUJn?oc=5",
+      "source": "Malaysia-China Insight",
+      "source_domain": "mcigroup.my",
+      "published": "2026-10-02T15:40:45+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_87b04fa11d",
+      "title": "A Plan B First Ascent: Nepal Landslides Force Veteran Italians to Change Peaks",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOdGtzNlZmTkRmUGd2MFBlTWJ1N20zdnFpTTNnYnpVX1dPNVkyZ3NRTU1kSXFKSEx5c3JlVU5VdmItOWl4bHE0VnVHSXhIdEkzWGthXzlPZHVyU29ISkJKWjVXeVVnVGlrdXhpS3dqSFBIRlJxU0s3MnlfMEVNTGdqT0hBRGVhLXFqSE1OdUhHY1RBRjY5bjA5T1JaN3lNZy1GczZIVGpR?oc=5",
+      "source": "explorersweb.com",
+      "source_domain": "explorersweb.com",
+      "published": "2026-10-02T15:39:25+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_eeec3d7b9c",
+      "title": "विपद् प्रभावित नेपाली तथा विदेशी नागरिकका लागि कानुन समान : मन्त्री गौतम",
+      "summary": "कानुन, न्याय तथा संसदीय मामिला मन्त्री सोविता गौतमले विपद् प्रभावित नेपाली तथा विदेशी नागरिकका हकमा कानुन समान रूपमा लागू हुने बताएकी छन्।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/laws-are-the-same-for-nepalese-and-foreign-citizens-affected-by-disasters-minister-gautam-53-58.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:38:07+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_3120bdb316",
+      "title": "खुश्बु ओलीको प्रस्टोक्ति- म्यादी प्रहरी पोशाक खरिदबारे छानबिन होइन अध्ययन समिति बनेको हो",
+      "summary": "काठमाडौँ । सार्वजनिक लेखा समितिकी सदस्य खुश्बु ओलीले विभिन्न सञ्चारमाध्यममा आएजस्तो पोशाक खरिदबारे छानबिन समिति गठन नगरिएको स्पष्ट पारेकी छन् । उनका अनुसार सार्वजनिक लेखा समितिले प्राप्त प्रतिवेदन तथा सम्बन्धित कागजातको अध्ययन गर्न उपसमिति गठन गरेको हो । समितिले निर्वाचन प्रहरी, नेपाल प्रहरी र सशस्त्र प्रहरी बल, नेपालको पोशाक खरिदसम्बन्धी विषयमा अध्ययन उपसमिति गठन गरेको जनाएको […]",
+      "url": "https://nepalpress.com/2026/10/02/769995/khushbu-olis-statement-a-study-committee-has-been-formed-not-an-investigation-into-the-purchase-of-temporary-police-uniforms/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T15:36:32+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_858496ad17",
+      "title": "निगम थलिनुमा राजनीतिक नेतृत्व र प्रशासनिक हठ मुख्य कारण : सांसद उप्रेती",
+      "summary": "उपलब्ध स्रोतसाधनको अधिकतम प्रयोग हुन नसक्नु, जहाज ग्राउन्डेड हुनु र व्यवस्थापकीय अक्षमताका कारण निगम थलिएको उनले बताए।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/political-leadership-and-administrative-stubbornness-are-the-main-reasons-for-the-collapse-of-the-corporation-mp-upreti-42-38.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:31:10+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_59e7237513",
+      "title": "तनहुँ-१ को विकास प्राथमिकताबारे अर्थमन्त्री वाग्लेसँग छलफल",
+      "summary": "दमौली (तनहुँ)। तनहुँ निर्वाचन क्षेत्र नं १ का स्थानीय विकास, सडक तथा पूर्वाधार निर्माणलगायत विकासका विषयमा अर्थमन्त्री डा स्वर्णिम वाग्लेसँग आज छलफल गरिएको छ। राष्ट्रिय स्वतन्त्र पार्टी (रास्वपा) का जिल्लास्तरीय नेताहरूले अर्थमन्त्री वाग्लेसँग भेटघाट गरी विकास निर्माणका विषयमा छलफल गरेका हुन्। राष्ट्रिय स्वतन्त्र पार्टी (रास्वपा) तनहुँका सचिव अनिल श्रेष्ठले अर्थमन्त्री वाग्लेसँगको भेटमा तनहुँ-१ अन्तर्गतका विभिन्न […]",
+      "url": "https://www.dcnepal.com/2026/10/802003/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T15:30:27+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_8cbdde6c32",
+      "title": "एलिनाले भनिन्– म फेरि सुरू गर्दैछु, अझ बलियो भएर!",
+      "summary": "'सामानका लागि मात्र होइन, मलाई फेरि उठेको हेर्न आउनुस्,' उनले लेखेकी छन्, 'तपाईंहरूको एउटा उपस्थिति, एउटा माया, एउटा शुभकामनाले पनि सायद आज टुटेको मेरो मनलाई फेरि जोड्नेछ।'",
+      "url": "https://www.setopati.com/art/art-activity/399828",
+      "source": "Setopati",
+      "source_domain": "setopati.com",
+      "published": "2026-10-02T15:27:00+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_bbe5890830",
+      "title": "Nepal Floods: Why Big Dams Can Deepen Disaster",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNbUJ1cHhLYi1lemhjejl5dWx3T0FvYWRmTmNZOFB2a1BoREFGbURONzJUNDU2WG9JM0R4T2VJRDNXbkczRThIeDlPLVg3ajJOelVXTUhRNE9DRUdDamNERE9WOFBvR0QtQy1mbjZDM1VCUDNscFgtbXNWazNjTzc4QTlYMHYxZ2wtaTlLMGZ1RDU4YlZ0MUFwYdIBnwFBVV95cUxQMnRzbmRQVkNuVGo2Vk9wNHFCZnBWYnRRb05mUGxlbVRrSGlMU2ZxVjNhMFJ6d1VLWDZ0Q3FKblRlZjM4NmtHbDlUNVVHYm9xbWRfU0h6M0FSYkprLU5xWnEyOTBjdlJaQXlXRlBaeDZyMXZEZGo3NGp0Z1RiOXBrWUlzSEVlUWlYaDNBOVZWY2QzOTBuZkZ1RTRVRXlBdHc?oc=5",
+      "source": "Frontline Magazine",
+      "source_domain": "frontline.thehindu.com",
+      "published": "2026-10-02T15:26:36+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_9e26de01e3",
+      "title": "Tag: Gurkhas | Ratopati | No.1 Nepali News Portal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE14YUdlclBseG10dHQzMWVSNGh3cms5aDhCMkhxQzk3djFxcGV4aWdQRGFFZ0tzdlh3VmlDeFVFUEZhRjFNaC1pMEpVZWM3cVE?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T15:25:39+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_18c9acafa0",
+      "title": "National Assembly’s 21st session held 52 meetings over 98 hours",
+      "summary": "Presenting a summary of the session at its conclusion, National Assembly Chair Narayan Prasad Dahal said 40 meetings included zero-hour sessions, during which 45 lawmakers spoke for a total of five hours and 56 minutes.",
+      "url": "https://myrepublica.nagariknetwork.com/news/national-assemblys-21st-session-held-52-meetings-over-98-hours-20-89.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T15:25:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_f05ae56d66",
+      "title": "फेरि दुईतिहाइको लक्ष्यमा पुग्न सकिन्छ: अध्यक्ष ओली",
+      "summary": "नेकपा (एमाले) का अध्यक्ष एवं पूर्वप्रधानमन्त्री केपी शर्मा ओलीले पार्टीले भोगेका राजनीतिक धक्काहरूलाई स्वाभाविक रूपमा लिँदै लडेको ठाउँबाट फेरि उठेर दुईतिहाइको लक्ष्यमा पुग्न सकिने बताएका छन्।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/the-two-thirds-target-can-be-reached-again-chairman-oli-96-99.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:22:06+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_906f6b3f3c",
+      "title": "अख्तियारले डामेका पूर्व एमाले नेता भीमकान्त लामिछाने क्यान्सर अस्पतालको अध्यक्षमा नियुक्त",
+      "summary": "रुपन्देही । लुम्बिनी प्रदेशको बाँकेमा रहेका दुई संघीय अस्पतालमा विकास समितिको अध्यक्ष नियुक्त भएका छन् । ती मध्ये एकमा सरकारी अस्पतालकै बहालवाला डाक्टर र एकमा अख्तियारको मुद्दामा परेका पूर्व एमाले नेता परेका हुन् । स्वास्थ्य तथा खाद्य स्वच्छता मन्त्रालयले आह्वान गरेको सार्वजनिक सूचनाका आधारमा अन्तवार्ताको माध्यमबाट दुई अस्पतालमा विकास समितिको अध्यक्ष नियुक्त गरिएको हो । […]",
+      "url": "https://nepalpress.com/2026/10/02/769992/ciaa-appoints-former-uml-leader-bhim-kant-lamichhane-as-chairman-of-cancer-hospital/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T15:20:58+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_bb05f7a041",
+      "title": "काठको आयात प्रतिस्थापनका लागि कार्ययोजना बनाएका छौं : मन्त्री चौधरी",
+      "summary": "संघीय सरकारकी कृषि वन तथा पर्यावरण मन्त्री गिता चौधरीले काठ आयात प्रतिस्थापनका लागि सरकारको कार्ययोजना निर्माण गरिएको बताएकी छन्।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/we-have-formulated-an-action-plan-to-replace-wood-imports-minister-chaudhary-34-31.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:19:53+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_f63d29ca72",
+      "title": "HoR forwards seven Bills to related committees for thorough deliberation",
+      "summary": "Kathmandu, Oct 2: Minister for Law, Justice and Parliamentary Affairs, Sobita Gautam, presented a proposal in the House...",
+      "url": "https://risingnepaldaily.com/news/87320",
+      "source": "The Rising Nepal",
+      "source_domain": "risingnepaldaily.com",
+      "published": "2026-10-02T15:18:51+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_4b54e9cdd0",
+      "title": "लिटल फ्लावर प्राइड लिग : घोडाघोडी, खप्तड र बिरेन्द्र स्पोर्ट्स विजयी",
+      "summary": "कैलाली । धनगढीको फाप्लामा जारी दशौँ संस्करणको एसपिए लिटल फ्लावर प्राइड लिगको चौथो खेलमा सुख्खडको घोडाघोडी क्रिकेट एकेडेमी विजयी भएको छ । घोडाघोडीले लम्कीको पाइनियर्स एकेडेमीलाई ३६ रनले पराजित गर्दै प्रतियोगितामा पहिलो जित दर्ता गरेको छ । घोडाघोडी पहिलो खेलमा महेन्द्रनगरको मोर्निङ ग्लोरी स्कुलसँग ९ विकेटले पराजित भएको थियो । शुक्रबार घोडाघोडी क्रिकेट एकेडेमीले दिएको […]",
+      "url": "https://nepalpress.com/2026/10/02/769989/little-flower-pride-league-ghodaghodi-khaptad-and-birendra-sports-win/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T15:14:01+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_95734f2089",
+      "title": "जैविक मलको प्रयोग बढाउनुपर्छ : मन्त्री चौधरी",
+      "summary": "रुपन्देही। नेपाल सरकारका सङ्घीय कृषि, वन तथा पर्यावरणमन्त्री गीता चौधरीले माटोको उर्वराशक्ति जोगाउन र कृषि उत्पादनलाई दिगो बनाउन किसानले जैविक तथा प्राङ्गारिक मलको प्रयोग बढाउनुपर्ने बताएका छन्। लुम्बिनी प्रदेशस्तरीय अनुदानित मल वितरण सूचना प्रणालीसम्बन्धी अभिमुखीकरण कार्यक्रममा उनले रासायनिक मलको अत्यधिक प्रयोगले माटोको गुणस्तरमा असर पर्ने भएकाले माटो सुधारलाई प्राथमिकतामा राखि कृषि नीति र कार्यक्रम अघि […]",
+      "url": "https://www.dcnepal.com/2026/10/802000/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T15:12:51+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_4899110b0e",
+      "title": "नयाँ भवन ऐन विधेयक संसदमा दर्ता, हरेक नागरिकलाई आवासको सुनिश्चितता गर्ने प्रस्ताव",
+      "summary": "काठमाडौँ । पूर्वाधार विकास मन्त्रालयले हरेक नागरिकको आवासको अधिकार सुनिश्चित गर्ने उद्देश्यसहित भवन ऐन, २०८३ को विधेयक संघीय संसद् सचिवालयमा दर्ता गराएको छ । पूर्वाधार विकासमन्त्री सुनील लम्सालको नेतृत्वमा तयार गरिएको उक्त विधेयक भवन ऐन, २०५५ लाई संशोधन गर्न बनेको हो । सरकारको घोषणाअनुसार प्रत्येक नागरिक तथा उनका परिवारका लागि आवास सुनिश्चित गर्ने उद्देश्यले विधेयक […]",
+      "url": "https://nepalpress.com/2026/10/02/769986/new-building-act-bill-registered-in-parliament-proposal-to-ensure-housing-for-every-citizen/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T15:12:30+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_2202f1c020",
+      "title": "ओमकार झण्डा र स्वस्तीवाचन गर्दै काठमाडौंमा देउवा समूहको अधिवेशन",
+      "summary": "देउवाले यसअघि आयोजित राष्ट्रिय भेलाको समापन कार्यक्रममा आफू हिन्दु भएको उल्लेख गर्दै कांग्रेसको अबको झुकाव सनातन हिन्दु राष्ट्रतर्फ हुने संकेत गरेका थिए।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/deuba-group-convention-in-kathmandu-chanting-omkar-flag-and-swasti-19-67.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:12:22+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_5c21d56f0b",
+      "title": "National economic prosperity thru foreign policy: Foreign Minister Khanal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9jcEZ1cUNIWi1sQ1dfcEh2aVhPeGZwdU9GVDZ0anI1N1VqN2JFRXI1Qk5ibUdJVmFkN0xTQWNtMjNKYXlJSnJZMS1mS2QxTHZ2TTZCNFBEYWZNYmlocHlsY0tOQTQ?oc=5",
+      "source": "radionepalonline.com",
+      "source_domain": "radionepalonline.com",
+      "published": "2026-10-02T15:10:51+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_8d05b25d1d",
+      "title": "Nepal News Evening Economic Brief – October 2, 2026",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPSmItVkt6QVJobUxGckJxMDZ1bUFzeUdnb2hVcElXYzl2TlhCckxmT2Rha1QtT1pwTElCaTdtZGhqVVdKblBSMmZKUlAtTHJvdU1ZR0ZrRVVmZEZ3SVZWX2JzYzdpd3JaRmNvZmhiNkFycVozTk4zZUU1MjFUMWVQd3BaYzFJakRJYTlDZFYzZGs0N2hF?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T15:10:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_4e1d8d4423",
+      "title": "House of Representatives concludes second session with 68 meetings",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOSklsV2hQbFh5TlAxMEFIMFZ0aEtvUTg1bWgyTWJUcnFGa29fWG1tWWV5NlF5cDhMQkc5TExpQmRfWk1pNEd1bno5SHQ3a3JHUDlQUll1NXN0bXdhendZaUpldWJNVHNmM2NHaC1YcVFBWXlXWFN4eUtxNjdfbGgzakJrMWRIbWgydkdTTlVGX3MtTlF6TW43WVprM0xkam42V2V5NUF6N0RQS3FF?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T15:10:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_5a961c624e",
+      "title": "१० वर्षपछि सुनिँदैछ खुलामञ्चमा प्रतिपक्षी आवाज",
+      "summary": "यसपालिको कांग्रेस महाधिवेशन एउटा दल विशेषको राजनीतिक सभा मात्र होइन। दस वर्षपछि फेरि पुरानो राजनीतिक स्मृतिमा फर्किँदै गरेको खुलामञ्चको नयाँ अध्यायको सुरूआत पनि हो।",
+      "url": "https://www.setopati.com/politics/399810",
+      "source": "Setopati",
+      "source_domain": "setopati.com",
+      "published": "2026-10-02T15:10:00+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_7c514a8daf",
+      "title": "‘इगो’ त्यागेर पार्टीको महान् उद्देश्यमा केन्द्रित हुन नेताहरूलाई ओलीको निर्देशन",
+      "summary": "नेकपा (एमाले) का अध्यक्ष एवं पूर्वप्रधानमन्त्री केपी शर्मा ओलीले सानातिना कुरा र अहम् (इगो) त्यागेर पार्टीको महान् उद्देश्यमा केन्द्रित हुन नेताहरूलाई निर्देशन दिएका छन्।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/two-thirds-58-61.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:06:52+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_5f028eafcd",
+      "title": "Traffic resumes on Karnali Corridor in Humla",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQb3FEQkNsRElaUFBJMzRfdjFzdFpLVUd6d00wYW96TUdCT3lfU3l3U2dlV3Y4SklQdGZPWmdSNVVTc0Y3WE9tN0MyR3NpQm54RUpBcWZXWWFBV3YzbW5TSGZjeUs4ZWZ6NmdqekhHNFZNMndpTC0xbmlRallpemNjVUxSamJISG90dnNaeg?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T15:05:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_0a89a7865e",
+      "title": "ठमेलमा पर्यटकलाई दुःख दिने तीन जनाविरुद्ध मुद्दा",
+      "summary": "जिल्ला प्रहरी परिसर काठमाडौंका सूचना अधिकारी एवं प्रहरी उपरीक्षक प्रवक्ता दान बहादुर थापाका अनुसार ‘सुरक्षित ठमेल, ‘जाने होइन’?’ अभियानअन्तर्गत प्रहरीले उनीहरूलाई पक्राउ गरेको हो।...",
+      "url": "https://nagariknews.nagariknetwork.com/social-affairs/case-filed-against-three-people-who-harassed-tourists-in-thamel-16-33.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T15:04:07+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_7ab90c5284",
+      "title": "NA holds 52 meetings in current session",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOTkd3LWJ4SkIyZ2l3VHJJSG1JTFllTDJYbjAxTlZvQ3Nud01pY01uY1NWMXZSdWdCTFF0QmVaYlhWVkplU0kxMkU2cC1PT1NYZTRmSzE3aUxJRUdVZkNqREVCclgzOEtac1ZYQzVrd0kzZzhqTFFBNW1jTmo4OFlTUTJ5NTNremI1?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T15:00:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_def7b97657",
+      "title": "FM Khanal urges climate justice beyond slogans, calls for grant-based finance",
+      "summary": "Foreign Minister Khanal urged the international community to provide new, easily-accessible and grant-based climate finance to Nepal to cope with the crisis that surfaced from climate change.",
+      "url": "https://myrepublica.nagariknetwork.com/news/fm-khanal-urges-climate-justice-beyond-slogans-calls-for-grant-based-financ-24-54.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T15:00:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_d5f799b5e6",
+      "title": "15 dead after a Himalayan avalanche. One detail makes the tragedy even more heartbreaking",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQMmwtWG91NVUyXzh1UW92YnExTGkyNm1Ya3ZrQW1vbk5NZTdpZTQwdXRWdTdQR1MtM3JiN3JJVjVqcXlNUEVOemt6cUhSdTRDTlgtOGVJSlVFeUVpNVZQSWI4VGd1TW5lSzJ4Y2gxd3NzWVRzcGRuUmduX3VrV3VibGthdXI1SXZYVkpQYXdjNmhvNUltN3A3WGJYZDJad0JjNUhfNUpFUXUtUnZ4bDE5ZzVvTVEtTTRqNE5peTNBX3FORWJCTHBhYmg0UVjSAeABQVVfeXFMTVdOMUFMaVY4aGpDNTdIVDZNVkFVR0c5REpTbGVJbEF2bFZvXzJWLVlzdmIzUkwwTEt0UnFKV2VTNEdfcTduZVRTVVlSb21XZEloamlJblFPeDM1aDJybTAtYU1RSWhxZDc3LTJEa3pTMEozNTB3cE1PR2lSYk1TX05nbWpQZW52cUVFQkphNXFVR01VaFJLcDdmaEJ0UXoyYnotdF9SZmFjT2Q3SHNxU1Y0LU41VHhKZlp0Nm1Td2ZJS3FHTXA1MjUycG1aNTVRa0NpQ25fMmVYNGEzS2RzMng?oc=5",
+      "source": "Cleveland.com",
+      "source_domain": "cleveland.com",
+      "published": "2026-10-02T15:00:00+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_eb15139da2",
+      "title": "प्रहरीमाथि दोहोरो छानबिनको मार, संसद अगाडि बढेपछि के गर्छ अख्तियार ?",
+      "summary": "निर्वाचन प्रहरीका सामग्री खरिदको छानवीनमा संसदीय समिति अगाडि बढेपछि उक्त छानबिनलाई के गर्ने भन्नेमा अख्तियारमा अन्यौलता छाएको छ । एक आयुक्त भन्छन्, ‘कि अख्तियारप्रति विश्वास छैन भन्नु पर्‍यो, हैन भने यो शक्तिपृथकीकरणमाथि सरासर हस्तक्षेप हो ।’",
+      "url": "https://nepalpress.com/2026/10/02/769983/the-double-investigation-against-the-police-what-will-the-authorities-do-after-the-parliament-moves-forward/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T14:53:31+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_a51a50d92f",
+      "title": "कांग्रेस महाधिवेशनमा उम्मेदवारको मनोनयन दर्ता असोज १९ गते हुने",
+      "summary": "काठमाडौं। नेपाली कांग्रेसको १५औँ केन्द्रीय महाधिवेशनअन्तर्गत केन्द्रीय कार्यसमितिको निर्वाचनका लागि उम्मेदवारको मनोनयन पत्र दर्ता असोज १९ गते हुने भएको छ। केन्द्रीय निर्वाचन समितिले उम्मेदवारको मनोनयन पत्र दर्ता असोज १९ गते हुने जानकारी दिदै योग्य उम्मेदवारलाई तोकिएको समयभित्र मनोनयन दर्ता गर्न आग्रह गरेको छ। निर्वाचन समितिका अनुसार असोज १९ गते सोमबार दिउँसो २ बजेदेखि साँझ ६ […]",
+      "url": "https://www.dcnepal.com/2026/10/801998/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T14:52:09+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_9a3688a0d3",
+      "title": "लुम्बिनी बौद्ध विश्वविद्यालयको विशिष्ट पहिचान कायम राख्न मन्त्री पोखरेलको निर्देशन",
+      "summary": "लुम्बिनी बौद्ध विश्वविद्यालयको आज अवलोकन भ्रमणका क्रममा मन्त्री पोखरेलले विश्वविद्यालय स्थापनाको उद्देश्यअनुरूप बौद्ध दर्शनमा केन्द्रित शैक्षिक कार्यक्रम सञ्चालन गर्नुपर्ने बताएका हुन्।...",
+      "url": "https://nagariknews.nagariknetwork.com/politics/minister-pokharel-directs-to-maintain-the-unique-identity-of-lumbini-buddhist-university-50-97.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T14:45:54+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_3d010e0c7a",
+      "title": "One gorge, two doors: Nepal’s hedge meets the mountain",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQMk5WWEc3XzFZSEp3dlBUOVRCX1NQMUtzRUN1R3NIZ3VPbERoYzNRWFFaS0ZYRUxxUnJ4a2xmdVBWWTNseUcyX1p5dzR3SWZEOU9jUlVDdjl1WXpSZ2JHanh5TW4zRzY1WGtBQjhRd3Z2TFc3VVkyNS1mME9LcEZva09EYmZVZ0swRnlfWlRWX3V5UlhNbTdn?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T14:45:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_a2b174d7d9",
+      "title": "Minister Chaudhary calls for promoting use of bio fertlisers",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPV3dXa29qWWxHdkJuOGpDNmwzNjREcERJUFRrUm5vMzU4QjBSRzNrZldIdzdUTEZGTkNjbHFaMy1IUGZoNXR1Ui1tWkV0ekx6c0ZvZEFqMldWUXpJN1BsWUFrNVZmc0lqV2hCc0lKdWUtbVpuX0lXalhleXdkZzhLalUzWFhlMi11MEtoRUh0ZUJwN0xhVlhGTVk0MmRKbXpxUnc?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T14:45:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_4f7a5c32dd",
+      "title": "‘रोटीबेटी’ को सम्बन्धलाई पर्यटनसँग जोड्दै पोखरा, उत्तरपूर्वी भारतसँग सम्झौताको तयारी",
+      "summary": "पोखरा र उत्तरपूर्वी भारतका पर्यटन व्यवसायीबीच पर्यटक आदानप्रदान र प्रवर्द्धनका लागि औपचारिक सम्झौता (एमओयु) गर्ने तयारी भएको छ।...",
+      "url": "https://nagariknews.nagariknetwork.com/economy/tour-operators-from-northeastern-india-are-fascinated-by-pokhara-s-nature-culture-and-hospitality-and-are-eager-to-collaborate-in-tourism-61-42.html",
+      "source": "Nagarik News",
+      "source_domain": "nagariknews.nagariknetwork.com",
+      "published": "2026-10-02T14:45:05+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_aac3bfa19d",
+      "title": "अष्ट्रेलियामा घट्दै रोजगारीका अवसर: निजी क्षेत्रमा गिरावट, खुद्रा र सार्वजनिक क्षेत्रमा भने सुधार",
+      "summary": "क्यानबेरा। अष्ट्रेलियामा रोजगारीका लागि उपलब्ध रिक्त पदको संख्या लगातार दोस्रो त्रैमासिक अवधिमा पनि घटेको छ। अष्ट्रेलियाली तथ्यांम ब्युरोले सार्वजनिक गरेको पछिल्लो विवरणअनुसार अगस्टसम्मको तीन महिनामा रोजगारीका खाली पद ०.९ प्रतिशतले घटेर ३ लाख २५ हजारमा सीमित भएका छन्। यसअघि मेसम्मको तीन महिनामा पनि यस्ता पद २.२ प्रतिशतले घटेका थिए। यसरी लगातार दुई अवधिमा रिक्त पद […]",
+      "url": "https://www.dcnepal.com/2026/10/801995/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T14:43:32+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_55b3522e11",
+      "title": "मानवीय संवेदनाको कसीमा प्राकृतिक र मानव सिर्जित विपद्",
+      "summary": "हामीले प्रकृतिबाट सहअस्तित्वबारे पनि सिक्नुपर्छ र मानव–मानवबीच पनि सहअस्तित्व, सहकार्य र सहिष्णुताको संस्कार विकास गर्नुपर्छ । प्राकृतिक विपत्तिबाट जोगिन अवश्य पनि विज्ञान र प्रविधिको सहयोग चाहिन्छ ।",
+      "url": "https://nepalpress.com/2026/10/02/768975/natural-and-man-made-disasters-in-the-context-of-human-sensitivity/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T14:36:49+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_af02209a41",
+      "title": "Bailey bridge installation begins along flood-damaged Galchhi-Betrawati road",
+      "summary": "Kathmandu, October 2 Installation of a Bailey bridge has begun at Betrawati along the flood-damaged Galchhi-Betrawati road section in Rasuwa after an alternative temporary track was opened. According to Infrastructure Development Minister Sunil Lamsal, work on the foundations required for the Bailey bridge had already begun alongside construction of the temporary track. The foundations on […] The post Bailey bridge installation begins along flood-damaged Galchhi-Betrawati road appeared first on OnlineKhabar English News .",
+      "url": "https://english.onlinekhabar.com/bailey-bridge-install-galchhi-betrawati.html",
+      "source": "OnlineKhabar English",
+      "source_domain": "english.onlinekhabar.com",
+      "published": "2026-10-02T14:36:39+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_27b35adf72",
+      "title": "उज्यालो नेपाल पार्टी मूलधारको शक्ति बन्छ : अध्यक्ष घिसिङ",
+      "summary": "रामेछाप । उज्यालो नेपाल पार्टीका अध्यक्ष कुलमान घिसिङले आफ्नो पार्टी मुलुकको प्रमुख राजनीतिक मूलधारको शक्तिका रूपमा स्थापित हुने दाबी गरेका छन्। शुक्रबार मन्थलीमा उज्यालो नेपाल पार्टी रामेछाप समन्वय समितिद्वारा आयोजित विस्तारित बैठक, भेला तथा पुनर्गठन कार्यक्रमलाई सम्बोधन गर्दै अध्यक्ष घिसिङले उक्त दाबी गरेका हुन्। कार्यक्रमलाई सम्बोधन गर्दै उहाँले मुलुकलाई परम्परागत राजनीतिको बेथितिबाट बाहिर निकाल्न स्पष्ट […]",
+      "url": "https://www.dcnepal.com/2026/10/801993/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T14:36:16+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_0490b470b8",
+      "title": "Nepal plans to drain four glacial lakes after flooding disaster",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOa0h1Z19XVU1mclNpUjlGOVgwdHdMVDBZWktDUlJyS1dodDdKOWNZNkFTSXRiZ3Rnd29kSmFrd0RrVVFXa2ZreGQxQ1Z2cDRQSTBVbWlLUUFHOTF3VlpNUnlMbnNFZlRlVVF5bTFLNjNEOFlKbDZDVjVlelhCX1lndDRaRW5tQVJJbjFrdllwLVV1bjR3cTVjblhoWUF2OHcybVNiNFpjUQ?oc=5",
+      "source": "ABC News & Headlines – Australian Broadcasting Corporation",
+      "source_domain": "abc.net.au",
+      "published": "2026-10-02T14:36:16+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_ee2513b845",
+      "title": "Driver arrested with 155 kg of marijuana in Bara",
+      "summary": "Acting on a tip-off, police stopped a car bearing registration number Ba 13 Cha 4734 at Imli Prati at around 9 am while it was traveling from Manahari toward Birgunj.",
+      "url": "https://myrepublica.nagariknetwork.com/news/driver-arrested-with-155-kg-of-marijuana-in-bara-29-87.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T14:33:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_bebf85c034",
+      "title": "चाडपर्वमा तोकिएको भाडाभन्दा बढी नलिन यातायात व्यवसायी महासंघको आग्रह",
+      "summary": "काठमाडौं। नेपाल यातायात व्यवसायी राष्ट्रिय महासङ्घका अध्यक्ष सरोज सिटौलाले चाडपर्वका समयमा यात्रुसँग तोकिएको भाडाभन्दा बढी रकम नलिन यातायात व्यवसायी तथा कर्मचारीलाई आग्रह गरेका छन्। शुक्रबार काठमाडौंको गोङ्गबुस्थित नयाँ बसपार्कमा चाडपर्वलक्षित यात्रु सहायता कक्ष शुभारम्भ कार्यक्रममा बोल्दै अध्यक्ष सिटौलाले यातायात व्यवस्था विभागले तोकेको भाडादरअनुसार मात्रै टिकट बिक्री गर्न आग्रह गरेका हुन्। उनले भने, ‘विभिन्न नागरिक सहायता […]",
+      "url": "https://www.dcnepal.com/2026/10/801990/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T14:29:16+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_92736497cf",
+      "title": "एमालेका नवमनोनीत ३३ केन्द्रीय सदस्यद्वारा पद तथा गोपनीयताको शपथ",
+      "summary": "काठमाडौं । नेकपा एमालेका नवमनोनीत ३३ जना केन्द्रीय सदस्यहरूले पद तथा गोपनीयताको शपथ लिएका छन्। पार्टी केन्द्रीय कार्यालय च्यासलमा आयोजित एक विशेष कार्यक्रमका बिच एमाले अध्यक्ष केपी शर्मा ओलीले मनोनीत सदस्यहरूलाई पद तथा गोपनीयताको शपथ गराउनुभएको हो। गत असोज ५ देखि ८ गतेसम्म बसेको एमाले केन्द्रीय कमिटीको तेस्रो पूर्ण बैठकले पार्टीको सांगठनिक सुदृढीकरण र समावेशी […]",
+      "url": "https://www.dcnepal.com/2026/10/801987/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T14:26:05+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_cb440524bc",
+      "title": "कुर्दाकुर्दै फर्केनन् वीरबहादुर, कुशबाट दाहसंस्कार",
+      "summary": "भोटेकोसीमा आएको बाढीमा बेपत्ता भएका टीकापुर नगरपालिका-१ समितिपुरका ३५ वर्षीय वीरबहादुर चौधरीको परिवार लामो समयसम्म उनको प्रतीक्षामा बस्यो।",
+      "url": "https://nepalpress.com/2026/10/02/769977/bir-bahadur-did-not-return-home-cremation-from-kush/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T14:24:27+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_76bfde660e",
+      "title": "Rabi Lamichhane-Balen Shah Relationship Under Scrutiny Amidst Political Speculation",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxONkdfTWE4WjM2NzB0T3h2NUxOWTgyRVU1TFVXR0hscUtDZTEwN0dxX0F0dndNX3RLcjREMmZkWmR6WENiZ3hUSzY2eDRXWGplMFdYSEpCaVp4S2d0OTVndUxWRlNPQWg0MmRFdWJSM3QtRWF6OURjUmVFRFVGSC1KN1BmWHZoN0tQR05YRDNjNHVhY0hoakU4WXEzTHdsQzU1TzQxWnFpME9OUjN0d2dMMEVmcUxMVlRhV0Nldg?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T14:21:35+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_eb488c4d28",
+      "title": "शिक्षामन्त्रीसँग लुम्बिनी बौद्ध विश्वविद्यालयमा अनियमितता छानबिन गर्न माग",
+      "summary": "ध्यानाकर्षणपत्रमा विश्वविद्यालयलाई स्थानीय आवश्यकता र विश्वस्तरीय बौद्ध शिक्षाको केन्द्रका रूपमा विकास गर्न सरकारसँग आग्रह गरिएको छ ।",
+      "url": "https://nepalpress.com/2026/10/02/769970/demand-to-the-education-minister-to-investigate-irregularities-at-lumbini-buddhist-university/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T14:18:37+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_29e1858a5b",
+      "title": "Government Registers Federal Civil Service Bill, Faces Immediate Criticism",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOU3VfbWFDYjEyUVI1WDM2VkRuRU5PTGNCLUVUM29kdUo4VndsWGlhNWNzRDVsczNJLVNUNlIwdXVLT003WGpmazJ4Zm5SNDIxczZ3Q1NIS2dWU2tKUzFZZGo5cDhodlVieGM2b3lUWVdzaGRFaWVxQjh6eDZzMTBEdUNPLXJ4X2pVYlBROElyWDJrdkpQVjRpbjBCSkZSSU5GZ2Q4LQ?oc=5",
+      "source": "Ratopati",
+      "source_domain": "english.ratopati.com",
+      "published": "2026-10-02T14:18:30+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_43989fe55d",
+      "title": "मधेश प्रदेशमा अनलाइन उद्योग दर्ता सेवा सुरु",
+      "summary": "जनकपुर। मधेश प्रदेशमा उद्योग व्यवस्थापन सूचना प्रणाली (आईएमआईएस) मार्फत अनलाइन उद्योग दर्ता तथा नवीकरणलगायतका सेवा औपचारिक रूपमा सुरु भएको छ। जनकपुरधाममा शुक्रबार उद्योग, वाणिज्य तथा पर्यटनमन्त्री कनिष पटेलले अनलाइन उद्योग दर्ता सेवाको उद्घाटन गर्दै अब उद्योगी तथा उद्यमीले सम्बन्धित कार्यालयमा पटक–पटक धाउनुपर्ने बाध्यता अन्त्य भएको बताएका छन्। मन्त्री पटेलले सेवाग्राहीले घरमै बसेर अनलाइनमार्फत उद्योग दर्ताका […]",
+      "url": "https://www.dcnepal.com/2026/10/801984/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T14:17:56+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_1547aa4858",
+      "title": "Nepal floods: A deepening crisis",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE5WZmZCc0MyVDRqem44MHlmZWthVjNGX1F0OUcwZklJWW1rNkc4U0p4cG91TjhLQ1JwTkRndDFkVHR0NTJqYjEyZjIxbU1HU3lld0lxdk9ONUxSWm85bUJOeE9XQkFreTdQdXhOVkhyVHZwdw?oc=5",
+      "source": "Islamic Relief Worldwide",
+      "source_domain": "islamic-relief.org",
+      "published": "2026-10-02T14:13:35+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_df745e14b1",
+      "title": "Nepal floods: One of 55 missing Malaysians confirmed safe, returns home",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQNzZVMU85TjNQOUtvSFhXWnJ1bHlyVTBKZGw1MzFSY1JCdEhpTGI3N0RuaUNaZ2hrSGtqVk9ZT2ROWkZqbnFIOWRMc0JlWVlXUjllM1NYbjZ6cktLLUxlRU41bi1uRE5ibEJUaTJQZjJSZ2xqaTgtZm8zNkFoVnlGaFk5WVJwaklFb3dNdXY1YjVqcWtqWC1wVzlKTXRLOXQwR2VlcXd3bGliTkZpVTBaNUtrbk1UYXhF?oc=5",
+      "source": "themalaysianreserve.com",
+      "source_domain": "themalaysianreserve.com",
+      "published": "2026-10-02T14:11:29+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_c156458f2c",
+      "title": "पहिलो दिनमै ५० करोड नाघ्यो 'दृश्यम ३'को कमाइ",
+      "summary": "'दृश्यमः द कन्क्लुजन' शुक्रबारदेखि नेपालका सिनेमा हलमा समेत प्रदर्शनमा छ।",
+      "url": "https://www.setopati.com/art/bollywood/399827",
+      "source": "Setopati",
+      "source_domain": "setopati.com",
+      "published": "2026-10-02T14:10:00+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_d4653f3c3f",
+      "title": "पृथ्वी राजमार्गअन्तर्गत धादिङमा शनिबार ५ घण्टा सवारी आवागमन बन्द हुने",
+      "summary": "काठमाडौं । पृथ्वी राजमार्गअन्तर्गत धादिङमा भोलि (शनिबार) सवारी आवागमन पूर्ण रूपमा बन्द हुने भएको छ । भोटेकोशीमा आएको बाढीका कारण गजुरी गाउँपालिका-२ फुर्केखालामा रहेको पुल बगाएको र वैकल्पिक मार्गका रूपमा प्रयोग हुँदै आएको सडकमा मर्मतसम्भार गर्नुपर्ने भएकाले शनिबार बिहान १० बजेदेखि दिउँसो ३ बजेसम्म सवारी आवागमन पूर्णरुपमा बन्द गरिने भएको हो । वैकल्पिक बाटोका रूपमा […]",
+      "url": "https://nepalpress.com/2026/10/02/769971/traffic-will-be-closed-for-5-hours-in-dhading-along-the-prithvi-highway-on-saturday/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T14:09:50+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_fe15690f6a",
+      "title": "Disney layoffs ‘extremely painful’ but necessary, says president Dana Walden",
+      "summary": "Los Angeles, October 2 Walt Disney Company President Dana Walden has described the company’s recent layoffs as “extremely painful” but necessary as the entertainment giant faces intensifying competition in streaming and rapid technological changes. Speaking at the Bloomberg Screentime conference in Los Angeles on Thursday, Walden said Disney had recently parted ways with employees she […] The post Disney layoffs ‘extremely painful’ but necessary, says president Dana Walden appeared first on OnlineKhabar English News .",
+      "url": "https://english.onlinekhabar.com/disney-layoffs-extremely-painful.html",
+      "source": "OnlineKhabar English",
+      "source_domain": "english.onlinekhabar.com",
+      "published": "2026-10-02T14:07:36+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_e4f6cec0e7",
+      "title": "लोकतान्त्रिक थलोको गरिमा कायम राख्न सबैको भूमिका महत्वपूर्ण–सभामुख",
+      "summary": "",
+      "url": "https://www.setopati.com/politics/399826",
+      "source": "Setopati",
+      "source_domain": "setopati.com",
+      "published": "2026-10-02T14:07:28+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_87a06ef18b",
+      "title": "नयाँ बसपार्कमा चाडपर्व लक्षित यात्रु सहायता कक्ष स्थापना",
+      "summary": "काठमाडौं। ‘सुरक्षित सडक र सवारी, हामी सबैको जिम्मेवारी’ भन्ने नारासहित चाडपर्व लक्षित यात्रु सहायता कक्ष–२०८३ सञ्चालनमा आएको छ। काठमाडौंको नयाँबसपार्कमा काठमाडौं उपत्यका प्रहरी कार्यालयका प्रमुख प्रहरी अतिरिक्त महानिरीक्षक शुशिल सिंह राठौरले रिबन काटेर सहायता कक्षको शुभारम्भ गरेका हुन्। विजया दशमी, तिहार तथा छठ पर्वलाई लक्षित गर्दै काठमाडौं उपत्यकाबाट बाहिरिने यात्रुलाई सुरक्षित, व्यवस्थित र सहज यात्रा […]",
+      "url": "https://www.dcnepal.com/2026/10/801981/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T14:03:48+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_114a70c8e0",
+      "title": "सिद्धार्थ बैंक र दराजको सहकार्यमा '१०–१० दसैं धमाका' अफर",
+      "summary": "",
+      "url": "https://www.setopati.com/kinmel/banking/399821",
+      "source": "Setopati",
+      "source_domain": "setopati.com",
+      "published": "2026-10-02T14:03:46+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_68fe91f18b",
+      "title": "Nepal's $50 Million Plan To Drain Four Glacial Lakes After Deadly Floods",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQbmN0UG1NU3J1V21tQTNoMW9BUi1VMWxKUkpJSC1MMlRQSF9aSkZjY0FzRzl5WWxRYnZYQzJmcllfNDZacFU4NExEd1cya2p1RUh4b1EzQk9OcTA5N2dkSVdOQ1NnTWpxTHQ3Q1A5RGM3SS1odThxLV9ycnF3NWxwZnFiSlM4M25ENVFaZnQ0NDRSYzJpaTJvRUtaNGZlMjFXbjVEMm9Ea2ZKRjNyaHY0Vjhn0gG6AUFVX3lxTE82RDQ4VFhDdWRVUFJ4OWtJcTZSclJsU2I0NF9aM2ZySkpxQl91d0RjVk8tODIwSWd1Tktha1NKMW1rQWI5dXNyWE1LTmdEMF95Y0V5V1NqUkE5a2JLWTcyclROYW90OHJkMmc0dkN0T1RoZzZBUHdOZHdfWkk1ZUxZb1UwaTBVdENRY3p4RVJOYlZjUWFtX3ExWlJtXzNFRjBQa0MxNHE4NDlxbV82em9MSUF3U3NzOVhWdw?oc=5",
+      "source": "NDTV Profit",
+      "source_domain": "ndtvprofit.com",
+      "published": "2026-10-02T14:02:14+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_491b8bb619",
+      "title": "सस्तो र कम गतिको इन्टरनेट प्याकेज हटाउने संघको घोषणा",
+      "summary": "काठमाडौँ । इन्टरनेट सेवा प्रदायक संघ नेपाल (ISP Association of Nepal) ले आगामी असोज १९ गतेदेखि हाल सञ्चालनमा रहेका सस्तो मूल्यका र कम गतिको इन्टरनेट प्याकेज उपलब्ध गराउन नसक्ने जनाएको छ । संघका अध्यक्ष सुधिर पराजुलीले जारी गरेको विज्ञप्तिमा पछिल्ला वर्षमा भएको मूल्यवृद्धि, मध्यपूर्वको तनावका कारण बढेको इन्धनको मूल्य, फाइबरको मूल्यवृद्धि, उच्च मुद्रास्फीति तथा कृत्रिम […]",
+      "url": "https://nepalpress.com/2026/10/02/769965/association-announces-removal-of-cheap-and-low-speed-internet-packages/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T13:59:43+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_f75a5cc80c",
+      "title": "Committee begins probe into public bus driver’s self-immolation in Tripureshwor",
+      "summary": "Kathmandu, October 2 A committee formed to investigate the self-immolation of public bus driver Arjun Dong Tamang in Tripureshwor has held its first meeting. The meeting was held on Friday under the coordination of Rajiv Pokharel, director general of the Department of Transport Management. The committee has made four decisions as part of its investigation. […] The post Committee begins probe into public bus driver’s self-immolation in Tripureshwor appeared first on OnlineKhabar English News .",
+      "url": "https://english.onlinekhabar.com/committee-probe-public-bus-drivers-self-immolatiom.html",
+      "source": "OnlineKhabar English",
+      "source_domain": "english.onlinekhabar.com",
+      "published": "2026-10-02T13:51:31+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_d7f62387ed",
+      "title": "Nepal Flash Flood 2026 Situation Report 6 (1 October 2026)",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxORFFMZUh0TWRQc2ZBbThlVnFKNHZZNVVtOFV6emdlamxHUU5GV0tXVEdpWkNwWlBoUktKcEJpNE5XVVhxZE5kYzg2cl9VNUN6bWxhQ2NJdHAtOG55c0VYWXJ1VVdKT0pJVEtsRWlDdnprbEE4YjMybjdFZW5sOFZYY0pwVlFDd2wtMnY5bE5hdGxvVFBFcmc?oc=5",
+      "source": "ReliefWeb",
+      "source_domain": "reliefweb.int",
+      "published": "2026-10-02T13:50:22+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_b0e876770e",
+      "title": "कागेश्वरी मनोहराका इन्जिनियरसहित तीन जनाविरुद्ध भ्रष्टाचार मुद्दा दायर",
+      "summary": "काठमाडौं। अख्तियार दुरुपयोग अनुसन्धान आयोगले कागेश्वरी मनोहरा नगरपालिकाकी इन्जिनियर दिपा कार्कीसहित तीन जनाविरुद्ध घुस लिएर भ्रष्टाचार गरेको आरोपमा विशेष अदालत काठमाडौंमा आरोपपत्र दायर गरेको छ। आरोपपत्रमा इन्जिनियर कार्की, आस्मा कार्की र आशिष पौडेललाई प्रतिवादी बनाइएको छ। अख्तियारका अनुसार भवन निर्माण तथा बस्ती विकास शाखा प्रमुखसमेत रहेकी दिपा कार्कीले घर निर्माणको संरचनागत विश्लेषण स्वीकृत गर्नेलगायतका काममा […]",
+      "url": "https://www.dcnepal.com/2026/10/801979/",
+      "source": "DC Nepal",
+      "source_domain": "dcnepal.com",
+      "published": "2026-10-02T13:47:55+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_e8e24aa77d",
+      "title": "मदिराले मातेका पुरुषले श्रीमतीमाथि मट्टितेल छर्केर आगो लगाए",
+      "summary": "रुपन्देही । अर्घाखाँचीको सन्धिखर्कमा रक्सीले मातेका एक पुरुषले आफ्नै श्रीमतीमाथि मट्टितेल छर्केर आगो लगाएका छन् । सन्धिखर्क नगरपालिका–११ रामपोतका ४२ वर्षीय खिमबहादुर मुखियाले शुक्रबार दिउँसो घरमै रहेकी ३६ वर्षीया श्रीमती सुनिता मुखियामाथि आगो लगाएको प्रहरीले जनाएको छ । प्रहरीका अनुसार घटनाका बेला खिमबहादुर रक्सीले मातेका थिए । आगोले जलेर घाइते भएकी सुनिताको अर्घाखाँची अस्पतालमा प्रारम्भिक […]",
+      "url": "https://nepalpress.com/2026/10/02/769961/drunk-man-pours-kerosene-on-wife-and-sets-her-on-fire/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T13:41:54+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_f3b8331b9a",
+      "title": "HoR session: Oppn’ leaders say govt has failed to deliver concrete change",
+      "summary": "The NCP parliamentary party deputy leader emphasized that there should be a review of the government's announcements, commitments, programmes, and budget, and that democratic process and procedures should be followed.",
+      "url": "https://myrepublica.nagariknetwork.com/news/hor-session-oppn-leaders-say-govt-has-failed-to-deliver-concrete-change-68-80.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T13:40:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_fc67d294db",
+      "title": "Foreign policy should drive Nepal’s economic prosperity: Foreign Minister Khanal",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTFBvcGlEWjU5cW40NGtxM2hueVk0VTdyY3h6dWh4SFJFbWxyemFRWW9KeTN6Q1BEMjczNjA2Nm9mVExscHBsRVpEVTV6NUFPYTVyUEpIOGpETEI?oc=5",
+      "source": "Khabarhub",
+      "source_domain": "english.khabarhub.com",
+      "published": "2026-10-02T13:39:10+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_81c5d5f16c",
+      "title": "म्याक्स टाइगरको ‘दशैं धमाका’ अफर: ३६ जनालाई बाइक र स्कुटर, एक जनालाई कार जित्ने मौका",
+      "summary": "काठमाडौं। म्याक्स टाइगर इनर्जी ड्रिंकले दशैंलाई लक्षित गर्दै ‘दशैं धमाका’ योजना सार्वजनिक गरेको छ। कम्पनीले यस योजनाअन्तर्गत ३६ जनालाई यामाहाका बाइक तथा स्कुटर र एक जना भाग्यशाली विजेतालाई कार जित्ने अवसर प्रदान गर्ने भएको छ। योजनाअनुसार १८ जनाले यामाहाको बाइक र १८ जनाले यामाहाको स्कुटर जित्न सक्नेछन्। त्यस्तै, एक जना भाग्यशाली विजेताले बम्पर उपहारस्वरूप प्रोटोन […]",
+      "url": "https://nepalpress.com/2026/10/02/769957/max-tigers-dashain-dhamaka-offer-36-people-get-a-bike-and-scooter-one-gets-a-chance-to-win-a-car/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T13:33:53+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_53ff75d520",
+      "title": "Nepal-Tibet flood death toll surpasses 900, officials say, more than 4,700 missing",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMitgtBVV95cUxPNF9PWXVFOW9kYjY2R2ljT09lVEY3OERtU3BRUmJfXzk1eGZzTk5xTFVDM3AxNGF5MXJTTUF1Q1czSkdSWHgzd19ZM2FCaW8tNFdfRllfdzNqMDF1QUlnN3FMY1BxaHJ5cmdfYWZRTWRLNFJQc3B1TUJMdVA1Y1EzNmR5Ym5XYUlJd1ZPWklqYV9GVHVlTFEzMGN3NmxGUFJSQ3Jsd212RDJyRFppcmtfTUFiMXY1aVZKUHFYR1A2YTd2alpodDRRM0RRa2lqSzJVY191bHZIQkFtYmZwYXpfUzc5ak1tMmZXd3A0bUxIamdDTEQ2eTJPZ2k1R3ZTalVEbUk4WHVTUDBBSXpId3YzTDVjWjI0YnRRRnAyMVFBQVk0aUxKQVhQdnFFdUlJeUNJZVJFM2gzcjhqeFEwVzJlbC1XV29GcDk5V0JVX0RfaklVcVQ0TG1zUGF1ZExLdFZTaXlncXJ5MVJaM1JpZmhkZE5QaTRHVTRSSE1ZTURPbGYyUDU3dTdpdjlOSHRHUnF3aVFkZ0dEUWRIemV0ZjI4UF9yaGZ3dElkWmlVRVZoaUEyQktDNFhRV19HOGp4cDhSQUdtOEpmSGVVWEVrVTJqSERMbG03b3RTNHEyUHNwZzFQc2xULUpQYzNrdjJMUGVPYnFmNnZXME16V1JTRVNKSVpONXZFSjJ6ZXUxZXMwNlpDMVRFVFdtcjQwcXE3Q0VPS0R1Nm01MHAxSjJGdFp4blB6R245aEJSMnNFa3dGc1pnUm1KbUM5emlhTTVsUFRiMVAzSG12Wlk1Rl9kUDdna1F6b1RWM0JDendUVjA3bFFqWGE1R0tIblJuajNuclJiNmY2REtVYjFkRWVBZlZ6MVdsQ0tEbV9xVjJXeV9qR3RNSGFFbV85TFlWcnlLbXRfNFIyN2xCcHdFVDVXR2N1bEsyYkxISEtRYV9oalNlakU4bzJoaXloSVU1RHVEMWVsY0JlTlJuZGZuV2Ftd3A2MUtQT0R4b1dhZlFtWWdQZFhYQ2kzTGdMbnNrc2tyY1M5anV3dE9sYW1YUEJOSUx4UGRNZVlmTk5xdVNPRHZiTzlwYVRxN3BIOXJjaWJ0NkxpMEF4N3c0aXZBYldET2RSdWZLdmZBd0tmLUUyaGFGUm53aUtxLUxSX0ZadWFaR21GYjVLZzNlY2ptaGxUT2diTzd1dlRtcEk0RzA5cVRmNVhQYlJHdmt6N3dsT21ZZGFPTEpvclV3SS1CeFJCN1pVM1dydFJqeXVNLW9iRkl5RDlDLVoza0VLeXJ3WUk2bTY4SlNiOEk5SkpJWkx3OEdHaVFZRVVnMGpocTRVd3dOZ2FZNVVVbU9tZjZoR3NIaHg2aVduckJ1S0t1SWRoOWlUcHpEcWJITzN6dDFQUU9udXpIemZ4eG1rRVhFdl9ZR3M1THJrN0swRHNXRjRyREtTRnJnQk9Qd2JfWDR1YW8xUjVZc3hSLWM0WkR2SWhXRWhPSnpyX2NjaHhjSFozUlpjTm8tNFNEaDJvTDZaUTloYmhNWVEyQ1FkRmQ3ZXFxRHAwc0ZKa3BqRDFTNFNwQlZzcHVHQzBYdHIwbWRzS1RCS1REWDVPQTlYNXVwMV8tMWFaRG1hNm1NOFlKb25yS2V0NmNQX3hyczBmOTQ3bjFVLXpScnRiOWNhaWtIQjM3SVFmUlNOakdfTk1oNmZoUF9ORG5QR1VGS0VtWUFSbDRYNUE0cG1zVUluWXVPV2lCRGNUZGwyZmZ6TG9mYjhEa2FUeFAzOVkzZ29LTExTLTZtbnVtN1hXdlBqLWpzd2dsZ21MY0tjQkxVckpGcGxSVEpuVWJtdjlmS3hzWXI1SmxyVTNIZUN5MV9oenRJendEZWU3aUVDX2xCeTBiOWNoZUlpTGlROHZqcVppZm0yRmF4VDVXNjQ3bmN2dVhqUUN2U1pmS2xPMlJ3?oc=5",
+      "source": "ABC7 San Francisco",
+      "source_domain": "abc7news.com",
+      "published": "2026-10-02T13:31:54+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_1bd109a14e",
+      "title": "आचार्यको मराठी आइटम गीत रिलिज– प्रमोद अग्रहरीसँग गंगा केसीको ठुम्का",
+      "summary": "काठमाडौं । निखिल उप्रेति निर्देशित चलचित्र ‘आचार्य’ दोस्रो सातामा प्रवेश गर्दा यसको अर्को गीत सार्वजनिक गरिएको छ । ‘एटम बम’ बोलको मराठी गीतलाई आज युट्यूवमा रिलिज गरिएको हो । डान्सिङ बिटमा रहेको आइटम गीतमा बलिउड गायिका सोनु कक्कर र मराठी गायक आदर्श सिन्धेले स्वर दिएका छन् । गीतका शब्दहरु शुभांगी सेनोइ र मुकुन्द सोनाभानेले लेखेका […]",
+      "url": "https://nepalpress.com/2026/10/02/769954/acharyas-marathi-item-song-released-ganga-kcs-thumka-with-pramod-agrahari/",
+      "source": "Nepal Press",
+      "source_domain": "nepalpress.com",
+      "published": "2026-10-02T13:30:34+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_1e9c06edd7",
+      "title": "Australia’s rental crisis deepens as vacancy rates fall and rents rise",
+      "summary": "Kathmandu, October 2 Australia’s rental housing crisis is deepening as rents continue to rise while the availability of homes remains limited, putting growing financial pressure on international students, new migrants and low- and middle-income households. A September 2026 analysis by Commonwealth Bank found that Australia’s national rental vacancy rate had fallen to around 1.8 percent, […] The post Australia’s rental crisis deepens as vacancy rates fall and rents rise appeared first on OnlineKhabar English News .",
+      "url": "https://english.onlinekhabar.com/australias-rental-crisis.html",
+      "source": "OnlineKhabar English",
+      "source_domain": "english.onlinekhabar.com",
+      "published": "2026-10-02T13:30:22+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_f27b1d2227",
+      "title": "Speaker Aryal to raise climate issues at IPU assembly",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQQjJPWmk3T3RZcTk3dmZ1UWg1NnNjaTMxbkx1dTNaTW9ueEhBTGJCY3pvblJ4eGNRU3VUTmxjR2VDR2xQNlNSaTFwZ2Zoa016bTAtdjlXRnl4MHBqdFJ1ZVNReXRqcHg4WkFSVnhDYnJ5eGNja3NoSkp3TWpUTlI0emo4VDZTdGhnNW1sMjFsNG9jYnYxOURoRE5tNA?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T13:29:46+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_d5506e9ec3",
+      "title": "Nepal to reduce flood risk by draining four glacial lakes · BNN",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQc0xlbk1SMkhXSjdqR2FSTXpiQlN2bURXUk1FRmg1bnBwZG0ySTBpZi1lZVFKTW9aMGluZ2JxeUtHdFVXWTRXWl9ja2hvVjVfRENMcVplMkh3aDdIMklWcTF2d001UHZaYlE4dTZDN0lIaXpfal83Mi1XcjZvRlp1bHZSM1NkSkpHNFBCU2Q5Y29sVzJuZmgw?oc=5",
+      "source": "bnn-news.com",
+      "source_domain": "bnn-news.com",
+      "published": "2026-10-02T13:25:51+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_a1df98f6ec",
+      "title": "Foreign Minister Khanal calls for linking diplomacy with national prosperity",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxOTDFIaExoSXFoTy1fNW91N3NvVXpaT1NVaFdJOUczZnNhMzRaVThLRTBQNGFvY2RSZlExTjlQcFk5OXY5MlRlakZBTGZBSEt0WEZoUWhseWN5UjZvZGhLdGRhZFhocU9McXVsUkVSWWl2amdCZDllUU1Ibko3WEFpdE5tWkxvQ29CVUdMQlpMdUszSGRhWTIyUnhfY3EtdGtBN0ktWUlRRVFkSzE1VEJ1V2VZUVA2TzFIVDY4?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T13:25:40+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_460ff0682d",
+      "title": "Tennis in Nepal: How the Sport Is Building a Stronger Presence",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQZmF3bk1CV2U1UW1PQVRZQlViWXhQTFlvWk1oVHM3R1BTanY0ZV84Zm1wcHZadDQtcUN3SjFHZExqV3gyTVBhdHJIdlJSV2lZbXFoWDBZbk00ZXI0MW1JMlhGQnppdFFtNkNVYjU4dXlPNVJob1lSZ2FEcXZHRUJGS0VDclZQX2Nac2xxX0JheFZxN2w1T0doekh3?oc=5",
+      "source": "World Tennis Magazine",
+      "source_domain": "worldtennismagazine.com",
+      "published": "2026-10-02T13:23:07+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_dc422d3252",
+      "title": "Hundreds missing, including 47 Americans, in deadly Nepal floods, local officials say - ABC News",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPNFFKbWhSWTR5S25UT01SQnE4V1Jua044M19rZmJiYzRwRHphTU1GdFBIUi1ORXl2UUF1Y0NzNG00cDVuNzZuZzFjQ0doUTF5VUg1elRPdE02V0UxNFB1U1dub1ZrMnpjR190bnJIV2VWN0ZPbTRucURXYTlkQWlHS2d0XzR4dzgxaGdCWk92OE9paV92VWIzdTlYNE5xQThPNWRzR2N3R0hjUdIBrwFBVV95cUxNYjM2dnl3U1htTjMxc1ctcjBITTVMMXlXQlFCTjNPV2cxOXF6U3BmU2xSZHZRdHI1QTJRYTB6T1kyVVJ0Y2s3UlZQUm1ZS210UUozM0F3M09Sbk1QWU9pTXVwdjBNT3lGRkhnM0NGZU5ha1BuVDJ1R1hKbVR1M0REMkVMdFpZYnhDb2RUdlNSMVpQbHEwUXV5WGxSMFp1ci16M2dzVGhnQlNpTlVHZ3Qw?oc=5",
+      "source": "ABC News - Breaking News, Latest News and Videos",
+      "source_domain": "abcnews.com",
+      "published": "2026-10-02T13:21:03+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_82c7f2aa7b",
+      "title": "The Lamichhane Foundation in the UK Provides Rs 10.5 Million in Assistance to Flood Victims",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1XLVZreGZrVmluY0luTTJMSWp1cGM2T1lSNWxJeW1WQV9MazRWaVhPeGtQV3lCalpsWXp0MkNIck1UN0xzbGxGUV9ya281N01Dc1pseGkyZE1PUFNtelI2SVp2SmZfWG1lSGJ5Ql9JVFhfS0x4R0hR?oc=5",
+      "source": "Ekantipur",
+      "source_domain": "ekantipur.com",
+      "published": "2026-10-02T13:16:38+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_26366c5728",
+      "title": "State to support five children orphaned by floods until age 18",
+      "summary": "The government will provide long-term care and support to five children who lost their parents in the devastating Bhotekoshi flood, including education, upbringing and other essential needs until they turn 18.",
+      "url": "https://myrepublica.nagariknetwork.com/news/state-to-support-five-children-orphaned-by-floods-until-age-18-22-54.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T13:16:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_a98f847309",
+      "title": "NC General Convention won’t have panels; delegates to vote independently: Bishwa Prakash Sharma",
+      "summary": "Kathmandu, October 2 Nepali Congress will not form panels for its upcoming 15th General Convention, and delegates will be free to vote for candidates of their choice, party Vice President Bishwa Prakash Sharma has said. Speaking to Onlinekhabar at the convention venue at Khulamanch, Sharma said the convention would seek to institutionalise the changes initiated […] The post NC General Convention won’t have panels; delegates to vote independently: Bishwa Prakash Sharma appeared first on OnlineKhabar English News .",
+      "url": "https://english.onlinekhabar.com/nc-general-convention-no-panel.html",
+      "source": "OnlineKhabar English",
+      "source_domain": "english.onlinekhabar.com",
+      "published": "2026-10-02T13:14:59+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_73769debd0",
+      "title": "Rights on paper, dignity in practice: Why climate justice must include older people",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNWG1JUTZvZDItVlBWUm9YOFd4S3FoYVJZVEhGVzEwcm9IS1dTaGFjdm5rWUtZUnRUdXF4NktBZ3RnRnFKN09ETXZNV2duSWFNcEJJYjRzcXNLSmEwbFFRV3hEenZ5ZHVzMV9hUnFZNVlQbmJCY3hPal9pZmx2T2FhbnZMMXllVTNJZ2UwNV9hVXpfYjJ0MThuVW1WTi1PM0ZJTllmNWhaQXM1aUZReFM4N3RHSlBCSnRiYVo4Z1RNQQ?oc=5",
+      "source": "Nepalnews.com",
+      "source_domain": "english.nepalnews.com",
+      "published": "2026-10-02T13:05:39+00:00",
+      "language": "en",
+      "via": "google_news"
+    },
+    {
+      "id": "c_91149af81c",
+      "title": "Around 7,500 delegates expected to participate in 15th general convention of Nepali Congress",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE54YzI1aElGcWM5R0ZnOEo5Zkt0bFBRY2VLVHBOdFc3Zmd5VzFTQnJHdjVxUV9fbG1SQXFBaXJBamxhd0hVUmt4OWQyOUdqVFo5RlE?oc=5",
+      "source": "Setopati",
+      "source_domain": "en.setopati.com",
+      "published": "2026-10-02T12:53:34+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_5517a5aa6a",
+      "title": "NA meeting: Home Minister tables pending replies from multiple ministries",
+      "summary": "Minister Gurung himself tabled in the upper house the answers to verbal and written questions related to the Ministry of Finance and the Ministry of Infrastructure Development that could not be presented in the NA.",
+      "url": "https://myrepublica.nagariknetwork.com/news/na-meeting-home-minister-tables-pending-replies-from-multiple-ministries-70-66.html",
+      "source": "Republica",
+      "source_domain": "myrepublica.nagariknetwork.com",
+      "published": "2026-10-02T12:52:00+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_665aa0d94d",
+      "title": "बाढीपछि प्रभावित क्षेत्रमा पीडितका लागि केके काम भए, केके हुँदै छन्?",
+      "summary": "भोटेकोशी-त्रिशूली बाढी आएको करिब पाँच सातामा खास गरी लाभग्राही पहिचान गर्ने, बाटो निर्माण, झोलुङ्गे पुल निर्माणलगायतका काम भइरहेको अधिकारीहरूले बताएका छन्।",
+      "url": "https://www.bbc.com/nepali/articles/cmjrxrw95yd1o?at_medium=RSS&at_campaign=rss",
+      "source": "BBC Nepali",
+      "source_domain": "bbc.com/nepali",
+      "published": "2026-10-02T12:51:10+00:00",
+      "language": "ne",
+      "via": "rss"
+    },
+    {
+      "id": "c_613d4a67cc",
+      "title": "Speaker Aryal says he does not feel Parliament has become weaker",
+      "summary": "Kathmandu, October 2 Speaker Dol Prasad Aryal has said he does not feel that Parliament has become weaker. Speaking to journalists on the occasion of the conclusion of the budget session of the House of Representatives, Aryal said there had been no decline in the dignity, pace of work or accountability of Parliament towards the […] The post Speaker Aryal says he does not feel Parliament has become weaker appeared first on OnlineKhabar English News .",
+      "url": "https://english.onlinekhabar.com/speaker-not-feel-parliament-weaker.html",
+      "source": "OnlineKhabar English",
+      "source_domain": "english.onlinekhabar.com",
+      "published": "2026-10-02T12:48:40+00:00",
+      "language": "en",
+      "via": "rss"
+    },
+    {
+      "id": "c_d9e2c94ebd",
+      "title": "Flydubai pilot Macher told Modi: “I felt I couldn’t let all the passengers die.”",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxPb0hoYUxrajg1dDVvXy1yakFWNWQ0ZkVVcEd1UFI5c1l4MHluY2RiREtBeThseGtCdkxkVG1sQ25iZ0k0VThqZWJUZnlvLXNvdFhmNk1iLW0xQmktYThUTjBMcTg0aTk1NHo3bFFuUXlYdnllQ0FBeVlRbV9YZUpkSjdYQTM0R0IwVVRwMlFvcWMxVXpza2hJckI0M1N4a01QU21vc3RNVTZwelRQQlBFQXhsQTJUMHk1aE52aDFhV0tnV0d4TDN5a0pQNHJNRGxxWTk0eQ?oc=5",
+      "source": "Ekantipur",
+      "source_domain": "ekantipur.com",
+      "published": "2026-10-02T12:47:59+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    },
+    {
+      "id": "c_1cca5a3c3b",
+      "title": "Nepali Congress’s 15th General Convention: Nominations for the Central Working Committee to Be Registered on October 5",
+      "summary": "",
+      "url": "https://news.google.com/rss/articles/CBMi9wFBVV95cUxONGVfbDNOV3d1TnEwd0tXVk1PNXI0R1RiMzBuc0REZjk3VzgxaUhUVmoxVnhXaEhNVC1BZWxlQU9LZlRBUWphYXMzeldZU2FESmRhcGwta3I5aFdVR2ZWQzRHLXJJblNXNFBaWXhLQmxBMDhIUkpzMGs3bW1tYkpGYWt0SXRJc2Rna3F2d3AwYjc3RzRBU3p4RDlNQnpFQVBnMDhxdEFIa1g2Y3Jid1VIY1ZTTlpkRFJob240R0lqMldoeE1zTVpNak5lZ2dWT1dQMER5Uk9xclZhWFA4VDZqa0VqbU12QmR0THdWZ21Zd25FZlV5VUxz?oc=5",
+      "source": "Ekantipur",
+      "source_domain": "ekantipur.com",
+      "published": "2026-10-02T12:45:13+00:00",
+      "language": "en",
+      "via": "google_news_fallback"
+    }
+  ],
+  "stories": [
+    {
+      "id": "2026-10-03-nepal-glacial-lakes-drainage-plan",
+      "headline": "Nepal plans $50 million project to drain four dangerous glacial lakes after deadly floods",
+      "summary": "Multiple outlets including The Independent, ABC News Australia, NDTV Profit and BNN report that Nepal's government has outlined a roughly $50 million plan to drain four glacial lakes considered at high risk of outburst flooding, following the flash floods that have killed dozens and left thousands missing. The plan is described as a high-stakes mission but none of the reports specify a start date or named which four lakes are targeted beyond general references to glacial lake outburst flood risk.",
+      "topic": "disaster",
+      "candidate_ids": [
+        "c_e1ed58f08e",
+        "c_de9b2f3ac9",
+        "c_f9449c2908",
+        "c_0490b470b8",
+        "c_68fe91f18b",
+        "c_d5506e9ec3"
+      ],
+      "languages": [
+        "en"
+      ]
+    },
+    {
+      "id": "2026-10-03-nc-general-convention-nominations",
+      "headline": "Nepali Congress sets October 5 for central committee nominations as 15th General Convention nears",
+      "summary": "Nepali Congress's Central Election Committee has announced that nomination papers for the Central Working Committee election will be registered on October 5 (Ashoj 19), according to DC Nepal and Ekantipur, with Setopati reporting around 7,500 delegates expected at the 15th General Convention. Party Vice President Bishwa Prakash Sharma told OnlineKhabar there will be no panel system this time, with delegates free to vote for individual candidates of their choice.",
+      "topic": "politics",
+      "candidate_ids": [
+        "c_a51a50d92f",
+        "c_1cca5a3c3b",
+        "c_91149af81c",
+        "c_a98f847309"
+      ],
+      "languages": [
+        "ne",
+        "en"
+      ]
+    },
+    {
+      "id": "2026-10-03-bhotekoshi-flood-aftermath-updates",
+      "headline": "Bhotekoshi flood aftermath: state to support five orphaned children, missing Malaysian found safe after 37 days",
+      "summary": "Republica reports the Nepal government will provide long-term care, including education and upbringing support until age 18, to five children orphaned by the Bhotekoshi flood, while Daily Excelsior and themalaysianreserve.com report one of the Malaysian nationals who had been missing since the floods has been found safe and returned home after 37 days, with Malaysian PM Anwar's government said to be seeking a fast-track process for other missing Malaysians. Nepal Press separately reported the cremation of one flood victim, Bir Bahadur Chaudhary of Tikapur, whose body was never recovered despite a long search.",
+      "topic": "disaster",
+      "candidate_ids": [
+        "c_26366c5728",
+        "c_3b88c02400",
+        "c_df745e14b1",
+        "c_61b32c409b",
+        "c_cb440524bc"
+      ],
+      "languages": [
+        "en",
+        "ne"
+      ]
+    }
+  ],
+  "debates": [
+    {
+      "story_id": "2026-10-03-nepal-glacial-lakes-drainage-plan",
+      "advocate": {
+        "role": "advocate",
+        "score": 70,
+        "argument": "This is a genuine public-interest story: a government-level, dollar-denominated ($50M) response to glacial lake outburst flood (GLOF) risk, directly tied to a flood disaster that has reportedly killed dozens and left thousands missing. GLOFs threaten downstream communities, hydropower infrastructure and trekking routes used by both Nepalis and the diaspora/tourism economy, so it scores on scale and on personal-safety relevance. However, every outlet in the candidate set (The Independent, ABC Australia, NDTV Profit, BNN, Inshorts, 3FM) appears to be running the same wire-derived version, and none names the four lakes, the funding source, timeline, or a specific official. That is exactly the gap Nepal Wire can close by going to Nepal's Department of Hydrology and Meteorology, ICIMOD, or the Ministry of Energy/Home Ministry for the actual lake names (likely candidates given past risk assessments include lakes in Rasuwa, Mustang or Solukhumbu), the funding breakdown, and a named official's quote. Publishing today without that added reporting would just repeat what readers have already seen elsewhere; publishing with it would be a genuine advance. Recommend running only if same-day follow-up with primary Nepali sources is feasible.",
+        "evidence": [
+          {
+            "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxQVUNyZWVtWTBScGJNWlQxOEFwOF9paHJWUEcwNkU0Um1rX2lwelNQV1Y0eHFwR0VBbE1DRi1XLVIwdHRtMFlCSjMwXzY0YjNUdWY5MVA1MDczMmRqc0tZb3NHZlpDSW1PeWFxUHc4NDZNQnljLUI4QXRDbHZXd24yRnplWW1oakwwdHNWczg1MDc0MmZPQkNyUVlHSVh1NFE?oc=5",
+            "note": "The Independent frames it as a 'high-stakes mission' following deadly flash floods; one of the earliest wire versions."
+          },
+          {
+            "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOa0h1Z19XVU1mclNpUjlGOVgwdHdMVDBZWktDUlJyS1dodDdKOWNZNkFTSXRiZ3Rnd29kSmFrd0RrVVFXa2ZreGQxQ1Z2cDRQSTBVbWlLUUFHOTF3VlpNUnlMbnNFZlRlVVF5bTFLNjNEOFlKbDZDVjVlelhCX1lndDRaRW5tQVJJbjFrdllwLVV1bjR3cTVjblhoWUF2OHcybVNiNFpjUQ?oc=5",
+            "note": "ABC News Australia independently picked up the same story, confirming it has international wire distribution, not just a single outlet's framing."
+          },
+          {
+            "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQbmN0UG1NU3J1V21tQTNoMW9BUi1VMWxKUkpJSC1MMlRQSF9aSkZjY0FzRzl5WWxRYnZYQzJmcllfNDZacFU4NExEd1cya2p1RUh4b1EzQk9OcTA5N2dkSVdOQ1NnTWpxTHQ3Q1A5RGM3SS1odThxLV9ycnF3NWxwZnFiSlM4M25ENVFaZnQ0NDRSYzJpaTJvRUtaNGZlMjFXbjVEMm9Ea2ZKRjNyaHY0Vjhn0gG6AUFVX3lxTE82RDQ4VFhDdWRVUFJ4OWtJcTZSclJsU2I0NF9aM2ZySkpxQl91d0RjVk8tODIwSWd1Tktha1NKMW1rQWI5dXNyWE1LTmdEMF95Y0V5V1NqUkE5a2JLWTcyclROYW90OHJkMmc0dkN0T1RoZzZBUHdOZHdfWkk1ZUxZb1UwaTBVdENRY3p4RVJOYlZjUWFtX3ExWlJtXzNFRjBQa0MxNHE4NDlxbV82em9MSUF3U3NzOVhWdw?oc=5",
+            "note": "NDTV Profit headline confirms the $50 million figure as the widely circulated number for the drainage plan."
+          },
+          {
+            "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQc0xlbk1SMkhXSjdqR2FSTXpiQlN2bURXUk1FRmg1bnBwZG0ySTBpZi1lZVFKTW9aMGluZ2JxeUtHdFVXWTRXWl9ja2hvVjVfRENMcVplMkh3aDdIMklWcTF2d001UHZaYlE4dTZDN0lIaXpfal83Mi1XcjZvRlp1bHZSM1NkSkpHNFBCU2Q5Y29sVzJuZmgw?oc=5",
+            "note": "BNN frames the drainage as a flood-risk-reduction measure, confirming the four-lake scope but without naming them."
+          }
+        ],
+        "virality_factors": [
+          "Large round-number price tag ($50 million) tied to a government disaster-response plan is inherently shareable",
+          "Direct link to a flood disaster that reportedly killed dozens and left thousands missing, so it taps into active public anxiety",
+          "Glacial lake outburst floods threaten trekking routes and villages that the Nepali diaspora and global trekking community recognize by name once specified",
+          "Multiple international outlets (ABC, The Independent, NDTV) already picked it up, signaling cross-border interest Nepal Wire can tap by adding local depth",
+          "A 'countdown to disaster' narrative (racing to drain lakes before the next outburst) has natural dramatic pull"
+        ],
+        "risks": [
+          "None of the source wire reports name the four lakes, the implementing agency, timeline, or funding source, so Nepal Wire risks simply repeating an unverified or incomplete wire story unless it independently confirms details with DHM, ICIMOD or the relevant ministry",
+          "The $50 million figure and 'four lakes' framing appear to originate from a single wire report copied across outlets; if that原 source is wrong, every downstream story including ours would be wrong",
+          "No named, quotable official is cited in the candidate set, which weakens accountability and defensibility if published as-is",
+          "The underlying flood disaster's death/missing toll numbers are referenced only vaguely ('dozens killed, thousands missing') and need their own sourcing and attribution before being repeated",
+          "Risk of readers assuming imminent action when no start date exists, which could be seen as overstating government follow-through"
+        ]
+      },
+      "skeptic": {
+        "role": "skeptic",
+        "score": 30,
+        "argument": "This isn't a new story for Nepal's audience. Kathmandu Post ran a detailed piece on this exact $50M GLOF Sanjeevani Project—naming the four lakes (Thulagi, Lower Barun, Lumding Tsho, Hongu II), quoting national programme director Rajan Bhattarai, and featuring scientists calling the plan insufficient—on 6 Sept 2026, nearly a month before this 'new' wire story. Nepalnews.com also ran a full explainer earlier. What the advocate frames as a reporting gap (no lake names, no officials, no funding source) is not actually a gap in the information ecosystem—it's a gap only in the thin Google-News RSS snippets pulled for this candidate set. Fuller versions of the same Reuters wire (Tribune, ABC full text, Emirates247, UA News) already name the lakes, officials (Subash Tuladhar, Sanjeeb Baral), funders (Green Climate Fund, UNDP, government) and a six-year timeline. So all six candidate outlets are reprinting one Reuters dispatch, not independent corroboration. Worse, the death toll is inconsistent: candidates say 'dozens killed, thousands missing' while the full Reuters text says 'more than 1,400 killed, over 5,000 missing'—a huge discrepancy that must be resolved before republishing any casualty figure. Net effect: stale relative to domestic coverage, single-sourced despite appearing multi-outlet, and carrying an unresolved factual conflict.",
+        "evidence": [
+          {
+            "url": "https://kathmandupost.com/climate-environment/2026/09/06/nepal-is-draining-four-glacial-lakes-scientists-say-it-is-not-enough",
+            "note": "Kathmandu Post already named the four lakes, officials and funding, and ran scientist criticism, on 6 Sept 2026—about four weeks before this 'new' wire story."
+          },
+          {
+            "url": "https://english.nepalnews.com/s/explainers/glof-sanjeevani-project-everything-you-need-to-know-about-nepals-bid-to-drain-four-high-risk-glacial-lakes/",
+            "note": "A Nepali English-language outlet already published a full explainer on the same project, undercutting the claim that key facts are unavailable."
+          },
+          {
+            "url": "https://tribune.com.pk/story/2632604/nepal-plans-to-drain-four-glacial-lakes-after-deadly-floods",
+            "note": "Fuller version of the same Reuters dispatch already contains lake names, named officials and funding sources, showing the 'gap' is only in the truncated RSS snippets, not the underlying reporting."
+          },
+          {
+            "url": "https://ua.news/en/world/nepal-pochne-osushuvati-chotiri-nebezpechni-lodovikovi-ozera-reuters",
+            "note": "Confirms all six candidate outlets trace to a single Reuters wire piece, and cites casualty figures of 1,400+ dead and 5,000+ missing, conflicting with the 'dozens killed, thousands missing' framing in the story summary."
+          }
+        ],
+        "virality_factors": [
+          "The $50M figure and tie to a deadly flood disaster do have inherent shareability if framed as genuinely new"
+        ],
+        "risks": [
+          "Staleness: Nepal's own leading outlet (Kathmandu Post) covered this with more depth and scientific skepticism almost a month earlier, so presenting it as fresh news misleads domestic readers about what's actually new",
+          "Single-source risk: all six candidates trace to one Reuters wire dispatch; this is not independent multi-outlet corroboration, so any error in the original propagates everywhere, including into our piece",
+          "Factual conflict: casualty figures cited in the story summary ('dozens killed, thousands missing') conflict sharply with fuller wire text ('1,400+ killed, 5,000+ missing'); publishing without resolving this risks a correction",
+          "Accuracy/defensibility: the advocate's claim that lake names and officials are unavailable is incorrect—they exist in fuller versions of the same wire and in earlier Nepali reporting—so republishing based on the thin candidate snippets without checking primary/earlier Nepali coverage would make Nepal Wire look behind its own stated mission of 'checked before it reaches you'",
+          "Relevance as 'today's news': the substantive public-interest angle (scientists saying the plan is insufficient) was already broken by Kathmandu Post; repackaging the Reuters wire alone offers no advance and arguably a regression in depth"
+        ]
+      },
+      "error": ""
+    },
+    {
+      "story_id": "2026-10-03-nc-general-convention-nominations",
+      "advocate": {
+        "role": "advocate",
+        "score": 58,
+        "argument": "Nepali Congress is Nepal's oldest ruling-coalition party, and its 15th General Convention is the first full leadership contest since Gagan Thapa's reformist bloc displaced the Deuba establishment at January's special convention amid a bitter, well-documented rift. Confirming Oct 5 (Ashoj 19) as nomination day, per DC Nepal and Ekantipur, plus VP Bishwa Prakash Sharma's on-record pledge to OnlineKhabar that there will be no panel system this year, is a real, checkable procedural marker in a leadership transition that affects national governance. The 'no panels' decision is itself newsworthy because it breaks from the faction-ticket system used in the 14th convention (Wikipedia-documented vote splits by panel), signalling how Thapa-Sharma intend to lock in their reform mandate against resurgent Deuba loyalists. What's missing from the wire coverage: a named list of who is actually filing for general secretary/VP slots, and whether the Deuba camp accepts the no-panel rule or will field a shadow panel anyway. Nepal Wire could add value by checking CEC document filings on Oct 5 itself and naming contenders, which no outlet has yet done.",
+        "evidence": [
+          {
+            "url": "https://english.onlinekhabar.com/nc-general-convention-no-panel.html",
+            "note": "Confirms VP Bishwa Prakash Sharma's on-record statement that there will be no panel system and delegates will vote independently; over 7,000 delegates expected at Khulamanch."
+          },
+          {
+            "url": "https://www.dcnepal.com/2026/10/801998/",
+            "note": "Nepali-language original confirming nomination registration date of Ashoj 19 (Oct 5), Monday 2-6pm, set by the Central Election Committee."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/14th_general_convention_of_Nepali_Congress",
+            "note": "Documents the prior convention's panel-based vote splits (Deuba-Sitaula, Koirala-KC-Thapa panels), giving context for why dropping panels this time is a structural change."
+          },
+          {
+            "url": "https://en.wikipedia.org/wiki/2nd_special_convention_of_Nepali_Congress",
+            "note": "Confirms the deep Thapa/Sharma vs. Deuba factional rift that preceded this 15th convention, explaining why leadership rules now matter."
+          },
+          {
+            "url": "https://english.onlinekhabar.com/nepali-congress-bans-banners-posters-and-pamphlets-for-15th-general-convention-campaign.html",
+            "note": "Shows the CEC issuing a broader code of conduct around the same date, reinforcing this is part of a live rules-setting story, not an isolated announcement."
+          }
+        ],
+        "virality_factors": [
+          "Nepali Congress is a major ruling-coalition party; its internal leadership race has direct bearing on national governance and cabinet composition",
+          "Ongoing Thapa-Sharma vs. Deuba factional rivalry gives the story built-in drama and named officials readers already follow",
+          "Breaking the panel system is a genuine structural first for NC, giving the piece a 'first of its kind' hook",
+          "7,500 delegates and Khulamanch venue give it a large, concrete scale that photographs and crowds amplify on social media",
+          "Diaspora and politically engaged Nepalis closely track NC convention outcomes as a bellwether for future PM candidates"
+        ],
+        "risks": [
+          "The core news is procedural (a filing date and a rules statement) rather than a result, so readers may find it thin without a follow-up on actual candidates",
+          "English-language coverage (OnlineKhabar, Ekantipur, Setopati) already has this; Nepal Wire adds little unless it can independently confirm candidate filings on Oct 5",
+          "No panels claim rests on one VP's statement to one outlet; if the Deuba faction organizes an informal panel anyway, today's framing could look outdated within days",
+          "Risk of overstating significance of a scheduling announcement as 'breaking' when it is routine party administration"
+        ]
+      },
+      "skeptic": {
+        "role": "skeptic",
+        "score": 34,
+        "argument": "The advocate frames Oct 5 nominations and 'no panels' as a settled structural reform, but wider search shows the 15th convention is mired in an unresolved, intensifying factional fight: OnlineKhabar itself reported four days prior that 'the two sides adopting different provisions on delegate nomi[nation]' rules, and Kathmandu Post has covered talk of a possible party split, with Deuba loyalists previously threatening parallel conventions and rejecting establishment-set dates. Against that backdrop, VP Sharma's 'no panel' comment to OnlineKhabar is one faction's position, not a party-wide fact; there's no confirmation the Deuba camp accepts it, and nothing stops an informal panel from forming anyway, which the advocate himself flags as a risk. The convention's schedule has also shifted repeatedly over the past year (originally planned for January, then pushed multiple times), so an Oct 5 nomination date is not guaranteed to hold. Three outlets (DC Nepal, Ekantipur, Setopati) already carry this exact scheduling item in Nepali and English, so Nepal Wire would be echoing a routine administrative notice, not breaking anything. Without independently reporting what the rival faction says about the no-panel rule or confirming nominations actually happened as scheduled, this is thin, single-angle, procedural news with real staleness risk.",
+        "evidence": [
+          {
+            "url": "https://english.onlinekhabar.com/nepali-congress-faction-different-rules-convention.html",
+            "note": "OnlineKhabar, Sept 28, reports NC's rival factions adopting different provisions for the convention, undercutting the idea that 'no panels' or the Oct 5 process is settled or uncontested."
+          },
+          {
+            "url": "https://english.ratopati.com/story/79447/nepali-congress-finally-agrees-to-split",
+            "note": "Reports Deuba appealing to supporters not to participate in a convention organized by the Thapa-led working committee, showing a documented history of rival camps refusing to accept establishment-set convention terms."
+          },
+          {
+            "url": "https://kathmandupost.com/politics/2025/11/02/nepali-congress-divided-over-convention-mode-some-fear-split-in-the-party",
+            "note": "Kathmandu Post reporting on fears of an outright party split over convention mode, indicating the dispute is deeper than a scheduling detail."
+          },
+          {
+            "url": "https://radionepalonline.com/en/2026/03/26/427091.html",
+            "note": "Shows the convention schedule was already 'made public' back in March 2026 and has since been revised multiple times, suggesting the Oct 5 nomination date is not necessarily final."
+          }
+        ],
+        "virality_factors": [],
+        "risks": [
+          "Accuracy risk: 'no panel system' is sourced to a single VP from one faction, not confirmed by the rival Deuba camp, which has a documented history of rejecting establishment-set convention rules",
+          "Staleness risk: the convention schedule and rules have shifted multiple times over the past year; Oct 5 nominations could slip or be contested, dating today's framing within days",
+          "Relevance/duplication risk: the exact scheduling item is already covered by DC Nepal, Ekantipur, and Setopati, giving Nepal Wire no distinct angle unless it reports faction reaction or actual filings",
+          "Defensibility risk: presenting a contested, faction-driven process as a clean procedural reform without noting the ongoing rules dispute could mislead readers about how settled the convention actually is"
+        ]
+      },
+      "error": ""
+    },
+    {
+      "story_id": "2026-10-03-bhotekoshi-flood-aftermath-updates",
+      "advocate": {
+        "role": "advocate",
+        "score": 64,
+        "argument": "This is a well-sourced, multi-threaded follow-up on Nepal's deadliest recent disaster (Bhotekoshi/Aug 26 floods, reported to have killed 1,450+). Three verified strands converge today: the government formalizing long-term care for five orphaned children (Republica), one of 55 missing Malaysians found alive after 37 days with Malaysia's PM pushing a fast-track search for the other 54 (Daily Excelsior, Malay Mail, FMT, The Sun), and a Nepali-language human-interest piece on the cremation of a Tikapur victim whose body was never recovered (Nepal Press). Each strand is independently corroborated across multiple outlets, satisfying our verification bar. What's missing from the pack coverage: none of the English wires name the five children, the welfare scheme's funding mechanism, or cite the National Child Rights Council/MIT Foundation NPR 578.5 million pledge reported locally in September — Nepal Wire could add that public-record detail today to go beyond the Republica rewrite. The diaspora angle (Malaysian families, 54 still missing) gives this real cross-border reach. It's a follow-up rather than a new breaking event, which caps the ceiling, but the human and international dimensions make it solidly shareable and newsroom-credible.",
+        "evidence": [
+          {
+            "url": "https://myrepublica.nagariknetwork.com/news/state-to-support-five-children-orphaned-by-floods-until-age-18-22-54.html",
+            "note": "Confirms Nepal government will fund education/upbringing for five Bhotekoshi-orphaned children until age 18."
+          },
+          {
+            "url": "https://www.dailyexcelsior.com/malaysian-national-missing-after-nepal-floods-found-safe-returns-after-37-days",
+            "note": "Confirms one Malaysian missing since August floods found safe and repatriated after 37 days."
+          },
+          {
+            "url": "https://www.malaymail.com/news/malaysia/2026/10/02/safe-return-of-solo-malaysian-after-37-days-in-nepal-floods-offers-hope-to-54-still-missing/237390",
+            "note": "Corroborates the rescue detail via MASFIH spokesperson and confirms 54 Malaysians remain missing."
+          },
+          {
+            "url": "https://www.freemalaysiatoday.com/category/nation/2026/10/02/1-of-55-malaysians-missing-in-nepal-found-safe",
+            "note": "States the Aug 26 floods reportedly killed more than 1,450 people, giving scale context; confirms the 55-missing figure."
+          },
+          {
+            "url": "https://thesun.my/news/one-of-55-malaysians-missing-in-nepal-floods-confirmed-safe-returns-home/",
+            "note": "Independent corroboration of the Malaysian rescue/return story."
+          },
+          {
+            "url": "https://nepalpress.com/2026/10/02/769977/bir-bahadur-did-not-return-home-cremation-from-kush/",
+            "note": "Nepali-language report on the cremation of Bir Bahadur Chaudhary of Tikapur, body never recovered."
+          }
+        ],
+        "virality_factors": [
+          "International/diaspora pull: Malaysian PM Anwar's government personally pushing a fast-track search gives this cross-border political weight and Malaysian reader interest.",
+          "Emotional human-interest hook: a missing person found alive after 37 days is an inherently shareable 'miracle survival' story.",
+          "Counterpoint human cost: the cremation of a body never recovered after a long search is a poignant, highly shareable grief narrative.",
+          "Child welfare angle: state support for orphaned children until adulthood is a concrete, feel-good policy outcome people share to show government accountability.",
+          "Ongoing disaster with a death toll above 1,400 keeps public attention and search engagement high over a month later."
+        ],
+        "risks": [
+          "The story bundles three unrelated threads (welfare policy, Malaysian rescue, a cremation) under one headline, which could read as disjointed rather than a single coherent news item.",
+          "None of the five orphaned children or their family circumstances are named in available sources, so the welfare story currently lacks the kind of named-subject specificity that drives strongest engagement.",
+          "The 'fast-track process' claim for other missing Malaysians (Malaysia-China Insight) needs independent confirmation from the PM's office or Wisma Putra before stating it as fact rather than attributed claim.",
+          "Nepal Press is a Nepali-language source for the cremation story; names/spellings (Bir Bahadur Chaudhary, Tikapur, Kush) need care in translation to avoid any error reflecting on a grieving family.",
+          "This is fundamentally a day-37 follow-up, not new breaking news, so interest may already be fatigued among readers who followed the original flood coverage in August."
+        ]
+      },
+      "skeptic": {
+        "role": "skeptic",
+        "score": 42,
+        "argument": "The advocate stitches three separate, loosely related threads into one story, and each is weaker than presented. The orphaned-children item is a single-source Republica rewrite of what reads like a government press release — no independent outlet corroborates it, no children are named, and no funding mechanism is cited in the actual piece (the advocate's 578.5 million NPR figure isn't in any candidate source, it's an unverified addition). The Malaysian-rescue thread is solid (Malay Mail, FMT, The Sun all confirm one of 54/55 missing found safe), but the 'fast-track process' claim traces to a PM-to-PM call reported by Malay Mail directly — the candidate citing 'Malaysia-China Insight,' an obscure outlet, is an unnecessary weak link when a better primary source exists. The Tikapur cremation story rests on one Nepali-language outlet (Nepal Press) with no corroboration, involving a private, grieving family — this needs extra care under the privacy rule and shouldn't be bundled with international diplomacy news. None of this is breaking: it's day-37 follow-up on an August disaster, and the three threads don't share a real narrative spine beyond 'Bhotekoshi, again.' A sharper single-angle piece (the Malaysian rescue, well-corroborated) would clear the bar; this composite version strains both accuracy (unverified funding figure, single-sourced claims) and coherence.",
+        "evidence": [
+          {
+            "url": "https://www.malaymail.com/news/malaysia/2026/10/02/anwar-secures-fast-track-process-for-missing-malaysians-in-nepal/237409",
+            "note": "Better primary source for the fast-track claim than the 'Malaysia-China Insight' candidate; shows this is a PM-to-PM phone commitment, still a diplomatic promise rather than confirmed action."
+          },
+          {
+            "url": "https://english.ajel.sa/world/u6mvlz3z5",
+            "note": "Death toll figure of 1,454 traces to this secondary aggregator citing 'official Nepali data' — no link to the primary Nepal government disaster authority release, which is the kind of sourcing gap the newsroom's own rules flag."
+          },
+          {
+            "url": "https://nepalpress.com/2026/10/02/769977/bir-bahadur-did-not-return-home-cremation-from-kush/",
+            "note": "Sole source for the Tikapur cremation story; no English-language or second Nepali outlet corroboration found, raising both accuracy and privacy concerns for a private citizen."
+          }
+        ],
+        "virality_factors": [
+          "The Malaysian-rescue-after-37-days thread genuinely has cross-border shareability and is the one strand independently corroborated by multiple outlets.",
+          "Diaspora/international angle (Malaysian PM involvement) does add audience reach beyond Nepal if that specific thread were run standalone."
+        ],
+        "risks": [
+          "Accuracy: the orphaned-children welfare claim is single-sourced to Republica with no named subjects, no funding documentation, and the advocate's cited 578.5 million NPR figure appears nowhere in the supplied candidates — it would need separate verification before publication.",
+          "Defensibility: the cremation story relies on one Nepali-language outlet with no corroboration, involves a private family's grief, and any translation or spelling error on 'Bir Bahadur Chaudhary' or location details could cause real harm to an already grieving household.",
+          "Staleness: this is a 37-day-old disaster's incremental follow-up, not new breaking news; three loosely related updates bundled together may read as filler rather than a coherent story.",
+          "Coherence/credibility: mixing a government welfare announcement, a diplomatic search update, and a private cremation under one headline risks looking like a grab-bag rather than a vetted single story, inviting reader and editor skepticism."
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "ranking": [
+    {
+      "judge": "ranking_judge_1",
+      "ranked": [
+        {
+          "story_id": "2026-10-03-bhotekoshi-flood-aftermath-updates",
+          "rank": 1,
+          "score": 72,
+          "reach": 58,
+          "reason": "This is a real development since our October 1 recovery-phase piece. Republica reports state care until age 18 for five orphaned children, and Malay Mail, FMT and The Sun confirm a Malaysian was found safe after 37 days with 54 still missing. Lead with those two strands, attribute every toll figure to its source, and drop the unverified NPR 578.5 million figure and the weak Malaysia-China Insight link. Weakest dimension: comment friction."
+        },
+        {
+          "story_id": "2026-10-03-nc-general-convention-nominations",
+          "rank": 2,
+          "score": 55,
+          "reach": 40,
+          "reason": "This is fresh and verified: DC Nepal and Ekantipur carry the October 5 nomination date, and VP Bishwa Prakash Sharma gave his no-panel statement on record to OnlineKhabar. It must be written as one leader's stated position, with OnlineKhabar's September 28 report of rival rule-sets showing the dispute is not settled. Weakest dimension: emotional charge."
+        }
+      ],
+      "rejected": [
+        {
+          "story_id": "2026-10-03-nepal-glacial-lakes-drainage-plan",
+          "reason": "Fails freshness. Kathmandu Post reported the $50 million GLOF Sanjeevani plan on September 6, with the four lakes, officials and scientists' criticism, so today's coverage is one Reuters dispatch reprinted across outlets with no new development. Its casualty framing also conflicts with fuller wire text and is unresolved. Revisit only if a real development appears, such as funding approval or a work start date."
+        }
+      ],
+      "notes": "Only two stories clear the bar today, so the desk should run two articles rather than fill the third slot with a stale wire repeat. Bhotekoshi: the casualty and missing figures differ between our October 1 piece, which used the NDRRMA count of 5,285 missing, and the Malaysian outlets, which cite 1,450 or more dead. Attribute each figure to its source and do not merge them. Handle the Tikapur cremation of Bir Bahadur Chaudhary only with the spelling and details Nepal Press used, or leave it out. Never name or picture the orphaned children. Treat the Malaysian fast-track as Anwar's stated diplomatic commitment, sourced to Malay Mail, not as confirmed action. NC: verify on October 5 whether nominations opened as scheduled before any follow-up, and seek the Deuba camp's response to the no-panel rule."
+    },
+    {
+      "judge": "ranking_judge_2",
+      "ranked": [
+        {
+          "story_id": "2026-10-03-bhotekoshi-flood-aftermath-updates",
+          "rank": 1,
+          "score": 72,
+          "reach": 58,
+          "reason": "Confirmed. This is a real development since our October 1 piece: Malay Mail, FMT and The Sun confirm a Malaysian found safe after 37 days with 54 still missing, and Republica reports state care until age 18 for five orphaned children. The orphan strand is attributed to Republica as its only source. Weakest dimension: comment friction."
+        },
+        {
+          "story_id": "2026-10-03-nc-general-convention-nominations",
+          "rank": 2,
+          "score": 55,
+          "reach": 40,
+          "reason": "Confirmed. DC Nepal and Ekantipur carry the October 5 nomination date, and VP Bishwa Prakash Sharma's no-panel rule is his on-record position to OnlineKhabar, set against OnlineKhabar's September 28 report of rival rule-sets. Weakest dimension: emotional charge."
+        }
+      ],
+      "rejected": [
+        {
+          "story_id": "2026-10-03-nepal-glacial-lakes-drainage-plan",
+          "reason": "Confirmed rejection for freshness. Kathmandu Post reported the $50 million GLOF Sanjeevani plan on September 6, naming the four lakes and officials and carrying scientists' criticism. Today's coverage is one Reuters dispatch reprinted across outlets with no new development, and its casualty framing conflicts with the fuller wire text. Revisit only on a real development such as funding approval or a work start date."
+        }
+      ],
+      "notes": "Judge 2 confirms judge 1's ranking and scores with no changes to order, score or reach. The desk runs two articles today. Leaving the third slot empty beats filling it with a stale wire repeat. Added cautions for the writers follow. Bhotekoshi: the orphan care strand rests on Republica alone. Write it as 'Republica reported' and look for the government decision itself before stating it in our own voice. Never name or picture the children. Drop the NPR 578.5 million figure, which no candidate source carries. Do not name the found Malaysian unless Malay Mail, FMT or The Sun named them. Treat the fast-track as Anwar's stated commitment, sourced to Malay Mail, not as confirmed action. Keep the NDRRMA missing count of 5,285 from our October 1 piece separate from the 1,450 or more dead cited by Malaysian outlets. Attribute each figure and do not merge them. Use Bir Bahadur Chaudhary of Tikapur only as Nepal Press spelled and reported it, or leave him out. NC: the delegate count differs by outlet, about 7,500 per Setopati and over 7,000 per OnlineKhabar, so report both. Background on the January special convention and the Thapa and Deuba rift comes from Wikipedia in the debate. Verify it against Kantipur, OnlineKhabar or Kathmandu Post before use, and give every named leader their role on first mention. Seek the Deuba camp's response to the no-panel rule and note the attempt. October 5, 2026 is a Monday, which matches DC Nepal's Monday 2 to 6 pm window. Confirm nominations actually opened before any follow-up."
+    }
+  ],
+  "selected_story_ids": [
+    "2026-10-03-bhotekoshi-flood-aftermath-updates",
+    "2026-10-03-nc-general-convention-nominations"
+  ],
+  "published": [
+    "2026-10-03-bhotekoshi-flood-orphans-933-still-missing",
+    "2026-10-03-nepali-congress-oct-5-nominations-deuba-boycott"
+  ],
+  "rejected": [
+    {
+      "story_id": "2026-10-03-nepal-glacial-lakes-drainage-plan",
+      "stage": "ranking_judge_1",
+      "reason": "Fails freshness. Kathmandu Post reported the $50 million GLOF Sanjeevani plan on September 6, with the four lakes, officials and scientists' criticism, so today's coverage is one Reuters dispatch reprinted across outlets with no new development. Its casualty framing also conflicts with fuller wire text and is unresolved. Revisit only if a real development appears, such as funding approval or a work start date."
+    },
+    {
+      "story_id": "2026-10-03-nepal-glacial-lakes-drainage-plan",
+      "stage": "ranking_judge_2",
+      "reason": "Confirmed rejection for freshness. Kathmandu Post reported the $50 million GLOF Sanjeevani plan on September 6, naming the four lakes and officials and carrying scientists' criticism. Today's coverage is one Reuters dispatch reprinted across outlets with no new development, and its casualty framing conflicts with the fuller wire text. Revisit only on a real development such as funding approval or a work start date."
+    }
+  ],
+  "usage": [
+    {
+      "role": "story_clusterer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 58059,
+      "output_tokens": 2247,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 1323,
+      "web_search_requests": 0,
+      "seconds": 139.2,
+      "batch": true
+    },
+    {
+      "role": "advocate",
+      "model": "claude-sonnet-5",
+      "input_tokens": 18247,
+      "output_tokens": 4500,
+      "cache_read_input_tokens": 67880,
+      "cache_creation_input_tokens": 12357,
+      "web_search_requests": 3,
+      "seconds": 168.9,
+      "batch": true
+    },
+    {
+      "role": "advocate",
+      "model": "claude-sonnet-5",
+      "input_tokens": 2344,
+      "output_tokens": 2927,
+      "cache_read_input_tokens": 71965,
+      "cache_creation_input_tokens": 12935,
+      "web_search_requests": 3,
+      "seconds": 168.9,
+      "batch": true
+    },
+    {
+      "role": "advocate",
+      "model": "claude-sonnet-5",
+      "input_tokens": 1967,
+      "output_tokens": 2510,
+      "cache_read_input_tokens": 75315,
+      "cache_creation_input_tokens": 17692,
+      "web_search_requests": 3,
+      "seconds": 245.3,
+      "batch": true
+    },
+    {
+      "role": "skeptic",
+      "model": "claude-sonnet-5",
+      "input_tokens": 5538,
+      "output_tokens": 3521,
+      "cache_read_input_tokens": 77819,
+      "cache_creation_input_tokens": 20859,
+      "web_search_requests": 3,
+      "seconds": 139.5,
+      "batch": true
+    },
+    {
+      "role": "skeptic",
+      "model": "claude-sonnet-5",
+      "input_tokens": 4035,
+      "output_tokens": 2716,
+      "cache_read_input_tokens": 23733,
+      "cache_creation_input_tokens": 5582,
+      "web_search_requests": 3,
+      "seconds": 337.8,
+      "batch": true
+    },
+    {
+      "role": "skeptic",
+      "model": "claude-sonnet-5",
+      "input_tokens": 3415,
+      "output_tokens": 2535,
+      "cache_read_input_tokens": 67285,
+      "cache_creation_input_tokens": 6687,
+      "web_search_requests": 3,
+      "seconds": 276.8,
+      "batch": true
+    },
+    {
+      "role": "ranking_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 12546,
+      "output_tokens": 1720,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 5132,
+      "web_search_requests": 0,
+      "seconds": 138.8,
+      "batch": true
+    },
+    {
+      "role": "ranking_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 13486,
+      "output_tokens": 2087,
+      "cache_read_input_tokens": 5132,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 138.2,
+      "batch": true
+    },
+    {
+      "role": "investigator",
+      "model": "claude-sonnet-5",
+      "input_tokens": 4667,
+      "output_tokens": 14864,
+      "cache_read_input_tokens": 416326,
+      "cache_creation_input_tokens": 49964,
+      "web_search_requests": 8,
+      "seconds": 276.3,
+      "batch": true
+    },
+    {
+      "role": "investigator",
+      "model": "claude-sonnet-5",
+      "input_tokens": 5299,
+      "output_tokens": 71289,
+      "cache_read_input_tokens": 324818,
+      "cache_creation_input_tokens": 34014,
+      "web_search_requests": 8,
+      "seconds": 935.0,
+      "batch": true
+    },
+    {
+      "role": "investigator",
+      "model": "claude-sonnet-5",
+      "input_tokens": 5281,
+      "output_tokens": 10970,
+      "cache_read_input_tokens": 161397,
+      "cache_creation_input_tokens": 21858,
+      "web_search_requests": 8,
+      "seconds": 322.4,
+      "batch": true
+    },
+    {
+      "role": "writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 8219,
+      "output_tokens": 26667,
+      "cache_read_input_tokens": 477679,
+      "cache_creation_input_tokens": 36044,
+      "web_search_requests": 6,
+      "seconds": 338.5,
+      "batch": true
+    },
+    {
+      "role": "writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 7632,
+      "output_tokens": 35008,
+      "cache_read_input_tokens": 1350755,
+      "cache_creation_input_tokens": 59787,
+      "web_search_requests": 6,
+      "seconds": 1340.6,
+      "batch": false
+    },
+    {
+      "role": "image_picker",
+      "model": "claude-sonnet-5",
+      "input_tokens": 6746,
+      "output_tokens": 530,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 1745,
+      "web_search_requests": 0,
+      "seconds": 137.8,
+      "batch": true
+    },
+    {
+      "role": "image_picker",
+      "model": "claude-sonnet-5",
+      "input_tokens": 6299,
+      "output_tokens": 290,
+      "cache_read_input_tokens": 1745,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 184.3,
+      "batch": true
+    },
+    {
+      "role": "red_team",
+      "model": "claude-sonnet-5",
+      "input_tokens": 9133,
+      "output_tokens": 13062,
+      "cache_read_input_tokens": 210526,
+      "cache_creation_input_tokens": 14452,
+      "web_search_requests": 5,
+      "seconds": 414.0,
+      "batch": true
+    },
+    {
+      "role": "red_team",
+      "model": "claude-sonnet-5",
+      "input_tokens": 9383,
+      "output_tokens": 16427,
+      "cache_read_input_tokens": 247041,
+      "cache_creation_input_tokens": 46975,
+      "web_search_requests": 5,
+      "seconds": 488.7,
+      "batch": true
+    },
+    {
+      "role": "defense",
+      "model": "claude-sonnet-5",
+      "input_tokens": 7513,
+      "output_tokens": 6549,
+      "cache_read_input_tokens": 107844,
+      "cache_creation_input_tokens": 22975,
+      "web_search_requests": 2,
+      "seconds": 139.5,
+      "batch": true
+    },
+    {
+      "role": "defense",
+      "model": "claude-sonnet-5",
+      "input_tokens": 7940,
+      "output_tokens": 3096,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 9515,
+      "web_search_requests": 0,
+      "seconds": 137.7,
+      "batch": true
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 10480,
+      "output_tokens": 6867,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 5442,
+      "web_search_requests": 0,
+      "seconds": 275.8,
+      "batch": true
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 10069,
+      "output_tokens": 8156,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 5442,
+      "web_search_requests": 0,
+      "seconds": 277.4,
+      "batch": true
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "input_tokens": 11771,
+      "output_tokens": 8067,
+      "cache_read_input_tokens": 5140,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 154.2,
+      "batch": true
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "input_tokens": 11476,
+      "output_tokens": 8928,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 5140,
+      "web_search_requests": 0,
+      "seconds": 183.7,
+      "batch": true
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 15150,
+      "output_tokens": 9395,
+      "cache_read_input_tokens": 42158,
+      "cache_creation_input_tokens": 31960,
+      "web_search_requests": 2,
+      "seconds": 215.3,
+      "batch": true
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 15007,
+      "output_tokens": 7412,
+      "cache_read_input_tokens": 79864,
+      "cache_creation_input_tokens": 20172,
+      "web_search_requests": 2,
+      "seconds": 199.8,
+      "batch": true
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "input_tokens": 11068,
+      "output_tokens": 10656,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 5140,
+      "web_search_requests": 0,
+      "seconds": 123.2,
+      "batch": true
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "input_tokens": 11441,
+      "output_tokens": 9967,
+      "cache_read_input_tokens": 5140,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 139.0,
+      "batch": true
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 15735,
+      "output_tokens": 3823,
+      "cache_read_input_tokens": 50262,
+      "cache_creation_input_tokens": 19299,
+      "web_search_requests": 1,
+      "seconds": 154.0,
+      "batch": true
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "input_tokens": 15946,
+      "output_tokens": 3832,
+      "cache_read_input_tokens": 10540,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 154.1,
+      "batch": true
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 3836,
+      "output_tokens": 31188,
+      "cache_read_input_tokens": 386349,
+      "cache_creation_input_tokens": 49951,
+      "web_search_requests": 3,
+      "seconds": 353.5,
+      "batch": true
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 4181,
+      "output_tokens": 26965,
+      "cache_read_input_tokens": 648738,
+      "cache_creation_input_tokens": 57339,
+      "web_search_requests": 3,
+      "seconds": 354.6,
+      "batch": true
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "input_tokens": 7900,
+      "output_tokens": 9238,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 9645,
+      "web_search_requests": 0,
+      "seconds": 138.6,
+      "batch": true
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "input_tokens": 5754,
+      "output_tokens": 7721,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 9645,
+      "web_search_requests": 0,
+      "seconds": 215.3,
+      "batch": true
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 12903,
+      "output_tokens": 19189,
+      "cache_read_input_tokens": 10117,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 260.5,
+      "batch": true
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 9442,
+      "output_tokens": 25492,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 10117,
+      "web_search_requests": 0,
+      "seconds": 352.2,
+      "batch": true
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "input_tokens": 7936,
+      "output_tokens": 7618,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 9645,
+      "web_search_requests": 0,
+      "seconds": 261.2,
+      "batch": true
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "input_tokens": 7929,
+      "output_tokens": 7346,
+      "cache_read_input_tokens": 9645,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 199.9,
+      "batch": true
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 10708,
+      "output_tokens": 11251,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 10117,
+      "web_search_requests": 0,
+      "seconds": 214.8,
+      "batch": true
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "input_tokens": 10942,
+      "output_tokens": 17018,
+      "cache_read_input_tokens": 10117,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 214.8,
+      "batch": true
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "input_tokens": 7982,
+      "output_tokens": 8917,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 9645,
+      "web_search_requests": 0,
+      "seconds": 214.9,
+      "batch": true
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "input_tokens": 8000,
+      "output_tokens": 6535,
+      "cache_read_input_tokens": 9645,
+      "cache_creation_input_tokens": 0,
+      "web_search_requests": 0,
+      "seconds": 200.2,
+      "batch": true
+    }
+  ],
+  "batch_waits": [
+    {
+      "role": "story_clusterer",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 14,
+      "seconds": 139,
+      "outcome": "answered"
+    },
+    {
+      "role": "advocate",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 153,
+      "seconds": 169,
+      "outcome": "answered"
+    },
+    {
+      "role": "advocate",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 153,
+      "seconds": 169,
+      "outcome": "answered"
+    },
+    {
+      "role": "advocate",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 153,
+      "seconds": 245,
+      "outcome": "answered"
+    },
+    {
+      "role": "skeptic",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 322,
+      "seconds": 140,
+      "outcome": "answered"
+    },
+    {
+      "role": "skeptic",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 322,
+      "seconds": 338,
+      "outcome": "answered"
+    },
+    {
+      "role": "skeptic",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 398,
+      "seconds": 277,
+      "outcome": "answered"
+    },
+    {
+      "role": "ranking_judge",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 675,
+      "seconds": 139,
+      "outcome": "answered"
+    },
+    {
+      "role": "ranking_judge",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 814,
+      "seconds": 138,
+      "outcome": "answered"
+    },
+    {
+      "role": "investigator",
+      "model": "claude-sonnet-5",
+      "searches": 8,
+      "at": 952,
+      "seconds": 276,
+      "outcome": "answered"
+    },
+    {
+      "role": "investigator",
+      "model": "claude-sonnet-5",
+      "searches": 8,
+      "at": 952,
+      "seconds": 935,
+      "outcome": "answered as it was cancelled"
+    },
+    {
+      "role": "writer",
+      "model": "claude-sonnet-5",
+      "searches": 6,
+      "at": 1229,
+      "seconds": 934,
+      "outcome": "timed out"
+    },
+    {
+      "role": "investigator",
+      "model": "claude-sonnet-5",
+      "searches": 8,
+      "at": 1887,
+      "seconds": 322,
+      "outcome": "answered"
+    },
+    {
+      "role": "writer",
+      "model": "claude-sonnet-5",
+      "searches": 6,
+      "at": 2210,
+      "seconds": 339,
+      "outcome": "answered"
+    },
+    {
+      "role": "image_picker",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 2558,
+      "seconds": 138,
+      "outcome": "answered"
+    },
+    {
+      "role": "image_picker",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 2584,
+      "seconds": 184,
+      "outcome": "answered"
+    },
+    {
+      "role": "red_team",
+      "model": "claude-sonnet-5",
+      "searches": 5,
+      "at": 2768,
+      "seconds": 414,
+      "outcome": "answered"
+    },
+    {
+      "role": "red_team",
+      "model": "claude-sonnet-5",
+      "searches": 5,
+      "at": 2696,
+      "seconds": 489,
+      "outcome": "answered"
+    },
+    {
+      "role": "defense",
+      "model": "claude-sonnet-5",
+      "searches": 2,
+      "at": 3182,
+      "seconds": 140,
+      "outcome": "answered"
+    },
+    {
+      "role": "defense",
+      "model": "claude-sonnet-5",
+      "searches": 2,
+      "at": 3185,
+      "seconds": 138,
+      "outcome": "answered"
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 3322,
+      "seconds": 276,
+      "outcome": "answered"
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 3322,
+      "seconds": 277,
+      "outcome": "answered"
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 3598,
+      "seconds": 154,
+      "outcome": "answered"
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 3599,
+      "seconds": 184,
+      "outcome": "answered"
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "searches": 2,
+      "at": 3752,
+      "seconds": 215,
+      "outcome": "answered"
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "searches": 2,
+      "at": 3783,
+      "seconds": 200,
+      "outcome": "answered"
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 3983,
+      "seconds": 123,
+      "outcome": "answered"
+    },
+    {
+      "role": "reviser",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 3967,
+      "seconds": 139,
+      "outcome": "answered"
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "searches": 2,
+      "at": 4106,
+      "seconds": 154,
+      "outcome": "answered"
+    },
+    {
+      "role": "validation_judge",
+      "model": "claude-opus-5-5",
+      "searches": 2,
+      "at": 4107,
+      "seconds": 154,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 4261,
+      "seconds": 353,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "searches": 3,
+      "at": 4260,
+      "seconds": 355,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 4614,
+      "seconds": 139,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 4615,
+      "seconds": 215,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 4753,
+      "seconds": 260,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 4830,
+      "seconds": 352,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 5013,
+      "seconds": 261,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 5182,
+      "seconds": 200,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 5274,
+      "seconds": 215,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_writer",
+      "model": "claude-sonnet-5",
+      "searches": 0,
+      "at": 5382,
+      "seconds": 215,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 5489,
+      "seconds": 215,
+      "outcome": "answered"
+    },
+    {
+      "role": "nepali_editor",
+      "model": "claude-opus-5-5",
+      "searches": 0,
+      "at": 5597,
+      "seconds": 200,
+      "outcome": "answered"
+    }
+  ],
+  "errors": [],
+  "usage_totals": {
+    "calls": 42,
+    "batch_calls": 41,
+    "input_tokens": 423405,
+    "output_tokens": 479096,
+    "cache_read_input_tokens": 4954975,
+    "cache_creation_input_tokens": 638595,
+    "web_search_requests": 77
+  },
+  "cost_usd": {
+    "estimate": 6.04,
+    "unpriced_calls": 0
+  }
+}
