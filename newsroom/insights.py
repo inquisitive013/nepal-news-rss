@@ -227,6 +227,53 @@ def read_reel(client: httpx.Client, environ: Mapping[str, str], video_id: str, m
     return values, errors
 
 
+# Who can see what the Page posts: each field asked on its own, so a field Meta does not know comes
+# back as its code and the rest still answer. Only flags and short settings are shown, never ids.
+# Every post and Reel through 1 October reached one or two people; these say whether anyone but the
+# Page's admins could have seen them.
+VISIBILITY = (
+    ("The Page", ("is_published", "is_permanently_closed", "verification_status")),
+    ("Newest post", ("is_published", "is_hidden", "privacy", "timeline_visibility")),
+    ("Newest Reel", ("published", "privacy", "status")),
+)
+
+
+def _setting(value: Any) -> str:
+    """A flag or a short setting as Meta gave it; anything longer by its shape."""
+    if isinstance(value, bool):
+        return "yes" if value else "no"
+    if isinstance(value, str):
+        return value if value and len(value) <= 40 and not value.isdigit() else "a text"
+    if isinstance(value, dict):
+        found = [f"{key} {value[key]}" for key in ("value", "video_status") if isinstance(value.get(key), str) and len(value[key]) <= 40]
+        phase = value.get("publishing_phase")
+        if isinstance(phase, dict) and isinstance(phase.get("publish_status"), str):
+            found.append(f"publish_status {phase['publish_status']}")
+        return ", ".join(found) or "an object"
+    return "not returned" if value is None else type(value).__name__
+
+
+def visibility(client: httpx.Client, base: str, token: str, objects: Mapping[str, str]) -> list[str]:
+    """One line per field of VISIBILITY, for each object found: the Page, the newest post, the newest Reel."""
+    lines: list[str] = []
+    for label, fields in VISIBILITY:
+        object_id = objects.get(label)
+        if not object_id:
+            lines.append(f"- {label}: none to ask about")
+            continue
+        for field in fields:
+            resp = client.get(f"{base}/{object_id}", params={"fields": field, "access_token": token})
+            if resp.status_code >= 400:
+                answer = graph_error(resp)
+            else:
+                try:
+                    answer = _setting((resp.json() or {}).get(field))
+                except ValueError:
+                    answer = "not JSON"
+            lines.append(f"- {label}, {field}: {answer}")
+    return lines
+
+
 # What the probe asks of the newest live post: the two view metrics, an engagement metric that
 # shows whether insights answer at all, and the reach metric Meta retired in June 2026.
 PROBE_METRICS = ("post_total_media_view_unique", "post_media_view", "post_reactions_by_type_total", "post_impressions_unique")
@@ -305,6 +352,9 @@ def probe(settings: Settings, environ: Mapping[str, str], *, client: httpx.Clien
                         lines.append(f"- Newest Reel, {name} asked on its own: {answer}")
         resp = client.get(f"{base}/{fb.id}/insights", params={"metric": "page_media_view", "period": "day", "access_token": fb.token})
         lines.append(f"- The Page, page_media_view by day: {_answer(resp)}")
+        stories = [(live, post_id) for live, post_id in posts if "_" in post_id]
+        objects = {"The Page": fb.id, "Newest post": max(stories)[1] if stories else "", "Newest Reel": max(reels)[1] if reels else ""}
+        lines += visibility(client, base, fb.token, objects)
     finally:
         if own:
             client.close()
