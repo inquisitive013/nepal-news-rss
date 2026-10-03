@@ -232,7 +232,7 @@ def test_the_probe_names_permissions_and_answer_shapes_never_ids_or_values(tmp_p
             if field == "timeline_visibility":
                 return httpx.Response(400, json={"error": {"message": "secret words", "code": 100}})
             answers = {"is_published": False, "is_permanently_closed": False, "verification_status": "not_verified", "is_hidden": False,
-                       "privacy": {"value": "EVERYONE", "description": "Public", "allow": "9876543"}}
+                       "privacy": {"value": "EVERYONE", "description": "Public", "allow": "9876543"}, "instagram_business_account": {"id": "17841400000000001"}}
             return httpx.Response(200, json={field: answers[field], "id": url.path.rsplit("/", 1)[-1]})
         asked.append((url.path.rsplit("/", 2)[-2], url.params["metric"], url.params["period"]))
         if url.params["metric"] == "post_impressions_unique":
@@ -253,6 +253,7 @@ def test_the_probe_names_permissions_and_answer_shapes_never_ids_or_values(tmp_p
     assert "- The Page, is_published: no" in lines and "- The Page, verification_status: not_verified" in lines
     assert "- Newest post, privacy: value EVERYONE" in lines and "- Newest post, timeline_visibility: code 100" in lines
     assert "- Newest Reel: none to ask about" in lines
+    assert "- The Page, linked Instagram professional account: yes" in lines and "17841400000000001" not in text  # whether, never which
     assert ("111_7", "post_media_view", "lifetime") in asked and ("7", "post_media_view", "lifetime") in asked  # the newest post, and its photo
     assert not any(a[0] in ("111_5", "5") for a in asked)
     assert "9876543" not in text and "4242" not in text and "secret words" not in text

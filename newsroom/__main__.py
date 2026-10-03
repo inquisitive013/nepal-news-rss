@@ -383,7 +383,8 @@ def cmd_social(args) -> int:
     if sum(bool(getattr(args, k, False)) for k in ("again", "replace", "edit")) > 1:
         print("Choose one of --again, --replace and --edit.")
         return 2
-    configured = social.configured_networks(settings, os.environ)
+    environ = social.with_instagram(os.environ)  # the Page's linked Instagram account, when only its token is set
+    configured = social.configured_networks(settings, environ)
     if networks is None and not configured:
         paused = sorted(social.paused_networks(settings))
         if paused:
@@ -393,7 +394,7 @@ def cmd_social(args) -> int:
         return 0
     records = social.post_articles(
         settings,
-        os.environ,
+        environ,
         run_date=args.run_date,
         max_age_hours=args.max_age_hours,
         networks=networks,
@@ -606,10 +607,11 @@ def _post_reel_everywhere(settings, article, rec, video, caption, client, *, aga
     from . import reel, social, youtube
     from .models import utcnow_iso
 
+    env = social.with_instagram(os.environ, client)
     places = ["facebook_reel"]
-    if all(os.environ.get(k, "").strip() for k in social.ENV_KEYS["instagram"]) and "instagram" not in social.paused_networks(settings):
+    if all(env.get(k, "").strip() for k in social.ENV_KEYS["instagram"]) and "instagram" not in social.paused_networks(settings):
         places.append("instagram_reel")
-    if youtube.connected(os.environ):
+    if youtube.connected(env):
         places.append("youtube_short")
     # Instagram's fallback file must be this cut: an earlier Reel only stands in when no new cut is going up.
     page_reel = "" if again else next((p.id for p in reversed(rec.posts) if p.network == "facebook_reel" and p.status == "posted" and p.id), "")
@@ -623,15 +625,15 @@ def _post_reel_everywhere(settings, article, rec, video, caption, client, *, aga
         note = ""
         try:
             if network == "facebook_reel":
-                post_id, url = reel.publish_reel(client, os.environ, video, caption)
+                post_id, url = reel.publish_reel(client, env, video, caption)
                 new_id = page_reel = post_id
             elif network == "instagram_reel":
                 source = page_reel
-                fallback = (lambda: reel.facebook_video_file(client, os.environ, source)) if source else None
-                post_id, url = reel.publish_instagram_reel(client, os.environ, video, caption, fallback_url=fallback)
+                fallback = (lambda: reel.facebook_video_file(client, env, source)) if source else None
+                post_id, url = reel.publish_instagram_reel(client, env, video, caption, fallback_url=fallback)
             else:
                 post_id, url, privacy = youtube.upload_short(
-                    client, os.environ, video,
+                    client, env, video,
                     title=youtube.title_for(article),
                     description=youtube.description_for(caption, social.article_url(settings, article), settings.site_name),
                     tags=youtube.tags_for(article, settings.site_name),

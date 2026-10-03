@@ -961,3 +961,40 @@ def test_a_held_nepali_piece_keeps_the_story_off_facebook(tmp_path):
     rec = social.post_article(settings, art, env, httpx.Client(transport=httpx.MockTransport(handler)), networks=["facebook"], sleep=lambda s: None)
     assert not any("/photos" in c or "/feed" in c for c in calls)
     assert rec.posts[-1].status == "skipped" and "held" in rec.posts[-1].error
+
+
+def test_instagram_finds_its_account_from_the_page_and_never_logs_the_id(tmp_path, caplog):
+    settings = _settings(tmp_path)
+    env = {"FACEBOOK_PAGE_ID": "111", "INSTAGRAM_ACCESS_TOKEN": "EAABigtoken_1234567890abcdefghijklmnop"}
+
+    def linked(request):
+        url = request.url
+        if url.path.endswith("/111") and url.params.get("fields") == "instagram_business_account":
+            return httpx.Response(200, json={"instagram_business_account": {"id": "17841400000000001"}, "id": "111"})
+        if url.path.endswith("/17841400000000001"):
+            return httpx.Response(200, json={"username": "nepalwire"})
+        return httpx.Response(404, json={})
+
+    client = httpx.Client(transport=httpx.MockTransport(linked))
+    found = social.with_instagram(env, client)
+    assert found["INSTAGRAM_USER_ID"] == "17841400000000001" and "INSTAGRAM_USER_ID" not in env
+    rows = {r["network"]: r for r in social.check_networks(settings, env, client=client)}
+    assert rows["instagram"]["ok"] == "yes" and rows["instagram"]["account"] == "@nepalwire"
+    assert "17841400000000001" not in caplog.text
+
+
+def test_instagram_stays_off_and_says_why_until_the_page_has_an_account(tmp_path):
+    settings = _settings(tmp_path)
+    env = {"FACEBOOK_PAGE_ID": "111", "INSTAGRAM_ACCESS_TOKEN": "EAABigtoken_1234567890abcdefghijklmnop"}
+    unlinked = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(200, json={"id": "111"})))
+    assert social.with_instagram(env, unlinked) is env
+    rows = {r["network"]: r for r in social.check_networks(settings, env, client=unlinked)}
+    assert rows["instagram"] == {"network": "instagram", "configured": "yes", "ok": "no", "account": "", "note": "the Page has no linked Instagram professional account yet"}
+    assert "instagram" not in social.configured_networks(settings, social.with_instagram(env, unlinked))
+
+    refused = httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(400, json={"error": {"code": 10, "message": "secret words"}})))
+    rows = {r["network"]: r for r in social.check_networks(settings, env, client=refused)}
+    assert rows["instagram"]["note"] == "Meta would not say which account is linked (code 10)"
+
+    # without a token nothing is asked
+    assert social.with_instagram({"FACEBOOK_PAGE_ID": "111"}, refused) == {"FACEBOOK_PAGE_ID": "111"}
