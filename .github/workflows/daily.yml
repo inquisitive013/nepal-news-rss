@@ -310,6 +310,10 @@ jobs:
     needs: edition
     if: ${{ inputs.mock != true }}
     runs-on: ubuntu-latest
+    # One deploy to the site at a time: the Reel workflow deploys too, to serve Instagram its video.
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
