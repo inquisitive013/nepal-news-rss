@@ -565,20 +565,15 @@ def cmd_reel(args) -> int:
         print(f"::error::{args.take_down} is not a live Reel of this story, so nothing was taken down or posted.")
         return 1
     new_id = ""
+    failed: list[str] = []
     with httpx.Client(timeout=60) as client:
         if args.publish:
-            if any(p.network == "facebook_reel" and p.status == "posted" for p in rec.posts) and not args.again:
-                print("This story's Reel is already on the Page. Add --again to post another.")
-                return 0
-            try:
-                new_id, url = reel.publish_reel(client, os.environ, out, caption)
-            except social.SocialError as exc:
-                rec.posts.append(social.Post(network="facebook_reel", status="failed", text=caption, error=str(exc)[:500], posted_at=utcnow_iso()))
+            failed, new_id = _post_reel_everywhere(settings, article, rec, out, caption, client, again=args.again)
+            if old is not None and not new_id:
+                # The new cut goes up first or nothing comes down, so the story is never missing from the Page.
                 social.save_record(settings, rec)
-                print(f"::error::The Reel was not posted, so nothing was taken down: {str(exc)[:300]}")
+                print("::error::No new Facebook Reel went up, so nothing was taken down." + ("" if "facebook_reel" in failed else " Add --again to post the new cut first."))
                 return 1
-            rec.posts.append(social.Post(network="facebook_reel", status="posted", text=caption, id=new_id, url=url, posted_at=utcnow_iso()))
-            print(f"Posted the Reel: {url or 'video ' + new_id}")
         if old is not None:
             # The new cut goes up first, so the story is never missing from the Page.
             try:
@@ -592,7 +587,68 @@ def cmd_reel(args) -> int:
             old.error = f"taken down {utcnow_iso()} at the owner's request" + (f", replaced by Reel {new_id}" if new_id else "")
             print(f"Took down Reel {old.id}.")
     social.save_record(settings, rec)
-    return 0
+    return 1 if failed else 0
+
+
+# Where a Reel goes, in order: the Page first, so Instagram can fetch the Page's file if it must.
+REEL_PLACES = {"facebook_reel": "the Facebook Page", "instagram_reel": "Instagram", "youtube_short": "YouTube"}
+
+
+def _post_reel_everywhere(settings, article, rec, video, caption, client, *, again: bool) -> tuple[list[str], str]:
+    """The Reel on the Page, then on Instagram and YouTube when their secrets are set.
+
+    A place that already has this story's Reel is skipped unless `again`. A place that fails is
+    recorded as failed and the others still get the Reel. Returns the places that failed and the
+    new Facebook Reel's id.
+    """
+    import httpx
+
+    from . import reel, social, youtube
+    from .models import utcnow_iso
+
+    places = ["facebook_reel"]
+    if all(os.environ.get(k, "").strip() for k in social.ENV_KEYS["instagram"]) and "instagram" not in social.paused_networks(settings):
+        places.append("instagram_reel")
+    if youtube.connected(os.environ):
+        places.append("youtube_short")
+    # Instagram's fallback file must be this cut: an earlier Reel only stands in when no new cut is going up.
+    page_reel = "" if again else next((p.id for p in reversed(rec.posts) if p.network == "facebook_reel" and p.status == "posted" and p.id), "")
+    failed: list[str] = []
+    new_id = ""
+    for network in places:
+        label = REEL_PLACES[network]
+        if not again and any(p.network == network and p.status == "posted" for p in rec.posts):
+            print(f"This story's Reel is already on {label}." + (" Add --again to post another." if network == "facebook_reel" else ""))
+            continue
+        note = ""
+        try:
+            if network == "facebook_reel":
+                post_id, url = reel.publish_reel(client, os.environ, video, caption)
+                new_id = page_reel = post_id
+            elif network == "instagram_reel":
+                source = page_reel
+                fallback = (lambda: reel.facebook_video_file(client, os.environ, source)) if source else None
+                post_id, url = reel.publish_instagram_reel(client, os.environ, video, caption, fallback_url=fallback)
+            else:
+                post_id, url, privacy = youtube.upload_short(
+                    client, os.environ, video,
+                    title=youtube.title_for(article),
+                    description=youtube.description_for(caption, social.article_url(settings, article), settings.site_name),
+                    tags=youtube.tags_for(article, settings.site_name),
+                    channel=settings.site_name,
+                )
+                if privacy != "public":
+                    note = f"YouTube set it {privacy or 'to an unknown privacy'}: Google keeps an unaudited project's uploads private until its YouTube API audit passes"
+        except (social.SocialError, httpx.HTTPError) as exc:
+            rec.posts.append(social.Post(network=network, status="failed", text=caption, error=str(exc)[:500], posted_at=utcnow_iso()))
+            failed.append(network)
+            print(f"::error::The Reel did not go up on {label}: {str(exc)[:300]}")
+            continue
+        rec.posts.append(social.Post(network=network, status="posted", text=caption, id=post_id, url=url, error=note, posted_at=utcnow_iso()))
+        print(f"Posted the Reel on {label}: {url or post_id}")
+        if note:
+            print(f"::warning::{note}.")
+    return failed, new_id
 
 
 def cmd_nepali(args) -> int:
