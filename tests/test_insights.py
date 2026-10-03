@@ -227,6 +227,13 @@ def test_the_probe_names_permissions_and_answer_shapes_never_ids_or_values(tmp_p
             return httpx.Response(200, json={"id": "111"})
         if url.path.endswith("/debug_token"):
             return httpx.Response(200, json={"data": {"type": "PAGE", "is_valid": True, "expires_at": 0, "user_id": "9876543", "profile_id": "111", "scopes": ["read_insights", "pages_show_list"]}})
+        if "fields" in url.params:  # who can see the Page and its newest post
+            field = url.params["fields"]
+            if field == "timeline_visibility":
+                return httpx.Response(400, json={"error": {"message": "secret words", "code": 100}})
+            answers = {"is_published": False, "is_permanently_closed": False, "verification_status": "not_verified", "is_hidden": False,
+                       "privacy": {"value": "EVERYONE", "description": "Public", "allow": "9876543"}}
+            return httpx.Response(200, json={field: answers[field], "id": url.path.rsplit("/", 1)[-1]})
         asked.append((url.path.rsplit("/", 2)[-2], url.params["metric"], url.params["period"]))
         if url.params["metric"] == "post_impressions_unique":
             return httpx.Response(400, json={"error": {"message": "secret words", "code": 100}})
@@ -241,6 +248,10 @@ def test_the_probe_names_permissions_and_answer_shapes_never_ids_or_values(tmp_p
     assert "- Newest post, asked on the photo, post_reactions_by_type_total: a number" in lines
     assert "- Newest post, asked on the post, post_impressions_unique: code 100" in lines
     assert "- The Page, page_media_view by day: empty" in lines
+    # Who can see it: the flags as Meta gives them, a field Meta does not know by its code, no ids.
+    assert "- The Page, is_published: no" in lines and "- The Page, verification_status: not_verified" in lines
+    assert "- Newest post, privacy: value EVERYONE" in lines and "- Newest post, timeline_visibility: code 100" in lines
+    assert "- Newest Reel: none to ask about" in lines
     assert ("111_7", "post_media_view", "lifetime") in asked and ("7", "post_media_view", "lifetime") in asked  # the newest post, and its photo
     assert not any(a[0] in ("111_5", "5") for a in asked)
     assert "9876543" not in text and "4242" not in text and "secret words" not in text
@@ -351,3 +362,13 @@ def test_the_probe_lists_the_names_a_reel_answers_with_never_values(tmp_path):
     assert "- Newest Reel, post_video_avg_time_watched asked on its own: not returned" in lines
     assert "- Newest Reel, post_video_followers asked on its own: not returned" in lines
     assert "4242" not in text and "777" not in text and "secret words" not in text
+
+
+def test_a_visibility_answer_shows_flags_and_short_settings_never_ids():
+    assert insights._setting(True) == "yes" and insights._setting(False) == "no"
+    assert insights._setting("not_verified") == "not_verified"
+    assert insights._setting("320310335059937") == "a text"  # an id never reaches the log
+    assert insights._setting({"value": "SELF", "allow": "123"}) == "value SELF"
+    status = {"video_status": "ready", "publishing_phase": {"status": "complete", "publish_status": "published"}}
+    assert insights._setting(status) == "video_status ready, publish_status published"
+    assert insights._setting(None) == "not returned" and insights._setting(7) == "int"
