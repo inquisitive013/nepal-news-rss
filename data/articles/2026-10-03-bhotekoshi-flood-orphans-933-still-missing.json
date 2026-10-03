@@ -116,39 +116,46 @@
     },
     "notes": "",
     "checked": true,
-    "approved": false,
-    "held": true,
-    "fact_problems": [
-      "The card circulates alone, and line two gives the 933 figure with no time. It reads as a current count of people still missing. The record has it only as NDRRMA's 31 August count and lists whether any have been found as an open question. The line also drops the story's point that the coverage left t",
-      "The 933 figure appears without its date or its counter. It reads as a current missing count. The record has it as the count NDRRMA made on 31 August."
-    ],
-    "language_notes": 4,
+    "approved": true,
+    "held": false,
+    "fact_problems": [],
+    "language_notes": 6,
     "language_fixes": [
       {
-        "passage": "नेपाली अधिकारीहरूसँग कलमा कुरा गरेपछि मलेसियाका प्रधानमन्त्री अनवर इब्राहिमले बाँकी बेपत्ताहरूको खोजीका लागि द्रुत प्रक्रिया सुनिश्चित गराएको मलय मेलले जनाएको छ।",
-        "problem": "'कलमा कुरा' carries the English word 'call' straight into Nepali. The sentence is long and keeps the English word order.",
-        "fix": "मलय मेलका अनुसार मलेसियाका प्रधानमन्त्री अनवर इब्राहिमले नेपाली अधिकारीसँग फोनमा कुरा गरेका थिए। त्यसपछि उनले बाँकी बेपत्ताको खोजी छिटो गर्ने प्रक्रिया मिलाएको मलय मेलले लेखेको छ।"
+        "passage": "५ बालबालिकालाई सहयोग\n३१ अगस्टमा जलविद्युतका ९३३ बेपत्ता",
+        "problem": "The card runs well past the 45 character limit for two lines. Line two, read alone, says 933 people went missing on 31 August, but the flood struck on 26 August and 31 August is only the count date. It also drops the story's angle that these 933 went unmentioned.",
+        "fix": "५ बालबालिकालाई सहारा\nजलविद्युतका ९३३ बेपत्ता ओझेलमा"
       },
       {
-        "passage": "द हिमालयन टाइम्सका अनुसार चार दिनपछि नेपाल प्रहरीले १,२९० जनाको मृत्यु र ४,७९८ जना बेपत्ता रहेको जनाएको थियो, अर्थात् खोजी टोली खटिरहँदा पनि बेपत्ताको संख्या घट्नुको सट्टा बढेको थियो।",
-        "problem": "Two ideas sit in one long sentence joined by 'अर्थात्', which reads like English. The sentence should be split, and the second sentence keeps its source.",
-        "fix": "द हिमालयन टाइम्सका अनुसार चार दिनपछि नेपाल प्रहरीले १,२९० जनाको मृत्यु र ४,७९८ जना बेपत्ता रहेको जनाएको थियो। खोजी टोली खटिरहँदा पनि बेपत्ताको संख्या घट्नुको सट्टा बढेको द हिमालयन टाइम्सको तथ्यांकले देखाउँछ।"
+        "passage": "भोटेकोशी बाढीपछि ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए। टिकापुरका एक परिवारले भने शव नपाएपछि कुशबाट दाहसंस्कार गरे। एनडीआरआरएमएले ३१ अगस्टमा गनेका जलविद्युतसम्बद्ध ९३३ बेपत्ताबारे भने शुक्रबारका खबर मौन छन्।",
+        "problem": "The hook runs to three sentences against a limit of one or two. It uses भने twice and repeats the card's 933 angle instead of opening on what the story means for families who are waiting.",
+        "fix": "बेपत्ता आफन्त पर्खिरहेका परिवारका लागि शुक्रबार दुई खबर आए। ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए, टिकापुरका एक परिवारले भने शव नपाएपछि कुशबाट दाहसंस्कार गरे।"
       },
       {
-        "passage": "भोटेकोशी बाढीपछि ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए, टिकापुरका एक परिवारले शव नपाएर कुशबाट दाहसंस्कार गरे।",
-        "problem": "Two separate facts are joined with a comma. Nepali writing gives each idea its own sentence.",
-        "fix": "भोटेकोशी बाढीपछि ३७ दिन बेपत्ता एक मलेसियाली घर फर्किए। टिकापुरका एक परिवारले भने शव नपाएपछि कुशबाट दाहसंस्कार गरे।"
+        "passage": "मलय मेलका अनुसार मलेसियाका प्रधानमन्त्री अनवर इब्राहिमले नेपाली अधिकारीहरूसँग कलमा कुरा गरेका थिए।",
+        "problem": "कलमा कुरा is a calque from English. The paragraph also opens three sentences in a row with मलय मेलका अनुसार, so the attribution verb needs varying.",
+        "fix": "मलेसियाका प्रधानमन्त्री अनवर इब्राहिमले नेपाली अधिकारीहरूसँग फोनमा कुरा गरेको मलय मेलले उल्लेख गरेको छ।"
       },
       {
-        "passage": "भोटेकोशी बाढीमा बेपत्ता भएका आफन्तको खबर तपाईंको चिनजानमा कसैले अझै पर्खिरहेको छ?",
-        "problem": "The word order is awkward. Most readers would answer no at once, so the question does not reach the reader's own experience.",
-        "fix": "तपाईंको परिवारले कहिल्यै बेपत्ता आफन्तको खबर पर्खनुपरेको छ? त्यतिबेला सरकारी निकायले जवाफ दियो कि दिएन?"
+        "passage": "रिपब्लिकाका अनुसार यी पाँच बालबालिका एउटै परिवारका हुन्, र पत्रिकाले उनीहरूलाई मन्त्रालयको योजनाअन्तर्गत राष्ट्रिय जम्मा संख्याका रूपमा नभई एउटा उदाहरणका रूपमा लेखेको छ।",
+        "problem": "Two ideas sit joined with र in one long sentence that reads like English.",
+        "fix": "रिपब्लिकाका अनुसार यी पाँच बालबालिका एउटै परिवारका हुन्। पत्रिकाले उनीहरूलाई मन्त्रालयको योजनामा परेको एउटा उदाहरणका रूपमा लेखेको छ, देशभरको जम्मा संख्याका रूपमा होइन।"
+      },
+      {
+        "passage": "शुक्रबारको कुनै पछिल्लो खबरले एनडीआरआरएमएले ३१ अगस्टमा जलविद्युतसँग जोडेका ९३३ जनाबारे सोध्दैन।",
+        "problem": "The verb is in the wrong tense for a past news day, and the sentence stacks two subjects, which reads awkwardly.",
+        "fix": "एनडीआरआरएमएले ३१ अगस्टमा जलविद्युतसँग जोडेका ९३३ जनाबारे शुक्रबारको कुनै पछिल्लो खबरले सोधेको छैन।"
+      },
+      {
+        "passage": "बाढीपीडित ५ बालबालिकालाई सहयोग, अगस्टका जलविद्युतसम्बद्ध ९३३ बेपत्ता खबरबाट छुटे",
+        "problem": "The headline runs well past 60 characters, and अगस्टका ... बेपत्ता is a clumsy construction.",
+        "fix": "५ बालबालिकालाई राज्यको सहयोग, जलविद्युतका ९३३ बेपत्ता ओझेलमा"
       }
     ],
-    "passes": 4,
+    "passes": 5,
     "problems_fixed": 29,
     "fixed_in_place": 0,
-    "editor": "The card's second line and the social hook give the 933 figure without its 31 August date or its counter, so it reads as a current missing count the record does not carry. The body is faithful to the record, but a few sentences need Nepali craft fixes."
+    "editor": "Every claim, figure and attribution in the piece traces to the record, so there is no fact problem. The card runs past its length limit, line two reads as the wrong date, the hook is over length and a few sentences read as English, so it needs one revision pass."
   },
   "image_brief": {
     "search_queries": [
