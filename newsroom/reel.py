@@ -326,8 +326,12 @@ def render_reel(settings: Settings, article: Article, beats: list[Beat], out_pat
         _ffmpeg(), "-y", "-loglevel", "error",
         "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-",
         *audio_inputs, *mapping,
-        "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-profile:v", "high",
-        "-g", str(FPS * 2), "-c:a", "aac", "-b:a", "160k", "-ar", "48000", "-movflags", "+faststart",
+        # Instagram's Reels rules are the strict ones: the index at the front, no edit lists, AAC at
+        # 128 kbps and 48 kHz (Meta's IG User Media reference). On 3 October Instagram refused a Reel
+        # Facebook had taken, whose file carried two edit lists and 160 kbps sound. Without B frames
+        # the video needs no edit list to start at zero.
+        "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-profile:v", "high", "-bf", "0",
+        "-g", str(FPS * 2), "-c:a", "aac", "-b:a", "128k", "-ar", "48000", "-movflags", "+faststart", "-use_editlist", "0",
         str(out_path),
     ]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -457,7 +461,7 @@ def publish_instagram_reel(
         if not container:
             raise social.SocialError("Instagram Reel: no container came back") from refused
     # Meta processes a video for up to a few minutes before it can be published.
-    social._poll_container(client, f"{base}/{container}", {"fields": "status_code", "access_token": token}, what="Instagram Reel", tries=30, delay=10.0, sleep=sleep)
+    social._poll_container(client, f"{base}/{container}", {"fields": "status_code,status", "access_token": token}, what="Instagram Reel", tries=30, delay=10.0, sleep=sleep)
     published = social._raise_for(client.post(f"{base}/{user}/media_publish", data={"creation_id": container, "access_token": token}), "Instagram Reel")
     media_id = str(published.get("id") or "")
     if not media_id:

@@ -59,6 +59,10 @@ def test_a_reel_is_tall_short_and_opens_on_the_hook(tmp_path, monkeypatch):
     assert "1080x1920" in probe and "h264" in probe and "aac" in probe
     seconds = re.search(r"Duration: 00:00:(\d+\.\d+)", probe)
     assert seconds and abs(float(seconds.group(1)) - 3.0) < 0.3  # two one second beats and the end card
+    # Instagram's rules: the index before the data, no edit lists, sound at 48 kHz and no more than 128 kbps
+    body = out.read_bytes()
+    assert 0 <= body.find(b"moov") < body.find(b"mdat") and b"elst" not in body
+    assert "48000 Hz" in probe and int(re.search(r"Audio: aac.*?(\d+) kb/s", probe).group(1)) <= 128
 
     first = tmp_path / "first.png"
     subprocess.run([reel._ffmpeg(), "-loglevel", "error", "-y", "-i", str(out), "-frames:v", "1", str(first)], check=True)
@@ -437,3 +441,25 @@ def test_the_reel_goes_to_every_connected_place_and_one_failure_stops_none(tmp_p
     assert "already on the Facebook Page. Add --again" in out and "already on YouTube." in out
     live = [p for p in social.load_record(settings, art).posts if p.status == "posted"]
     assert sorted(p.network for p in live) == ["facebook_reel", "instagram_reel", "youtube_short"]
+
+
+def test_a_reel_meta_cannot_process_names_metas_reason_never_the_container(tmp_path):
+    video = tmp_path / "reel.mp4"
+    video.write_bytes(b"\x00" * 10)
+
+    def handler(request):
+        url = request.url
+        if url.host == "rupload.facebook.com":  # as on 3 October: the direct upload refused
+            return httpx.Response(400, json={"debug_info": {"retriable": False, "type": "ProcessingFailedError", "message": "Request processing failed"}})
+        if request.method == "POST" and url.path.endswith("/ig1/media"):
+            return httpx.Response(200, json={"id": "18117783133877951"})
+        if url.path.endswith("/18117783133877951"):
+            assert url.params["fields"] == "status_code,status"
+            return httpx.Response(200, json={"id": "18117783133877951", "status_code": "ERROR", "status": "Error: Media download has failed. (2207052)"})
+        return httpx.Response(400, json={"error": {"code": 100}})
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    with pytest.raises(social.SocialError) as caught:
+        reel.publish_instagram_reel(client, IG, video, "x", fallback_url=lambda: "https://video.example/reel.mp4", sleep=lambda s: None)
+    assert str(caught.value) == "Instagram Reel: Meta could not process it: Error: Media download has failed. (2207052)"
+

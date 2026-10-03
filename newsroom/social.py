@@ -520,7 +520,9 @@ def _poll_container(client: httpx.Client, url: str, params: dict[str, str], *, w
         if status == "FINISHED":
             return
         if status == "ERROR":
-            raise SocialError(f"{what}: container failed: {data}")
+            # Meta's reason, never the container's id: Instagram gives it in `status`, Threads in `error_message`.
+            reason = data.get("error_message") or (data.get("status") if data.get("status") not in (None, "ERROR") else "") or "no reason given"
+            raise SocialError(f"{what}: Meta could not process it: {str(reason)[:300]}")
         sleep(delay)
     raise SocialError(f"{what}: container not ready after {tries} checks")
 
@@ -771,7 +773,7 @@ def post_instagram(client: httpx.Client, environ: Mapping[str, str], text: str, 
     creation_id = str(created.get("id", ""))
     if not creation_id:
         raise SocialError(f"Instagram: no container id in {created}")
-    _poll_container(client, f"{base}/{creation_id}", {"fields": "status_code", "access_token": token}, what="Instagram", sleep=sleep)
+    _poll_container(client, f"{base}/{creation_id}", {"fields": "status_code,status", "access_token": token}, what="Instagram", sleep=sleep)
     published = _raise_for(client.post(f"{base}/{user}/media_publish", data={"creation_id": creation_id, "access_token": token}), "Instagram")
     media_id = str(published.get("id", ""))
     permalink = ""
@@ -800,7 +802,7 @@ def post_threads(client: httpx.Client, environ: Mapping[str, str], text: str, ar
     if not creation_id:
         raise SocialError(f"Threads: no container id in {created}")
     if img_url:
-        _poll_container(client, f"{THREADS_GRAPH}/{creation_id}", {"fields": "status", "access_token": token}, what="Threads", sleep=sleep)
+        _poll_container(client, f"{THREADS_GRAPH}/{creation_id}", {"fields": "status,error_message", "access_token": token}, what="Threads", sleep=sleep)
     published = _raise_for(client.post(f"{THREADS_GRAPH}/{user}/threads_publish", data={"creation_id": creation_id, "access_token": token}), "Threads")
     media_id = str(published.get("id", ""))
     permalink = ""
