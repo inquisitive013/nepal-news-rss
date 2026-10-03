@@ -248,6 +248,11 @@ def test_take_down_touches_only_the_named_reel_after_the_new_one_is_up(tmp_path,
     assert cli.main(["reel", "--article", AID, "--publish", "--again", "--take-down", "111_photo1"]) == 1
     assert calls == [] and "not a live Reel of this story" in capsys.readouterr().out
 
+    # without --again no new cut goes up, so the live Reel stays
+    assert cli.main(["reel", "--article", AID, "--publish", "--take-down", "old1"]) == 1
+    assert calls == [] and "nothing was taken down. Add --again" in capsys.readouterr().out
+    assert {p.id: p.status for p in social.load_record(settings, art).posts}["old1"] == "posted"
+
     assert cli.main(["reel", "--article", AID, "--publish", "--again", "--take-down", "old1"]) == 0
     assert calls == ["start", "upload", "finish", ("delete", "old1")]  # the new cut is up before the old one comes down
     posts = {p.id: p for p in social.load_record(settings, art).posts}
@@ -281,3 +286,154 @@ def test_a_photo_loses_its_burned_credit_bar_in_the_tall_frame(tmp_path):
     red = sum(p[0] for p in pixels) / len(pixels)
     green = sum(p[1] for p in pixels) / len(pixels)
     assert red - green < 10
+
+
+IG = {"INSTAGRAM_USER_ID": "ig1", "INSTAGRAM_ACCESS_TOKEN": "EAABigtoken_1234567890abcdefghijklmnop"}
+
+
+def _instagram(direct=True, statuses=("FINISHED",)):
+    """Instagram's Reels publishing: a container, the file sent to rupload, the status, the publish."""
+    calls = []
+    states = list(statuses)
+
+    def handler(request):
+        url = request.url
+        if url.host == "rupload.facebook.com":
+            calls.append(("upload", url.path, request.headers["Authorization"], request.headers["offset"], request.headers["file_size"], len(request.content)))
+            return httpx.Response(200, json={"success": True})
+        if request.method == "POST" and url.path.endswith("/ig1/media"):
+            form = dict(urllib.parse.parse_qsl(request.content.decode()))
+            calls.append(("open", form))
+            if form.get("upload_type") == "resumable" and not direct:
+                return httpx.Response(400, json={"error": {"code": 100, "message": "not for this app"}})
+            return httpx.Response(200, json={"id": "c1", "uri": "https://rupload.facebook.com/ig-api-upload/v23.0/c1"} if form.get("upload_type") else {"id": "c2"})
+        if url.path.endswith(("/c1", "/c2")):
+            calls.append(("status", url.params["fields"]))
+            return httpx.Response(200, json={"status_code": states.pop(0) if len(states) > 1 else states[0]})
+        if url.path.endswith("/ig1/media_publish"):
+            calls.append(("publish", dict(urllib.parse.parse_qsl(request.content.decode()))["creation_id"]))
+            return httpx.Response(200, json={"id": "m1"})
+        if url.path.endswith("/m1"):
+            return httpx.Response(200, json={"permalink": "https://www.instagram.com/reel/abc/"})
+        return httpx.Response(404, json={})
+
+    return httpx.Client(transport=httpx.MockTransport(handler)), calls
+
+
+def test_an_instagram_reel_goes_up_by_direct_upload_and_waits_for_meta(tmp_path):
+    video = tmp_path / "reel.mp4"
+    video.write_bytes(b"\x00" * 777)
+    client, calls = _instagram(statuses=("IN_PROGRESS", "FINISHED"))
+    waits = []
+
+    media_id, url = reel.publish_instagram_reel(client, IG, video, "कीर्तिमान", sleep=waits.append)
+
+    assert (media_id, url) == ("m1", "https://www.instagram.com/reel/abc/")
+    assert calls[0][0] == "open" and calls[0][1]["media_type"] == "REELS" and calls[0][1]["upload_type"] == "resumable" and calls[0][1]["caption"] == "कीर्तिमान"
+    assert "video_url" not in calls[0][1]
+    assert calls[1] == ("upload", "/ig-api-upload/v23.0/c1", f"OAuth {IG['INSTAGRAM_ACCESS_TOKEN']}", "0", "777", 777)
+    assert [c[0] for c in calls[2:]] == ["status", "status", "publish"] and calls[-1] == ("publish", "c1")
+    assert waits == [10.0]  # one wait while Meta processed it
+
+
+def test_instagram_fetches_the_page_reels_file_when_it_refuses_the_direct_upload(tmp_path):
+    video = tmp_path / "reel.mp4"
+    video.write_bytes(b"\x00" * 10)
+    client, calls = _instagram(direct=False)
+    asked = []
+
+    def page_file():
+        asked.append(True)
+        return "https://video.example.fbcdn.net/reel.mp4"
+
+    media_id, _ = reel.publish_instagram_reel(client, IG, video, "x", fallback_url=page_file, sleep=lambda s: None)
+
+    assert media_id == "m1" and asked == [True]
+    opens = [c[1] for c in calls if c[0] == "open"]
+    assert opens[0]["upload_type"] == "resumable" and opens[1]["video_url"] == "https://video.example.fbcdn.net/reel.mp4" and "upload_type" not in opens[1]
+    assert not any(c[0] == "upload" for c in calls) and calls[-1] == ("publish", "c2")
+
+    # with nothing to fall back on, Meta's refusal stands
+    client, _ = _instagram(direct=False)
+    with pytest.raises(social.SocialError, match="Instagram Reel: HTTP 400"):
+        reel.publish_instagram_reel(client, IG, video, "x", sleep=lambda s: None)
+
+
+def test_the_reel_goes_to_every_connected_place_and_one_failure_stops_none(tmp_path, monkeypatch, capsys):
+    from newsroom import __main__ as cli
+
+    YT = {"YOUTUBE_CLIENT_ID": "123-abc.apps.googleusercontent.com", "YOUTUBE_CLIENT_SECRET": "GOCSPX-fakesecret", "YOUTUBE_REFRESH_TOKEN": "1//0fakerefresh"}
+    settings = _settings(tmp_path)
+    art = _article(settings)
+    video = tmp_path / "reel.mp4"
+    video.write_bytes(b"\x00" * 100)
+    monkeypatch.setattr(cli, "_settings", lambda args: settings)
+    monkeypatch.setattr(cli.publish, "load_articles", lambda s: [art])
+    monkeypatch.setattr(reel, "load_beats", lambda s, aid: ([reel.Beat([reel.Line("क")], 4.0)], "कीर्तिमान"))
+    monkeypatch.setattr(reel, "load_sound", lambda s, aid: reel.Sound())
+    monkeypatch.setattr(reel, "render_reel", lambda *a, **k: video)
+    monkeypatch.setattr(reel, "facebook_video_file", lambda client, environ, video_id, **k: "")  # Meta has not processed it yet
+    for key, value in {**ENV, **IG, **YT}.items():
+        monkeypatch.setenv(key, value)
+    instagram_up = {"ok": False}
+    seen = []
+
+    def handler(request):
+        url = request.url
+        if url.path.endswith("/me"):
+            return httpx.Response(200, json={"id": "111"})
+        if url.host == "rupload.facebook.com":
+            seen.append("ig upload" if "ig-api-upload" in url.path else "fb upload")
+            return httpx.Response(200, json={"success": True})
+        if url.path.endswith("/111/video_reels"):
+            phase = dict(urllib.parse.parse_qsl(request.content.decode()))["upload_phase"]
+            seen.append(f"fb {phase}")
+            return httpx.Response(200, json={"video_id": "new1"} if phase == "start" else {"success": True})
+        if url.path.endswith("/new1"):
+            return httpx.Response(200, json={"permalink_url": "/reel/new1/"})
+        if url.path.endswith("/ig1/media"):
+            seen.append("ig open")
+            if not instagram_up["ok"]:
+                return httpx.Response(400, json={"error": {"code": 9004, "message": "media fetch failed"}})
+            return httpx.Response(200, json={"id": "c1", "uri": "https://rupload.facebook.com/ig-api-upload/v23.0/c1"})
+        if url.path.endswith("/c1"):
+            return httpx.Response(200, json={"status_code": "FINISHED"})
+        if url.path.endswith("/ig1/media_publish"):
+            seen.append("ig publish")
+            return httpx.Response(200, json={"id": "m1"})
+        if url.path.endswith("/m1"):
+            return httpx.Response(200, json={"permalink": "https://www.instagram.com/reel/abc/"})
+        if url.host == "oauth2.googleapis.com":
+            return httpx.Response(200, json={"access_token": "ya29.fake"})
+        if url.path.endswith("/youtube/v3/channels"):
+            return httpx.Response(200, json={"items": [{"snippet": {"title": "Nepal Wire"}}]})
+        if request.method == "POST" and url.path.endswith("/upload/youtube/v3/videos"):
+            seen.append("yt open")
+            return httpx.Response(200, headers={"Location": "https://www.googleapis.com/upload/youtube/v3/videos?upload_id=1"})
+        if request.method == "PUT":
+            seen.append("yt send")
+            return httpx.Response(200, json={"id": "yt1", "status": {"privacyStatus": "private"}})
+        return httpx.Response(404, json={})
+
+    real_client = httpx.Client
+    monkeypatch.setattr(httpx, "Client", lambda *a, **k: real_client(transport=httpx.MockTransport(handler)))
+
+    # Instagram refuses and has no Page file to fall back on: recorded as failed, and YouTube still gets the Reel
+    assert cli.main(["reel", "--article", AID, "--publish"]) == 1
+    out = capsys.readouterr().out
+    assert seen == ["fb start", "fb upload", "fb finish", "ig open", "yt open", "yt send"]
+    assert "did not go up on Instagram" in out and "::warning::YouTube set it private" in out
+    posts = {p.network: p for p in social.load_record(settings, art).posts}
+    assert posts["facebook_reel"].status == "posted" and posts["facebook_reel"].id == "new1"
+    assert posts["instagram_reel"].status == "failed"
+    assert posts["youtube_short"].status == "posted" and posts["youtube_short"].url == "https://www.youtube.com/shorts/yt1" and "audit" in posts["youtube_short"].error
+
+    # run again without --again: only the place still missing the Reel gets it
+    seen.clear()
+    instagram_up["ok"] = True
+    assert cli.main(["reel", "--article", AID, "--publish"]) == 0
+    assert seen == ["ig open", "ig upload", "ig publish"]
+    out = capsys.readouterr().out
+    assert "already on the Facebook Page. Add --again" in out and "already on YouTube." in out
+    live = [p for p in social.load_record(settings, art).posts if p.status == "posted"]
+    assert sorted(p.network for p in live) == ["facebook_reel", "instagram_reel", "youtube_short"]

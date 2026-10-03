@@ -1102,6 +1102,17 @@ def check_networks(settings: Settings, environ: Mapping[str, str], client: httpx
                 rows.append({"network": network, "configured": "yes", "ok": "yes", "account": account, "note": note})
             except (SocialError, httpx.HTTPError) as exc:
                 rows.append({"network": network, "configured": "yes", "ok": "no", "account": "", "note": str(exc)[:200]})
+        # YouTube takes only the Reel, never the card, so it sits outside the posting list.
+        from . import youtube
+
+        missing = [k for k in youtube.ENV_KEYS if not environ.get(k, "").strip()]
+        if missing:
+            rows.append({"network": "youtube", "configured": "no", "ok": "", "account": "", "note": "missing " + ", ".join(missing)})
+        else:
+            try:
+                rows.append({"network": "youtube", "configured": "yes", "ok": "yes", "account": youtube.check(client, environ, settings), "note": "Reels only"})
+            except (SocialError, httpx.HTTPError) as exc:
+                rows.append({"network": "youtube", "configured": "yes", "ok": "no", "account": "", "note": str(exc)[:200]})
     finally:
         if own_client:
             client.close()

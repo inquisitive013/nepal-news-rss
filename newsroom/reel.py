@@ -9,7 +9,8 @@ not follow the Page, so the Reel is how a cold Page gets seen at all.
 The beats come from a file the editor writes, `data/reels/<article id>.json`, holding only lines
 the verified record carries: the checked card headline, the sourced numbers, the caption's
 question. Each beat may name its narration clip and the words it says; a beat stretches to fit
-its clip. The end card names every outlet and the picture's credit, as the card does.
+its clip. The end card names every outlet and the picture's credit, as the card does. The same
+file goes to Instagram as a Reel when the Instagram secrets are set, and to YouTube (`youtube.py`).
 """
 
 from __future__ import annotations
@@ -19,8 +20,9 @@ import logging
 import re
 import shutil
 import subprocess
+import time
 from dataclasses import dataclass, field
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from pathlib import Path
 from typing import Any
 
@@ -390,3 +392,80 @@ def publish_reel(client: httpx.Client, environ: Mapping[str, str], video: Path, 
     if url.startswith("/"):
         url = "https://www.facebook.com" + url
     return video_id, url
+
+
+def facebook_video_file(client: httpx.Client, environ: Mapping[str, str], video_id: str, *, tries: int = 12, delay: float = 10.0, sleep: Callable[[float], None] = time.sleep) -> str:
+    """The address of a Facebook Reel's own video file, once Meta has processed it; empty when it never says.
+
+    Instagram can fetch a Reel from an address when it refuses the direct upload, and this one
+    needs no hosting of our own.
+    """
+    from . import social
+
+    fb = social.facebook_page(client, environ)
+    url = f"{social.META_GRAPH}/{social._graph_version(environ)}/{video_id}"
+    for attempt in range(tries):
+        try:
+            source = str(social._raise_for(client.get(url, params={"fields": "source", "access_token": fb.token}), "Facebook Reel").get("source") or "")
+        except social.SocialError:
+            source = ""
+        if source.startswith("https://"):
+            return source
+        if attempt < tries - 1:
+            sleep(delay)
+    return ""
+
+
+def publish_instagram_reel(
+    client: httpx.Client,
+    environ: Mapping[str, str],
+    video: Path,
+    caption: str,
+    *,
+    fallback_url: Callable[[], str] | None = None,
+    sleep: Callable[[float], None] = time.sleep,
+) -> tuple[str, str]:
+    """Put the Reel on Instagram: open a Reels container, send it the file, publish it when Meta has processed it.
+
+    The file goes up by Meta's resumable upload to rupload.facebook.com, so the video needs no
+    public address. Meta allows that upload only to some apps; when it refuses, the container
+    fetches the video from `fallback_url()` instead, the Facebook Reel's own file. The account
+    must be a professional one linked to the Page. Returns the media id and the post's address.
+    """
+    from . import social
+
+    version = social._graph_version(environ)
+    base = environ.get("INSTAGRAM_API_BASE", "").strip() or f"{social.META_GRAPH}/{version}"
+    user, token = environ["INSTAGRAM_USER_ID"], environ["INSTAGRAM_ACCESS_TOKEN"]
+    fields = {"media_type": "REELS", "caption": social.fit(caption, social.LIMITS["instagram"]), "share_to_feed": "true", "access_token": token}
+    try:
+        opened = social._raise_for(client.post(f"{base}/{user}/media", data={**fields, "upload_type": "resumable"}), "Instagram Reel")
+        container = str(opened.get("id") or "")
+        if not container:
+            raise social.SocialError("Instagram Reel: the upload did not open")
+        body = Path(video).read_bytes()
+        upload_url = str(opened.get("uri") or f"https://rupload.facebook.com/ig-api-upload/{version}/{container}")
+        headers = {"Authorization": f"OAuth {token}", "offset": "0", "file_size": str(len(body)), "Content-Type": "application/octet-stream"}
+        social._raise_for(client.post(upload_url, content=body, headers=headers, timeout=300), "Instagram Reel upload")
+    except social.SocialError as refused:
+        address = fallback_url() if fallback_url else ""
+        if not address:
+            raise
+        log.info("Instagram refused the direct upload (%s); it fetches the Facebook Reel's file instead", str(refused)[:160])
+        opened = social._raise_for(client.post(f"{base}/{user}/media", data={**fields, "video_url": address}), "Instagram Reel")
+        container = str(opened.get("id") or "")
+        if not container:
+            raise social.SocialError("Instagram Reel: no container came back") from refused
+    # Meta processes a video for up to a few minutes before it can be published.
+    social._poll_container(client, f"{base}/{container}", {"fields": "status_code", "access_token": token}, what="Instagram Reel", tries=30, delay=10.0, sleep=sleep)
+    published = social._raise_for(client.post(f"{base}/{user}/media_publish", data={"creation_id": container, "access_token": token}), "Instagram Reel")
+    media_id = str(published.get("id") or "")
+    if not media_id:
+        raise social.SocialError("Instagram Reel: Meta did not publish it")
+    permalink = ""
+    try:  # the address is a courtesy
+        permalink = str(social._raise_for(client.get(f"{base}/{media_id}", params={"fields": "permalink", "access_token": token}), "Instagram Reel").get("permalink") or "")
+    except social.SocialError:
+        pass
+    return media_id, permalink
+
