@@ -25,7 +25,17 @@
    "posted_at": "2026-10-03T05:22:31+00:00",
    "scheduled_for": "",
    "edited_at": "",
-   "metrics": {},
+   "metrics": {
+    "24h": {
+     "at": "2026-10-04T05:39:00+00:00",
+     "hours": 24.3,
+     "viewers": 2,
+     "views": 20,
+     "shares": 1,
+     "comments": 0,
+     "reactions": 0
+    }
+   },
    "comment_desk": []
   },
   {
@@ -38,7 +48,16 @@
    "posted_at": "2026-10-03T05:29:48+00:00",
    "scheduled_for": "",
    "edited_at": "",
-   "metrics": {},
+   "metrics": {
+    "24h": {
+     "at": "2026-10-04T05:39:00+00:00",
+     "hours": 24.2,
+     "plays": 6,
+     "viewers": 2,
+     "avg_watch_ms": 12355,
+     "follows": 0
+    }
+   },
    "comment_desk": []
   },
   {
