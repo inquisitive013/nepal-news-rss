@@ -42,6 +42,7 @@ Never use any of these, in any form:
 ## Accuracy and fairness
 - Nothing invented. No composite quotes. No "sources say" without saying which outlet reported it.
 - When outlets disagree, report the disagreement.
+- A term from a Nepali source keeps its Nepali meaning, not the English word it looks closest to. A party convention's बन्द सत्र is its closed session, not its closing session. The closing session is समापन सत्र.
 - Private individuals get privacy. Public officials get scrutiny.
 - Allegations are allegations until a court or a documented record says otherwise.
 
