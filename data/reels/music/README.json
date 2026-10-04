@@ -8,5 +8,10 @@
   "made": "2026-10-01, ElevenLabs Music v2.5, instrumental, 60 seconds, on the Page owner's ElevenLabs account",
   "prompt": "Sombre, respectful instrumental background for a Nepali news reel about flood victims and missing people. A slow solo sarangi melody over soft sustained low strings and a quiet drone. Calm and steady, around 60 BPM, even volume from start to end, a sparse arrangement that leaves room for a spoken voice over. No drums, no percussion, no vocals.",
   "use": "loss, disaster and grief stories"
+ },
+ "news-pulse.mp3": {
+  "made": "2026-10-04, ElevenLabs Music v2.5, instrumental, 60 seconds, on the Page owner's ElevenLabs account",
+  "prompt": "Neutral, serious instrumental background for a Nepali news reel about politics and public affairs. A steady low pulse of soft strings, a muted madal hand drum keeping time, and a sparse plucked string motif. Measured and attentive, neither happy nor sad, around 90 BPM, even volume from start to end, a simple arrangement that leaves room for a spoken voice over. No vocals.",
+  "use": "politics and public affairs stories"
  }
 }
