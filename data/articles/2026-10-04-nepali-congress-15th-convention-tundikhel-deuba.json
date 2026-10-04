@@ -137,35 +137,41 @@
     "approved": false,
     "held": true,
     "fact_problems": [
-      "The English says 'closing session'. 'बन्द सत्र' means a closed-door session, not the closing one. That changes what the record reports."
+      "The sentence puts the convention's opening under Chaudhary's attribution, when the record sources it to spokesperson Chalise via Nepal Press. It also joins two facts the English keeps apart, and भने…भइसकेको implies a timing link the record does not carry.",
+      "The record limits this to the reports the article draws on: in them, Deuba's intentions are described only through the rival faction. 'मात्र सार्वजनिक भएको छ' widens it to everything made public anywhere."
     ],
-    "language_notes": 4,
+    "language_notes": 5,
     "language_fixes": [
       {
-        "passage": "कांग्रेसको महाधिवेशन सुरु, देउबाको निम्तो सुरक्षागार्डलाई थमाइयो",
-        "problem": "The headline uses the passive 'थमाइयो' although the record names who left the invitation: Thapa's delegation. Nepali headlines name the actor.",
-        "fix": "कांग्रेसको महाधिवेशन सुरु, थापा पक्षले देउबाको निम्तो सुरक्षागार्डलाई थमायो"
-      },
-      {
-        "passage": "उम्मेदवारी सोमबार हुने भए पनि प्रतिद्वन्द्वीहरूले देउबालाई आफ्नै निम्तो हातमा दिन सकेनन्।",
-        "problem": "'उम्मेदवारी सोमबार हुने' is clipped: it should say उम्मेदवारी दर्ता. The 'भए पनि' construction also reads as translated English.",
-        "fix": "सोमबार उम्मेदवारी दर्ता हुँदैछ, तर प्रतिद्वन्द्वी पक्षले देउबालाई उनकै निम्तो हातमा दिन सकेन।"
-      },
-      {
         "passage": "यस हप्ता शीर्ष पद जित्नेहरूले नै नेपाली कांग्रेसको तर्फबाट बोल्नेछन्। सोमबार उम्मेदवारी दर्ता हुने अनलाइनखबर र इकान्तिपुरले जनाएका छन्। पूर्वसभापति शेरबहादुर देउबाले भने महाधिवेशन बहिष्कारको आह्वान गरेको देश सञ्चारले जनाएको छ।",
-        "problem": "The hook runs to three sentences. The style guide allows one or two short ones.",
-        "fix": "यस हप्ता शीर्ष पद जित्नेहरूले नै नेपाली कांग्रेसको तर्फबाट बोल्नेछन्, सोमबार उम्मेदवारी दर्ता हुने अनलाइनखबर र इकान्तिपुरले जनाएका छन्। पूर्वसभापति शेरबहादुर देउबाले भने महाधिवेशन बहिष्कारको आह्वान गरेको देश सञ्चारले जनाएको छ।"
+        "problem": "The hook runs to three sentences. The guide allows one or two short ones.",
+        "fix": "यस हप्ता शीर्ष पद जित्नेहरूले नै नेपाली कांग्रेसको तर्फबाट बोल्नेछन्। तर पूर्वसभापति शेरबहादुर देउबाले महाधिवेशन बहिष्कारको आह्वान गरेको देश सञ्चारले जनाएको छ।"
       },
       {
-        "passage": "सहमहासचिव योगेन्द्र चौधरीका अनुसार देउबाको निम्तो सुरक्षागार्डलाई दिएर फर्किनुपर्‍यो, महाधिवेशन भने टुँडिखेलमा सुरु भइसकेको छ।",
-        "problem": "'फर्किनुपर्‍यो' adds a compulsion, 'had to', that Chaudhary's account does not carry. He says only that they gave it to the guard and came back.",
-        "fix": "सहमहासचिव योगेन्द्र चौधरीका अनुसार प्रतिनिधिमण्डल देउबाको निम्तो सुरक्षागार्डलाई दिएर फर्कियो, महाधिवेशन भने टुँडिखेलमा सुरु भइसकेको छ।"
+        "passage": "तर प्रतिनिधिमण्डल देउबासम्मै पुग्न सकेन, चौधरीले बताए।",
+        "problem": "This is a recent statement, so it takes the news tense, the present perfect.",
+        "fix": "तर प्रतिनिधिमण्डल देउबासम्मै पुग्न नसकेको चौधरीले बताएका छन्।"
+      },
+      {
+        "passage": "देउबा पक्षले थापालाई निर्वाचित गराएको विशेष महाधिवेशनलाई गैरकानूनी भन्दै आएको छ, देश सञ्चारले जनाएको छ।",
+        "problem": "Nepali outlets spell the word गैरकानुनी.",
+        "fix": "देउबा पक्षले थापालाई निर्वाचित गराएको विशेष महाधिवेशनलाई गैरकानुनी भन्दै आएको छ, देश सञ्चारले जनाएको छ।"
+      },
+      {
+        "passage": "टुँडिखेलमा जम्मा भएका प्रतिनिधिहरूले सोमबारदेखि यिनै उम्मेदवार छनौट गर्न थाल्नेछन्, इकान्तिपुर डटकम र नेपालन्युज डटकमले जनाएका छन्।",
+        "problem": "Two craft points. The standard spelling is छनोट. The outlet is named इकान्तिपुर in the next paragraph, so the name should match.",
+        "fix": "टुँडिखेलमा जम्मा भएका प्रतिनिधिहरूले सोमबारदेखि यिनै उम्मेदवार छनोट गर्न थाल्नेछन्, इकान्तिपुर र नेपालन्युज डटकमले जनाएका छन्।"
+      },
+      {
+        "passage": "मंगलबार (६ अक्टोबर) सम्म",
+        "problem": "The postposition सम्म should attach to the word before it, with no space.",
+        "fix": "मंगलबार (६ अक्टोबर)सम्म"
       }
     ],
-    "passes": 5,
+    "passes": 6,
     "problems_fixed": 23,
     "fixed_in_place": 0,
-    "editor": "The body renders the record's 'closing session' as 'बन्द सत्र', a closed-door session, so the piece cannot publish as it stands. The headline, dek, caption hook and social hook also need the craft fixes listed."
+    "editor": "The social hook puts the convention's opening under Chaudhary's attribution instead of Chalise via Nepal Press and joins two facts the record keeps apart, and one finding widens the record's limited claim about the reports. A few craft points also need fixing: hook length, tense, spelling and spacing."
   },
   "image_brief": {
     "search_queries": [
