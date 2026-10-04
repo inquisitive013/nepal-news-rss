@@ -137,45 +137,35 @@
     "approved": false,
     "held": true,
     "fact_problems": [
-      "The English attributes the Monday nomination date to OnlineKhabar and ekantipur.com. The hook states it with no source of its own. The comma plus र also joins two separate ideas in English order."
+      "The English says only the organizing committee's 'finance arm' would know. 'कोष उपसमिति' names a specific subcommittee the record does not carry, which makes the claim more exact than the English."
     ],
-    "language_notes": 6,
+    "language_notes": 4,
     "language_fixes": [
       {
-        "passage": "कांग्रेसको महाधिवेशन सुरु, देउबाको निम्तो सुरक्षागार्डलाई थमाइयो",
-        "problem": "The passive थमाइयो hides a known agent. Chaudhary's delegation left the invitation, so Nepali headline form should name who did it.",
-        "fix": "कांग्रेसको महाधिवेशन सुरु, देउबाको निम्तो सुरक्षागार्डलाई थमाएर फर्कियो टोली"
+        "passage": "यस हप्ता शीर्ष पद जित्नेहरूले नै नेपाली कांग्रेसको तर्फबाट बोल्नेछन्। सोमबार उम्मेदवारी दर्ता हुने अनलाइनखबर र इकान्तिपुरले जनाएका छन्। पूर्वसभापति शेरबहादुर देउबाले भने महाधिवेशन बहिष्कारको आह्वान गरेको देश सञ्चारले जनाएको छ।",
+        "problem": "The caption hook runs to three sentences. The guide allows one or two short sentences.",
+        "fix": "यस हप्ता शीर्ष पद जित्नेहरूले नै नेपाली कांग्रेसको तर्फबाट बोल्नेछन्। तर पूर्वसभापति शेरबहादुर देउबाले महाधिवेशन बहिष्कारको आह्वान गरेको देश सञ्चारले जनाएको छ।"
       },
       {
-        "passage": "उम्मेदवारी सोमबार हुने भए पनि प्रतिद्वन्द्वीहरूले देउबालाई आफ्नै निम्तो हातमा दिन सकेनन्।",
-        "problem": "'उम्मेदवारी सोमबार हुने' is clipped and unclear. A Nepali desk writes उम्मेदवारी दर्ता.",
-        "fix": "सोमबार उम्मेदवारी दर्ता हुँदै छ, तर प्रतिद्वन्द्वी पक्षले देउबालाई आफ्नै निम्तो हातमा दिन सकेन।"
-      },
-      {
-        "passage": "यस हप्ता पार्टीको माथिल्लो पदमा जित्ने व्यक्तिले नै आउने दिनमा पार्टीको आवाज बनेर बोल्नेछ।",
-        "problem": "'पार्टीको आवाज बनेर बोल्नेछ' is an English calque, and 'आउने दिनमा' is padding the English does not carry. 'पदमा जित्ने' is also wrong Nepali.",
-        "fix": "यस हप्ता पार्टीका शीर्ष पद जित्नेहरूले नै पार्टीका तर्फबाट बोल्नेछन्।"
-      },
-      {
-        "passage": "इकान्तिपुरका अनुसार ३० स्वास्थ्यकर्मी र २ एम्बुलेन्स तयारी अवस्थामा छन्।",
-        "problem": "The same outlet is named इकान्तिपुर डटकम one paragraph earlier and इकान्तिपुर here. A Nepali reader knows the outlet as कान्तिपुर. Use one name throughout.",
-        "fix": "कान्तिपुरका अनुसार ३० स्वास्थ्यकर्मी र २ एम्बुलेन्स तयारी अवस्थामा छन्।"
+        "passage": "त्यसैले एक सार्वजनिक व्यक्तिको मनसायबारे उनका प्रतिद्वन्द्वी पक्षले भनेको कुरा मात्र सार्वजनिक भएको छ।",
+        "problem": "'एक सार्वजनिक व्यक्तिको' is English 'a public figure' wearing Devanagari. Name the person instead.",
+        "fix": "त्यसैले देउबाको मनसायबारे उनका प्रतिद्वन्द्वी पक्षले भनेको कुरा मात्र बाहिर आएको छ।"
       },
       {
         "passage": "कुनै पनि समाचारमा देउबा पक्षको भनाइ नभएकाले यो एकतर्फी विवरणलाई ती समाचारमा कसैले चुनौती दिएको छैन।",
-        "problem": "'समाचारमा' repeats, and 'चुनौती दिएको छैन' reads as a translation of 'stands uncontested'.",
-        "fix": "कुनै पनि समाचारमा देउबा पक्षको भनाइ नभएकाले यो एकतर्फी विवरण अहिलेसम्म कसैले खण्डन नगरेको अवस्थामा छ।"
+        "problem": "The sentence is clumsy and repeats 'समाचारमा'. It reads as a translation.",
+        "fix": "कुनै पनि समाचारमा देउबा पक्षको भनाइ छैन। त्यसैले यो एकतर्फी विवरणलाई कसैले काटेको छैन।"
       },
       {
         "passage": "तर त्यसले सोमबारको उम्मेदवारी प्रक्रियामा वास्तवमा कति जनाले भाग लिने हुन्, वा सर्वोच्च अदालतमा विचाराधीन पुनरावलोकनले निर्वाचन आयोगले जनवरीमा पार्टी सभापति गगन थापाको समितिलाई दिएको मान्यता बदल्छ कि बदल्दैन भन्ने देखाउँदैन।",
-        "problem": "This is one long English-built sentence holding two ideas. 'कति जनाले' also shifts the English 'who' to 'how many'.",
-        "fix": "तर सोमबारको उम्मेदवारी प्रक्रियामा वास्तवमा को-को सहभागी हुन्छन् भन्ने त्यसले देखाउँदैन। निर्वाचन आयोगले जनवरीमा पार्टी सभापति गगन थापाको समितिलाई दिएको मान्यता सर्वोच्च अदालतमा विचाराधीन पुनरावलोकनले बदल्छ कि बदल्दैन भन्ने पनि देखाउँदैन।"
+        "problem": "The take should be short sentences. This one is one long English-shaped sentence carrying two ideas.",
+        "fix": "तर सोमबारको उम्मेदवारी प्रक्रियामा वास्तवमा कति जनाले भाग लिन्छन् भन्ने त्यसले देखाउँदैन। निर्वाचन आयोगले जनवरीमा पार्टी सभापति गगन थापाको समितिलाई दिएको मान्यता सर्वोच्च अदालतमा विचाराधीन पुनरावलोकनले बदल्छ कि बदल्दैन भन्ने पनि देखाउँदैन।"
       }
     ],
-    "passes": 3,
+    "passes": 4,
     "problems_fixed": 23,
     "fixed_in_place": 0,
-    "editor": "The caption hook states the OnlineKhabar and ekantipur nomination date without a source, so the piece cannot publish as it stands. The rest is faithful to the record, with craft fixes to the headline passive, the dek, one calque, the outlet name and the long closing sentence of the take."
+    "editor": "The closing line of the open questions names a 'कोष उपसमिति' that the record, which says only 'finance arm', does not carry. A few craft fixes are also needed in the caption hook and the take."
   },
   "image_brief": {
     "search_queries": [
