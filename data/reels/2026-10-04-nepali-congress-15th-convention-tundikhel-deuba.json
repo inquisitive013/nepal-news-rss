@@ -1,0 +1,129 @@
+{
+  "article_id": "2026-10-04-nepali-congress-15th-convention-tundikhel-deuba",
+  "why": "Every line from the verified record and the Nepali piece the editor read again on 4 October: Nepal Press on the opening at Tundikhel, OnlineKhabar and Nepal Press on Gagan Thapa sending Yogendra Chaudhary to Deuba's residence with the invitation, OnlineKhabar on Chaudhary's account that they could not meet Deuba and left it with the guard, neither outlet carrying a response from Deuba or his office, Desh Sanchar on Deuba's boycott call, Lokaantar on his side's own convention filed for 7 to 9 December, and OnlineKhabar and ekantipur on Monday's nominations. Each fact keeps its source in its own sentence, numbers in words.",
+  "caption": "यस हप्ता शीर्ष पद जित्नेहरूले नै नेपाली कांग्रेसको तर्फबाट बोल्नेछन्। पूर्वसभापति शेरबहादुर देउबाले भने महाधिवेशन बहिष्कारको आह्वान गरेको देश सञ्चारले जनाएको छ।\n\nतपाईंको आफ्नै समूह वा संस्थामा कहिल्यै यसरी निम्तो सही व्यक्तिसम्म नपुगेको घटना भएको छ?",
+  "voice": "Kamala, a Nepali voice in the ElevenLabs library, model eleven_v3. Each clip transcribed back word for word by ElevenLabs Scribe before use.",
+  "music": "data/reels/music/news-pulse.mp3",
+  "music_volume": 0.22,
+  "end_say": "नेपाल वायर।",
+  "end_audio": "data/reels/audio/2026-10-04-nepali-congress-15th-convention-tundikhel-deuba/end.mp3",
+  "beats": [
+    {
+      "seconds": 4.0,
+      "lines": [
+        [
+          "कांग्रेस महाधिवेशन सुरु",
+          96,
+          "white"
+        ],
+        [
+          "देउबाको निम्तो गार्डलाई",
+          96,
+          "gold"
+        ]
+      ],
+      "say": "नेपाल प्रेसका अनुसार नेपाली कांग्रेसले आइतबार टुँडिखेलबाट पन्ध्रौं महाधिवेशनको उद्घाटन गरेको छ।",
+      "audio": "data/reels/audio/2026-10-04-nepali-congress-15th-convention-tundikhel-deuba/say1.mp3"
+    },
+    {
+      "seconds": 4.0,
+      "lines": [
+        [
+          "थापाको निम्तो",
+          110,
+          "white"
+        ],
+        [
+          "देउबा निवासमा",
+          110,
+          "gold"
+        ],
+        [
+          "सहमहासचिव योगेन्द्र चौधरी",
+          64,
+          "off"
+        ]
+      ],
+      "say": "अनलाइनखबर र नेपाल प्रेसका अनुसार गगन थापाले योगेन्द्र चौधरीलाई देउबाको निवासमा निम्तो लिएर पठाए।",
+      "audio": "data/reels/audio/2026-10-04-nepali-congress-15th-convention-tundikhel-deuba/say2.mp3"
+    },
+    {
+      "seconds": 4.0,
+      "lines": [
+        [
+          "भेट भएन",
+          140,
+          "gold"
+        ],
+        [
+          "निम्तो सुरक्षागार्डलाई",
+          88,
+          "white"
+        ],
+        [
+          "चौधरी, अनलाइनखबरसँग",
+          60,
+          "off"
+        ]
+      ],
+      "say": "चौधरीले अनलाइनखबरसँग भनेअनुसार उनीहरूले देउबालाई भेट्न सकेनन्। निम्तो सुरक्षागार्डलाई दिएर फर्किए।",
+      "audio": "data/reels/audio/2026-10-04-nepali-congress-15th-convention-tundikhel-deuba/say3.mp3"
+    },
+    {
+      "seconds": 4.0,
+      "lines": [
+        [
+          "देउबाको प्रतिक्रिया",
+          100,
+          "white"
+        ],
+        [
+          "दुवै समाचारमा छैन",
+          100,
+          "gold"
+        ]
+      ],
+      "say": "अनलाइनखबर र नेपाल प्रेस दुवैमा देउबा वा उनको कार्यालयको प्रतिक्रिया छैन।",
+      "audio": "data/reels/audio/2026-10-04-nepali-congress-15th-convention-tundikhel-deuba/say4.mp3"
+    },
+    {
+      "seconds": 4.0,
+      "lines": [
+        [
+          "एउटै पार्टी",
+          110,
+          "white"
+        ],
+        [
+          "दुई महाधिवेशन",
+          130,
+          "gold"
+        ],
+        [
+          "देउबा पक्ष: ७ देखि ९ डिसेम्बर",
+          60,
+          "off"
+        ]
+      ],
+      "say": "देश सञ्चारका अनुसार देउबाले बहिष्कारको आग्रह गरेका छन्। लोकान्तरका अनुसार उनको पक्षले डिसेम्बरमा आफ्नै महाधिवेशनको तालिका दर्ता गराएको छ।",
+      "audio": "data/reels/audio/2026-10-04-nepali-congress-15th-convention-tundikhel-deuba/say5.mp3"
+    },
+    {
+      "seconds": 4.0,
+      "lines": [
+        [
+          "सोमबार",
+          150,
+          "gold"
+        ],
+        [
+          "उम्मेदवारी दर्ता",
+          110,
+          "white"
+        ]
+      ],
+      "say": "सोमबार उम्मेदवारी दर्ता हुने अनलाइनखबर र इकान्तिपुरले जनाएका छन्।",
+      "audio": "data/reels/audio/2026-10-04-nepali-congress-15th-convention-tundikhel-deuba/say6.mp3"
+    }
+  ]
+}
